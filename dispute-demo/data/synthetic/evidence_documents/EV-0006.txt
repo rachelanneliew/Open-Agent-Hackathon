@@ -1,0 +1,12 @@
+SYNTHETIC DEMONSTRATION DOCUMENT
+All entities and events are fictional.
+evidence_id: EV-0006
+dispute_id: DP-0003
+transaction_id: TX-0003
+order_id: OR-0003
+document_type: merchant_response
+source_type: merchant
+event_at: 2026-10-11T09:00:00Z
+available_at: 2026-10-11T10:00:00Z
+
+There was only one order. Charge references TX-0003 and TX-0043 refer to that same order, not separate purchases.

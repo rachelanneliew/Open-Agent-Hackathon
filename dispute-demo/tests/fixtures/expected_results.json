@@ -1,0 +1,699 @@
+[
+  {
+    "dispute_id": "DP-0001",
+    "expected_outcome": "recommend_refund",
+    "expected_policy_version": "v1",
+    "expected_refund_minor": 6500,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0001",
+      "EV-0002"
+    ],
+    "required_policy_rule_ids": [
+      "v1-APPROVE",
+      "v1-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "SUPPORTED_CLAIM"
+    ],
+    "scenario_id": "supported:1"
+  },
+  {
+    "dispute_id": "DP-0002",
+    "expected_outcome": "recommend_refund",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 16300,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0003",
+      "EV-0004"
+    ],
+    "required_policy_rule_ids": [
+      "v2-APPROVE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "SUPPORTED_CLAIM"
+    ],
+    "scenario_id": "supported:2"
+  },
+  {
+    "dispute_id": "DP-0003",
+    "expected_outcome": "recommend_refund",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 20000,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0005",
+      "EV-0006"
+    ],
+    "required_policy_rule_ids": [
+      "v2-APPROVE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "SUPPORTED_CLAIM"
+    ],
+    "scenario_id": "supported:3"
+  },
+  {
+    "dispute_id": "DP-0004",
+    "expected_outcome": "recommend_refund",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 14600,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0007",
+      "EV-0008"
+    ],
+    "required_policy_rule_ids": [
+      "v2-APPROVE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "SUPPORTED_CLAIM"
+    ],
+    "scenario_id": "supported:4"
+  },
+  {
+    "dispute_id": "DP-0005",
+    "expected_outcome": "recommend_refund",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 8000,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0009",
+      "EV-0010"
+    ],
+    "required_policy_rule_ids": [
+      "v2-APPROVE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "SUPPORTED_CLAIM"
+    ],
+    "scenario_id": "supported:5"
+  },
+  {
+    "dispute_id": "DP-0006",
+    "expected_outcome": "recommend_refund",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 6400,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0011",
+      "EV-0012"
+    ],
+    "required_policy_rule_ids": [
+      "v2-APPROVE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "SUPPORTED_CLAIM"
+    ],
+    "scenario_id": "supported:6"
+  },
+  {
+    "dispute_id": "DP-0007",
+    "expected_outcome": "recommend_refund",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 10700,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0013",
+      "EV-0014"
+    ],
+    "required_policy_rule_ids": [
+      "v2-APPROVE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "SUPPORTED_CLAIM"
+    ],
+    "scenario_id": "supported:7"
+  },
+  {
+    "dispute_id": "DP-0008",
+    "expected_outcome": "escalate",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0015",
+      "EV-0016"
+    ],
+    "required_policy_rule_ids": [
+      "v2-REVIEW_THRESHOLD",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "REVIEW_THRESHOLD"
+    ],
+    "scenario_id": "supported:8"
+  },
+  {
+    "dispute_id": "DP-0009",
+    "expected_outcome": "reject",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v2-ALREADY_REFUNDED",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "ALREADY_REFUNDED"
+    ],
+    "scenario_id": "full_refund:1"
+  },
+  {
+    "dispute_id": "DP-0010",
+    "expected_outcome": "reject",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v2-ALREADY_REFUNDED",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "ALREADY_REFUNDED"
+    ],
+    "scenario_id": "full_refund:2"
+  },
+  {
+    "dispute_id": "DP-0011",
+    "expected_outcome": "reject",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v2-ALREADY_REFUNDED",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "ALREADY_REFUNDED"
+    ],
+    "scenario_id": "full_refund:3"
+  },
+  {
+    "dispute_id": "DP-0012",
+    "expected_outcome": "reject",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v2-ALREADY_REFUNDED",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "ALREADY_REFUNDED"
+    ],
+    "scenario_id": "full_refund:4"
+  },
+  {
+    "dispute_id": "DP-0013",
+    "expected_outcome": "reject",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v2-ALREADY_REFUNDED",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "ALREADY_REFUNDED"
+    ],
+    "scenario_id": "full_refund:5"
+  },
+  {
+    "dispute_id": "DP-0014",
+    "expected_outcome": "recommend_refund",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 6000,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0027",
+      "EV-0028"
+    ],
+    "required_policy_rule_ids": [
+      "v2-APPROVE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "PARTIAL_REFUND_OUTSTANDING"
+    ],
+    "scenario_id": "partial_refund:1"
+  },
+  {
+    "dispute_id": "DP-0015",
+    "expected_outcome": "recommend_refund",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 9720,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0029",
+      "EV-0030"
+    ],
+    "required_policy_rule_ids": [
+      "v2-APPROVE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "PARTIAL_REFUND_OUTSTANDING"
+    ],
+    "scenario_id": "partial_refund:2"
+  },
+  {
+    "dispute_id": "DP-0016",
+    "expected_outcome": "recommend_refund",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 3180,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0031",
+      "EV-0032"
+    ],
+    "required_policy_rule_ids": [
+      "v2-APPROVE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "PARTIAL_REFUND_OUTSTANDING"
+    ],
+    "scenario_id": "partial_refund:3"
+  },
+  {
+    "dispute_id": "DP-0017",
+    "expected_outcome": "recommend_refund",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 5760,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0033",
+      "EV-0034"
+    ],
+    "required_policy_rule_ids": [
+      "v2-APPROVE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "PARTIAL_REFUND_OUTSTANDING"
+    ],
+    "scenario_id": "partial_refund:4"
+  },
+  {
+    "dispute_id": "DP-0018",
+    "expected_outcome": "recommend_refund",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 3660,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0035",
+      "EV-0036"
+    ],
+    "required_policy_rule_ids": [
+      "v2-APPROVE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "PARTIAL_REFUND_OUTSTANDING"
+    ],
+    "scenario_id": "partial_refund:5"
+  },
+  {
+    "dispute_id": "DP-0019",
+    "expected_outcome": "request_evidence",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [
+      "EV-0038"
+    ],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v2-MISSING_EVIDENCE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "MISSING_EVIDENCE"
+    ],
+    "scenario_id": "missing_evidence:1"
+  },
+  {
+    "dispute_id": "DP-0020",
+    "expected_outcome": "request_evidence",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v2-MISSING_EVIDENCE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "MISSING_EVIDENCE"
+    ],
+    "scenario_id": "missing_evidence:2"
+  },
+  {
+    "dispute_id": "DP-0021",
+    "expected_outcome": "request_evidence",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v2-MISSING_EVIDENCE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "MISSING_EVIDENCE"
+    ],
+    "scenario_id": "missing_evidence:3"
+  },
+  {
+    "dispute_id": "DP-0022",
+    "expected_outcome": "request_evidence",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v2-MISSING_EVIDENCE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "MISSING_EVIDENCE"
+    ],
+    "scenario_id": "missing_evidence:4"
+  },
+  {
+    "dispute_id": "DP-0023",
+    "expected_outcome": "request_evidence",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v2-MISSING_EVIDENCE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "MISSING_EVIDENCE"
+    ],
+    "scenario_id": "missing_evidence:5"
+  },
+  {
+    "dispute_id": "DP-0024",
+    "expected_outcome": "escalate",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0043",
+      "EV-0044",
+      "EV-0045"
+    ],
+    "required_policy_rule_ids": [
+      "v2-CONFLICTING_EVIDENCE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "CONFLICTING_EVIDENCE"
+    ],
+    "scenario_id": "conflicting_evidence:1"
+  },
+  {
+    "dispute_id": "DP-0025",
+    "expected_outcome": "escalate",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0046",
+      "EV-0047",
+      "EV-0048"
+    ],
+    "required_policy_rule_ids": [
+      "v2-CONFLICTING_EVIDENCE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "CONFLICTING_EVIDENCE"
+    ],
+    "scenario_id": "conflicting_evidence:2"
+  },
+  {
+    "dispute_id": "DP-0026",
+    "expected_outcome": "escalate",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0049",
+      "EV-0050",
+      "EV-0051"
+    ],
+    "required_policy_rule_ids": [
+      "v2-CONFLICTING_EVIDENCE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "CONFLICTING_EVIDENCE"
+    ],
+    "scenario_id": "conflicting_evidence:3"
+  },
+  {
+    "dispute_id": "DP-0027",
+    "expected_outcome": "escalate",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0052",
+      "EV-0053",
+      "EV-0054"
+    ],
+    "required_policy_rule_ids": [
+      "v2-CONFLICTING_EVIDENCE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "CONFLICTING_EVIDENCE"
+    ],
+    "scenario_id": "conflicting_evidence:4"
+  },
+  {
+    "dispute_id": "DP-0028",
+    "expected_outcome": "escalate",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0055",
+      "EV-0056",
+      "EV-0057"
+    ],
+    "required_policy_rule_ids": [
+      "v2-CONFLICTING_EVIDENCE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "CONFLICTING_EVIDENCE"
+    ],
+    "scenario_id": "conflicting_evidence:5"
+  },
+  {
+    "dispute_id": "DP-0029",
+    "expected_outcome": "reject",
+    "expected_policy_version": "v1",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v1-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "OUT_OF_WINDOW"
+    ],
+    "scenario_id": "outside_window:1"
+  },
+  {
+    "dispute_id": "DP-0030",
+    "expected_outcome": "reject",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "OUT_OF_WINDOW"
+    ],
+    "scenario_id": "outside_window:2"
+  },
+  {
+    "dispute_id": "DP-0031",
+    "expected_outcome": "reject",
+    "expected_policy_version": "v1",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v1-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "OUT_OF_WINDOW"
+    ],
+    "scenario_id": "outside_window:3"
+  },
+  {
+    "dispute_id": "DP-0032",
+    "expected_outcome": "reject",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "OUT_OF_WINDOW"
+    ],
+    "scenario_id": "outside_window:4"
+  },
+  {
+    "dispute_id": "DP-0033",
+    "expected_outcome": "reject",
+    "expected_policy_version": "v1",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v1-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "OUT_OF_WINDOW"
+    ],
+    "scenario_id": "policy_pair:1"
+  },
+  {
+    "dispute_id": "DP-0034",
+    "expected_outcome": "recommend_refund",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 10000,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0068",
+      "EV-0069"
+    ],
+    "required_policy_rule_ids": [
+      "v2-APPROVE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "SUPPORTED_CLAIM"
+    ],
+    "scenario_id": "policy_pair:2"
+  },
+  {
+    "dispute_id": "DP-0035",
+    "expected_outcome": "reject",
+    "expected_policy_version": "v1",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v1-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "OUT_OF_WINDOW"
+    ],
+    "scenario_id": "policy_pair:3"
+  },
+  {
+    "dispute_id": "DP-0036",
+    "expected_outcome": "recommend_refund",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 12000,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [
+      "EV-0072",
+      "EV-0073"
+    ],
+    "required_policy_rule_ids": [
+      "v2-APPROVE",
+      "v2-FILING_WINDOW"
+    ],
+    "required_reason_codes": [
+      "SUPPORTED_CLAIM"
+    ],
+    "scenario_id": "policy_pair:4"
+  },
+  {
+    "dispute_id": "DP-0037",
+    "expected_outcome": "escalate",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v2-DATA_INTEGRITY"
+    ],
+    "required_reason_codes": [
+      "DATA_INTEGRITY"
+    ],
+    "scenario_id": "settlement_anomaly:1"
+  },
+  {
+    "dispute_id": "DP-0038",
+    "expected_outcome": "escalate",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v2-DATA_INTEGRITY"
+    ],
+    "required_reason_codes": [
+      "DATA_INTEGRITY"
+    ],
+    "scenario_id": "settlement_anomaly:2"
+  },
+  {
+    "dispute_id": "DP-0039",
+    "expected_outcome": "escalate",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v2-DATA_INTEGRITY"
+    ],
+    "required_reason_codes": [
+      "DATA_INTEGRITY"
+    ],
+    "scenario_id": "settlement_anomaly:3"
+  },
+  {
+    "dispute_id": "DP-0040",
+    "expected_outcome": "escalate",
+    "expected_policy_version": "v2",
+    "expected_refund_minor": 0,
+    "forbidden_evidence_ids": [],
+    "required_evidence_ids": [],
+    "required_policy_rule_ids": [
+      "v2-DATA_INTEGRITY"
+    ],
+    "required_reason_codes": [
+      "DATA_INTEGRITY"
+    ],
+    "scenario_id": "settlement_anomaly:4"
+  }
+]

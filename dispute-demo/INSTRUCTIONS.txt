@@ -1,0 +1,82 @@
+SYNTHETIC DISPUTE DATA
+
+Requirements: Python 3.10 or later. No packages, accounts, API keys or network are needed.
+All people, organizations, evidence and policy rules are fictional.
+
+1. Open Terminal and run this exact command:
+
+cd "/Users/Rachel-Anne/Desktop/Coding things /open agent hackathon/dispute-demo"
+
+2. Check Python:
+
+python3 --version
+
+3. The default 40-case data has already been generated. To recreate it identically:
+
+python3 scripts/generate_synthetic_data.py --seed 2026 --reference-date 2026-10-20 --disputes 40 --overwrite
+
+--overwrite replaces only this generated input folder and its fixtures/policies.
+Keep manual edits outside these generated files. The script rejects a generated input folder with extra or missing files.
+It never writes agent decisions or calls Zetaris.
+
+4. Validate all generated files:
+
+python3 scripts/validate_synthetic_data.py
+
+Expected first line: VALIDATION PASSED
+
+5. Test reproducibility, policy boundaries, amount thresholds and supported dataset sizes:
+
+python3 -m unittest discover -s tests -p 'test_generation.py' -v
+
+Expected result: 2 tests, OK.
+
+6. Inspect the files in Finder:
+
+open data/synthetic
+
+CSV files can be opened in Excel. Evidence text files are under evidence_documents/.
+Do not save spreadsheet edits back over the CSV files if you want their hashes to stay valid.
+
+OUTPUTS
+data/synthetic/transactions.csv          fictional charge records
+data/synthetic/settlements.csv           captures, refunds and reversals
+data/synthetic/disputes.csv              dispute form records
+data/synthetic/evidence.csv              metadata linking evidence to disputes
+data/synthetic/policy_rules.csv          two versions of fictional rules
+data/synthetic/evidence_documents/       supporting fictional text documents
+data/synthetic/generation_manifest.json  generation settings, counts and file hashes
+policies/synthetic_policy_v1.md          readable first policy
+policies/synthetic_policy_v2.md          readable second policy
+tests/fixtures/expected_results.json     independent scenario expectations; test-only
+
+HOW TO CHANGE THE DATA
+Keep seed, reference date, count, script version and Python version the same for identical files.
+Use a different seed, e.g. --seed 2027, to vary fictional identities and monetary amounts.
+Use --disputes 20 through --disputes 50. The baseline 40 matches the workbook scenario counts.
+Keep --reference-date 2026-10-20 unless deliberately changing the timeline. Supported dates are in 2026 on/after 2026-10-10.
+Run validation again after regeneration. The script refreshes corresponding fixture and policy files.
+
+To keep a second dataset without changing the default one:
+
+python3 scripts/generate_synthetic_data.py --seed 2027 --disputes 40 --out data/variant-2027 --fixtures-out tests/fixtures/variant-2027.json --policies-out policies/variant-2027
+python3 scripts/validate_synthetic_data.py --data-dir data/variant-2027 --fixtures tests/fixtures/variant-2027.json
+
+NEXT INTEGRATION STEP
+The generator creates local files only. Register the five CSV tables through a verified storage/service path Zetaris can access.
+Give agents read access only to those tables, the policy documents and evidence documents. The decisions dataset starts empty and is written by the future agent runtime.
+Do not give agents repository-wide file access: tests/fixtures/expected_results.json contains the expected answers.
+Generation tests do not evaluate agent accuracy. Agents, decision writing, agent tests and Zetaris ingestion are not implemented here.
+Condition predicate names in policy_rules.csv are a rule-checker contract, not executable code. Implement the checker separately.
+
+SOURCE
+The data follows the design workbook in outputs/dispute-data-design at the parent project level.
+The generator implements its data-generation portion. The workbook remains the field and file design specification.
+
+Regenerate only when you:
+- Change the number of disputes, seed or reference date.
+- Change the generator’s fields, scenarios or synthetic policies.
+- Need to restore generated files that were edited or deleted.
+You do not need to regenerate when changing agent prompts, logic or UI. Reuse the same dataset so you can fairly compare agent results before and after your changes.
+After regeneration, run validation again. If you already loaded the previous dataset into Zetaris, refresh those tables too.
+Remember: --overwrite replaces the generated data, policies and expected results, so keep any manual changes separately.

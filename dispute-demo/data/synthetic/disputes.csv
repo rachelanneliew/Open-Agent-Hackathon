@@ -1,0 +1,41 @@
+dispute_id,transaction_id,related_transaction_id,reason_code,claimed_amount_minor,currency,customer_statement,opened_at,evaluation_at,dispute_status
+DP-0001,TX-0001,,refund_missing,6500,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-09-30T23:59:59Z,2026-10-01T23:59:59Z,open
+DP-0002,TX-0002,,not_received,16300,SGD,"I paid for this order, but it has not arrived.",2026-10-13T09:00:00Z,2026-10-14T09:00:00Z,open
+DP-0003,TX-0003,TX-0043,duplicate_charge,20000,SGD,I see two charges for one order. Please investigate the extra charge.,2026-10-12T09:00:00Z,2026-10-13T09:00:00Z,open
+DP-0004,TX-0004,,refund_missing,14600,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-15T09:00:00Z,2026-10-16T09:00:00Z,open
+DP-0005,TX-0005,,not_received,8000,SGD,"I paid for this order, but it has not arrived.",2026-10-14T09:00:00Z,2026-10-15T09:00:00Z,open
+DP-0006,TX-0006,TX-0046,duplicate_charge,6400,SGD,I see two charges for one order. Please investigate the extra charge.,2026-10-13T09:00:00Z,2026-10-14T09:00:00Z,open
+DP-0007,TX-0007,,refund_missing,10700,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-12T09:00:00Z,2026-10-13T09:00:00Z,open
+DP-0008,TX-0008,,not_received,25000,SGD,"I paid for this order, but it has not arrived.",2026-10-15T09:00:00Z,2026-10-16T09:00:00Z,open
+DP-0009,TX-0009,,refund_missing,10000,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-14T09:00:00Z,2026-10-15T09:00:00Z,open
+DP-0010,TX-0010,,refund_missing,17500,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-13T09:00:00Z,2026-10-14T09:00:00Z,open
+DP-0011,TX-0011,,refund_missing,15300,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-12T09:00:00Z,2026-10-13T09:00:00Z,open
+DP-0012,TX-0012,,refund_missing,14200,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-15T09:00:00Z,2026-10-16T09:00:00Z,open
+DP-0013,TX-0013,,refund_missing,12100,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-14T09:00:00Z,2026-10-15T09:00:00Z,open
+DP-0014,TX-0014,,refund_missing,10000,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-13T09:00:00Z,2026-10-14T09:00:00Z,open
+DP-0015,TX-0015,,refund_missing,16200,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-12T09:00:00Z,2026-10-13T09:00:00Z,open
+DP-0016,TX-0016,,refund_missing,5300,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-15T09:00:00Z,2026-10-16T09:00:00Z,open
+DP-0017,TX-0017,,refund_missing,9600,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-14T09:00:00Z,2026-10-15T09:00:00Z,open
+DP-0018,TX-0018,,refund_missing,6100,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-13T09:00:00Z,2026-10-14T09:00:00Z,open
+DP-0019,TX-0019,,refund_missing,16100,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-12T09:00:00Z,2026-10-13T09:00:00Z,open
+DP-0020,TX-0020,,refund_missing,11400,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-15T09:00:00Z,2026-10-16T09:00:00Z,open
+DP-0021,TX-0021,,refund_missing,10000,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-14T09:00:00Z,2026-10-15T09:00:00Z,open
+DP-0022,TX-0022,,refund_missing,15800,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-13T09:00:00Z,2026-10-14T09:00:00Z,open
+DP-0023,TX-0023,,refund_missing,11500,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-12T09:00:00Z,2026-10-13T09:00:00Z,open
+DP-0024,TX-0024,,not_received,12300,SGD,"I paid for this order, but it has not arrived.",2026-10-15T09:00:00Z,2026-10-16T09:00:00Z,open
+DP-0025,TX-0025,,not_received,15400,SGD,"I paid for this order, but it has not arrived.",2026-10-14T09:00:00Z,2026-10-15T09:00:00Z,open
+DP-0026,TX-0026,,not_received,14100,SGD,"I paid for this order, but it has not arrived.",2026-10-13T09:00:00Z,2026-10-14T09:00:00Z,open
+DP-0027,TX-0027,,not_received,11000,SGD,"I paid for this order, but it has not arrived.",2026-10-12T09:00:00Z,2026-10-13T09:00:00Z,open
+DP-0028,TX-0028,,not_received,16300,SGD,"I paid for this order, but it has not arrived.",2026-10-15T09:00:00Z,2026-10-16T09:00:00Z,open
+DP-0029,TX-0029,,refund_missing,13000,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-09-30T23:59:59Z,2026-10-01T23:59:59Z,open
+DP-0030,TX-0030,,refund_missing,13600,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-13T09:00:00Z,2026-10-14T09:00:00Z,open
+DP-0031,TX-0031,,refund_missing,12100,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-09-30T23:59:59Z,2026-10-01T23:59:59Z,open
+DP-0032,TX-0032,,refund_missing,12000,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-15T09:00:00Z,2026-10-16T09:00:00Z,open
+DP-0033,TX-0033,,refund_missing,10000,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-09-30T23:59:59Z,2026-10-01T23:59:59Z,open
+DP-0034,TX-0034,,refund_missing,10000,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-01T00:00:00Z,2026-10-02T00:00:00Z,open
+DP-0035,TX-0035,,refund_missing,12000,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-09-30T23:59:59Z,2026-10-01T23:59:59Z,open
+DP-0036,TX-0036,,refund_missing,12000,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-01T00:00:00Z,2026-10-02T00:00:00Z,open
+DP-0037,TX-0037,,refund_missing,15200,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-14T09:00:00Z,2026-10-15T09:00:00Z,open
+DP-0038,TX-0038,,refund_missing,9600,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-13T09:00:00Z,2026-10-14T09:00:00Z,open
+DP-0039,TX-0039,,refund_missing,8300,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-12T09:00:00Z,2026-10-13T09:00:00Z,open
+DP-0040,TX-0040,,refund_missing,10900,SGD,The merchant promised a full refund. Please check whether the payment has returned.,2026-10-15T09:00:00Z,2026-10-16T09:00:00Z,open

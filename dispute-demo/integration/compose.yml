@@ -1,0 +1,23 @@
+name: dispute-data
+services:
+  dispute-postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: dispute_demo
+      POSTGRES_USER: dispute_loader
+      POSTGRES_PASSWORD: ${DISPUTE_DB_PASSWORD:?Set DISPUTE_DB_PASSWORD in ../.env.local}
+    volumes:
+      - dispute-pgdata:/var/lib/postgresql/data
+    networks:
+      - zetaris
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U dispute_loader -d dispute_demo"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+networks:
+  zetaris:
+    external: true
+    name: zetaris_default
+volumes:
+  dispute-pgdata:
