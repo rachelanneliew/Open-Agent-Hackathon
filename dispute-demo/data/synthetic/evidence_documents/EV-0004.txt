@@ -1,0 +1,12 @@
+SYNTHETIC DEMONSTRATION DOCUMENT
+All entities and events are fictional.
+evidence_id: EV-0004
+dispute_id: DP-0002
+transaction_id: TX-0002
+order_id: OR-0002
+document_type: delivery_record
+source_type: carrier
+event_at: 2026-10-12T09:00:00Z
+available_at: 2026-10-12T10:00:00Z
+
+Carrier record: parcel was lost in transit and has not been delivered.

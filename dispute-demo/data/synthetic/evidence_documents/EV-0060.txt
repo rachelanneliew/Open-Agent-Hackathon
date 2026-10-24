@@ -1,0 +1,12 @@
+SYNTHETIC DEMONSTRATION DOCUMENT
+All entities and events are fictional.
+evidence_id: EV-0060
+dispute_id: DP-0030
+transaction_id: TX-0030
+order_id: OR-0030
+document_type: receipt
+source_type: merchant
+event_at: 2026-08-29T08:59:59Z
+available_at: 2026-08-29T09:59:59Z
+
+One order was purchased for SGD 136.00. Customer reference CUST-008.

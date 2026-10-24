@@ -1,0 +1,12 @@
+SYNTHETIC DEMONSTRATION DOCUMENT
+All entities and events are fictional.
+evidence_id: EV-0002
+dispute_id: DP-0001
+transaction_id: TX-0001
+order_id: OR-0001
+document_type: refund_confirmation
+source_type: merchant
+event_at: 2026-09-29T23:59:59Z
+available_at: 2026-09-30T00:59:59Z
+
+The merchant committed to refund the full SGD 65.00. This commitment is not confirmation that the payment movement has completed.

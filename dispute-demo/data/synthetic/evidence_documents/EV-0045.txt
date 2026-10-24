@@ -1,0 +1,12 @@
+SYNTHETIC DEMONSTRATION DOCUMENT
+All entities and events are fictional.
+evidence_id: EV-0045
+dispute_id: DP-0024
+transaction_id: TX-0024
+order_id: OR-0024
+document_type: delivery_record
+source_type: carrier
+event_at: 2026-10-14T09:00:00Z
+available_at: 2026-10-14T10:00:00Z
+
+Carrier record for the same order: delivery completed and signed for by the customer.
