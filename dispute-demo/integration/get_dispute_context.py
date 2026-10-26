@@ -29,8 +29,8 @@ def get_dispute_context(dispute_id):
                         ['dispute_id', 'transaction_id', 'related_transaction_id', 'reason_code', 'claimed_amount_minor', 'currency', 'customer_statement', 'opened_at', 'evaluation_at'])
         if len(cases) != 1:
             raise ValueError('Dispute was not found uniquely')
-        tx = records(channel, f"SELECT t.transaction_id, t.order_id, t.amount_minor, t.currency, t.occurred_at FROM dispute.transactions t JOIN dispute.disputes d ON (t.transaction_id = d.transaction_id OR t.transaction_id = d.related_transaction_id) WHERE d.dispute_id = '{dispute_id}' AND t.recorded_at <= d.evaluation_at",
-                     ['transaction_id', 'order_id', 'amount_minor', 'currency', 'occurred_at'])
+        tx = records(channel, f"SELECT t.transaction_id, t.order_id, t.customer_id, t.amount_minor, t.currency, t.occurred_at FROM dispute.transactions t JOIN dispute.disputes d ON (t.transaction_id = d.transaction_id OR t.transaction_id = d.related_transaction_id) WHERE d.dispute_id = '{dispute_id}' AND t.recorded_at <= d.evaluation_at",
+                     ['transaction_id', 'order_id', 'customer_id', 'amount_minor', 'currency', 'occurred_at'])
         settlements = records(channel, f"SELECT s.settlement_id, s.transaction_id, s.movement_type, s.amount_minor, s.currency, s.settlement_status, s.occurred_at, s.recorded_at FROM dispute.settlements s JOIN dispute.disputes d ON (s.transaction_id = d.transaction_id OR s.transaction_id = d.related_transaction_id) WHERE d.dispute_id = '{dispute_id}' AND s.recorded_at <= d.evaluation_at AND s.occurred_at <= d.evaluation_at",
                               ['settlement_id', 'transaction_id', 'movement_type', 'amount_minor', 'currency', 'settlement_status', 'occurred_at', 'recorded_at'])
         evidence = records(channel, f"SELECT e.evidence_id, e.evidence_type, e.source_type, e.integrity_status, e.available_at, doc.content FROM dispute.evidence e JOIN dispute.disputes d ON e.dispute_id = d.dispute_id JOIN dispute.evidence_documents doc ON doc.evidence_id = e.evidence_id WHERE d.dispute_id = '{dispute_id}' AND e.available_at <= d.evaluation_at",

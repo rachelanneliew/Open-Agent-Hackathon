@@ -1,0 +1,6 @@
+{
+  "name": "dispute-hmem-bridge",
+  "private": true,
+  "type": "module",
+  "description": "Thin stdin/stdout adapter that reuses the official Meterless H-MEM reference engine."
+}
