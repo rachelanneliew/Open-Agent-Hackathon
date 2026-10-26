@@ -207,6 +207,30 @@ chmod 600 .env.local
 
 **Ready when:** the last command returns JSON containing the dispute, transactions, settlements, evidence text and policy rules. For `DP-0014`, the capture is **10,000 cents** and completed refund **4,000 cents**.
 
+## 7. Connect Nightshift for the investigation agent
+
+Install the Nightshift edition for your machine from [Meterless](https://meterless.ai/), then keep the app open. In the M1–M4 0.92.7 app, click **Open the cockpit → Setup → Providers**.
+
+Under **Cloud provider keys**, use **NVIDIA → Get key** to create your own provider key, then **Add → Save** it in Nightshift. A cloud provider is the practical choice on an 8 GB Mac already running Zetaris. Provider usage is subject to your account's allowance; a paid subscription to a chat app is not a provider API key.
+
+The **Runtime endpoint → Auth token** on the same page is a separate credential: it connects our Python code to Nightshift. Copy that runtime token, then run from the project root:
+
+```bash
+python3 dispute-demo/integration/check_nightshift.py --set-token
+```
+
+Paste at the hidden prompt and press Enter. This saves the token in the ignored `dispute-demo/.env.local` with owner-only permissions, preserving existing database settings. Never paste either key into chat or commit it.
+
+The default runtime URL is `http://127.0.0.1:8088/v1`. If needed, set `METERLESS_BASE_URL` and `METERLESS_MODEL` in that private file; see `dispute-demo/integration/env.example`. Model discovery lists the IDs this runtime actually advertises.
+
+After saving a provider key in Nightshift, run one small real inference check:
+
+```bash
+python3 dispute-demo/integration/check_nightshift.py --chat
+```
+
+**Ready when:** authenticated model discovery passes and the script receives a non-empty text reply through Nightshift. A running app or healthy endpoint alone does not prove a model can answer. This verifies the connection; agent decision-making, critic, memory and UI still need implementation. The check follows the [Meterless provider contract](https://meterless.ai/engines.html).
+
 ## Working together
 
 - Reuse the committed data. No regeneration is needed for prompt, agent or UI changes.
