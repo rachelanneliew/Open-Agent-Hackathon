@@ -111,6 +111,8 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **Verified 2026-10-26:** Data validation and 2 generation tests passed on Python 3.13.7; all 9 platform checks and live JDBC verification passed. Nightshift discovery failed (configured endpoint unreachable or timed out); inference is NOT RUN. See the T00 completion record for exact commands, source gaps, and the H-MEM reference. Completion records the baseline, not completion of the planned application.
 
+**Closure revalidation, 2026-10-26:** Authenticated Jira read confirmed KAN-9 already has status and resolution Done. Data validation and both generation tests passed again at `8883e5c`; application/data/integration paths are unchanged from the audited `a5ab88a` baseline. Live services were NOT RUN in this closure follow-up; earlier integration results remain dated audit evidence.
+
 **Not in this task:** No policy implementation, refactor, new infrastructure, database reset or UI.
 
 **Suggested paths/artifacts:** ROADMAP.md work log; context.md only for verified factual corrections. Reuse existing equivalents; these paths are not verified as present.
@@ -651,6 +653,25 @@ The local handbook section 7.4 points to [Meterless Engines](https://meterless.a
 - PR preparation: inspected the complete branch diff, confirmed the branch was ahead of `main` with no missing base commits, and found no existing open PR for this head/base pair. The description covers all branch changes, the verified T00 results and explicit failed/NOT RUN integrations, including the existing onboarding gitlink update.
 - Runtime tests: not rerun for this metadata/documentation-only follow-up. The T00 commands and outcomes above apply to the unchanged application files; this entry makes no additional integration claim.
 - Task statuses: T00 remains DONE; T01–T13 and A01 remain NOT_STARTED. Publication/PR creation results are reported after the remote operations complete.
+
+### 2026-10-26 — T00 / KAN-9: closure revalidation
+
+- Scope: the user's request to verify T00, rerun tests and close Jira with the correct evidence. Authenticated Jira inspection found KAN-9 already Done, resolved at 18:13:45 +08:00, with the original audit comment (10000). No duplicate transition is needed.
+- Source: `8883e5c6743ffa6b1c6279a4b4262c8014d43e7f` on `codex/dispute-investigation-agent`; initial working tree clean. Re-read the required documents, generator, validator, tests, policies, fixtures and integration sources. Existing implemented-versus-planned inventory remains accurate.
+- Exact commands from `dispute-demo`: `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python scripts/validate_synthetic_data.py` — PASS, exit 0; 42 transactions, 54 settlements, 40 disputes, 81 evidence rows/documents, 16 rules, manifest hashes and fixture references validated. `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -p 'test_generation.py' -v` — PASS, exit 0; 2 tests, 0 failures/errors/skips.
+- Exact commands from root: `PYTHONDONTWRITEBYTECODE=1 getting-started/.venv/bin/python --version` — Python 3.13.7; `git diff a5ab88a --exit-code -- dispute-demo getting-started zetaris-platform` — PASS, exit 0, no differences from the audited application/data/integration baseline.
+- Live Zetaris, PostgreSQL, Nightshift discovery/inference and H-MEM checks: NOT RUN in this closure follow-up. The original audit above retains the prior passing JDBC/platform results, failed Nightshift discovery, unset REST key and explicit NOT RUN checks; this follow-up does not refresh service availability claims.
+- Acceptance: the existing source inventory, gap list and command log satisfy KAN-9's baseline-audit definition of done; fresh local checks pass. T00 remains DONE. T01–T13 and A01 remain NOT_STARTED.
+- Files changed: `ROADMAP.md` and `context.md` only, to record revalidation and the verified Jira state. No application or generated data changes. Documentation validation passed: inline Python checked 4 local Markdown links, balanced fences and final newlines across both files; `git diff --check` passed.
+- Jira result: revalidation comment `10001` successfully added to KAN-9; status remains Done. The first comment request timed out; a read-back showed only the original comment, then the retry succeeded. These documentation edits were local at the end of the revalidation; publication is covered by the follow-up below.
+- Recommended next task, not started: T01 / KAN-10, only on a new instruction.
+
+### 2026-10-26 — Publish T00 revalidation to main
+
+- Scope: the user's explicit request to commit and push the revalidation notes to `main`. Changes are limited to `ROADMAP.md` and `context.md`; no roadmap implementation task started.
+- Remote inspection: `git fetch origin` confirmed `origin/main` at `cdb1cc9`, the merge of PR #2, with the same file tree as the audited branch tip `8883e5c`. Preserve that merge and apply only the documentation follow-up on top.
+- Validation: `git diff --check` and inline Python checks for local Markdown links, balanced fences and final newlines across the two changed documents passed. The preceding data validation and 2 passing generation tests apply to unchanged application files; live integration checks are NOT RUN for this documentation publication.
+- Publication uses a normal, non-forced push to `origin/main`; commit identity and remote verification are reported after execution. T00 remains DONE; T01 / KAN-10 is the recommended next task and is not started.
 
 ## 11. Deferred scope
 
