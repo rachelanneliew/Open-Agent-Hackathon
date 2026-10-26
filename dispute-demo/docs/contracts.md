@@ -242,3 +242,14 @@ PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python scripts/validate_s
 The schema tests encode all 40 authored scenarios and check rejection boundaries;
 they do **not** predict outcomes or prove live retrieval, model, memory, database
 durability or concurrency behavior. Next assigned work is T02 / KAN-11.
+
+## T02 implementation follow-up — 27 October 2026
+
+The [typed retrieval reference](./retrieval.md) now documents the implemented
+case/history/state tools over JDBC. T01 schemas remain unchanged. Missing text
+metadata is retained; malformed/unavailable/incomplete reads are distinct.
+History is a separate source-linked type and is advisory. Source revisions remain
+null and decision reads explicitly unsupported until T04 storage/registration.
+The original handover/gap table above is T01's historical baseline; T02 supersedes
+its absent typed-read and missing-text implementation items, without resolving
+policy, lifecycle, synchronization or commit-time guarantees.

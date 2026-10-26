@@ -10,9 +10,9 @@ We are building one Nightshift investigator with a Python controller, determinis
 - Added reproducible generation, test fixtures, evidence documents and data-validation tests.
 - Rachel has loaded the project database and registered its tables in Zetaris.
 - Added `get_dispute_context.py`; it expects the Zetaris datasource name **`dispute`**
-- PR #4 adds prototypes in `dispute-demo/agent/`: policy evaluator, SQLite-writing critic, deterministic resolver, memory service and H-MEM client/bridge. These are not a completed agent: typed integration, pure critic separation, PostgreSQL action storage, a real Nightshift investigator, bounded workflow, verified portable memory setup and UI remain outstanding. See [context.md](./context.md) and [ROADMAP.md](./ROADMAP.md).
+- PR #4 adds prototypes in `dispute-demo/agent/`: policy evaluator, SQLite-writing critic, deterministic resolver, memory service and H-MEM client/bridge. These are not a completed agent: typed retrieval is now implemented under T02, while policy integration, pure critic separation, PostgreSQL action storage, a real Nightshift investigator, bounded workflow, verified portable memory setup and UI remain outstanding. See [context.md](./context.md) and [ROADMAP.md](./ROADMAP.md).
 
-**Evidence date:** source inspected 27 October 2026 at `76db772`. T00's passing JDBC and failed Nightshift discovery are dated 26 October evidence, not current service status. No application tests or live application checks were run for this documentation alignment. The connection commands below are setup instructions to verify separately when assigned, not commands executed in this pass.
+**Evidence date:** T02 verified typed retrieval and live JDBC reads on 27 October 2026, with 50 root-suite tests and 6 offline critic tests passing. See [the retrieval reference](./dispute-demo/docs/retrieval.md) and ROADMAP for exact evidence. Nightshift discovery failure remains dated T00 evidence; Nightshift and H-MEM were NOT RUN for T02. Setup/start/load commands below are instructions for a new environment; no service startup, installation or source loading was performed in T02.
 
 GitHub shares code and generated files. It does **not** share running containers, database contents or passwords. These instructions create your own local setup on macOS/Linux using Bash. Windows users should use WSL2 with Docker integration and adapt their local paths.
 
@@ -208,6 +208,8 @@ chmod 600 .env.local
 ```
 
 **Ready when:** the last command returns JSON containing the dispute, transactions, settlements, evidence text and policy rules. For `DP-0014`, the capture is **10,000 cents** and completed refund **4,000 cents**.
+
+For the canonical typed interface, follow [T02 retrieval](./dispute-demo/docs/retrieval.md): from `dispute-demo`, run `../getting-started/.venv/bin/python -m app.tools DP-0014`. It returns structured read status and typed data; history/state use named `--tool` options. Decision reads remain unsupported and source revisions remain null.
 
 ## 7. Connect Nightshift for the investigation agent
 

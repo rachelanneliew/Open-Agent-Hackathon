@@ -1,8 +1,8 @@
 # Task Roadmap — Synthetic Card-Dispute Resolution Agent
 
 > **Canonical work queue.** Read [`context.md`](./context.md) first, then [`agent.md`](./agent.md).
-> **Revision:** documentation alignment, 27 October 2026, against merged PR #4 / local `76db772`. T00 baseline audit and T01 shared contracts completed on 26 October 2026; their evidence remains dated. Prototype presence is separate from acceptance status. No application tests or live application checks were run in this alignment.
-> **Next roadmap task:** T02 / KAN-11, only when assigned. T00 / KAN-9 and T01 / KAN-10 are DONE against their acceptance gates; T02–T13 and A01 remain NOT_STARTED.
+> **Revision:** T02 typed retrieval completed 27 October 2026 on `codex/t02-typed-retrieval` from `b850ae8`. Offline and live JDBC acceptance evidence is recorded below. The earlier documentation alignment and prototype inventory remain dated history; other prototype integration tasks are still open.
+> **Next roadmap task:** T03 / KAN-12, only when assigned. T00 / KAN-9, T01 / KAN-10 and T02 / KAN-11 are DONE against their repository acceptance gates; T03–T13 and A01 remain NOT_STARTED. The authorized T02 follow-up verified KAN-11 Done with completion comment `10003`.
 > **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
 
 ## 1. What changed from the earlier plan
@@ -23,7 +23,7 @@ Use statuses `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED`, `DONE`. DONE requires reco
 
 Every task includes its own tests. T12 is cross-component testing, not the first time testing begins.
 
-**Post-merge integration order:** assign T02 next, then T03 and T06; T05 follows T03/T04 and benefits from the actual critic, then T07/T08. T04, T09 and A01 can progress separately when assigned. After T09, complete T10, then T11, T12 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
+**Post-merge integration order:** T02 is now complete; assign T03 next, then T06; T05 follows T03/T04 and benefits from the actual critic, then T07/T08. T04, T09 and A01 can progress separately when assigned. After T09, complete T10, then T11, T12 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
 
 ## Jira tracking (supplied kit dated 2026-10-26)
 
@@ -67,7 +67,7 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 |---|---|---|---|
 | T00 | Verify the current repository baseline | None | DONE |
 | T01 | Define shared contracts and exact policy semantics | T00 | DONE |
-| T02 | Expose narrow case and history retrieval tools | T01 | NOT_STARTED |
+| T02 | Expose narrow case and history retrieval tools | T01 | DONE |
 | T03 | Implement deterministic policy evaluation | T01, T02 | NOT_STARTED |
 | T04 | Create sandbox decision, action and audit storage | T01 | NOT_STARTED |
 | T05 | Implement atomic simulated decision recording | T03, T04 | NOT_STARTED |
@@ -173,7 +173,8 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 ### T02 — Expose narrow case and history retrieval tools
 
 **Phase:** Foundation  
-**Status:** NOT_STARTED  
+**Status:** DONE
+
 **Depends on:** T01  
 **Deliverable:** Typed, read-only tools over the working Zetaris integration.
 
@@ -181,24 +182,24 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **PR #4 integration requirements:**
 
-- [ ] Preserve the transaction `customer_id` addition. Map raw rows into strict `DisputeContext` with source IDs, statuses, timestamps, policy applicability and explicit input issues; never weaken T01 scope checks.
-- [ ] Retain evidence metadata when text is absent instead of dropping it through the inner join; `content=None` is unavailable support. Test missing/unreadable text and malformed rows.
-- [ ] Return customer-scoped, time-visible history in a separate typed result with source references, outside the current case's transaction/evidence collections. Stored memory tags are not source verification.
-- [ ] Keep `source_revision=None` until coherent freshness support exists; explicitly report unsupported decision reads until T04 tables/registration exist. Test raw-to-typed mapping, ownership, cutoff and distinct not-found/incomplete/malformed/unavailable results. Live checks are separate evidence.
+- [x] Preserve the transaction `customer_id` addition. Map raw rows into strict `DisputeContext` with source IDs, statuses, timestamps, policy applicability and explicit input issues; never weaken T01 scope checks.
+- [x] Retain evidence metadata when text is absent instead of dropping it through the inner join; `content=None` is unavailable support. Test missing/unreadable text and malformed rows.
+- [x] Return customer-scoped, time-visible history in a separate typed result with source references, outside the current case's transaction/evidence collections. Stored memory tags are not source verification.
+- [x] Keep `source_revision=None` until coherent freshness support exists; explicitly report unsupported decision reads until T04 tables/registration exist. Test raw-to-typed mapping, ownership, cutoff and distinct not-found/incomplete/malformed/unavailable results. Live checks are separate evidence.
 
 **Work:**
 
-- [ ] Wrap or extend existing case retrieval rather than replacing the JDBC/Zetaris path. Return linked transactions, completed and pending settlement movements with statuses, evidence and applicable policy.
-- [ ] Add narrowly scoped retrieval for verified customer history, current dispute state and existing decisions as the actual tables become available. Do not claim decision reads are live before the T04 migration is applied and the required read registration exists.
-- [ ] Enforce case/customer scope and evaluation-time visibility. Include relevant source IDs and revision information needed for later validation.
-- [ ] Distinguish not-found, incomplete data and service failure; do not return an empty successful case on a connection failure.
-- [ ] Expose an allowlisted tool registry with validated arguments. Models may request permitted reads, but only application code executes the requests. Keep raw SQL, credentials and expected-result fixtures inaccessible to the runtime model.
+- [x] Wrap or extend existing case retrieval rather than replacing the JDBC/Zetaris path. Return linked transactions, completed and pending settlement movements with statuses, evidence and applicable policy.
+- [x] Add narrowly scoped retrieval for verified customer history, current dispute state and existing decisions as the actual tables become available. Do not claim decision reads are live before the T04 migration is applied and the required read registration exists.
+- [x] Enforce case/customer scope and evaluation-time visibility. Include relevant source IDs and revision information needed for later validation.
+- [x] Distinguish not-found, incomplete data and service failure; do not return an empty successful case on a connection failure.
+- [x] Expose an allowlisted tool registry with validated arguments. Models may request permitted reads, but only application code executes the requests. Keep raw SQL, credentials and expected-result fixtures inaccessible to the runtime model.
 
 **Acceptance gate:** Unit tests cover scoping, future-record filtering and failure modes. A live case can be retrieved through Zetaris when available, with live versus stubbed evidence clearly recorded.
 
 **Not in this task:** No arbitrary SQL tool, direct model database access, source mutation or simulated action writes.
 
-**Suggested paths/artifacts:** Proposed: dispute-demo/app/tools.py, dispute-demo/tests/test_tools.py; extend the existing integration module where appropriate. Reuse existing equivalents; these paths are not verified as present.
+**Implemented artifacts:** [typed tools and registry](./dispute-demo/app/tools.py), [retrieval tests](./dispute-demo/tests/test_tools.py), extended [JDBC retrieval](./dispute-demo/integration/get_dispute_context.py) and [read-interface reference](./dispute-demo/docs/retrieval.md). Verified 27 October: 27 new retrieval tests and live typed context/history/state reads pass. Decision reads remain explicitly unsupported pending T04; source revisions remain null. Full evidence and limits are in the T02 completion record.
 
 **Stop:** report evidence, update this task's status and the work log, then stop. Do not automatically start the next task.
 
@@ -886,6 +887,66 @@ Verification from the repository root (documentation only; Python 3.12.5, standa
 - Application tests and live Zetaris/PostgreSQL/SQLite/Nightshift/H-MEM/HackOS checks: **NOT RUN** for this documentation publication. No new runtime capability is claimed. `context.md` needs no further architecture/status change.
 - Publication uses an explicit six-file commit and normal `git push origin main`, without force. The commit identity, staged checks, push result and remote verification are reported after execution rather than asserted in advance.
 - Recommended next implementation task: **T02 / KAN-11 only**, not started. T00/T01 remain DONE; all remaining task statuses and acceptance gates are preserved.
+
+### 2026-10-27 — T02 / KAN-11: typed case and history retrieval
+
+- Status: **DONE** against the repository T02 acceptance gate. Owner: Codex, following the user's explicit “move on to T02” assignment. T03 was not started. Jira was not transitioned or edited, and no commit, push or merge was performed for this implementation.
+- Baseline: clean `main` at `b850ae8775d61ecb3b3e6737ed84f58861d45bbc`; created local branch `codex/t02-typed-retrieval` per TEAM_SETUP. Read root/scoped instructions, T01 contracts/tests, retrieval/schema/loader, source policies, generator/validator, memory prototype and applicable JDBC guides. The 21 T01 contract tests passed before editing.
+- Runtime files: extended `dispute-demo/integration/get_dispute_context.py`; added `dispute-demo/app/tools.py`. Tests: added `dispute-demo/tests/test_tools.py`. Documentation: added `dispute-demo/docs/retrieval.md`; updated `README.md`, `TEAM_SETUP.md`, `context.md`, this roadmap and the T01 reference's follow-up note. T01 schemas, prototype runtime modules, source policies/data/fixtures, generators, configurations and nested checkouts are unchanged.
+- Delivered: strict typed case mapping with source metadata and transaction customer IDs; separate authoritative customer history; current source-state reads; explicit unsupported decision reads. Four allowlisted tool names are bound to a trusted application-selected dispute, with exact argument validation and no model SQL/customer/cutoff/path/connection controls.
+- Visibility/input handling: SQL restricts record scope; parsed UTC timestamps preserve inclusive cutoffs and fractional-second correctness before raw dictionaries are returned, with independent typed checks afterward. Policy selection is by opening date. Evidence text is left-joined; absent/blank/unreadable/incomplete text retains metadata as `content=None` and explicit issues. Missing policy cannot create a fabricated context version. Query overflow, malformed data, not-found and backend failures are distinct.
+- JDBC behavior: reuses the configured bundled helper/connection. Its `run` method swallows fetch errors, so the adapter uses its cursor directly for bounded fetches and preserves sanitized failure status. Each query requests at most 1,001 scoped candidates; more than 1,000 is incomplete, not truncated success. All paths close the connection; no installs, service startup, source writes, migrations or resets occurred.
+
+Exact verification commands, Python 3.13.7; working directory `dispute-demo/` unless specified:
+
+| Command | Actual result |
+|---|---|
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -p 'test_schemas.py' -v` | Baseline PASS: 21 tests, zero failures/errors/skips. |
+| From `getting-started/`: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/preflight.py --jdbc` | JDBC PASS: configured JAR/JDK/venv, port, `SELECT 1`, datasource `dispute`, Lightning databases NY_TAXI/TPCDS_DB. Overall exit 1 is two REST-only failures (unset API key and REST initialization); the connection guide explicitly permits JDBC to proceed. No endpoint/credential changes. |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -v` | Final PASS: **50 tests**, zero failures/errors/skips: 27 retrieval, 21 contracts and 2 generation. All 40 source cases map/round-trip; all 40 customer histories checked against isolated source data. Covers cutoff, fractional seconds, ownership, missing text, malformed rows/money/JSON, policy version selection, query/fetch/close failures, overflow, unsupported decisions and tool rejection. |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s agent/tests -p 'test_critic.py' -v` | PASS: **6 tests**, zero failures/errors/skips. Existing prototype tests use mocked policy and temporary SQLite; this is regression evidence, not PostgreSQL action acceptance. |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python scripts/validate_synthetic_data.py` | PASS: 42 transactions, 54 settlements, 40 disputes, 81 evidence rows, 16 rules; document/manifest hashes and fixture references unchanged. |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -c "exec(compile(open('/private/tmp/verify_t02_live.py').read(), '/private/tmp/verify_t02_live.py', 'exec'))"` | Live read-only PASS: DP-0014, DP-0019, DP-0033/DP-0034 contexts, source history/state, missing DP-9999, strict JSON round-trips and unsupported decision response. The temporary checker imports only the runtime read tools, not source CSVs or expected-result fixtures. Its assertions are summarized below. |
+| From repository root: `git diff --exit-code b850ae8 -- dispute-demo/app/schemas.py dispute-demo/data dispute-demo/policies dispute-demo/scripts dispute-demo/tests/fixtures dispute-demo/agent getting-started zetaris-platform AGENTS.md CLAUDE.md` | PASS, exit 0: protected contracts/source/policy/data/prototype/entry-point paths unchanged. |
+| From repository root: `git diff --check` | PASS, exit 0. New-file whitespace and local documentation-link checks also passed before handover. |
+| From repository root: `PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/validate_t02_docs.py` | PASS: 6 documents, 80 local links, balanced fences/final newlines; only T02 status advanced; all prior history retained; exactly 9 task files changed. `git diff --no-index --check` on the three new files had no diagnostics (expected exit 1). |
+
+Additional import/collection check, run from `dispute-demo/`:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python - <<'PYCODE'
+import sys
+before = list(sys.path)
+import app.tools
+import integration.get_dispute_context
+assert sys.path == before
+assert 'jaydebeapi' not in sys.modules
+assert not any('expected_results' in name for name in sys.modules)
+print('PASS: package imports without path injection, JDBC initialization or fixture imports')
+import unittest
+suite = unittest.defaultTestLoader.discover('agent/tests')
+assert not unittest.defaultTestLoader.errors, unittest.defaultTestLoader.errors
+print('Prototype collection:', suite.countTestCases(), 'tests; external H-MEM tests collected only, NOT RUN')
+PYCODE
+```
+
+- Result: package import checks PASS; 13 prototype tests collected with no import errors. Six offline critic tests ran separately; seven external-reference H-MEM tests were **NOT RUN**. The current prototype imports/test setup remains T09/T12 integration work; T02's runtime packages import without test path injection.
+- Live assertions: DP-0014 has 1 transaction, 2 settlements (10,000 capture, 4,000 refund), 2 evidence items and 8 v2 rules. DP-0019 exposes only 1 visible evidence item. DP-0033 selects v1 and DP-0034 v2 at the opening boundary. DP-0014 history identifies CUST-008 and prior DP-0030/DP-0017 with ownership/cutoff checks; current status is `open`. Unknown DP-9999 yields `not_found`. Decision read returns `unsupported` without SQL. All typed source revisions remain null. The separate initial DP-0014 typed live probe also passed.
+- Initial tooling correction: the first test-file write used a duplicated relative directory, so discovery found zero tests and exited 5; the path was corrected before any passing test claim. A failed patch attempt made no changes. Final counts above supersede intermediate runs.
+- Remaining limits: no revision guard/coherent multi-read snapshot, no decision storage/registration, no historical versioning of source dispute status/text. History is advisory source data, not committed decisions or fraud inference. These are explicit T04/T05/T10 boundaries and do not block T02's read acceptance. Policy evaluation/complete-rule semantics remain T03 work.
+- Nightshift, H-MEM reference execution, direct PostgreSQL action/concurrency tests and HackOS checks: **NOT RUN**; outside T02. SQLite writes occurred only in isolated test databases, never source/shared state.
+- `context.md` updated for verified T02 capability and limitations; README now hands over T03. T00/T01 remain DONE; T03–T13 and A01 remain NOT_STARTED. Recommended next task: **T03 / KAN-12 only**, not started.
+
+### 2026-10-27 — Close KAN-11 and prepare T02 publication to main
+
+- Scope: the user's explicit follow-up to update Jira, write a detailed commit message and push completed T02 to `origin/main`. No new implementation task started; the nine T02 files are the entire publication scope.
+- Remote check: `git fetch origin` passed with authorized Git/network access. `git rev-list --left-right --count origin/main...HEAD` returned `0 0`; local `main`, `origin/main` and the task branch still share baseline `b850ae8775d61ecb3b3e6737ed84f58861d45bbc` before committing.
+- Fresh verification from `dispute-demo/`, using Python 3.13.7: `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -v` — PASS, 50 tests; `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s agent/tests -p 'test_critic.py' -v` — PASS, 6 tests; both zero failures/errors/skips. `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python scripts/validate_synthetic_data.py` — PASS: 42 transactions, 54 settlements, 40 disputes, 81 evidence rows/documents, 16 rules and integrity/fixture checks.
+- Repository-root checks: `git diff --check`; `git diff --exit-code b850ae8 -- dispute-demo/app/schemas.py dispute-demo/data dispute-demo/policies dispute-demo/scripts dispute-demo/tests/fixtures dispute-demo/agent getting-started zetaris-platform AGENTS.md CLAUDE.md`; `PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/validate_t02_docs.py` — all PASS. Documentation validation checked six documents, 80 local links, balanced fences/newlines, only T02 status advanced, retained prior history and exactly nine task paths. New-file whitespace checks produced no diagnostics.
+- Jira: authenticated pre-read confirmed KAN-11 To Do, unassigned, no comments, with its approved description intact. Added implementation/test/live-evidence comment `10003`, then used available transition `31` to Done. The response and read-back confirmed status and resolution Done at `2026-10-27T02:40:02.402+0800`, one comment, and unchanged summary, description, assignee, parent, labels and issue links. No other issue was edited.
+- Current handover/context notes now record the verified Jira closure. Earlier implementation and alignment entries retain their historical states. Runtime code did not change during this publication follow-up; the preceding T02 live JDBC evidence applies to the same sources. Live Zetaris/PostgreSQL/Nightshift/H-MEM/HackOS checks were **NOT RUN** again for publication.
+- Publication uses an explicit nine-file commit with a detailed behavior/validation/limitations message, followed by a fast-forward of local `main` and normal `git push origin main`. Commit identity, staged checks, push outcome and remote verification are reported after execution rather than asserted in advance. Temporary check scripts and API receipts remain outside the repository.
+- Recommended next task: **T03 / KAN-12 only**, not started. Source revisions and decision reads remain explicitly unsupported; no policy, source data, action storage or memory behavior changed in this follow-up.
 
 ## 11. Deferred scope
 

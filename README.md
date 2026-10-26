@@ -13,6 +13,7 @@ Open Agent Hackathon project for investigating fictional card disputes and recom
 | [CLAUDE.md](./CLAUDE.md) | Directs Claude Code to the same shared instructions. |
 | [TEAM_SETUP.md](./TEAM_SETUP.md) | Environment setup: Docker, PostgreSQL, Zetaris/JDBC and Nightshift. |
 | [Policy v1](./dispute-demo/policies/synthetic_policy_v1.md) / [Policy v2](./dispute-demo/policies/synthetic_policy_v2.md) | Exact fictional dispute rules that the implementation must follow. |
+| [Typed retrieval](./dispute-demo/docs/retrieval.md) | T02 read interfaces, case/customer scope, error statuses, live/offline checks and unsupported freshness/decision storage. |
 | [Shared contracts](./dispute-demo/docs/contracts.md) | T01 types, outcome mapping, policy boundaries, workflow/synchronization requirements and unresolved decisions for later tasks. |
 | [Jira post-merge change record](./docs/planning/JIRA_POST_MERGE_CHANGESET.md) | Created 27 October 2026: approved preview, pre-edit snapshots and verified application receipt for KAN-11–KAN-23. |
 | [Hackathon handbook](./Open_Agent_Hackathon_2026_Complete_Handbook.md) | Background research and competition guidance. Current requirements still need verification under A01. |
@@ -23,15 +24,17 @@ For the current task and its Jira issue, start with the task board in [ROADMAP.m
 
 **Use [ROADMAP.md](./ROADMAP.md) as the source of truth for the next task.** It records each task's Jira issue, dependencies, required reading, work checklist, deliverable and acceptance gate. Its completion log records what was tested and any remaining blockers. Check the current task board and actual source before starting; older work-log entries describe historical states.
 
-**Current handover, 27 October 2026:** T00 / KAN-9 (baseline verification) and T01 / KAN-10 (shared contracts) remain complete. [PR #4](https://github.com/rachelanneliew/Open-Agent-Hackathon/pull/4) is merged; this documentation pass inspected local source at `76db7724ed8e32fac8b0fabaf33c556ddaa3bd29`. The next implementation task is **[T02 / KAN-11 — Expose narrow case and history retrieval tools](https://luijoel24.atlassian.net/browse/KAN-11)**, under epic KAN-4. Recheck the roadmap and Jira when taking over, because this snapshot may become outdated.
+**Current handover, 27 October 2026:** T00 / KAN-9, T01 / KAN-10 and T02 / KAN-11 are complete against repository acceptance gates. T02 was implemented on `codex/t02-typed-retrieval` from published baseline `b850ae8`; KAN-11 is verified Done with completion evidence in comment `10003`. The next implementation task is **[T03 / KAN-12 — Implement deterministic policy evaluation](https://luijoel24.atlassian.net/browse/KAN-12)**. Recheck source, roadmap and Jira when taking over.
 
-The existing [agent prototypes](./dispute-demo/agent/) include a policy evaluator, a critic with a SQLite credit writer, a deterministic resolver, and H-MEM client/bridge/memory modules with a separate [test directory](./dispute-demo/agent/tests/). They need integration with the strict [canonical schemas](./dispute-demo/app/schemas.py); the resolver is not a completed Nightshift agent. PostgreSQL action storage, pure critic separation, bounded workflow, portable memory setup and integration acceptance remain outstanding. Historical T00/T01 tests are dated evidence; application tests and live application checks were NOT RUN for this documentation pass.
+[Typed retrieval](./dispute-demo/docs/retrieval.md) now supplies case context, separate customer history, current source status and an explicit unsupported decision-read result. Fifty root-suite tests and six offline prototype critic tests pass, with separate live JDBC checks recorded in the roadmap. Source revisions remain null; action storage and commit freshness are not implemented.
+
+The existing [agent prototypes](./dispute-demo/agent/) include the policy evaluator to integrate in T03, a SQLite-writing critic, deterministic resolver and H-MEM modules. Their remaining integration/acceptance work is not completed by T02. The resolver is not a Nightshift investigator; pure critic separation, PostgreSQL action storage, bounded workflow and portable memory setup remain outstanding.
 
 The target uses one Nightshift investigator, a pure deterministic critic and one PostgreSQL action service. Policy-permitted `provisional_credit`, `request_evidence` and `decline` run autonomously; `human_review` is exceptional and creates no credit. Only confirmed persistence creates a queued review item. Verified history is advisory by default; the prototype's three-claim count is not binding policy. T10 still needs an explicit advisory-scope acceptance decision or an approved versioned history rule.
 
-For T02, adapt the existing Zetaris/JDBC retrieval to the [T01 contracts](./dispute-demo/docs/contracts.md), preserving PR #4's transaction `customer_id` addition. Return scoped, time-visible transactions, settlements, evidence and policy; add separate typed customer-history/current-state reads as the actual tables allow. Do not put historical records into the current case's isolated collections. Preserve metadata with missing evidence text and incomplete inputs explicitly. Expose only validated, allowlisted read tools. The checked-out source has no revision guard or decision migration; report unsupported revisions/storage honestly and verify live availability separately.
+For T03, adapt [the existing evaluator](./dispute-demo/agent/policy_engine.py) to the strict [shared contracts](./dispute-demo/docs/contracts.md) and [T02 tools](./dispute-demo/app/tools.py). Return a bound `PolicyResult` with source-linked rule checks and explicit allowed/blocked outcomes. Preserve opening-date version selection, rule precedence, exact filing/review boundaries and primary-transaction settlement arithmetic. Treat missing/unusable text and malformed inputs safely; do not invent a history threshold or weaken contracts.
 
-T02 is complete only when tests cover scope, future-record filtering and failure modes, and a live case is retrieved through Zetaris when available, with live versus stubbed evidence clearly recorded. Follow the full roadmap checklist. This task does not implement arbitrary SQL tools, source mutation or simulated action writes.
+Acceptance requires deterministic policy tests for authored scenarios, boundaries and incomplete/malformed inputs with Nightshift disabled, plus evaluation of an actual retrieved context. Expected results stay test-only. Follow the full T03 roadmap checklist; no action writes belong to this task.
 
 ### Steps for the next teammate
 
@@ -45,23 +48,23 @@ T02 is complete only when tests cover scope, future-record filtering and failure
 ### Copyable task handover
 
 ```text
-Work on T02 / KAN-11 only:
-https://luijoel24.atlassian.net/browse/KAN-11
+Work on T03 / KAN-12 only:
+https://luijoel24.atlassian.net/browse/KAN-12
 
 Follow AGENTS.md and read context.md, ROADMAP.md, agent.md and the
-task-specific sources before execution. Verify T01's completion evidence
-and read dispute-demo/docs/contracts.md and the existing retrieval code.
+applicable sources before execution. Verify T01/T02 acceptance evidence.
+Read the source policies, shared contracts, T02 retrieval and existing
+prototype evaluator before editing.
 
-Implement the full T02 checklist and retrieval tests. Reuse Zetaris/JDBC
-and preserve the transaction customer_id addition. Enforce scope/cutoff,
-preserve missing evidence text, separate typed history from current-case
-collections, and distinguish missing data from service failure. Expose
-only validated read tools. Do not invent source revisions or claim
-decision-table reads are live before T04 storage/registration exists.
+Integrate one canonical deterministic evaluator returning PolicyResult.
+Preserve source rules, opening-date version selection, exact boundaries,
+integer money and primary-transaction balance semantics. Cover authored
+scenarios and malformed/missing evidence with tests; fixtures remain
+test-only. Do not add policy thresholds, model calls or action writes.
 
 Update ROADMAP.md and context.md where required. Jira edits and publication
 require separately authorized scope. Report changed files, exact test
 results, blockers and the next recommended task, then stop.
 ```
 
-After T02 passes, recommend **T03 / KAN-12: integrate and harden the existing policy evaluator**. T04, T09 and A01 may be assigned separately when their prerequisites are satisfied; this is not authority to start them. T02–T13 and A01 retain NOT_STARTED acceptance status despite prototype evidence. After the initial local alignment, the user approved the KAN-11–KAN-23 Jira description updates; all 13 were applied and verified on 27 October 2026 without changing summaries, statuses, assignees or task IDs. The alignment and Jira follow-up changed documentation and issue descriptions only; the separately requested Git publication is recorded in ROADMAP.md.
+After T03 passes, recommend **T06 / KAN-15: build the mandatory pure critic**, following the post-merge integration order. T04, T09 and A01 may be assigned separately when their prerequisites are satisfied. T03–T13 and A01 remain NOT_STARTED. The approved 27 October Jira description changes are retained in the change record; the separately authorized T02 Jira closure and publication preparation are recorded in ROADMAP.md.

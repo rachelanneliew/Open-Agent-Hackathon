@@ -3,7 +3,7 @@
 > **Canonical project brief for all coding agents and collaborators.**
 > Read this file **at the start of every task**, then consult [`ROADMAP.md`](./ROADMAP.md) for the active priorities. Read the actual code, policies, schemas, tests, and HackOS instructions before making implementation claims.
 >
-> **Context last reviewed:** 2026-10-27, documentation alignment against PR #4 and local HEAD `76db7724ed8e32fac8b0fabaf33c556ddaa3bd29`. T00 and T01 remain complete; merged prototypes have integration acceptance outstanding. **Evidence basis:** current source inspection plus the dated T00 source/live checks and T01 local contract checks in `ROADMAP.md`. Application tests and live application integrations were NOT RUN for this alignment. Nightshift discovery failed in T00; its earlier READY result remains historical. Jira status and file presence do not prove implementation acceptance.
+> **Context last reviewed:** 2026-10-27, T02 typed retrieval implementation from `b850ae8` on `codex/t02-typed-retrieval`. T00–T02 are complete against repository acceptance gates. **Evidence basis:** 50 root-suite tests, 6 offline prototype critic tests and separate live JDBC context/history/state checks; details in `ROADMAP.md`. Other prototype integration tasks remain open. Nightshift and H-MEM were NOT RUN for T02; earlier availability evidence remains historical. Jira status alone does not establish implementation acceptance.
 
 ## 1. Project identity
 
@@ -171,6 +171,15 @@ Keep **business outcome** (credit, evidence request, decline, human review) sepa
 - The [contract reference](./dispute-demo/docs/contracts.md) records opening-date version selection, 30/45-day filing windows, inclusive 20,000 SGD-cent review boundary, ordered rule precedence, workflow protocol, stale-result invalidation and all-writer synchronization. Unspecified business lifecycle, broader ledger/evidence semantics, history rules and revision support remain explicit decisions for later tasks.
 - Live Zetaris/PostgreSQL/Nightshift/H-MEM checks are NOT RUN for T01. Next recommended task is T02 / KAN-11; it is not started.
 
+### Verified in T02 — typed reads, 2026-10-27
+
+- [Typed tools and registry](./dispute-demo/app/tools.py) adapt the existing JDBC path into strict `DisputeContext`, separate customer-scoped history and current source-state reads. The registry accepts four named reads bound to one authorized dispute; extra arguments, arbitrary SQL and cross-case requests are rejected before connecting.
+- [Retrieval](./dispute-demo/integration/get_dispute_context.py) preserves transaction `customer_id` and source metadata, left-joins evidence text and filters parsed UTC instants. Missing/unusable text stays as `content=None` with explicit issues. Missing, incomplete, malformed and unavailable results are distinct; query overflow is incomplete, not silently truncated.
+- Live JDBC passed for DP-0014, DP-0019 and the DP-0033/DP-0034 policy boundary. DP-0014 has 1 transaction, 2 settlements, 2 evidence items and 8 v2 rules; its source customer CUST-008 has visible prior cases DP-0030 and DP-0017. Current source status and missing-case behavior passed. No source data was changed.
+- Python 3.13.7: 50 root-suite tests pass (27 new retrieval, 21 contracts, 2 generation), 6 offline prototype critic tests pass and data validation passes. All 13 prototype tests collect; 7 external H-MEM tests were NOT RUN. Offline SQLite query tests are not live integration evidence.
+- `source_revision=None` remains explicit; decision reads return `unsupported` without querying nonexistent storage. There is no coherent multi-read snapshot or commit freshness guarantee. Source dispute status/text is unversioned and cannot reconstruct past values. History is advisory and contains no inferred decision, credit or memory verification. See the [retrieval reference](./dispute-demo/docs/retrieval.md) for limits and commands.
+- T02 added no policy implementation, action writes or memory operations. Its separately authorized closure verified KAN-11 Done with completion comment `10003`; publication preparation is recorded in the roadmap. T03 / KAN-12 is recommended next and not started. The dated prototype table below describes the earlier PR #4 inspection; this T02 entry supersedes its retrieval gap list.
+
 ### PR #4 prototypes — inspected 2026-10-27, integration acceptance outstanding
 
 [PR #4](https://github.com/rachelanneliew/Open-Agent-Hackathon/pull/4), merged on 2026-10-26, adds nine files and modifies retrieval. The local clean checkout matched its merge commit `76db7724ed8e32fac8b0fabaf33c556ddaa3bd29`; no older source was restored. These are source observations, not new passing test or live-service claims.
@@ -287,6 +296,7 @@ Choose actual dispute IDs only after inspecting fixture and policy files; do not
 
 | Date | Change and verification status | Evidence / file reference |
 |---|---|---|
+| 2026-10-27 | T02 typed case/history/state reads accepted with 50 root tests, 6 offline critic tests and separate live JDBC checks; source revision/decision support remain unavailable | `app/tools.py`, `integration/get_dispute_context.py`, `docs/retrieval.md` under `dispute-demo/`; T02 work log in `ROADMAP.md` |
 | 2026-10-27 | Section 7 documentation alignment: recorded selective review/advisory history, mapped PR #4 prototypes and outstanding acceptance; no runtime tests or live application checks | PR #4 / local `76db772`; `ROADMAP.md` alignment log and new `docs/planning/JIRA_POST_MERGE_CHANGESET.md` preview |
 | 2026-10-26 | Established baseline context from progress audit; infrastructure working, agent workflow pending | `Open_Agent_Hackathon_Progress_2026-10-26.md` (external/source report) |
 | 2026-10-26 | Installed the four root instruction/context files, verified referenced repository paths, and documented scoped reading requirements; no runtime capabilities re-verified | `AGENTS.md`, `agent.md`, this section's path inventory, and the documentation setup entry in `ROADMAP.md` |
@@ -306,3 +316,5 @@ The supplied kit reports that the work queue is tracked in Jira project `KAN` (`
 **Read-only alignment snapshot, 2026-10-27:** Jira returned all 20 labelled issues with no further page. KAN-9/KAN-10 remain Done; KAN-11–KAN-23 and epics KAN-4–KAN-8 are To Do; all are unassigned with no issue links. Exact current descriptions and proposed description deltas are saved in the newly created [Jira change preview](./docs/planning/JIRA_POST_MERGE_CHANGESET.md). Jira edits are pending explicit approval; none were applied. No task status changed locally.
 
 **Approved Jira follow-up, 2026-10-27:** the user explicitly approved that preview. Applied only the 13 description updates to KAN-11–KAN-23, including the specified KAN-14 retry correction. Immediate pre-edit reads matched the snapshots; individual read-backs and a final 20-issue audit verified content and unchanged summaries, statuses, assignees, task IDs, epic membership, labels and links. KAN-4–KAN-10 retained their descriptions and updated timestamps; T00/T01 remain Done. The preview file now records the application receipt. No implementation/policy decision was completed, no application integrations were checked, and T02 remains unstarted.
+
+**T02 closure, 2026-10-27:** after typed retrieval acceptance, the user separately authorized Jira updates and publication to `origin/main`. Fresh 50-test and 6-test offline runs plus data validation passed. Completion comment `10003` records implementation and dated live JDBC evidence; KAN-11 status and resolution are verified Done. Its description, summary, assignee, parent, labels and links are unchanged; no other issue was edited. Live application checks were NOT RUN again for this follow-up. T03 remains unstarted.
