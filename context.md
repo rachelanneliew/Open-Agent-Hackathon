@@ -3,7 +3,7 @@
 > **Canonical project brief for all coding agents and collaborators.**
 > Read this file **at the start of every task**, then consult [`ROADMAP.md`](./ROADMAP.md) for the active priorities. Read the actual code, policies, schemas, tests, and HackOS instructions before making implementation claims.
 >
-> **Context last reviewed:** 2026-10-26 (T01 / KAN-10 shared contracts). T00 and T01 are complete. **Evidence basis:** the T00 source/live checks and T01 local contract checks recorded in `ROADMAP.md`. Nightshift discovery failed in T00; its earlier READY result remains historical. T01 adds no live integration or action execution. Jira status and planned architecture do not prove implementation.
+> **Context last reviewed:** 2026-10-27, documentation alignment against PR #4 and local HEAD `76db7724ed8e32fac8b0fabaf33c556ddaa3bd29`. T00 and T01 remain complete; merged prototypes have integration acceptance outstanding. **Evidence basis:** current source inspection plus the dated T00 source/live checks and T01 local contract checks in `ROADMAP.md`. Application tests and live application integrations were NOT RUN for this alignment. Nightshift discovery failed in T00; its earlier READY result remains historical. Jira status and file presence do not prove implementation acceptance.
 
 ## 1. Project identity
 
@@ -38,11 +38,21 @@ An analyst selects a dispute; the system retrieves relevant synthetic records th
 - **Simulated provisional credit** — record a hypothetical credit action; never move actual money.
 - **Request more evidence** — identify missing or contradictory required support.
 - **Decline** — only when allowed by the applicable synthetic policy.
-- **Human review** — escalate ambiguous, risky, repeated-pattern, or otherwise policy-required cases.
+- **Human review** — route policy-required exceptions or unresolved material issues; repeated history alone remains advisory without an approved binding rule.
 
 ### Out of scope for the MVP
 
 Real chargebacks, real bank API access, production authentication, production fund movements, live customer data, model training during demonstrations, and optional fraud-risk scoring unless the core workflow is already complete.
+
+### Selective human review — product direction recorded 2026-10-27
+
+The section 7 alignment assignment adopts the supplied handoff's product direction: ordinary policy-permitted `provisional_credit`, `request_evidence`, and `decline` outcomes are made, validated and recorded autonomously. `human_review` is exceptional; there is no compulsory human approval step for every case. Evidence requests mean recording/displaying missing requirements, not sending customer messages. This is project intent, not a verified HackOS requirement.
+
+Written policy-required review excludes credit in policy evaluation, the pure critic and the PostgreSQL action service's commit-time recheck. Keep existing rule precedence: missing evidence and out-of-window claims retain their own outcomes. A critic review verdict is not a saved review case; construct and validate a safe proposal through the action service or report failure. Only confirmed persistence may appear as queued review.
+
+Verified repeat-claim history is advisory by default. Neither source policy defines a numeric history rule; the prototype's default of three prior disputes is not approved binding policy. Raw memory tags cannot prove fraud, require review or establish credit eligibility. Verify recalled ownership, source IDs, timestamps and relevant committed outcomes through approved reads. Unavailable required authoritative facts still mean no automatic credit.
+
+T10 retains an explicit acceptance decision: confirm advisory MVP scope or approve a separately versioned binding rule with count, lookback, anchor, reasons, qualifying outcomes, exclusions and precedence. This does not block T02 or this documentation pass; it does not mark the original history-rule acceptance requirement complete.
 
 ### Distinctions that must not be blurred
 
@@ -161,18 +171,29 @@ Keep **business outcome** (credit, evidence request, decline, human review) sepa
 - The [contract reference](./dispute-demo/docs/contracts.md) records opening-date version selection, 30/45-day filing windows, inclusive 20,000 SGD-cent review boundary, ordered rule precedence, workflow protocol, stale-result invalidation and all-writer synchronization. Unspecified business lifecycle, broader ledger/evidence semantics, history rules and revision support remain explicit decisions for later tasks.
 - Live Zetaris/PostgreSQL/Nightshift/H-MEM checks are NOT RUN for T01. Next recommended task is T02 / KAN-11; it is not started.
 
-### Defined or planned, not implemented
+### PR #4 prototypes — inspected 2026-10-27, integration acceptance outstanding
 
-- `policy_rules.csv` and the two Markdown policies define predicates, precedence and thresholds; no executable runtime policy engine exists. The 40 expected-result fixtures are test-only authored answers.
-- Generator `FIELDS['decisions']` lists column names only. T01 implements shared transport contracts, but no decision migrations, transactional action service or duplicate/concurrency guarantees exist.
-- Existing retrieval is a useful T02 prerequisite, but has no allowlisted typed tool registry, customer-history interface, source revisions or dedicated completeness/scoping/failure tests.
-- No structured Nightshift investigator, mandatory critic, bounded workflow controller, H-MEM project adapter, analyst UI or complete end-to-end/reset runner exists in this checkout.
-- T01 resolves legacy recommendation terminology and specifies future source synchronization. Business lifecycle/re-review rules remain open for T04/T05. Neither source policy defines a repeated-claims threshold; no threshold should be inferred from the project narrative.
-- `registration.sql` and `verify.sql` use historical datasource `dispute_pg`; current setup/retrieval use `dispute`. The root has gitlinks without `.gitmodules`, so a fresh clone needs the onboarding/platform setup steps in `TEAM_SETUP.md`.
+[PR #4](https://github.com/rachelanneliew/Open-Agent-Hackathon/pull/4), merged on 2026-10-26, adds nine files and modifies retrieval. The local clean checkout matched its merge commit `76db7724ed8e32fac8b0fabaf33c556ddaa3bd29`; no older source was restored. These are source observations, not new passing test or live-service claims.
 
-### Located H-MEM reference (not integrated)
+| Existing source | Capability and integration gap | Owning tasks |
+|---|---|---|
+| [policy_engine.py](./dispute-demo/agent/policy_engine.py) | Executable dictionary-based evaluator exists. Adapt to canonical `DisputeContext`/`PolicyResult`; harden missing text, malformed input, amount semantics and support checks against source policies. | T03 |
+| [critic.py](./dispute-demo/agent/critic.py) | Validation is combined with a local SQLite credit writer. Non-credit results return without durable decisions; no PostgreSQL source reread/revision guard. Extract a pure critic and centralize all four outcomes in the action service. SQLite uniqueness is not the T04/T05 acceptance guarantee. | T04–T06 |
+| [resolver.py](./dispute-demo/agent/resolver.py) | Recalls memory, builds a deterministic proposal and calls the SQLite-writing critic. No Nightshift investigator, bounded canonical workflow or genuine no-memory mode; `remember=False` only disables saving. A later memory exception can obscure a successful credit response. | T07, T08, T10 |
+| [memory_service.py](./dispute-demo/agent/memory_service.py) | Customer-scoped tags and advisory history exist. Stored `verified` tags are not authoritative revalidation; non-persisted non-credit validation can be saved as processed memory. Three claims is a prototype default, not a policy rule. | T09, T10 |
+| [hmem_client.py](./dispute-demo/agent/hmem_client.py), [bridge](./dispute-demo/agent/hmem_bridge/server.ts), [manifest](./dispute-demo/agent/hmem_bridge/package.json) | Python/subprocess and TypeScript adapters exist. External reference/runner setup is not pinned or installed by the manifest; timeout, output/error handling and safe concurrent persistence need verification/hardening. | T09 |
+| [get_dispute_context.py](./dispute-demo/integration/get_dispute_context.py) | Preserve PR #4's transaction `customer_id` addition and JDBC path. Still returns dictionaries, inner-joins evidence text, and lacks typed history, revision support and required metadata. | T02 |
+| [critic tests](./dispute-demo/agent/tests/test_critic.py), [H-MEM tests](./dispute-demo/agent/tests/test_hmem_integration.py) | Separate from `dispute-demo/tests/`; bare runtime imports depend on test `sys.path` injection. Critic tests mock policy and use temporary SQLite; memory tests require an external reference. Source inspected only; NOT RUN here. | Affected integration tasks, T12 |
 
-The handbook's [Meterless Engines](https://meterless.ai/engines.html) link now resolves to the official H-MEM specification and reference under [Meterless/Meterless/engines/hmem](https://github.com/Meterless/Meterless/tree/1742dec56a66e58eef9dda2d2b865823758ca8cd/engines/hmem), inspected on 2026-10-26. Its reference uses deterministic mock embeddings and optional JSON persistence; it is not a production runtime library. The pinned specification, reference and conformance links are in the T00 work log. No package was installed, no API guessed and no memory persistence demonstrated; reference execution and integration remain T09 work. Competition approval is still subject to A01.
+The 40 expected-result fixtures remain test-only authored answers. Shared contracts are implemented under `app/`; module locations under `agent/` are real prototypes, not absent components. Adapt/move each under its assigned task, preserve strict schemas and leave one canonical evaluator and one normal-runtime PostgreSQL action writer. No alternate SQLite bypass should survive that integration; do not delete or migrate local state implicitly.
+
+No canonical PostgreSQL decision/action/audit/review migrations or action service, source-revision guard, structured Nightshift investigator, bounded controller, analyst UI or complete end-to-end/reset runner is implemented in this checkout. Live database contents were NOT RUN/reinspected here; the seven-table inventory remains dated T00 evidence. Lifecycle/re-review, cross-dispute duplicate scope and historical replay versus current-state commit semantics remain T04/T05 decisions. T02 may honestly return `source_revision=None` and unsupported decision reads before T04; successful commits may not use unknown revisions.
+
+`registration.sql` and `verify.sql` use historical datasource `dispute_pg`; current setup/retrieval use `dispute`. The root has gitlinks without `.gitmodules`, so a fresh clone needs the onboarding/platform setup steps in `TEAM_SETUP.md`.
+
+### Located H-MEM reference and current adapter limits
+
+The handbook's [Meterless Engines](https://meterless.ai/engines.html) link resolved to the official H-MEM specification and reference under [Meterless/Meterless/engines/hmem](https://github.com/Meterless/Meterless/tree/1742dec56a66e58eef9dda2d2b865823758ca8cd/engines/hmem), inspected on 2026-10-26. That reference uses deterministic mock embeddings and optional JSON persistence; it is not a production runtime library. The historical pinned links are in the T00 work log. PR #4 now supplies the project bridge/client above, but does not pin the external installation. No installation, reference execution or save/restart/recall was performed in this alignment; reproducibility and persistence acceptance remain T09 work. Competition approval is still subject to A01.
 
 ### Verified dataset snapshot
 
@@ -223,7 +244,7 @@ The paths below were checked for existence in the current checkout on 2026-10-26
 5. **No double credit.** Enforce idempotency and one effective simulated credit per dispute at the **database** level, with safe handling of parallel requests.
 6. **Commit-time validation.** In the write transaction, recheck current state, relevant settlements, policy, and allowed transitions; reject stale proposals.
 7. **Safe failure.** On unavailable data/model, invalid JSON, bad evidence, or unresolved critic failure, record/recommend review or evidence collection — **never credit by default**.
-8. **Memory is advisory.** Verify H-MEM recall against current source records; repeated claims warrant review according to policy, not an automatic fraud finding.
+8. **Memory is advisory.** Verify H-MEM recall against current source records. Repeat history is contextual unless an explicit versioned policy makes it binding; no prototype count or memory tag establishes fraud or required review.
 9. **Auditable trace.** Record observable tool use, cited sources/rules, proposal, critic feedback, and committed result. Do not expose model-private chain-of-thought.
 10. **Test/production separation.** Never load `expected_results.json` into runtime investigation tools, prompts, or orchestration.
 11. **Honest demo modes.** Label offline/sample fixtures; do not imply they used live Zetaris or Nightshift.
@@ -236,7 +257,7 @@ A strong minimum demonstration shows:
 1. **Supported case:** read actual synthetic data via Zetaris → policy evaluation → Nightshift proposal → critic validation → single recorded simulated outcome.
 2. **Repeat processing:** submit the same dispute again; demonstrate no second effective simulated credit (also test two concurrent attempts).
 3. **Critic catches a mistake:** provide or simulate a malformed/excessive/unsupported proposed action; critic blocks it and leads to one corrected proposal or safe human review.
-4. **Memory case (when integrated):** a later investigation retrieves H-MEM context with source IDs; source records confirm history before a human-review recommendation.
+4. **Memory case (when integrated):** a later investigation retrieves H-MEM source IDs and verifies history; show advisory context or a separately approved policy-required review, without inventing a history threshold.
 5. **Policy-version comparison (time permitting):** identical decision logic honors the correct effective synthetic policy based on defined date rules.
 
 Choose actual dispute IDs only after inspecting fixture and policy files; do not assume a specific outcome for `DP-0014`.
@@ -248,7 +269,8 @@ Choose actual dispute IDs only after inspecting fixture and policy files; do not
 - What are the exact policy predicates, precedence, effective-date rules, allowed transitions, and amount semantics in the repo files?
 - How should the located official H-MEM specification/reference be adapted to this Python project, and can the actual adapter prove save/restart/recall in T09? Competition approval remains unverified.
 - Which fixture IDs best demonstrate supported credit, duplicate prevention, critic correction, and version boundaries?
-- What changes after the verified T00 baseline at `a5ab88a`? Recheck source and live services when later tasks begin.
+- T10: confirm advisory history acceptance scope or approve an exact versioned binding rule; T04/T05: settle lifecycle, cross-dispute duplicate scope and historical replay/fresh commits. No such new policy or lifecycle is approved by this documentation pass.
+- PR #4 source is inspected at `76db772`; recheck source and live services when later tasks begin. The integration checklist is in `ROADMAP.md`.
 
 ## 9. Source-of-truth and maintenance rules
 
@@ -265,6 +287,7 @@ Choose actual dispute IDs only after inspecting fixture and policy files; do not
 
 | Date | Change and verification status | Evidence / file reference |
 |---|---|---|
+| 2026-10-27 | Section 7 documentation alignment: recorded selective review/advisory history, mapped PR #4 prototypes and outstanding acceptance; no runtime tests or live application checks | PR #4 / local `76db772`; `ROADMAP.md` alignment log and new `docs/planning/JIRA_POST_MERGE_CHANGESET.md` preview |
 | 2026-10-26 | Established baseline context from progress audit; infrastructure working, agent workflow pending | `Open_Agent_Hackathon_Progress_2026-10-26.md` (external/source report) |
 | 2026-10-26 | Installed the four root instruction/context files, verified referenced repository paths, and documented scoped reading requirements; no runtime capabilities re-verified | `AGENTS.md`, `agent.md`, this section's path inventory, and the documentation setup entry in `ROADMAP.md` |
 | 2026-10-26 | Planning clarification only: one investigator, code-first critic, Python controller; memory remains in full target; stable task IDs added | Supplied context/roadmap review; no live code verification or tests in this revision |
@@ -279,3 +302,7 @@ The supplied kit reports that the work queue is tracked in Jira project `KAN` (`
 **Live verification, 2026-10-26:** Authenticated access confirmed KAN-9, `[T00] Verify current repository baseline`, under KAN-4 in project `Open-Agent`. The issue was To Do when read and moved to In Progress for this audit. The T00 completion record and Jira evidence document its acceptance; no other issue's status or implementation was verified or changed. The kit's former project display name is historical.
 
 **Closure revalidation, 2026-10-26:** A fresh authenticated read confirmed KAN-9 already has status and resolution Done (resolved at 18:13:45 +08:00), with the original completion evidence attached. At checkout `8883e5c`, data validation and both generation tests passed again on Python 3.13.7; application/data/integration paths match the audited `a5ab88a` baseline. Live integrations were NOT RUN in this follow-up, so the dated service results above remain unchanged. See the closure revalidation entry in `ROADMAP.md` for exact commands.
+
+**Read-only alignment snapshot, 2026-10-27:** Jira returned all 20 labelled issues with no further page. KAN-9/KAN-10 remain Done; KAN-11–KAN-23 and epics KAN-4–KAN-8 are To Do; all are unassigned with no issue links. Exact current descriptions and proposed description deltas are saved in the newly created [Jira change preview](./docs/planning/JIRA_POST_MERGE_CHANGESET.md). Jira edits are pending explicit approval; none were applied. No task status changed locally.
+
+**Approved Jira follow-up, 2026-10-27:** the user explicitly approved that preview. Applied only the 13 description updates to KAN-11–KAN-23, including the specified KAN-14 retry correction. Immediate pre-edit reads matched the snapshots; individual read-backs and a final 20-issue audit verified content and unchanged summaries, statuses, assignees, task IDs, epic membership, labels and links. KAN-4–KAN-10 retained their descriptions and updated timestamps; T00/T01 remain Done. The preview file now records the application receipt. No implementation/policy decision was completed, no application integrations were checked, and T02 remains unstarted.

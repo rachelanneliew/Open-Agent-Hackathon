@@ -1,7 +1,7 @@
 # Task Roadmap — Synthetic Card-Dispute Resolution Agent
 
 > **Canonical work queue.** Read [`context.md`](./context.md) first, then [`agent.md`](./agent.md).
-> **Revision:** task-based plan, 26 October 2026; T00 baseline audit and T01 shared contracts completed on 26 October 2026. The completion records below distinguish source inspection, passing local/live checks, failed checks, and NOT RUN checks.
+> **Revision:** documentation alignment, 27 October 2026, against merged PR #4 / local `76db772`. T00 baseline audit and T01 shared contracts completed on 26 October 2026; their evidence remains dated. Prototype presence is separate from acceptance status. No application tests or live application checks were run in this alignment.
 > **Next roadmap task:** T02 / KAN-11, only when assigned. T00 / KAN-9 and T01 / KAN-10 are DONE against their acceptance gates; T02–T13 and A01 remain NOT_STARTED.
 > **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
 
@@ -22,6 +22,8 @@ Use statuses `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED`, `DONE`. DONE requires reco
 **Recommended first sequence:** T00 -> T01 -> T02 -> T03. This produces a source-backed deterministic evaluator before any model can suggest an action. Then complete T04–T08 for a safe end-to-end CLI. Complete T09–T11 for the intended memory-backed analyst demonstration, and T12–T13 for delivery. A01 runs alongside development. T09's reference integration may be checked early to expose access/API blockers.
 
 Every task includes its own tests. T12 is cross-component testing, not the first time testing begins.
+
+**Post-merge integration order:** assign T02 next, then T03 and T06; T05 follows T03/T04 and benefits from the actual critic, then T07/T08. T04, T09 and A01 can progress separately when assigned. After T09, complete T10, then T11, T12 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
 
 ## Jira tracking (supplied kit dated 2026-10-26)
 
@@ -55,6 +57,10 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 
 **Working convention:** Assign one dependency-ready roadmap task and provide its Jira link. When Jira tracking actions are authorized, mark that assigned issue In Progress; after implementation, require exact test commands/results and changed paths, update the repo documents, then move the issue to Done only after acceptance verification. Do not transition issues merely because this kit was imported. Jira links are not secret credentials. Keep team members unassigned until ownership is agreed.
 
+**Read-only snapshot, 27 October 2026:** all 20 labelled Jira issues returned, no further page. KAN-9/KAN-10 are Done, KAN-11–KAN-23 and KAN-4–KAN-8 are To Do; all unassigned, all issue-link arrays empty. Newly created [JIRA_POST_MERGE_CHANGESET.md](./docs/planning/JIRA_POST_MERGE_CHANGESET.md) contains the current descriptions and exact proposed description edits. No Jira write, status/assignee/epic/dependency-link change or new ticket is part of this pass. T00/T01 completion and stable mappings remain intact.
+
+**Approved follow-up, 27 October 2026:** the user authorized the exact preview. KAN-11–KAN-23 description updates are now applied and verified; the preview retains original snapshots and an application receipt. Summaries, statuses, assignees, task IDs, epics and dependency links remain unchanged. KAN-4–KAN-10 are untouched. No implementation task started.
+
 ## 3. Task board
 
 | ID | Task | Dependencies | Status |
@@ -74,6 +80,24 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 | T12 | Run cross-component failure tests and repeatable reset | T08, T10, T11 for the intended complete demo; feature-specific tests run earlier | NOT_STARTED |
 | T13 | Package the evidence-backed demo and submission | T12, A01; documentation can be drafted alongside earlier tasks | NOT_STARTED |
 | A01 | Confirm authenticated HackOS requirements | None; run alongside development | NOT_STARTED |
+
+### PR #4 implementation evidence, separate from task status
+
+[PR #4](https://github.com/rachelanneliew/Open-Agent-Hackathon/pull/4) merged nine new prototype/test files and one retrieval change. Source inspected on 27 October at `76db7724ed8e32fac8b0fabaf33c556ddaa3bd29`; application tests NOT RUN in this pass. NOT_STARTED above records unstarted canonical integration/acceptance work, not absence of all related code.
+
+| Existing path (repository-relative) | Reuse / remaining acceptance | Tasks |
+|---|---|---|
+| `dispute-demo/integration/get_dispute_context.py` | Preserve transaction `customer_id` addition; typed context/history, missing-text preservation and failure/scope tests remain. | T02 |
+| `dispute-demo/agent/policy_engine.py` | Reuse dictionary evaluator; adapt to strict schemas and harden against actual policies/fixtures. | T03 |
+| `dispute-demo/agent/critic.py` | Reuse validation/duplicate-test ideas; separate pure critic from canonical PostgreSQL all-outcome storage/writes. SQLite has no authoritative source freshness protocol and non-credit results are not persisted. | T04, T05, T06 |
+| `dispute-demo/agent/resolver.py` | Deterministic proposal helper plus memory and SQLite critic call; no Nightshift investigator, canonical bounded controller or genuine no-memory mode. | T07, T08, T10 |
+| `dispute-demo/agent/hmem_client.py`, `dispute-demo/agent/hmem_bridge/server.ts`, `dispute-demo/agent/hmem_bridge/package.json` | Existing adapter/bridge; external prerequisites, pinning, timeouts, restart/isolation and persistence concurrency remain unverified. | T09 |
+| `dispute-demo/agent/memory_service.py` | Customer tags and advisory count exist; authoritative source verification, temporal filtering and decision-ID persistence remain. Three prior claims is not binding policy. | T09, T10 |
+| `dispute-demo/agent/tests/test_critic.py`, `dispute-demo/agent/tests/test_hmem_integration.py` | Separate test root; test-only path injection, mocked policy/SQLite and external-reference tests require deliberate collection, import checks and scope labels. | T03–T10 as affected, T12 |
+
+Target architecture remains one investigator, a pure deterministic critic and one PostgreSQL action service for `provisional_credit`, `request_evidence`, `decline`, `human_review`. The first three run autonomously when permitted; mandatory policy review prevents credit. Advisory verified history is not a hold, raw memory is not authority, and failed persistence is not a queued review. T10 retains its explicit advisory-scope versus versioned binding-rule acceptance decision.
+
+`dispute-demo/app/schemas.py` is canonical. The `app/` module paths in task artifacts are proposed destinations; `agent/` modules exist now. Adapt/move one module during its assigned task, update package imports/tests and retire or delegate its old entry point. Leave one evaluator and one normal-runtime action writer, no SQLite bypass. Preserve local prototype state unless a separate migration is authorized.
 
 ## 4. Milestones and dependency order
 
@@ -155,6 +179,13 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **Read first:** Existing integration/get_dispute_context.py, connection configuration names, source tables and T01 contracts.
 
+**PR #4 integration requirements:**
+
+- [ ] Preserve the transaction `customer_id` addition. Map raw rows into strict `DisputeContext` with source IDs, statuses, timestamps, policy applicability and explicit input issues; never weaken T01 scope checks.
+- [ ] Retain evidence metadata when text is absent instead of dropping it through the inner join; `content=None` is unavailable support. Test missing/unreadable text and malformed rows.
+- [ ] Return customer-scoped, time-visible history in a separate typed result with source references, outside the current case's transaction/evidence collections. Stored memory tags are not source verification.
+- [ ] Keep `source_revision=None` until coherent freshness support exists; explicitly report unsupported decision reads until T04 tables/registration exist. Test raw-to-typed mapping, ownership, cutoff and distinct not-found/incomplete/malformed/unavailable results. Live checks are separate evidence.
+
 **Work:**
 
 - [ ] Wrap or extend existing case retrieval rather than replacing the JDBC/Zetaris path. Return linked transactions, completed and pending settlement movements with statuses, evidence and applicable policy.
@@ -179,6 +210,13 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 **Deliverable:** A pure policy evaluator that returns allowed outcomes, rule results, constraints and source-linked explanations.
 
 **Read first:** Exact versioned policies, T01 contracts, T02 context format and test-only fixtures.
+
+**PR #4 integration requirements:**
+
+- [ ] Adapt `dispute-demo/agent/policy_engine.py` into the single canonical evaluator, returning a bound `PolicyResult` with all four outcomes explicitly allowed/blocked, rule checks, missing categories and optional credit limit. Apply the existing legacy mapping at an explicit boundary.
+- [ ] Preserve opening-date version selection, ascending first-terminal precedence, exact 30/45-day filing windows and review only above 20,000 SGD cents. Follow primary-transaction balance semantics; pending/failed amounts are not completed money and negative/corrupt balances must not silently become valid zero balances.
+- [ ] Evidence type alone cannot prove usable support. Document bounded synthetic delivery-template interpretation and reject unsupported/missing text. Normalize invalid evidence timestamps and missing transaction fields at the input boundary.
+- [ ] Test all applicable authored scenarios and just-inside/on/outside boundaries, malformed/incomplete/duplicate predicates, unexpected actions, mixed versions and unsupported policy/currency scope. No numeric repeat-claim rule is added.
 
 **Work:**
 
@@ -205,6 +243,12 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **Read first:** Current project database schema, migration conventions and T01 action/status contracts.
 
+**PR #4 integration requirements:**
+
+- [ ] Persist all four outcomes, review queue, idempotency and audit in PostgreSQL; only credit has an amount/effect. Test review persistence across restart. The prototype's SQLite transaction uniqueness does not define canonical cross-dispute policy.
+- [ ] Implement the T01 global source-revision guard with enforced participation by all relevant writers, including settlement/evidence/policy/decision changes and loaders/resets. Coordinate coherent T02 reads without creating a circular prerequisite.
+- [ ] Resolve minimum non-credit/new-evidence lifecycle, cross-dispute duplicate scope and historical replay versus fresh commit semantics before enabling writes. A frozen evaluation cutoff cannot hide a later authoritative refund; isolate replay or explicitly document/test fresh-write behavior.
+
 **Work:**
 
 - [ ] Create or reuse storage for investigation/decision records, simulated credit effects, audit events and review-queue status. Keep these separate from source settlement refunds.
@@ -229,6 +273,12 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 **Deliverable:** One backend write service that validates and commits allowed sandbox decisions safely.
 
 **Read first:** T01 synchronization/transition contract, T03 evaluator, T04 storage and actual source-state schema.
+
+**PR #4 integration requirements:**
+
+- [ ] Make the PostgreSQL action service the sole normal-runtime decision/effect writer; replace the SQLite critic path. Validate exact proposal/critic/reference binding and refuse unknown as well as stale revisions inside the protected transaction.
+- [ ] Same key + identical payload returns the original result as `reused`; same key + changed payload is rejected; a new key cannot create a second effective credit. Commit decision, optional effect, audit and idempotency together.
+- [ ] Test all four persisted outcomes, required-review exclusion of credit, request/decline without effects, rollback, lost-acknowledgement recovery with the original key and independent-connection PostgreSQL concurrency. SQLite tests do not satisfy this gate.
 
 **Work:**
 
@@ -255,6 +305,12 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **Read first:** T01 AgentProposal/CriticResult, T02 sources, T03 PolicyResult and fixture scenarios.
 
+**PR #4 integration requirements:**
+
+- [ ] Reuse checks from `dispute-demo/agent/critic.py` as a pure function accepting `DisputeContext`, `PolicyResult`, `AgentProposal` and returning bound `CriticResult`; no ledger creation, database writes or action-service calls.
+- [ ] Enforce identity/snapshot/revision, policy version, outcome, amount/currency and required citations/support; requesting missing evidence must not require invented evidence IDs. Mandatory policy review blocks credit; advisory memory is not policy.
+- [ ] Replace prototype tests that expect critic-created credit with purity checks across every branch; move write/duplicate assertions into action-service tests. Test real typed policy outputs as well as crafted invalid proposals.
+
 **Work:**
 
 - [ ] Validate structure, supported outcome, amount/currency, policy version, context revision, cited rule IDs and time-visible evidence IDs.
@@ -279,6 +335,11 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 **Deliverable:** A reasoning agent that proposes a supported outcome and can request approved evidence.
 
 **Read first:** Existing check_nightshift.py and actual supported client/API, T01 schemas, T02 tools and T06 feedback.
+
+**PR #4 integration requirements:**
+
+- [ ] `dispute-demo/agent/resolver.py::_policy_proposal()` is deterministic, not a Nightshift investigator. Reuse only as a labelled test/fallback helper; build genuine typed model proposals/tool requests for all four outcomes and one correction.
+- [ ] Record a separately labelled real structured inference result when available; mocks/probes do not establish the live investigator or actual responder identity. Retain untrusted-text handling and no direct writes/policy overrides.
 
 **Work:**
 
@@ -306,6 +367,13 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **Read first:** All tested interfaces from T01–T07 and the repository entrypoint conventions.
 
+**PR #4 integration requirements:**
+
+- [ ] Replace the prototype resolver as the normal-runtime path with one canonical controller and explicit run/proposal/reference identities. Handle all four outcomes without blanket manual approval and invalidate earlier results when verified facts change.
+- [ ] A critic review verdict cannot commit its rejected credit proposal. Validate a safe allowed review proposal through the action boundary or report no-credit failure; show queued review only after successful persistence.
+- [ ] Support a labelled no-memory milestone until T10. `remember=False` currently disables saving only; neither mode may silently call the SQLite writer. Configure tool/model/duration limits and at most one correction.
+- [ ] Return confirmed commit independently of optional post-commit work. Memory saving errors must not hide the action result or trigger a repeated action.
+
 **Work:**
 
 - [ ] Implement a Python workflow controller: retrieve -> evaluate -> investigate -> validate -> commit -> display. The controller, not an LLM, controls transitions and write access.
@@ -332,6 +400,13 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **Read first:** Approved H-MEM specification/reference example discovered in T00 and current installed configuration.
 
+**PR #4 integration requirements:**
+
+- [ ] Reuse `hmem_client.py`, `hmem_bridge/server.ts` and relevant tests under `dispute-demo/agent/`. Verify/pin the selected reference source, Node/tsx runner and dependency setup; document configurable paths and sanitized examples rather than assuming a sibling install.
+- [ ] Bound subprocess time; validate JSON/output and sanitize errors. Report missing dependencies explicitly, without exposing private paths/credentials or raw stderr to analysts.
+- [ ] Prove actual save → new process/restart → recall and customer isolation. Test/document serialized or otherwise safe access to the file-backed reference against concurrent lost updates; subprocess-per-operation alone is insufficient.
+- [ ] Retain decision/dispute/customer IDs, source reference, policy version and timestamps; distinguish committed summaries from unverified notes. Offline mocks and reference-dependent integration tests must be separately selectable and labelled.
+
 **Work:**
 
 - [ ] Run the supplied reference example and applicable tests. Record the actual supported save/recall/persistence interface; do not guess method names or substitute a similarly named package.
@@ -353,19 +428,25 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 **Phase:** Memory and presentation  
 **Status:** NOT_STARTED  
 **Depends on:** T02, T03, T08, T09  
-**Deliverable:** A later case uses relevant memory, verifies it against source records and applies the actual history rule.
+**Deliverable:** A later case uses source-verified memory under the advisory default; binding history-rule behavior and the final acceptance scope require the explicit decision below.
 
-**Read first:** H-MEM adapter, authoritative customer-history tools, actual policy history rule and orchestrator.
+**Read first:** H-MEM adapter, authoritative customer-history tools, both existing policies (no numeric history rule), the explicit scope decision below and orchestrator.
+
+**PR #4 integration requirements and pending scope decision:**
+
+- [ ] Reuse `memory_service.py` but verify remembered IDs, ownership, cutoff and committed outcomes through T02 tools. Ignore/reject false, stale, future or cross-customer references with a visible trace. A stored `verified` tag is insufficient.
+- [ ] Keep verified history advisory; do not adopt the three-claim default. Before closing T10, confirm an advisory MVP acceptance revision or obtain an explicit binding rule specifying distinct-case count, lookback, anchor, reason categories, qualifying outcomes, exclusions and precedence. A new rule needs separate approval, versioned policy and tests; existing v1/v2 fixtures retain their meaning.
+- [ ] Save final summaries only from confirmed `committed`/`reused` decisions, idempotently by decision ID. Critic acceptance alone cannot authorize a final memory. Repeated runs must not inflate distinct counts; memory retry never calls the action service.
 
 **Work:**
 
 - [ ] Recall permitted context before the final policy/proposal stage, then resolve its source references through approved authoritative retrieval. Raw memory must not alter eligibility by itself.
 - [ ] Pass verified history into policy evaluation. If no repeated-claims threshold is defined in the policy, record the gap and obtain an explicit synthetic-policy design decision rather than guessing a count.
-- [ ] Demonstrate how verified relevant history affects human review without labelling the customer fraudulent merely because claims repeat.
+- [ ] Demonstrate verified history as advisory context, or enforce a separately approved binding rule across policy, critic and commit-time checks. Repeated claims alone do not establish fraud.
 - [ ] After a successful decision commit, save its permitted source-linked summary. Report pending/failed memory persistence separately from decision success; retries reuse the decision ID.
 - [ ] Test stale/incorrect memory and missing source references. When memory is unavailable, continue only if required authoritative facts and policy gates are still satisfied; otherwise fail safely without credit.
 
-**Acceptance gate:** A second investigation visibly recalls and verifies a prior record, honors a source-defined review rule, and remains safe with false/stale/missing memory. Persistence survives restart.
+**Acceptance gate:** A second investigation visibly recalls/verifies prior records, remains safe with false/stale/missing memory, and survives restart. Memory-save failure leaves the confirmed decision result intact and never reruns the action; recall failure permits automation only when all required authoritative policy facts remain available. The original source-defined history-rule requirement is unresolved until a binding rule is explicitly approved or an advisory-scope acceptance revision is approved. This alignment adopts an advisory working default but does not close that gate.
 
 **Not in this task:** No automatic fraud finding, memory-defined policy, duplicate action during memory retries or unsupported rule threshold.
 
@@ -381,6 +462,11 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 **Deliverable:** A simple analyst-facing page over the tested workflow, not a second implementation.
 
 **Read first:** The CLI/orchestrator interface, stored decision/review data and existing UI conventions.
+
+**Post-merge alignment requirements:**
+
+- [ ] Show four business outcomes, critic verdict and persistence status separately, with citations and missing categories. Do not add a fifth business outcome for queue lifecycle.
+- [ ] Show advisory history as context rather than a mandatory hold or fraud finding. No compulsory Approve click for ordinary policy-permitted outcomes; only actually persisted review cases are queued. Keep manual adjudication/writeback outside the MVP unless assigned.
 
 **Work:**
 
@@ -407,6 +493,12 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **Read first:** Existing task tests, seeded dataset, integration configs and the chosen demonstration cases.
 
+**PR #4 integration requirements:**
+
+- [ ] Explicitly collect `dispute-demo/tests/` and `dispute-demo/agent/tests/` during migration and smoke-test runtime package imports without test-only path injection. Consolidate deliberately; a green root suite must not hide uncollected prototype tests. Establish offline collection in earlier affected tasks too.
+- [ ] Include four-outcome serialization/persistence, missing/unusable evidence, mandatory-review no-credit behavior, source-verified history, false/cross-customer/future recall, non-credit re-review, changed-payload retries, source-writer concurrency, lost acknowledgement and post-commit memory failure/retry.
+- [ ] Keep reference-dependent H-MEM and live PostgreSQL/Zetaris/Nightshift checks separate from offline mocks; record exact interpreter, collection/pass/fail/error/skip counts and NOT RUN blockers. Reset only intentional isolated demo state, never source/shared data.
+
 **Work:**
 
 - [ ] Run the integrated matrix: policy boundaries/versions, partial refunds, absent/conflicting evidence, rejected proposals, duplicate retries, independent concurrent attempts and proposal-to-commit changes.
@@ -431,6 +523,11 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 **Deliverable:** A truthful README, demonstration walkthrough and all verified portal deliverables.
 
 **Read first:** Actual implementation/test logs, A01 competition checklist and chosen source-backed demo cases.
+
+**Post-merge alignment requirements:**
+
+- [ ] Demonstrate autonomous eligible credit, evidence request and decline, plus policy-required no-credit review using inspected fixture/source IDs. Add duplicate prevention, one bounded correction and real memory continuity when verified.
+- [ ] Label prototype, live/model, reference H-MEM, sample, mock, fault-injection and no-memory modes truthfully. Merged source or a connectivity probe does not prove a complete agent or named responder. Cursor remains an optional development tool unless A01 records a conflicting requirement.
 
 **Work:**
 
@@ -458,6 +555,7 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 - [ ] Read the authenticated Track 3 challenge and submission instructions. Record source, access date and exact wording needed to resolve scope.
 - [ ] Confirm required runtime technologies, approved H-MEM implementation, any specific model requirement, deliverable formats and actual submission cutoff with timezone.
+- [ ] Explicitly check whether human approval or a specific memory implementation/behavior is mandated. Selective review is the project's product direction, not a confirmed competition rule; reconcile any conflict before claiming compliance.
 - [ ] Treat Cursor as optional under the team's latest guidance; do not invent a mandatory replacement editor. Record any explicit portal rule that needs reconciliation.
 - [ ] Assign a submission owner and identify required private credentials/access without copying secret values into documentation.
 - [ ] Update dependencies/scope explicitly if the real requirements differ from this proposed plan.
@@ -739,6 +837,55 @@ PY
 - `git diff --exit-code origin/main -- dispute-demo/data dispute-demo/policies dispute-demo/scripts dispute-demo/integration dispute-demo/tests/fixtures dispute-demo/tests/test_generation.py` passed: existing data, policies, generators, integrations and fixtures are unchanged. `git diff --check` passed. The T01 inline local-link command above is used again for the four documentation files.
 - Publication uses `git push --set-upstream origin codex/t01-shared-contracts` and a PR from that branch to `main` in `rachelanneliew/Open-Agent-Hackathon`. Commit identity, remote verification and the resulting PR URL are reported after execution. No merge is part of this request.
 - Live application integrations: NOT RUN for this publication. T01 remains DONE; T02 / KAN-11 is the recommended next task and remains NOT_STARTED.
+
+### 2026-10-27 — Post-merge documentation alignment only (section 7)
+
+- Scope/owner: Codex, following the user's explicit local-only section 7 assignment from external `CODEX_POST_MERGE_ALIGNMENT_2026-10-27.md`. This is not a new roadmap task and does not reopen T00. Later implementation/run instructions in the handoff were not executed.
+- Baseline: clean `main`, HEAD `76db7724ed8e32fac8b0fabaf33c556ddaa3bd29`, exactly the reviewed PR #4 merge. `git diff --stat 76db7724ed8e32fac8b0fabaf33c556ddaa3bd29 HEAD` was empty. No newer local changes needed reconciliation. GitHub `fetch_pr` confirmed PR #4 merged to `main` with that merge SHA, nine new files and the retrieval modification (10 paths). No fetch/reset/checkout, commit, push or merge was performed.
+- Reading/source evidence: completed root `AGENTS.md` → full context/roadmap/agent reading, supplied handoff, README/TEAM_SETUP and scoped onboarding instructions. Inspected all PR #4 modules/tests/bridge files, current retrieval, T01 schema/reference and relevant source-policy/generator/test definitions. Findings are source observations; no prototype was executed. The initial `rg --files dispute-demo docs ...` reported missing `docs/`, confirming the planning directory/file was new, not a missing pre-existing prerequisite; it was created for this deliverable.
+- Files changed: `context.md`, `ROADMAP.md`, `README.md`, `agent.md`, `TEAM_SETUP.md`; newly created `docs/planning/JIRA_POST_MERGE_CHANGESET.md`. Root `AGENTS.md`/`CLAUDE.md` required no changes. No runtime, policy, data, fixture, configuration or nested checkout edits.
+- Alignment delivered: recorded selective human review and four autonomous/permitted business outcomes with mandatory-review exclusion of credit; qualified PR #4 as existing prototypes with integration acceptance outstanding; mapped modules to stable tasks; added typed retrieval/history, pure critic, PostgreSQL all-outcome persistence/synchronization, bounded real investigator/controller, memory portability/provenance and complete test-discovery requirements. Cursor is optional. No policy threshold, new lifecycle or integration capability was claimed.
+- Jira read-only evidence: `getAccessibleAtlassianResources`, then `searchJiraIssuesUsingJql` with `project = KAN AND labels = open-agent-hackathon ORDER BY key ASC`, fields `summary, description, status, assignee, parent, issuelinks, updated`, `maxResults=100`, `responseContentFormat=html`, `view=full`. Returned all 20 labelled issues, `isLast=true`. KAN-9/KAN-10 Done; KAN-11–KAN-23 and epics KAN-4–KAN-8 To Do; all unassigned, no issue links. Current descriptions/timestamps and exact proposed deltas are in the new preview. Proposed fields: descriptions only, with one explicit KAN-14 retry phrase replacement plus 13 addenda; summaries and all other fields unchanged. Jira edits are NOT APPLIED and require explicit approval, immediate fresh reads, rich-text preservation and read-back verification.
+
+Verification from the repository root (documentation only; Python 3.12.5, standard library, no application imports):
+
+| Exact command | Result / scope |
+|---|---|
+| `git status --short --branch`; `git rev-parse HEAD`; `git log -3 --oneline` | Initial clean `main` at reviewed `76db772`; final status contains only the five modified documents and new planning file. |
+| `git show --stat --oneline 76db7724ed8e32fac8b0fabaf33c556ddaa3bd29`; `git diff --stat 76db7724ed8e32fac8b0fabaf33c556ddaa3bd29 HEAD` | 10 PR paths (1,023 insertions, 2 deletions); local HEAD equals reviewed source. |
+| `python3 --version` | Python 3.12.5. This is the documentation-check interpreter, not a new application-runtime verification. |
+| `PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/validate_post_merge_docs.py` | PASS after removing a trailing blank line from the new preview: 6 documents, 100 local Markdown links, 18 inventory paths and 10 PR paths; balanced fences/final newlines; unchanged 15-task IDs/mappings/statuses/dependencies and all prior work-log text; 13 exact Jira HTML description snapshots and all 20 summaries/timestamps checked against the read response; only six authorized documentation files changed. The temporary checker and response snapshot are session validation artifacts outside the repository. |
+| `git diff --check` | PASS, exit 0; no changed-line whitespace errors. |
+| `git diff --no-index --check -- /dev/null docs/planning/JIRA_POST_MERGE_CHANGESET.md` | No diagnostics after removing the initial extra EOF blank line. Exit 1 is the expected added-file difference, not a remaining whitespace error. |
+| `git diff --exit-code HEAD -- dispute-demo getting-started zetaris-platform AGENTS.md CLAUDE.md` | PASS, exit 0; runtime/source/policy/data/tests/integration files, nested checkout references and entry points unchanged. |
+
+- Application validation/tests, both application test roots, import execution, Zetaris/JDBC, PostgreSQL/SQLite, Nightshift inference/discovery, H-MEM reference/persistence, HackOS portal checks, migrations/reset and service startup: **NOT RUN** for this documentation-only scope. T00/T01 passing counts and service outcomes retain their 26 October dates; no new integration acceptance is asserted. External H-MEM prerequisites were documented from source, not installed or checked for availability.
+- Remaining decisions: T10 must confirm advisory acceptance scope or an exact approved versioned history rule; T04/T05 must settle lifecycle/new-evidence re-review, cross-dispute duplicate scope and replay/freshness semantics; T09 must verify portable reference setup/persistence; A01 must confirm portal obligations. These do not block this local alignment or T02's typed retrieval with explicit unsupported states.
+- `context.md` changed to reflect the assigned product direction and verified prototype locations, without altering historical evidence. T00/T01 remain DONE; T02–T13 and A01 remain NOT_STARTED. No new checkboxes marked complete.
+- Recommended next implementation task: **T02 / KAN-11 only**, preserving JDBC and transaction `customer_id`, adapting scoped typed case/history reads and testing missing text, cutoff and failures. Not started. Stop after reporting this local alignment and requesting approval for the exact Jira preview.
+
+### 2026-10-27 — Apply approved Jira description alignment
+
+- Scope: the user answered “yes u may” to the exact KAN-11–KAN-23 description/acceptance preview, preserving summaries, statuses, assignees, task IDs and completed T00/T01. Authorization covers these descriptions only; no implementation, policy decision or Git publication was started.
+- Preflight: re-read the required root guidance and approved change set; `git status --short --branch` showed the six existing alignment documents on `main`, and `git diff --exit-code HEAD -- dispute-demo getting-started zetaris-platform AGENTS.md CLAUDE.md` passed. Preserved all prior local edits. Runtime sources already inspected in the preceding alignment remained unchanged.
+- API sequence: `getAccessibleAtlassianResources`; `executeRead(name=getContentFormatGuide, inputs={toolName: editJiraIssue})`; fresh `searchJiraIssuesUsingJql` with `project = KAN AND labels = open-agent-hackathon ORDER BY key ASC`, fields `summary, description, status, assignee, parent, issuelinks, updated, resolution, labels`, `maxResults=100`, HTML/full response. All 20 issues returned, no further page; 13 descriptions matched the preview.
+- Each issue: `getJiraIssue` immediately before its edit; compare description/summary/updated timestamp; `editJiraIssue` with only `fields.description`, HTML input/output; `getJiraIssue` read-back. Appended the exact approved addendum once, preserving original rich text; KAN-14 additionally received the approved `retry reuse/block` → `identical-payload retry reuse; changed-payload rejection` replacement. No comments, assignments, transitions, links or other fields were submitted.
+- Verification: all 13 saved descriptions match approved wording and structure. The first byte comparison for KAN-13 paused because Jira encodes apostrophes as `&#039;`; inspection confirmed equivalent serialization, and entity-normalized comparison passed. No corrective rewrite or duplicate addendum was needed. A final identical JQL read verified all 20 issues: protected fields unchanged, and KAN-4–KAN-10 descriptions/updated timestamps unchanged. T00/T01 remain Done; KAN-11–KAN-23 remain To Do. Per-issue timestamps are in `docs/planning/JIRA_POST_MERGE_CHANGESET.md`.
+- Local records updated: the existing preview/application receipt, this work log, README's pending-approval text and context's Jira follow-up note. Task board/statuses/dependencies and all historical completion records retained.
+- Local checks: `PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/validate_post_merge_docs.py` — PASS, 6 documents, 100 local links, 18 inventory paths, 10 PR paths, fences/newlines and unchanged 15-task board/statuses/dependencies/history; `PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/verify_jira_alignment_application.py` — PASS, 13 approved descriptions/single addenda/KAN-14 correction, 20 unchanged protected-field sets and 7 untouched issues, receipts matching read-backs. `git diff --check` and `git diff --exit-code HEAD -- dispute-demo getting-started zetaris-platform AGENTS.md CLAUDE.md` — PASS, exit 0. `git diff --no-index --check -- /dev/null docs/planning/JIRA_POST_MERGE_CHANGESET.md` — no whitespace diagnostics, expected exit 1 for an added file. Temporary validation scripts/read-response records remain outside the repository.
+- Application tests, Zetaris/PostgreSQL/SQLite/Nightshift/H-MEM and HackOS live checks: **NOT RUN**; not needed for these approved Jira description edits. No runtime, policies, data, configuration, services, commits, pushes or merges changed.
+- Remaining policy/lifecycle/portability/portal questions are unchanged. Recommended next implementation task: **T02 / KAN-11 only**, not started. Stop after this Jira follow-up.
+
+### 2026-10-27 — Publish post-merge alignment and Jira change record
+
+- Scope: the user's follow-up request to write a detailed commit message and push the completed documentation to `origin/main`. This separately authorizes Git publication; no implementation task or further Jira edit is included.
+- Remote baseline: `git fetch origin` passed after the sandbox denied writing `.git/FETCH_HEAD` and the authorized retry succeeded. `git rev-list --left-right --count origin/main...HEAD` returned `0 0`; local `main` and `origin/main` both remain at reviewed merge `76db7724ed8e32fac8b0fabaf33c556ddaa3bd29` before publication.
+- Files prepared: `README.md`, `ROADMAP.md`, `TEAM_SETUP.md`, `agent.md`, `context.md` and new `docs/planning/JIRA_POST_MERGE_CHANGESET.md`. The detailed commit describes the prototype inventory, integration acceptance requirements, setup clarifications, exact approved Jira changes and verification evidence. Temporary validation scripts and Jira response records stay outside the repository.
+- Documentation validation: `PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/validate_post_merge_docs.py` — PASS: six documents, 100 local links, 18 inventory paths and 10 PR paths; unchanged task IDs, statuses, dependencies and prior history. `PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/verify_jira_alignment_application.py` — PASS against the saved API read-backs: 13 approved descriptions, 20 unchanged protected-field sets, seven excluded issues untouched and receipts matching. This is a local evidence check, not a new live Jira audit.
+- Whitespace/scope checks: `git diff --check` — PASS, exit 0; `git diff --no-index --check -- /dev/null docs/planning/JIRA_POST_MERGE_CHANGESET.md` — no diagnostics, expected exit 1 for the added file; `git diff --exit-code HEAD -- dispute-demo getting-started zetaris-platform AGENTS.md CLAUDE.md` — PASS, exit 0. Application source, policies, data, tests, configuration and nested checkout references are unchanged.
+- Application tests and live Zetaris/PostgreSQL/SQLite/Nightshift/H-MEM/HackOS checks: **NOT RUN** for this documentation publication. No new runtime capability is claimed. `context.md` needs no further architecture/status change.
+- Publication uses an explicit six-file commit and normal `git push origin main`, without force. The commit identity, staged checks, push result and remote verification are reported after execution rather than asserted in advance.
+- Recommended next implementation task: **T02 / KAN-11 only**, not started. T00/T01 remain DONE; all remaining task statuses and acceptance gates are preserved.
 
 ## 11. Deferred scope
 

@@ -2,15 +2,17 @@
 
 ## What is built
 
-We are building agents that investigate fictional payment disputes, check evidence and policies, and recommend a simulated action.
+We are building one Nightshift investigator with a Python controller, deterministic policy evaluator, pure critic and PostgreSQL action service for fictional payment disputes. Policy-permitted credit, evidence request and decline are autonomous; policy-required human review is exceptional and has no credit effect.
 
-**Data flow:** generated files → project PostgreSQL → Zetaris → backend retrieval function → agents.
+**Target data flow:** generated files → project PostgreSQL → Zetaris → approved backend reads → policy/investigator/critic/controller → PostgreSQL simulated decision service.
 
 - Generated and validated **40 disputes**, 42 transactions, 54 settlement movements, 81 evidence items and 16 rules across two fictional policy versions.
 - Added reproducible generation, test fixtures, evidence documents and data-validation tests.
 - Rachel has loaded the project database and registered its tables in Zetaris.
 - Added `get_dispute_context.py`; it expects the Zetaris datasource name **`dispute`**
-- Agent decision-making, critic loop, H-MEM, final UI and safe simulated actions are still to be built. The final connection test below verifies your own setup.
+- PR #4 adds prototypes in `dispute-demo/agent/`: policy evaluator, SQLite-writing critic, deterministic resolver, memory service and H-MEM client/bridge. These are not a completed agent: typed integration, pure critic separation, PostgreSQL action storage, a real Nightshift investigator, bounded workflow, verified portable memory setup and UI remain outstanding. See [context.md](./context.md) and [ROADMAP.md](./ROADMAP.md).
+
+**Evidence date:** source inspected 27 October 2026 at `76db772`. T00's passing JDBC and failed Nightshift discovery are dated 26 October evidence, not current service status. No application tests or live application checks were run for this documentation alignment. The connection commands below are setup instructions to verify separately when assigned, not commands executed in this pass.
 
 GitHub shares code and generated files. It does **not** share running containers, database contents or passwords. These instructions create your own local setup on macOS/Linux using Bash. Windows users should use WSL2 with Docker integration and adapt their local paths.
 
@@ -23,7 +25,7 @@ cd Open-Agent-Hackathon
 
 Already cloned? Run `git pull` from your checkout instead.
 
-Install **Docker Desktop, Python 3.10+, a JDK 11+ (21 works on Rachel's machine), Git and Cursor**.  Allow Docker roughly **8 GB RAM and 4 CPUs**, following the bundled platform guide.
+Install **Docker Desktop, Python 3.10+, a JDK 11+ (21 works on Rachel's machine), and Git**. Cursor, Codex and Claude Code are optional development tools; none is a runtime component or a verified competition requirement. Allow Docker roughly **8 GB RAM and 4 CPUs**, following the bundled platform guide.
 
 Check that these folders contain files:
 
@@ -229,7 +231,21 @@ After saving a provider key in Nightshift, run one small real inference check:
 python3 dispute-demo/integration/check_nightshift.py --chat
 ```
 
-**Ready when:** authenticated model discovery passes and the script receives a non-empty text reply through Nightshift. A running app or healthy endpoint alone does not prove a model can answer. This verifies the connection; agent decision-making, critic, memory and UI still need implementation. The check follows the [Meterless provider contract](https://meterless.ai/engines.html).
+**Ready when:** authenticated model discovery passes and the script receives a non-empty text reply through Nightshift. A running app or healthy endpoint alone does not prove a model can answer. This verifies only the connection; the structured investigator and prototype integration still need implementation and acceptance tests. The check follows the [Meterless provider contract](https://meterless.ai/engines.html).
+
+## 8. H-MEM prototype prerequisites — setup not yet reproduced
+
+The existing [Python client](./dispute-demo/agent/hmem_client.py) invokes the [TypeScript bridge](./dispute-demo/agent/hmem_bridge/server.ts) in a subprocess for each operation. It needs Node.js, a `tsx` runner and the selected official H-MEM reference source with its dependencies installed externally. The [bridge manifest](./dispute-demo/agent/hmem_bridge/package.json) declares none of those dependencies and pins no reference revision; installing that manifest alone is not a complete setup.
+
+| Existing configuration/fallback | Source-visible behavior; not a verified setup |
+|---|---|
+| `HMEM_TSX` | Explicit path to the `tsx` executable; otherwise the client checks `../hmem-reference/reference/node_modules/.bin/tsx` relative to the repository root, then `tsx` on PATH. |
+| `HMEM_REFERENCE_SRC` | Explicit path to the reference TypeScript entry point; otherwise the bridge resolves `../hmem-reference/reference/src/index.ts` relative to the repository root. |
+| `persist_dir` / `ledger_path` parameters | Memory and SQLite state default beneath the user's `.local/state/dispute-demo`; tests must use isolated temporary directories. These stores are not the canonical PostgreSQL ledger. |
+
+The sibling `hmem-reference` tree is an external prerequisite, not supplied by this repository or guaranteed to exist on another machine. T00 located upstream revision `1742dec56a66e58eef9dda2d2b865823758ca8cd`; this is a historical reference anchor, not proof that PR #4's external installation matches it. T09 must verify/pin the chosen source, runner/dependencies and portable setup, add bounded subprocess/error handling, and demonstrate real save → new process/restart → recall with customer isolation and safe serialized/concurrent persistence access. No install command or successful reference run is claimed here. A01 must still verify competition approval.
+
+The [prototype H-MEM tests](./dispute-demo/agent/tests/test_hmem_integration.py) use the external reference even though their docstring says offline. They were NOT RUN in this alignment. The [critic tests](./dispute-demo/agent/tests/test_critic.py) mock policy evaluation and use SQLite; neither these nor the historical 23-test root suite proves PostgreSQL safety or a complete agent. Both test roots require explicit collection during implementation. Do not start services, reinstall teammates' environments, or use the resolver as a setup probe: it can write local state. Further tested setup instructions belong to T09.
 
 ## Working together
 
