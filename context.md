@@ -3,7 +3,7 @@
 > **Canonical project brief for all coding agents and collaborators.**
 > Read this file **at the start of every task**, then consult [`ROADMAP.md`](./ROADMAP.md) for the active priorities. Read the actual code, policies, schemas, tests, and HackOS instructions before making implementation claims.
 >
-> **Context last reviewed:** 2026-10-26 (T00 / KAN-9 baseline audit). **Evidence basis for current runtime claims:** inspected source at `a5ab88a` and the actual local/JDBC/platform checks recorded in `ROADMAP.md`. Nightshift discovery failed in this audit; its earlier READY result remains historical. Only T00 is complete. Jira status and planned architecture do not prove implementation.
+> **Context last reviewed:** 2026-10-26 (T01 / KAN-10 shared contracts). T00 and T01 are complete. **Evidence basis:** the T00 source/live checks and T01 local contract checks recorded in `ROADMAP.md`. Nightshift discovery failed in T00; its earlier READY result remains historical. T01 adds no live integration or action execution. Jira status and planned architecture do not prove implementation.
 
 ## 1. Project identity
 
@@ -114,7 +114,11 @@ A single Python application may contain all these modules; separate deployed ser
 
 ### Minimal workflow contract
 
-Suggested contract names: `DisputeContext`, `PolicyResult`, `AgentProposal`, `CriticResult`, `CommitResult`, `RunState`. Define exact fields from the real repository in T01, not from this summary. Include IDs, source snapshot/revisions, policy identity, evaluation cutoff, cited evidence/rules and action-specific integer amounts.
+Implemented T01 types: `DisputeContext`, `PolicyResult`, `AgentProposal`, `CriticResult`, `CommitResult`, `RunState` in [`dispute-demo/app/schemas.py`](./dispute-demo/app/schemas.py). The [contract reference](./dispute-demo/docs/contracts.md) specifies fields, exact source-policy precedence/boundaries, workflow transitions, synchronization requirements and unresolved business lifecycle decisions. These are strict, immutable transport types with JSON conversion; they do not execute policy, validate factual support or write decisions.
+
+`recommend_refund` maps explicitly to a new simulated `provisional_credit`; existing merchant refund/reversal movements are preserved. Non-credit outcomes (`decline`, `request_evidence`, `human_review`) have no amount/effect. Missing evidence uses categories rather than invented document IDs. Business outcomes, critic verdicts and persistence statuses are separate.
+
+All stages carry the same dispute/snapshot/cutoff/policy/source-revision reference. A snapshot UUID is identity only; `source_revision=None` means freshness is unavailable and cannot support a successful commit result. The documented future protocol uses a global source-revision guard shared by **all** relevant writers, including settlement inserts, evidence/policy changes and actions. No guard, migration or concurrency protection is implemented yet. Source policies define no business lifecycle beyond generated `open` disputes; later action tasks must resolve that explicitly.
 
 Keep **business outcome** (credit, evidence request, decline, human review) separate from **execution status** (committed, reused, rejected, unavailable, failed). The critic can approve a proposal for commit, but only the database service can confirm persistence. A failed database call is not a saved review item.
 
@@ -150,13 +154,20 @@ Keep **business outcome** (credit, evidence request, decline, human review) sepa
 - The sandbox initially blocked JDBC networking; an approved retry passed. The overall preflight still exits 1 for two REST-only failures. Its initial “port closed” output must not be interpreted as a service outage.
 - External dated progress reports are absent from this checkout. Authenticated HackOS requirements and deadlines remain unverified under A01.
 
+### Verified in T01 (local contract checks only)
+
+- Added six shared contracts and supporting source/recommendation types with strict IDs, UTC times, integer money, scope/version binding, explicit missing inputs and effect-free non-credit results.
+- All 23 local tests pass: 21 contract tests plus the two existing generation tests. All 40 authored scenarios round-trip without changing fixture meaning; these are representation checks, not agent predictions. The synthetic-data validator also passes. Source policies, data, fixtures, generator and integrations are unchanged.
+- The [contract reference](./dispute-demo/docs/contracts.md) records opening-date version selection, 30/45-day filing windows, inclusive 20,000 SGD-cent review boundary, ordered rule precedence, workflow protocol, stale-result invalidation and all-writer synchronization. Unspecified business lifecycle, broader ledger/evidence semantics, history rules and revision support remain explicit decisions for later tasks.
+- Live Zetaris/PostgreSQL/Nightshift/H-MEM checks are NOT RUN for T01. Next recommended task is T02 / KAN-11; it is not started.
+
 ### Defined or planned, not implemented
 
 - `policy_rules.csv` and the two Markdown policies define predicates, precedence and thresholds; no executable runtime policy engine exists. The 40 expected-result fixtures are test-only authored answers.
-- Generator `FIELDS['decisions']` lists column names only. There are no implemented shared action contracts, decision migrations, transactional action service or duplicate/concurrency guarantees.
+- Generator `FIELDS['decisions']` lists column names only. T01 implements shared transport contracts, but no decision migrations, transactional action service or duplicate/concurrency guarantees exist.
 - Existing retrieval is a useful T02 prerequisite, but has no allowlisted typed tool registry, customer-history interface, source revisions or dedicated completeness/scoping/failure tests.
 - No structured Nightshift investigator, mandatory critic, bounded workflow controller, H-MEM project adapter, analyst UI or complete end-to-end/reset runner exists in this checkout.
-- Legacy refund terminology, decision lifecycle and source synchronization require T01 decisions. Neither source policy defines a repeated-claims threshold; no threshold should be inferred from the project narrative.
+- T01 resolves legacy recommendation terminology and specifies future source synchronization. Business lifecycle/re-review rules remain open for T04/T05. Neither source policy defines a repeated-claims threshold; no threshold should be inferred from the project narrative.
 - `registration.sql` and `verify.sql` use historical datasource `dispute_pg`; current setup/retrieval use `dispute`. The root has gitlinks without `.gitmodules`, so a fresh clone needs the onboarding/platform setup steps in `TEAM_SETUP.md`.
 
 ### Located H-MEM reference (not integrated)

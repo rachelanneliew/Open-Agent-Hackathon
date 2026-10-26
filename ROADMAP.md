@@ -1,8 +1,8 @@
 # Task Roadmap — Synthetic Card-Dispute Resolution Agent
 
 > **Canonical work queue.** Read [`context.md`](./context.md) first, then [`agent.md`](./agent.md).
-> **Revision:** task-based plan, 26 October 2026; T00 baseline audited on 26 October 2026. The completion record below distinguishes source inspection, passing live checks, failed checks, and NOT RUN checks.
-> **Next roadmap task:** T01 / KAN-10, only when assigned. T00 / KAN-9 is DONE against its audit acceptance gate; T01–T13 and A01 remain NOT_STARTED.
+> **Revision:** task-based plan, 26 October 2026; T00 baseline audit and T01 shared contracts completed on 26 October 2026. The completion records below distinguish source inspection, passing local/live checks, failed checks, and NOT RUN checks.
+> **Next roadmap task:** T02 / KAN-11, only when assigned. T00 / KAN-9 and T01 / KAN-10 are DONE against their acceptance gates; T02–T13 and A01 remain NOT_STARTED.
 > **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
 
 ## 1. What changed from the earlier plan
@@ -60,7 +60,7 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 | ID | Task | Dependencies | Status |
 |---|---|---|---|
 | T00 | Verify the current repository baseline | None | DONE |
-| T01 | Define shared contracts and exact policy semantics | T00 | NOT_STARTED |
+| T01 | Define shared contracts and exact policy semantics | T00 | DONE |
 | T02 | Expose narrow case and history retrieval tools | T01 | NOT_STARTED |
 | T03 | Implement deterministic policy evaluation | T01, T02 | NOT_STARTED |
 | T04 | Create sandbox decision, action and audit storage | T01 | NOT_STARTED |
@@ -122,7 +122,8 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 ### T01 — Define shared contracts and exact policy semantics
 
 **Phase:** Foundation  
-**Status:** NOT_STARTED  
+**Status:** DONE
+
 **Depends on:** T00  
 **Deliverable:** Typed data contracts plus an explicit mapping between settlement movements, recommendations, decisions and simulated actions.
 
@@ -130,18 +131,18 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **Work:**
 
-- [ ] Define or reuse DisputeContext, PolicyResult, AgentProposal, CriticResult, CommitResult and RunState. Names and paths here are proposed, not existing APIs.
-- [ ] Resolve legacy recommend_refund/recommended_refund_minor terminology. Preserve merchant refunds and reversals as source movements; explicitly map only the intended new action to simulated provisional credit.
-- [ ] Specify IDs, currency, integer minor units, evaluation cutoff, policy selection anchor, source revision/snapshot information, source references and allowed outcome/status vocabulary. Distinguish business outcome from execution status such as committed, reused, rejected, unavailable or failed.
-- [ ] Derive policy thresholds, rule precedence, filing boundaries and status transitions from source files. If a rule is absent, record it as an open design decision; do not invent a value or change fixtures to make code pass.
-- [ ] Specify invalidation of a stale proposal and the write-side synchronization contract. All writers that can change relevant dispute/settlement state must participate in the chosen locking or version-validation scheme.
-- [ ] Represent missing evidence by requirement/category when no document exists, not by a fabricated evidence ID. Define credit amounts only for credit actions and keep non-credit records effect-free.
+- [x] Define or reuse DisputeContext, PolicyResult, AgentProposal, CriticResult, CommitResult and RunState. Implemented in `dispute-demo/app/schemas.py` with strict supporting types and JSON conversion.
+- [x] Resolve legacy recommend_refund/recommended_refund_minor terminology. Preserve merchant refunds and reversals as source movements; explicitly map only the intended new action to simulated provisional credit.
+- [x] Specify IDs, currency, integer minor units, evaluation cutoff, policy selection anchor, source revision/snapshot information, source references and allowed outcome/status vocabulary. Distinguish business outcome from execution status such as committed, reused, rejected, unavailable or failed.
+- [x] Derive policy thresholds, rule precedence, filing boundaries and status transitions from source files. The contract reference documents workflow transitions and records absent business lifecycle rules as open decisions; source policies and fixtures are unchanged.
+- [x] Specify invalidation of a stale proposal and the write-side synchronization contract. All writers that can change relevant dispute/settlement state must participate in the chosen locking or version-validation scheme. The documented global revision guard is a requirement for T02/T04/T05, not an implemented lock.
+- [x] Represent missing evidence by requirement/category when no document exists, not by a fabricated evidence ID. Define credit amounts only for credit actions and keep non-credit records effect-free.
 
 **Acceptance gate:** Contract tests reject malformed IDs/amounts/outcomes and represent existing scenarios without changing their meaning. A documented transition/precedence mapping and unresolved questions are available.
 
 **Not in this task:** No new policy numbers, LLM calls, migrations or action execution.
 
-**Suggested paths/artifacts:** Proposed: dispute-demo/app/schemas.py, dispute-demo/tests/test_schemas.py; concise contract notes in context.md. Reuse existing equivalents; these paths are not verified as present.
+**Implemented artifacts:** [schemas.py](./dispute-demo/app/schemas.py), [test_schemas.py](./dispute-demo/tests/test_schemas.py), [contract reference](./dispute-demo/docs/contracts.md) and updated [context.md](./context.md). Acceptance evidence is in the T01 work log below.
 
 **Stop:** report evidence, update this task's status and the work log, then stop. Do not automatically start the next task.
 
@@ -672,6 +673,72 @@ The local handbook section 7.4 points to [Meterless Engines](https://meterless.a
 - Remote inspection: `git fetch origin` confirmed `origin/main` at `cdb1cc9`, the merge of PR #2, with the same file tree as the audited branch tip `8883e5c`. Preserve that merge and apply only the documentation follow-up on top.
 - Validation: `git diff --check` and inline Python checks for local Markdown links, balanced fences and final newlines across the two changed documents passed. The preceding data validation and 2 passing generation tests apply to unchanged application files; live integration checks are NOT RUN for this documentation publication.
 - Publication uses a normal, non-forced push to `origin/main`; commit identity and remote verification are reported after execution. T00 remains DONE; T01 / KAN-10 is the recommended next task and is not started.
+
+### 2026-10-26 — Add the root README documentation guide
+
+- Scope: the user's request to put the Markdown-file guide in the repository README. No root README existed; added `README.md` with the supplied table and repository-relative links suitable for GitHub and teammate checkouts.
+- Files changed: `README.md` and this work log. No implementation, architecture or task-status changes; `context.md` unchanged. This documentation index does not complete T13's demo/submission deliverables.
+- Validation: `python3 -` with inline standard-library assertions passed for 15 local Markdown link targets in `README.md` and `ROADMAP.md`, final newlines and absence of machine-specific paths in the README. `git diff --check` passed; `git diff --no-index --check -- /dev/null README.md` produced no whitespace diagnostics (exit 1 indicates the added-file difference).
+- Application tests and live integrations: NOT RUN for this documentation-only change. Next implementation task remains T01 / KAN-10, not started.
+
+### 2026-10-26 — Add README task handover instructions
+
+- Scope: the user's request to explain how another teammate can identify and carry out the next Jira task. Extended `README.md` with the roadmap's role, a dated T01 / KAN-10 handover, its deliverable and acceptance gate, execution/completion steps and a copyable task assignment.
+- Preserved the existing documentation guide and local README/work-log changes. No task started or Jira status changed; `context.md` unchanged. T02 / KAN-11 remains the recommendation after T01, and A01 / KAN-23 can be assigned separately.
+- Validation: `python3 -` with inline assertions passed for 21 local links, balanced fences, final newlines and portable README paths. `git diff --check` passed; `git diff --no-index --check -- /dev/null README.md` produced no whitespace diagnostics (exit 1 indicates the added-file difference). Application tests and live integrations: NOT RUN for this documentation-only change.
+
+### 2026-10-26 — T01 / KAN-10: shared contracts and source-policy semantics
+
+- Status: DONE against the T01 acceptance gate. Prerequisite T00 was verified against its completion record and unchanged baseline sources; the existing two generation tests and data validator passed before implementation. Started from `27d50bdb1ea07a7edd088ebbce2239c71877da72` on task branch `codex/t01-shared-contracts`.
+- Added `dispute-demo/app/__init__.py`, `dispute-demo/app/schemas.py`, `dispute-demo/tests/test_schemas.py` and `dispute-demo/docs/contracts.md`. Updated this roadmap and `context.md`; preserved the earlier README/work-log edits and advanced README's handover to T02. Changes were local and uncommitted at task completion; publication is covered by the follow-up below.
+- Implemented all six immutable shared contracts, supporting source types and strict JSON conversion. Tests reject malformed source/runtime IDs, unknown fields/outcomes, invalid currencies/times, coercible/negative/overflow amounts, future/out-of-scope records, mixed policy versions, fabricated missing-evidence IDs and invalid commit/run combinations.
+- The explicit legacy adapter maps only recommendation `recommend_refund` to `provisional_credit`; merchant refunds/reversals remain source movements. DP-0014 still represents 10,000 captured, 4,000 already refunded and a separate authored 6,000 credit recommendation. Non-credit outcomes have no amount or simulated effect. Policy, proposal, critic and persistence results have distinct meanings.
+- Documented opening-date version selection, exact 30/45-day filing boundaries, the 20,000 SGD-cent threshold, ascending first-terminal rule precedence and workflow phase transitions. No source policy defines persisted dispute lifecycle/reopening rules; those are explicitly unresolved for T04/T05. No new policy number, fixture meaning or source record was introduced.
+- Documented stale-result invalidation and a future global source-revision guard requiring participation by **all** relevant writers, including settlement inserts, evidence/policy edits, loaders and action writes. Snapshot UUIDs do not establish freshness; unavailable source revision is null and cannot appear in a successful commit result. Real synchronization, durability and uniqueness remain T04/T05 work.
+
+Verification from `dispute-demo/` (existing Python 3.13.7 venv):
+
+| Exact command | Result |
+| --- | --- |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -v` | PASS, 23 tests (21 schema + 2 generation), 0 failures/errors/skips. All 40 authored scenarios across eight groups are representable. This is not policy prediction or integration execution. |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python scripts/validate_synthetic_data.py` | PASS: 42 transactions, 54 settlements, 40 disputes, 81 evidence rows, 16 rules; keys, timestamps, policy coverage, documents, hashes and fixture references checked. |
+
+Repository-root verification:
+
+- `git diff --exit-code 27d50bd -- dispute-demo/data dispute-demo/policies dispute-demo/scripts dispute-demo/integration dispute-demo/tests/fixtures dispute-demo/tests/test_generation.py`: PASS (exit 0); existing source/data/fixture/test paths unchanged.
+- `git diff --check`: PASS after correcting the newly edited status line's Markdown whitespace.
+- Local link validation: PASS, 39 targets across README, context, roadmap and contract reference, using the exact command below. External URLs were not treated as live integration checks.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 getting-started/.venv/bin/python - <<'PY'
+import re
+from pathlib import Path
+files = [Path(p) for p in ('README.md', 'context.md', 'ROADMAP.md', 'dispute-demo/docs/contracts.md')]
+checked = 0
+for path in files:
+    for target in re.findall(r'\[[^]]+\]\(([^)]+)\)', path.read_text()):
+        if target.startswith(('https://', 'http://', '#')):
+            continue
+        resolved = path.parent / target.split('#')[0]
+        assert resolved.exists(), f'{path}: broken target {target}'
+        checked += 1
+print(f'PASS: {checked} local Markdown link targets across {len(files)} files')
+PY
+```
+
+- Live Zetaris/PostgreSQL/Nightshift/H-MEM integration checks, migrations, writes and concurrency tests: **NOT RUN** in T01; no service capability is claimed from these local tests. T00's dated evidence remains historical.
+- Open implementation decisions are recorded in `dispute-demo/docs/contracts.md`: business lifecycle/re-review and duplicate scope, broader ledger/evidence interpretations, unsupported currency/policy scope, historical-cutoff handling at commit and revision/read-coherence implementation. These are explicit handover requirements, not a missing T01 acceptance artifact.
+- Jira: read the live KAN-10 description, moved it to In Progress, posted completion/test evidence as comment `10002`, then transitioned it to Done. The transition response confirmed status **Done** and resolution **Done**. No other issue was changed.
+- Recommended next task: T02 / KAN-11. T02–T13 and A01 remain NOT_STARTED; no next task was begun.
+
+### 2026-10-26 — Publish T01 and README handover for review
+
+- Scope: the user's request to commit and push the completed work to GitHub and open a PR targeting `origin/main`. Includes the T01 contracts/tests/reference, root README guide/handover and context/roadmap evidence; no new implementation task started.
+- `git fetch origin` passed. `git rev-list --left-right --count origin/main...HEAD` returned `0 0` before the commit: the task branch starts at current `origin/main`, `27d50bdb1ea07a7edd088ebbce2239c71877da72`.
+- Fresh checks from `dispute-demo/`: `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -v` — PASS, 23 tests, zero failures/errors/skips; `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python scripts/validate_synthetic_data.py` — PASS, 42 transactions, 54 settlements, 40 disputes, 81 evidence rows and 16 rules.
+- `git diff --exit-code origin/main -- dispute-demo/data dispute-demo/policies dispute-demo/scripts dispute-demo/integration dispute-demo/tests/fixtures dispute-demo/tests/test_generation.py` passed: existing data, policies, generators, integrations and fixtures are unchanged. `git diff --check` passed. The T01 inline local-link command above is used again for the four documentation files.
+- Publication uses `git push --set-upstream origin codex/t01-shared-contracts` and a PR from that branch to `main` in `rachelanneliew/Open-Agent-Hackathon`. Commit identity, remote verification and the resulting PR URL are reported after execution. No merge is part of this request.
+- Live application integrations: NOT RUN for this publication. T01 remains DONE; T02 / KAN-11 is the recommended next task and remains NOT_STARTED.
 
 ## 11. Deferred scope
 
