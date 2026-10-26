@@ -1,9 +1,9 @@
 # Task Roadmap — Synthetic Card-Dispute Resolution Agent
 
 > **Canonical work queue.** Read [`context.md`](./context.md) first, then [`agent.md`](./agent.md).
-> **Revision:** task-based plan, 26 October 2026. This is a planning revision based on the supplied reports and context kit, **not a live repository audit**.
-> **Next roadmap task:** T00, when assigned. All task statuses below remain NOT_STARTED until verified against their acceptance gates in the actual checkout.
-> **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; updating these documents does not start T00.
+> **Revision:** task-based plan, 26 October 2026; T00 baseline audited on 26 October 2026. The completion record below distinguishes source inspection, passing live checks, failed checks, and NOT RUN checks.
+> **Next roadmap task:** T01 / KAN-10, only when assigned. T00 / KAN-9 is DONE against its audit acceptance gate; T01–T13 and A01 remain NOT_STARTED.
+> **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
 
 ## 1. What changed from the earlier plan
 
@@ -11,7 +11,7 @@ The previous roadmap used different numbers in its summary board and detailed ti
 
 The architecture is clarified, not claimed as implemented: one investigator LLM, one mandatory deterministic critic/validator and one Python workflow controller. A separate LLM critic or manager is not needed for the initial build. H-MEM remains part of the intended complete product, although the first working CLI slice can precede it. Exact competition obligations remain unverified until A01.
 
-Keep the dated `Open_Agent_Hackathon_Progress_2026-10-26*.md` reports as historical evidence. Do not treat their older ticket numbers or copy-ready all-in-one policy prompt as the active task queue. The baseline infrastructure claims still require current-checkout verification in T00.
+Keep the dated `Open_Agent_Hackathon_Progress_2026-10-26*.md` reports as historical evidence. Do not treat their older ticket numbers or copy-ready all-in-one policy prompt as the active task queue. The T00 completion record below now provides current-checkout evidence for the baseline and explicitly identifies unavailable checks.
 
 ## 2. How to execute this roadmap
 
@@ -59,7 +59,7 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 
 | ID | Task | Dependencies | Status |
 |---|---|---|---|
-| T00 | Verify the current repository baseline | None | NOT_STARTED |
+| T00 | Verify the current repository baseline | None | DONE |
 | T01 | Define shared contracts and exact policy semantics | T00 | NOT_STARTED |
 | T02 | Expose narrow case and history retrieval tools | T01 | NOT_STARTED |
 | T03 | Implement deterministic policy evaluation | T01, T02 | NOT_STARTED |
@@ -94,7 +94,7 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 ### T00 — Verify the current repository baseline
 
 **Phase:** Foundation  
-**Status:** NOT_STARTED  
+**Status:** DONE  
 **Depends on:** None  
 **Deliverable:** A factual baseline and a source-backed list of gaps; no application redesign.
 
@@ -102,12 +102,14 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **Work:**
 
-- [ ] Inspect the current tree and working changes. Reuse working modules; do not reinstall platforms or overwrite uncommitted work merely because the old report lists gaps.
-- [ ] Run the existing data-validation and generation tests. Run the existing Zetaris and Nightshift checks only when their configured services are available; inspect their actual arguments first.
-- [ ] Record what is implemented, what is only defined in data or documentation, and what could not be tested. Locate the approved H-MEM reference/specification without guessing a package or API.
-- [ ] Map already-completed work to the stable task IDs below using actual code and test evidence. Record dependencies, missing source policy detail and unavailable services.
+- [x] Inspect the current tree and working changes. Reuse working modules; do not reinstall platforms or overwrite uncommitted work merely because the old report lists gaps.
+- [x] Run the existing data-validation and generation tests. Run the existing Zetaris and Nightshift checks only when their configured services are available; inspect their actual arguments first.
+- [x] Record what is implemented, what is only defined in data or documentation, and what could not be tested. Locate the approved H-MEM reference/specification without guessing a package or API.
+- [x] Map already-completed work to the stable task IDs below using actual code and test evidence. Record dependencies, missing source policy detail and unavailable services.
 
 **Acceptance gate:** Baseline commands and actual results are recorded. Unavailable integration checks are explicitly NOT RUN, not passed. No pending feature is marked complete from prose alone.
+
+**Verified 2026-10-26:** Data validation and 2 generation tests passed on Python 3.13.7; all 9 platform checks and live JDBC verification passed. Nightshift discovery failed (configured endpoint unreachable or timed out); inference is NOT RUN. See the T00 completion record for exact commands, source gaps, and the H-MEM reference. Completion records the baseline, not completion of the planned application.
 
 **Not in this task:** No policy implementation, refactor, new infrastructure, database reset or UI.
 
@@ -582,6 +584,64 @@ The following entries describe earlier work. Their old ticket references and the
 - Staged whitespace checks: the initial `git -c core.whitespace=blank-at-eof,space-before-tab diff --cached --check` reported existing intentional Markdown hard-break spaces. `git -c core.whitespace=-blank-at-eol diff --cached --check` passed, and `git diff --cached --check -- dispute-demo/integration/check_nightshift.py dispute-demo/integration/env.example getting-started` passed with standard whitespace rules.
 - Publication uses `git push --set-upstream origin codex/dispute-investigation-agent`; its outcome and remote/tracking verification are reported in the task response rather than asserted before the push occurs.
 - Recommended next roadmap task, not started: T00 / KAN-9. All roadmap task statuses remain unchanged.
+
+### 2026-10-26 — T00 / KAN-9: verified repository baseline
+
+- Status: DONE. The live KAN-9 definition of done requires verified commands/results, an implemented-versus-planned inventory, documented blockers and this work log; it permits unavailable integrations to be recorded explicitly. No application feature was added.
+- Owner/agent: Codex, executing the user's T00-only request. KAN-9 was read from Jira and moved from To Do to In Progress during the audit; the completion evidence is also recorded on that issue. Live project name: `Open-Agent` (the supplied kit used `My Data Science Team`).
+- Source baseline: `a5ab88a5e736ea2f53953cdbd1886e930df71ef0` on `codex/dispute-investigation-agent`, tracking `origin/codex/dispute-investigation-agent`. Initial checks ran against `25d322b` plus the user's existing working changes; those changes were published as `a5ab88a` during the audit. Hash comparison confirmed that all audited application sources, data, fixtures and policy files were unchanged by publication. The new publication-history entry above is preserved.
+- Files changed by T00: `ROADMAP.md` and `context.md` only. Existing `.DS_Store` changes, source files, private configurations, generated data, nested checkouts and service state were preserved. No installs, source reloads, migrations, resets or application refactors were performed.
+- Environment: macOS, repository venv Python 3.13.7, JayDeBeApi 1.2.3, JPype1 1.7.1, Temurin OpenJDK 21.0.8. `getting-started` HEAD is `6a2fbaa47c32c9ac33f6584c64b43b146c621bed`. Commands below use the existing venv where indicated; `PYTHONDONTWRITEBYTECODE=1` prevents cache writes.
+
+#### Exact commands and observed results
+
+| Working directory | Command | Actual result |
+|---|---|---|
+| Repository root | `git status --short --branch`; `git branch -vv`; `git remote -v`; `git log -1 --format='%H %s'` | Confirmed the local branch and matching GitHub upstream at `a5ab88a`; only the existing root `.DS_Store` modification remained before T00 edits. |
+| `dispute-demo` | `PYTHONDONTWRITEBYTECODE=1 python3 scripts/validate_synthetic_data.py` | PASS, exit 0, even with the first non-login shell's Python 3.9.6; counts 42 transactions, 54 settlements, 40 disputes, 81 evidence rows and 16 policy rules. |
+| `dispute-demo` | `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_generation.py' -v` | Initial non-login-shell attempt: FAIL, exit 1, 2 tests / 2 errors, `Path.write_text(..., newline=...)` unsupported by Python 3.9.6. The documented minimum is Python 3.10; this was an interpreter mismatch, not a passing run. |
+| `dispute-demo` | `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python --version` | Python 3.13.7. |
+| `dispute-demo` | `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python scripts/validate_synthetic_data.py` | PASS, exit 0. Keys, timestamps, policy coverage, all 81 evidence documents, manifest hashes and all 40 fixture references validated. |
+| `dispute-demo` | `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -p 'test_generation.py' -v` | PASS, exit 0: 2 tests, 0 failures, 0 errors, 0 skipped. Covers deterministic generation, supported dataset sizes, authored scenario boundaries, amount fixtures and tamper detection. Test generation uses temporary directories; committed data was not regenerated. |
+| `getting-started` | `PYTHONDONTWRITEBYTECODE=1 python3 scripts/preflight.py --jdbc` | Initial sandbox run failed with `Operation not permitted` on local networking; its printed “closed” port was not evidence of an unavailable service. Approved retry: JDBC port, configured JAR, Java, venv, JayDeBeApi and `SELECT 1` PASS; datasource `dispute`, Lightning databases `NY_TAXI` and `TPCDS_DB`, no USL namespaces. Overall exit 1 reports 2 REST-only failures: missing `ZETARIS_API_KEY` and REST initialization. REST queries NOT RUN; JDBC is usable. |
+| Repository root | `PYTHONDONTWRITEBYTECODE=1 getting-started/.venv/bin/python dispute-demo/integration/get_dispute_context.py DP-0014` | Live JDBC PASS, exit 0: 1 dispute, 1 transaction, 2 completed movements (10,000 capture; 4,000 refund), 2 evidence documents and 8 v2 rules. Retrieval is not a policy decision or recorded credit. |
+| Repository root | `bash zetaris-platform/verify.sh` | First non-login-shell attempt: exit 1, Docker not on PATH. Retry with the existing login-shell PATH: live PASS, exit 0, all 9 checks, including container health, setup-job completion, UI, login and query. No software installed or services started. |
+| Repository root | `bash dispute-demo/integration/db.sh ps` | PASS, exit 0: existing `dispute-postgres` container running and healthy. |
+| Repository root | `sed 's/dispute_pg\./dispute./g' dispute-demo/integration/verify.sql > /private/tmp/kan9-t00-audit/verify-dispute.sql` | Created only a temporary copy using the datasource required by `TEAM_SETUP.md`; repository SQL remains unchanged. Create the temporary directory first when reproducing elsewhere. |
+| Repository root | `PYTHONDONTWRITEBYTECODE=1 getting-started/.venv/bin/python getting-started/scripts/run_sql.py --channel jdbc --dry-run /private/tmp/kan9-t00-audit/verify-dispute.sql` | PASS, exit 0: previewed 3 SELECT statements, nothing sent. |
+| Repository root | `PYTHONDONTWRITEBYTECODE=1 getting-started/.venv/bin/python getting-started/scripts/run_sql.py --channel jdbc /private/tmp/kan9-t00-audit/verify-dispute.sql` | Live PASS, exit 0: 3/3 statements, no skips. Counts: transactions 42, settlements 54, disputes 40, evidence 81, policy rules 16, evidence documents 81. DP-0014 movements and source text agree with the retrieval result. |
+| Repository root | `bash dispute-demo/integration/db.sh exec -T dispute-postgres psql -X -U dispute_loader -d dispute_demo -c '\dt public.*'` | Live read-only PASS, exit 0: exactly 7 public tables: `connection_probe`, `disputes`, `evidence`, `evidence_documents`, `policy_rules`, `settlements`, `transactions`. No decision/action/audit/review tables in this schema. |
+| Repository root | `PYTHONDONTWRITEBYTECODE=1 getting-started/.venv/bin/python dispute-demo/integration/check_nightshift.py` | FAIL, exit 1 with approved local network access: “Nightshift is unreachable or timed out. Keep the app open and check its endpoint.” No successful model discovery in this audit. |
+| Repository root | `PYTHONDONTWRITEBYTECODE=1 getting-started/.venv/bin/python dispute-demo/integration/check_nightshift.py --chat` | NOT RUN: model discovery could not reach the configured runtime. No inference or responder identity claimed. |
+
+Local network checks used approved execution outside the sandbox. The existing SLF4J no-binding warning did not prevent successful JDBC queries. No credential values were printed or added to documentation.
+
+#### Implemented versus planned; mapping to stable tasks
+
+| Source evidence | Verified capability / limit | Roadmap mapping |
+|---|---|---|
+| `scripts/generate_synthetic_data.py`, `scripts/validate_synthetic_data.py`, `tests/test_generation.py`, source CSVs, policies and test-only fixtures (all under `dispute-demo/`) | Reproducible synthetic inputs and integrity checks are implemented. All 40 fixtures cover eight scenario groups; expected outcomes are authored fixtures, not agent evaluations. | Verified baseline for T00; supports future T01/T03 tests without completing either task. |
+| `integration/load_data.py`, `compose.yml`, live public table inventory | Loader and separate source PostgreSQL database exist. Loader supports preview and transactional creation; its `--apply` path was inspected, NOT RUN. `FIELDS['decisions']` is only a column-name definition; generation excludes it and the live schema has no decision tables. | T04/T05 remain NOT_STARTED; no durable decisions, safe action service or concurrency proof. |
+| `integration/get_dispute_context.py`, existing JDBC helper, live DP-0014 and verification SQL | Read-only case, transaction, settlement, evidence-text and applicable-policy retrieval works. Visibility filters and opening-date policy selection exist in SQL. No typed tool registry, customer-history interface, source revisions or retrieval failure/scoping test suite exists. | Partial prerequisite for T02; T01/T02 remain NOT_STARTED. |
+| Policy Markdown, `policy_rules.csv`, generator `policy_rows()` | Two versions, filing windows 30/45 days, first applicable terminal rule by ascending priority, and review above 20,000 SGD minor units are defined. Predicate names are data; no executable runtime evaluator exists. | T03 remains NOT_STARTED. |
+| `integration/check_nightshift.py` | Auth/model-discovery and optional one-word chat probe exist. Current discovery failed; previous READY evidence is historical. No structured investigator, critic or bounded orchestrator exists. | T06–T08 remain NOT_STARTED. |
+| Repository file inventory and official H-MEM reference below | No H-MEM adapter, persistent project memory, analyst UI, end-to-end runner or reset workflow is present. | T09–T13 remain NOT_STARTED; no task marked complete from the architecture or fixtures. |
+| Local handbook and absent external progress reports | Handbook is historical; external progress audit files are not in this checkout. No authenticated HackOS requirements were checked. | A01 remains NOT_STARTED. |
+
+#### Located H-MEM source (reference discovery only)
+
+The local handbook section 7.4 points to [Meterless Engines](https://meterless.ai/engines.html). Its live “Give my agent memory” entry points to `Meterless/Meterless/engines/hmem`. Inspected on 2026-10-26 at upstream commit `1742dec56a66e58eef9dda2d2b865823758ca8cd`: [specification](https://github.com/Meterless/Meterless/blob/1742dec56a66e58eef9dda2d2b865823758ca8cd/engines/hmem/AGENTS.md), [engine README](https://github.com/Meterless/Meterless/blob/1742dec56a66e58eef9dda2d2b865823758ca8cd/engines/hmem/README.md), [reference README](https://github.com/Meterless/Meterless/blob/1742dec56a66e58eef9dda2d2b865823758ca8cd/engines/hmem/reference/README.md), and [conformance directory](https://github.com/Meterless/Meterless/tree/1742dec56a66e58eef9dda2d2b865823758ca8cd/engines/hmem/conformance). The reference README describes deterministic mock embeddings and optional JSON persistence, not a production runtime library. No package/API was guessed. Installation, reference/conformance execution and project save/restart/recall are NOT RUN; those belong to T09. Authenticated competition approval remains an A01 question.
+
+#### Gaps and acceptance decision
+
+- Nightshift is currently unavailable to its configured discovery check. Restore/check that existing runtime before the next live inference test; do not assume the older READY result still applies. REST is unconfigured, while the selected JDBC path passed.
+- T01 must resolve legacy `recommend_refund`/`recommended_refund_minor` versus simulated provisional credit, business outcomes versus persistence statuses, lifecycle transitions and the source-version/write synchronization contract. Neither policy defines a repeated-claims threshold or a decision lifecycle. No new threshold or contract was invented in T00.
+- `registration.sql` / `verify.sql` still use `dispute_pg`; the live datasource and retrieval use `dispute`, as already documented in `TEAM_SETUP.md`. The audit adapted a temporary read-only copy only.
+- Source retrieval omits customer/dispute-status/revision fields needed by later tasks, uses an inner join for evidence text and has no completeness/failure tests. Its policy rows are not executed. These are recorded T01–T03 prerequisites, not fixed as part of this audit.
+- The root tracks `getting-started` and `zetaris-platform` as gitlinks but has no `.gitmodules`; a fresh clone must follow the existing setup instructions to obtain populated onboarding/platform directories. Private configs and running services are local prerequisites, not supplied by GitHub.
+- Acceptance gate met: exact successful and unsuccessful commands, explicit NOT RUN checks, source inventory, stable-task mapping and blockers recorded. Only T00 is DONE; this does not claim a functioning investigation/decision application.
+- `context.md` changed: yes, to replace historical-only runtime claims with dated T00 evidence, record current Nightshift unavailability, identify the official H-MEM reference and verify KAN-9 access. Architecture and intended scope are unchanged.
+- Recommended next task, NOT STARTED: T01 / KAN-10, only after a new instruction. Work stops after T00.
 
 ## 11. Deferred scope
 

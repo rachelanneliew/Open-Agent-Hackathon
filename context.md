@@ -3,7 +3,7 @@
 > **Canonical project brief for all coding agents and collaborators.**
 > Read this file **at the start of every task**, then consult [`ROADMAP.md`](./ROADMAP.md) for the active priorities. Read the actual code, policies, schemas, tests, and HackOS instructions before making implementation claims.
 >
-> **Context last reviewed:** 2026-10-26 (Jira-tracked planning kit merged into this checkout). **Evidence basis for runtime claims:** the team's progress audit dated 2026-10-26, not a fresh integration run. Repository paths and the agent reading workflow were checked locally; this does not re-verify the reported runtime baseline. Jira mappings are supplied by the kit and are not proof of implementation. Update the factual status below whenever code or tests change.
+> **Context last reviewed:** 2026-10-26 (T00 / KAN-9 baseline audit). **Evidence basis for current runtime claims:** inspected source at `a5ab88a` and the actual local/JDBC/platform checks recorded in `ROADMAP.md`. Nightshift discovery failed in this audit; its earlier READY result remains historical. Only T00 is complete. Jira status and planned architecture do not prove implementation.
 
 ## 1. Project identity
 
@@ -54,7 +54,7 @@ Real chargebacks, real bank API access, production authentication, production fu
 
 ## 3. Target workflow and component responsibilities
 
-> **Proposed architecture, not implementation status.** The baseline evidence in section 4 is unchanged. The task-by-task build order is in ROADMAP.md under stable IDs T00–T13 and A01.
+> **Proposed architecture, not implementation status.** Section 4 records the T00 verification and remaining gaps. The task-by-task build order is in ROADMAP.md under stable IDs T00–T13 and A01.
 
 ### Runtime structure
 
@@ -133,28 +133,37 @@ Keep **business outcome** (credit, evidence request, decline, human review) sepa
 
 ## 4. Known implementation state
 
-> The following is an **audit snapshot as of 2026-10-26**. Do not assume it is still true after subsequent commits. Verify against the repository and update this section with evidence.
+> **Verified baseline, 2026-10-26 — T00 / KAN-9.** Source at `a5ab88a` on `codex/dispute-investigation-agent`; exact commands, outcomes and NOT RUN checks are in the T00 completion record in `ROADMAP.md`. This supersedes the historical audit where fresh evidence exists; it does not complete T01–T13 or A01.
 
-### Reported as working / verified in the audit
+### Verified in the T00 audit
 
-- Docker Desktop and the local Zetaris platform configured; its nine platform verification checks passed.
-- Separate project PostgreSQL database running; seeded data loaded; row counts checked.
-- SQL/JDBC readiness and project datasource registration in Zetaris succeeded.
-- `dispute-demo/integration/get_dispute_context.py` reads a dispute and linked transactions, settlement movements, evidence text, and policy rules through Zetaris. It applies evaluation-time visibility and policy-version selection by dispute opening date.
-- Nightshift M1–M4 0.92.7 was running; `dispute-demo/integration/check_nightshift.py` successfully received `READY` via `meterless/auto`.
-- Reproducible synthetic generator, validation script, two generation tests, and expected-result fixtures exist.
+- Seeded synthetic generation, manifest/document/fixture validation and both generation tests pass using the existing Python 3.13.7 venv. The initial non-login shell selected Python 3.9.6 and produced two test errors; use the documented Python 3.10+ runtime. These tests validate data, not agent decisions.
+- All nine existing Zetaris platform verification checks passed. The separate project PostgreSQL container is healthy; its public schema contains the six source tables plus `connection_probe`, with no decision/action/audit/review tables.
+- The configured JDBC path passed `SELECT 1`, listed datasource `dispute` and Lightning databases `NY_TAXI` / `TPCDS_DB`, and ran all three existing verification queries using a temporary datasource-name correction. REST checks could not run because `ZETARIS_API_KEY` is unset; this did not prevent JDBC access.
+- `dispute-demo/integration/get_dispute_context.py` retrieved `DP-0014`: one transaction, a completed 10,000-minor-unit capture, a completed 4,000-minor-unit refund, two evidence documents and eight v2 rules. The SQL applies visibility filters and selects policy by dispute opening date. This proves retrieval, not an approved policy result or persisted credit.
+- The existing loader, source schema and read-only retrieval were inspected. The loader's `--apply` operation was NOT RUN; no data was reloaded or reset.
+- GitHub now contains the tracked branch, and authenticated Jira access to KAN-9 in project `Open-Agent` was verified. Source/data bytes tested before publication were unchanged by that publication.
 
-### Not established as implemented in the audit
+### Current unavailable checks and historical evidence
 
-- Runnable deterministic policy enforcement.
-- Database-backed decision/action writing and concurrent duplicate prevention.
-- Structured Nightshift investigator, critic correction loop, or full orchestration.
-- Actual H-MEM read/write integration or persistence proof.
-- Analyst dashboard, complete application setup/README, or repeatable end-to-end demonstration.
-- Exact responding NVIDIA model behind the successful `meterless/auto` probe.
-- Authenticated HackOS deadline, mandatory technology details, and final upload requirements.
+- `check_nightshift.py` failed authenticated model discovery with “Nightshift is unreachable or timed out” despite approved local networking. Chat inference is **NOT RUN**. The earlier audit's Nightshift 0.92.7 / `meterless/auto` / READY result is historical and was not reproduced. No actual responding model identity is established.
+- The sandbox initially blocked JDBC networking; an approved retry passed. The overall preflight still exits 1 for two REST-only failures. Its initial “port closed” output must not be interpreted as a service outage.
+- External dated progress reports are absent from this checkout. Authenticated HackOS requirements and deadlines remain unverified under A01.
 
-### Reported dataset snapshot
+### Defined or planned, not implemented
+
+- `policy_rules.csv` and the two Markdown policies define predicates, precedence and thresholds; no executable runtime policy engine exists. The 40 expected-result fixtures are test-only authored answers.
+- Generator `FIELDS['decisions']` lists column names only. There are no implemented shared action contracts, decision migrations, transactional action service or duplicate/concurrency guarantees.
+- Existing retrieval is a useful T02 prerequisite, but has no allowlisted typed tool registry, customer-history interface, source revisions or dedicated completeness/scoping/failure tests.
+- No structured Nightshift investigator, mandatory critic, bounded workflow controller, H-MEM project adapter, analyst UI or complete end-to-end/reset runner exists in this checkout.
+- Legacy refund terminology, decision lifecycle and source synchronization require T01 decisions. Neither source policy defines a repeated-claims threshold; no threshold should be inferred from the project narrative.
+- `registration.sql` and `verify.sql` use historical datasource `dispute_pg`; current setup/retrieval use `dispute`. The root has gitlinks without `.gitmodules`, so a fresh clone needs the onboarding/platform setup steps in `TEAM_SETUP.md`.
+
+### Located H-MEM reference (not integrated)
+
+The handbook's [Meterless Engines](https://meterless.ai/engines.html) link now resolves to the official H-MEM specification and reference under [Meterless/Meterless/engines/hmem](https://github.com/Meterless/Meterless/tree/1742dec56a66e58eef9dda2d2b865823758ca8cd/engines/hmem), inspected on 2026-10-26. Its reference uses deterministic mock embeddings and optional JSON persistence; it is not a production runtime library. The pinned specification, reference and conformance links are in the T00 work log. No package was installed, no API guessed and no memory persistence demonstrated; reference execution and integration remain T09 work. Competition approval is still subject to A01.
+
+### Verified dataset snapshot
 
 | Synthetic dataset | Records |
 |---|---:|
@@ -165,7 +174,7 @@ Keep **business outcome** (credit, evidence request, decline, human review) sepa
 | Evidence text documents | 81 |
 | Policy rules | 16 across two versions |
 
-The audit says `DP-0014` was retrieved with a **10,000 minor-unit capture** and **4,000 minor-unit completed refund**. This proves retrieval, **not** a final policy decision for `DP-0014`.
+Counts agree between local validation and the live Zetaris verification queries. The dataset and expected-result fixtures were preserved.
 
 ## 5. Repository paths and reading entry points
 
@@ -226,9 +235,9 @@ Choose actual dispute IDs only after inspecting fixture and policy files; do not
 - What does the authenticated HackOS Track 3 challenge explicitly require, and what is the actual submission cutoff?
 - Is a named NVIDIA/Nemotron responder mandatory, and how can its identity be recorded during the demo?
 - What are the exact policy predicates, precedence, effective-date rules, allowed transitions, and amount semantics in the repo files?
-- What is the approved H-MEM package/reference implementation and persistence behavior?
+- How should the located official H-MEM specification/reference be adapted to this Python project, and can the actual adapter prove save/restart/recall in T09? Competition approval remains unverified.
 - Which fixture IDs best demonstrate supported credit, duplicate prevention, critic correction, and version boundaries?
-- Which components already exist in later commits beyond the 2026-10-26 progress audit?
+- What changes after the verified T00 baseline at `a5ab88a`? Recheck source and live services when later tasks begin.
 
 ## 9. Source-of-truth and maintenance rules
 
@@ -250,6 +259,10 @@ Choose actual dispute IDs only after inspecting fixture and policy files; do not
 | 2026-10-26 | Planning clarification only: one investigator, code-first critic, Python controller; memory remains in full target; stable task IDs added | Supplied context/roadmap review; no live code verification or tests in this revision |
 | 2026-10-26 | Merged the Jira-tracked kit, preserved repository-specific reading links and prior work history, and added the root Claude Code entry point; no runtime tasks completed | `Open_Agent_Hackathon_Jira_Tracked_Context_Kit.zip`, `AGENTS.md`, `agent.md`, `CLAUDE.md`, and `ROADMAP.md` |
 
+| 2026-10-26 | T00 audit: validated data and 2 generation tests, 9 platform checks, live JDBC retrieval/counts and public-table inventory; Nightshift discovery failed and inference NOT RUN; official H-MEM reference located; T01 not started | `ROADMAP.md` T00 / KAN-9 completion record; source baseline `a5ab88a` |
+
 ## Jira issue tracking (supplied kit dated 2026-10-26)
 
 The supplied kit reports that the work queue is tracked in Jira project `KAN` (`My Data Science Team`) at https://luijoel24.atlassian.net, with five hackathon epics `KAN-4`–`KAN-8` and tasks `KAN-9`–`KAN-23`. The exact imported mapping is in `ROADMAP.md`. Importing this kit does not itself verify the current account connection, issue existence, or live status. These tickets represent **planned work, not completed implementation**. Keep the repository code/tests authoritative for real status; do not mistake Jira status or issue descriptions for proof of functionality.
+
+**Live verification, 2026-10-26:** Authenticated access confirmed KAN-9, `[T00] Verify current repository baseline`, under KAN-4 in project `Open-Agent`. The issue was To Do when read and moved to In Progress for this audit. The T00 completion record and Jira evidence document its acceptance; no other issue's status or implementation was verified or changed. The kit's former project display name is historical.
