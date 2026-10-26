@@ -643,6 +643,15 @@ The local handbook section 7.4 points to [Meterless Engines](https://meterless.a
 - `context.md` changed: yes, to replace historical-only runtime claims with dated T00 evidence, record current Nightshift unavailability, identify the official H-MEM reference and verify KAN-9 access. Architecture and intended scope are unchanged.
 - Recommended next task, NOT STARTED: T01 / KAN-10, only after a new instruction. Work stops after T00.
 
+### 2026-10-26 — Ignore Finder metadata and prepare the main-branch PR
+
+- Scope: the user's follow-up request to ignore `.DS_Store`, commit/push the cleanup and prepare a detailed pull request from `codex/dispute-investigation-agent` to `main` on the existing `origin`; no roadmap implementation task started.
+- Changes: added the root `.gitignore` rule `.DS_Store`, which also matches nested paths, and used `git rm --cached -- .DS_Store` to remove the already-tracked Finder metadata from the index while retaining the local file. Added this work-log entry; application source and context architecture are unchanged.
+- Validation: `git check-ignore -v -- .DS_Store probe/nested/.DS_Store` passed and matched the root rule; `git ls-files -- .DS_Store` returned no tracked file; an inline Python check confirmed the local file still exists. `git diff --cached --check` passed for the metadata removal. An initial byte-for-byte preservation assertion failed because local metadata bytes changed between the snapshot and check; no command wrote or restored those bytes, and the subsequent presence/ignore/index checks passed.
+- PR preparation: inspected the complete branch diff, confirmed the branch was ahead of `main` with no missing base commits, and found no existing open PR for this head/base pair. The description covers all branch changes, the verified T00 results and explicit failed/NOT RUN integrations, including the existing onboarding gitlink update.
+- Runtime tests: not rerun for this metadata/documentation-only follow-up. The T00 commands and outcomes above apply to the unchanged application files; this entry makes no additional integration claim.
+- Task statuses: T00 remains DONE; T01–T13 and A01 remain NOT_STARTED. Publication/PR creation results are reported after the remote operations complete.
+
 ## 11. Deferred scope
 
 An independent manager/planner LLM, a second semantic-review LLM, a fraud-risk model, longer agent loops, advanced UI and production integrations are not prerequisites for this proposed build. A confirmed competition requirement or explicit scope decision can add a separately scoped task. Do not add them silently during a task above.
