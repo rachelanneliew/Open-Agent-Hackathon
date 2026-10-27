@@ -37,10 +37,18 @@ def create_and_copy(table, fields, rows):
 
 
 def make_sql(stage):
+    # This is an initial loader, not a privileged reset path around T04 guards.
+    preamble = """BEGIN;
+DO $$ BEGIN
+    IF to_regclass('dispute_control.source_revision') IS NOT NULL THEN
+        RAISE EXCEPTION 'Guarded database: initial loader is disabled; use a coordinated source writer';
+    END IF;
+END $$;
+"""
     if stage == 'probe':
-        return 'BEGIN;\n' + create_and_copy('connection_probe', ['probe_id', 'message'], [['PROBE-001', 'Synthetic dispute database connected']]) + 'GRANT SELECT ON connection_probe TO dispute_reader;\nCOMMIT;\n'
+        return preamble + create_and_copy('connection_probe', ['probe_id', 'message'], [['PROBE-001', 'Synthetic dispute database connected']]) + 'GRANT SELECT ON connection_probe TO dispute_reader;\nCOMMIT;\n'
     validate(ROOT / 'data/synthetic', json.loads((ROOT / 'tests/fixtures/expected_results.json').read_text()))
-    sql = 'BEGIN;\n'
+    sql = preamble
     names = ['transactions', 'settlements', 'disputes', 'evidence', 'policy_rules']
     for name in names:
         with (ROOT / f'data/synthetic/{name}.csv').open(encoding='utf-8', newline='') as file:

@@ -128,3 +128,15 @@ for DP-0033/DP-0034, current source status, a missing case and customer history.
 DP-0014's source customer is CUST-008; visible prior disputes were DP-0030 and
 DP-0017. Decision reads returned unsupported without a query. No live data was
 changed. Full commands and limitations are in [ROADMAP.md](../../ROADMAP.md).
+
+## T04 storage handoff — 27 October 2026
+
+[PostgreSQL storage](./storage.md) now has a tested migration and public views
+`dispute_source_revision`, `dispute_decision_history`, `dispute_pending_reviews`.
+Only isolated test databases were migrated; the existing demo datasource is
+unchanged. T02's runtime behavior remains null revisions/unsupported decisions.
+Before enabling non-null revisions, deploy/register the guarded source and prove
+uncached committed reads across the entire revision-before/bundle/revision-after
+sequence, with bounded retry on change. Matching revisions alone cannot establish
+cache freshness. T05 must additionally perform protected authoritative rereads
+and cutoff/policy/critic validation. T04's PostgreSQL tests are not JDBC evidence.

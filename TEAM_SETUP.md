@@ -268,3 +268,25 @@ The [prototype H-MEM tests](./dispute-demo/agent/tests/test_hmem_integration.py)
 - Use a separate Git branch for your changes and merge through a pull request.
 
 **Troubleshooting:** `SLF4J` logging warnings alone did not prevent our connection test. `TABLE_OR_VIEW_NOT_FOUND` means check datasource naming, registration and account access. Stop on actual failures rather than recreating or deleting databases.
+
+## T04 storage acceptance — isolated PostgreSQL only
+
+The [storage guide](./dispute-demo/docs/storage.md) describes migration 001,
+role/guard enforcement, four-outcome persistence and minimum re-review/duplicate
+scope. Twenty real PostgreSQL tests pass, including actual isolated-container
+restart persistence. The normal 70 offline and 6 prototype tests still pass.
+
+From `dispute-demo/`, run the separate integration gate with Docker already
+running and the existing `postgres:16-alpine` image available:
+
+```sh
+DISPUTE_STORAGE_TESTS=1 PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -p test_decision_storage.py -v
+```
+
+It creates and removes only its own unnetworked test container/anonymous volume.
+No existing database or Zetaris container is reset/restarted. Without the flag,
+root discovery reports those 20 tests as explicitly skipped. The existing demo
+database was **not migrated**; T02 revisions stay null and decision reads stay
+unsupported. Deploy/register and verify fresh reads as part of action integration.
+Do not use `dispute_loader` superuser credentials for runtime writes. No model,
+canonical action service or H-MEM integration is established by these tests.
