@@ -25,7 +25,7 @@ Open Agent Hackathon project for investigating fictional card disputes and recom
 | [Typed retrieval](./dispute-demo/docs/retrieval.md) | T02 read interfaces, case/customer scope, error statuses, live/offline checks and unsupported freshness/decision storage. |
 | [Shared contracts](./dispute-demo/docs/contracts.md) | T01 types, outcome mapping, policy boundaries, workflow/synchronization requirements and unresolved decisions for later tasks. |
 | [Jira post-merge change record](./docs/planning/JIRA_POST_MERGE_CHANGESET.md) | Created 27 October 2026: approved preview, pre-edit snapshots and verified application receipt for KAN-11–KAN-23. |
-| [Hackathon handbook](./Open_Agent_Hackathon_2026_Complete_Handbook.md) | Background research and competition guidance. Current requirements still need verification under A01. |
+| [Hackathon handbook](./Open_Agent_Hackathon_2026_Complete_Handbook.md) | Historical background; current requirements and access gaps are in the [A01 checklist](./docs/competition.md). |
 
 For the current task and its Jira issue, start with the task board in [ROADMAP.md](./ROADMAP.md). Coding assistants must first follow [AGENTS.md](./AGENTS.md).
 
@@ -33,13 +33,13 @@ For the current task and its Jira issue, start with the task board in [ROADMAP.m
 
 **Use [ROADMAP.md](./ROADMAP.md) as the source of truth for the next task.** It records each task's Jira issue, dependencies, required reading, work checklist, deliverable and acceptance gate. Its completion log records what was tested and any remaining blockers. Check the current task board and actual source before starting; older work-log entries describe historical states.
 
-**Current handover, 27 October 2026:** T00–T12 are complete against repository gates. The [analyst workbench](./dispute-demo/docs/analyst-ui.md) uses the canonical workflow, and the [reliability guide](./dispute-demo/docs/reliability.md) now provides complete test collection and an explicit isolated reset/replay command.
+**Current handover, 27 October 2026:** T00–T12 and A01 are complete against repository gates. The [analyst workbench](./dispute-demo/docs/analyst-ui.md) uses the canonical workflow, and the [reliability guide](./dispute-demo/docs/reliability.md) now provides complete test collection and an explicit isolated reset/replay command.
 
 **267 main tests and 16 reference/compatibility tests pass with no skips.** The [two-cycle rehearsal](./dispute-demo/docs/evidence/t12-isolated-replay.json) covers all four outcomes, duplicate refusal, bounded correction, policy versions and real source-verified reference memory. Models are scripted and reads use isolated PostgreSQL; [dated live evidence](./dispute-demo/docs/evidence/t11-analyst.json) remains separately labelled. Shared totals remain three decisions, two credits, three audits and one review at revision 14; source fingerprints are unchanged.
 
 From `dispute-demo/`, run `python -m demo.verify --integrations` with the documented dependencies. `python -m demo.replay` previews its scope; `--reset-isolated-demo` creates/replays/cleans only disposable state. Normal CLI/UI state is durable and is never reset by this command. The owner-approved advisory history remains nonbinding. Live model output can fail strict validation; such failures remain visible without effects.
 
-Next: **[A01 / KAN-23 — Authenticated HackOS requirements](https://luijoel24.atlassian.net/browse/KAN-23)**, then **[T13 / KAN-22 — Demo and submission packaging](https://luijoel24.atlassian.net/browse/KAN-22)**. The current goal authorizes sequential completion with Jira updates and a commit/push to `origin/main` after each accepted task.
+Next: **[T13 / KAN-22 — Demo and submission packaging](https://luijoel24.atlassian.net/browse/KAN-22)**. The [authenticated checklist](./docs/competition.md) confirms required artifacts and the 27 October 23:45 UTC cutoff, and records leader-only submission access, agent-count interpretation and sponsor scoring limitations. The current goal authorizes sequential completion with Jira updates and a commit/push to `origin/main` after each accepted task.
 
 ### Steps for the next teammate
 
@@ -53,14 +53,14 @@ Next: **[A01 / KAN-23 — Authenticated HackOS requirements](https://luijoel24.a
 ### Copyable task handover
 
 ```text
-Work on A01 / KAN-23 only:
-https://luijoel24.atlassian.net/browse/KAN-23
+Work on T13 / KAN-22 only:
+https://luijoel24.atlassian.net/browse/KAN-22
 
 Follow AGENTS.md and read context.md, ROADMAP.md, agent.md and applicable
-sources. Verify current authenticated challenge/submission requirements,
-required technologies, formats, deadline/timezone and submission ownership.
-Record unavailable portal details as explicit blockers; do not guess.
+sources. Prepare the evidence-backed demo and required repository/deck/video
+using docs/competition.md. Preserve source/runtime labels and carry B1–B4
+forward. Verify clean-checkout setup and artifact access; do not claim submission.
 Update Jira and commit/push after the acceptance gate is satisfied.
 ```
 
-Next: **A01 / KAN-23**, then **T13 / KAN-22**. Both remain NOT_STARTED.
+Next: **T13 / KAN-22**, currently NOT_STARTED. A01 is DONE as an audit, with explicit unresolved submission details.

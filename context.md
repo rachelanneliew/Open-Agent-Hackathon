@@ -3,18 +3,18 @@
 > **Canonical project brief for all coding agents and collaborators.**
 > Read this file **at the start of every task**, then consult [`ROADMAP.md`](./ROADMAP.md) for the active priorities. Read the actual code, policies, schemas, tests, and HackOS instructions before making implementation claims.
 >
-> **Context last reviewed:** 2026-10-27, T12 reliability. T00–T12 are complete against repository gates. All 267 main tests and 16 reference/compatibility checks pass, plus a two-cycle isolated reset/replay. Live evidence remains separately dated; shared state is preserved. The user authorized the full roadmap sequentially with Jira updates and a commit/push to `origin/main` per completed task.
+> **Context last reviewed:** 2026-10-27, A01 authenticated requirements audit. T00–T12 and A01 are complete against repository gates; T13 packaging is next. All 267 main tests and 16 reference/compatibility checks pass in T12, plus a two-cycle isolated reset/replay. Live evidence remains separately dated; shared state is preserved. The user authorized the full roadmap sequentially with Jira updates and a commit/push to `origin/main` per completed task.
 
 ## 1. Project identity
 
 | Field | Context |
 |---|---|
 | Project | Open Agent Hackathon 2026 — synthetic card-dispute resolution agent |
-| Intended track | Track 3 — Reasoning Architecture; verify the precise challenge requirements in HackOS |
+| Intended track | Track 3 — Reasoning Architecture; authenticated summary verified, separate detailed page access remains B3 in the competition checklist |
 | Primary user | Card-dispute operations analyst |
 | User input | A synthetic `dispute_id` |
 | Desired output | Evidence-grounded recommendation, policy-rule citations, critic/validation result, and recorded **simulated** outcome or human-review route |
-| Development tools | Python, PostgreSQL, Zetaris (JDBC), Nightshift; H-MEM planned; Codex, Claude Code, and Cursor are **optional coding tools**, not part of runtime architecture |
+| Development tools | Python, PostgreSQL, Zetaris (JDBC), Nightshift, reference H-MEM; Codex, Claude Code, and Cursor are **optional coding tools**, not part of runtime architecture |
 | Safety boundary | Entirely synthetic records, policies, and actions — **no real bank/payment integrations** |
 
 ### One-sentence product definition
@@ -28,7 +28,7 @@ An analyst selects a dispute; the system retrieves relevant synthetic records th
 3. Nightshift produces a structured, evidence-linked proposal; a critic rejects invalid references, amounts, or disallowed actions.
 4. A PostgreSQL transaction records the approved **simulated** result; repeated and concurrent attempts cannot create duplicate simulated credits.
 5. The result exposes evidence IDs, policy-rule IDs, validation feedback, and action status.
-6. The intended complete product demonstrates a real H-MEM save/recall sequence with verified source references and persistence. The first CLI slice may precede it; actual competition obligations remain to be checked in A01.
+6. The complete product demonstrates a real H-MEM save/recall sequence with verified source references and persistence. T09/T10 verify this reference implementation; A01 confirms H-MEM is an allowed engine, without formal endorsement of the exact revision.
 7. The end-to-end demo and setup instructions are reproducible by another teammate.
 
 ## 2. Product scope
@@ -105,7 +105,7 @@ Analyst -> CLI / thin UI
        Analyst-visible result / review queue / public event trace
 ```
 
-H-MEM is part of the **intended complete product**. The initial CLI milestone may run without memory while T09/T10 are unfinished; it must say so. This is a project-scope choice, not a claim that the authenticated challenge requires H-MEM. Confirm official obligations in A01.
+H-MEM is part of the **intended complete product**. The initial CLI milestone may run without memory while T09/T10 are unfinished; it must say so. This is a project-scope choice. A01 confirms H-MEM as one allowed Meterless engine; see the competition checklist for the current obligations.
 
 ### Who is an agent, and who is ordinary code?
 
@@ -314,6 +314,12 @@ Counts agree between local validation and the live Zetaris verification queries.
 - `python -m demo.replay --reset-isolated-demo` deliberately rehearses twice in fresh disposable database/memory/journal namespaces. Default is preview only, no user-supplied target accepted. Exact container ownership is verified before cleanup. Shared source/actions/memory remain outside reset scope. Both cycles produce eight decisions/four credits/one pending review, verify real reference history, correct one injected amount fault and reject duplicates. Source hashes/bytes are preserved.
 - [Evidence](./dispute-demo/docs/evidence/t12-verification.json) separates scripted model/direct isolated PostgreSQL reads from real reference and database behavior. New UI-composed tests prove provider/data failure, actual trigger rollback and lost-review-ack recovery. Shared state stays 3 decisions/2 credits/3 audits/1 review at revision 14; restricted login unchanged. Fresh live Zetaris/Nightshift/browser/HackOS checks NOT RUN. No normal application logic, source policies or contracts changed. Next: A01, then T13.
 
+### Verified in A01 — authenticated competition requirements, 2026-10-27
+
+- [Competition checklist](./docs/competition.md) records nine opened official/authenticated sources. Required deliverables are a public repository, deck, 1–4 minute workflow video with audio and sponsor/provenance explanations. Deadline: **27 October 2026 23:45 UTC / 28 October 07:45 SGT**. Zetaris, a Meterless engine and primary Nightshift inference are required; Cursor is optional. Named Nemotron evidence is an additional award condition.
+- H-MEM guidance supports code-controlled approval and storage/retrieval as a starting scope. The current reference uses mock embeddings; no exact-revision approval is claimed. The one-model investigator plus deterministic critic remains accurately described; the video guide's two-agent wording is an unresolved interpretation, not a reason to invent another model.
+- New Zetaris scoring guidance asks for three datasources and a USL. This project has one PostgreSQL datasource and no USL; T13 must disclose that scoring gap. The signed-in member cannot manage submissions; platform leader Rachel Anne Liew must verify the actual form, upload/access limits and final receipt. Separate detailed Track 3 page access is also unresolved. These precise blockers satisfy A01's audit gate, not submission completion. No runtime or policy change occurred.
+
 ## 5. Repository paths and reading entry points
 
 The paths below were checked for existence in the current checkout on 2026-10-26. This verifies their presence, not their behavior or live integrations. Inspect source before relying on APIs or fields. All paths are relative to the repository root.
@@ -370,10 +376,10 @@ Choose actual dispute IDs only after inspecting fixture and policy files; do not
 
 ## 8. Open questions — resolve from source, not guesses
 
-- What does the authenticated HackOS Track 3 challenge explicitly require, and what is the actual submission cutoff?
-- Is a named NVIDIA/Nemotron responder mandatory, and how can its identity be recorded during the demo?
+- A01 confirms the cutoff and main requirements; resolve B1–B4 in the [competition checklist](./docs/competition.md) before claiming full eligibility or submission.
+- Preserve the named-model distinction: returned Nightshift metadata is evidence, not independent responder attestation; Nemotron-specific award requirements are separate.
 - What are the exact policy predicates, precedence, effective-date rules, allowed transitions, and amount semantics in the repo files?
-- A01 competition approval of the pinned H-MEM reference remains open; T10 source verification and advisory acceptance are complete.
+- H-MEM is an allowed engine and official references are supported; no explicit endorsement of the exact pin was found. T10 source verification and advisory acceptance are complete.
 - Which fixture IDs best demonstrate supported credit, duplicate prevention, critic correction, and version boundaries?
 - The owner approved T10 advisory history. A future binding history policy requires a new explicit versioned decision. T04/T05 lifecycle, protected validation and retries and T08 shared deployment/live freshness have passed their gates.
 - PR #4 source is inspected at `76db772`; recheck source and live services when later tasks begin. The integration checklist is in `ROADMAP.md`.

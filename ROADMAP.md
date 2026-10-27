@@ -1,15 +1,15 @@
 # Task Roadmap — Synthetic Card-Dispute Resolution Agent
 
 > **Canonical work queue.** Read [`context.md`](./context.md) first, then [`agent.md`](./agent.md).
-> **Revision:** T12 reliability accepted, 27 October 2026: 267 main tests and 16 reference/compatibility tests pass, with explicit two-cycle isolated reset/replay.
-> **Current authorized goal:** complete the entire roadmap sequentially, updating Jira and committing/pushing each completed task to `origin/main`. The user explicitly expanded the earlier single-task scope on 27 October. T00–T12 are DONE; next is A01 / KAN-23, then T13 / KAN-22. Remaining tasks retain their acceptance gates and explicit scope decisions.
+> **Revision:** A01 authenticated requirements audit accepted, 27 October 2026. Confirmed requirements and precise remaining access/interpretation gaps are in [the competition checklist](./docs/competition.md).
+> **Current authorized goal:** complete the entire roadmap sequentially, updating Jira and committing/pushing each completed task to `origin/main`. The user explicitly expanded the earlier single-task scope on 27 October. T00–T12 and A01 are DONE; next is T13 / KAN-22. Remaining tasks retain their acceptance gates and explicit scope decisions.
 > **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
 
 ## 1. What changed from the earlier plan
 
 The previous roadmap used different numbers in its summary board and detailed tickets. It also bundled investigator, critic and orchestration into one large ticket. This revision replaces that task numbering with stable IDs T00–T13 and administrative task A01.
 
-The architecture is clarified, not claimed as implemented: one investigator LLM, one mandatory deterministic critic/validator and one Python workflow controller. A separate LLM critic or manager is not needed for the initial build. H-MEM remains part of the intended complete product, although the first working CLI slice can precede it. Exact competition obligations remain unverified until A01.
+The architecture is clarified, not claimed as implemented: one investigator LLM, one mandatory deterministic critic/validator and one Python workflow controller. A separate LLM critic or manager is not needed for the initial build. H-MEM remains part of the intended complete product, although the first working CLI slice can precede it. A01 now records confirmed competition obligations and explicit unresolved items in [the competition checklist](./docs/competition.md).
 
 Keep the dated `Open_Agent_Hackathon_Progress_2026-10-26*.md` reports as historical evidence. Do not treat their older ticket numbers or copy-ready all-in-one policy prompt as the active task queue. The T00 completion record below now provides current-checkout evidence for the baseline and explicitly identifies unavailable checks.
 
@@ -23,7 +23,7 @@ Use statuses `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED`, `DONE`. DONE requires reco
 
 Every task includes its own tests. T12 is cross-component testing, not the first time testing begins.
 
-**Post-merge integration order:** T03–T08 are complete, including shared guarded deployment and live fresh-read/model/commit acceptance. T09–T12 are also complete; continue with A01 and T13 under the current goal. A01 verification remains independently available. Complete A01 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
+**Post-merge integration order:** T03–T08 are complete, including shared guarded deployment and live fresh-read/model/commit acceptance. T09–T12 and A01 are also complete; continue with T13 under the current goal. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
 
 ## Jira tracking (supplied kit dated 2026-10-26)
 
@@ -79,7 +79,7 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 | T11 | Build the thin analyst view and review queue | T08; memory display depends on T10 | DONE |
 | T12 | Run cross-component failure tests and repeatable reset | T08, T10, T11 for the intended complete demo; feature-specific tests run earlier | DONE |
 | T13 | Package the evidence-backed demo and submission | T12, A01; documentation can be drafted alongside earlier tasks | NOT_STARTED |
-| A01 | Confirm authenticated HackOS requirements | None; run alongside development | NOT_STARTED |
+| A01 | Confirm authenticated HackOS requirements | None; run alongside development | DONE |
 
 ### PR #4 implementation evidence, separate from task status
 
@@ -570,16 +570,20 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 ### A01 — Confirm authenticated HackOS requirements
 
-**Status:** NOT_STARTED  
-**Owner:** team member with portal access  
+**Status:** DONE — authenticated audit; final submission remains unverified
+
+**Owner:** audit completed; platform submission leader is Rachel Anne Liew, pending responsibility confirmation
+
 **Depends on:** none; do not block safe local engineering while awaiting portal access.
 
-- [ ] Read the authenticated Track 3 challenge and submission instructions. Record source, access date and exact wording needed to resolve scope.
-- [ ] Confirm required runtime technologies, approved H-MEM implementation, any specific model requirement, deliverable formats and actual submission cutoff with timezone.
-- [ ] Explicitly check whether human approval or a specific memory implementation/behavior is mandated. Selective review is the project's product direction, not a confirmed competition rule; reconcile any conflict before claiming compliance.
-- [ ] Treat Cursor as optional under the team's latest guidance; do not invent a mandatory replacement editor. Record any explicit portal rule that needs reconciliation.
-- [ ] Assign a submission owner and identify required private credentials/access without copying secret values into documentation.
-- [ ] Update dependencies/scope explicitly if the real requirements differ from this proposed plan.
+- [x] Read authenticated Track 3 summary and submission instructions; separate detailed challenge-page access is recorded as B3, not assumed verified.
+- [x] Confirm runtime technologies, allowed H-MEM engine/reference guidance, model award distinction, video/deck/repository requirements and cutoff: 27 October 2026 23:45 UTC / 28 October 07:45 SGT. Exact pin endorsement remains B4.
+- [x] Check human approval and memory behavior: programmatic approval and storage/retrieval minimum supported. Preserve approved advisory scope; no invented history threshold.
+- [x] Confirm Cursor is optional under current official rules; document stale preview wording.
+- [x] Identify platform-designated leader Rachel Anne Liew and required private access. Member cannot access actual submission form; B1 records responsibility confirmation/upload checks still required.
+- [x] Record two-agent interpretation B2 and new three-datasource/USL sponsor scoring gap. No architecture expansion or eligibility claim is hidden inside this audit.
+
+**Evidence:** [Dated source checklist, R1–R10 and B1–B4](./docs/competition.md). T13 carries required artifacts and unresolved items forward. Application integrations and final submission were not run during this documentation audit.
 
 **Acceptance gate:** a source-backed checklist of required deliverables and constraints exists, or unavailable portal details are recorded as blockers. No guessed deadline or sponsor obligation is presented as confirmed.
 
@@ -1359,3 +1363,15 @@ Commands from `dispute-demo/`, Python 3.13.7; reference commands use `HMEM_NODE=
 - README/context/setup/reading map now point to reproducible verification and reset. Next after Jira closure and main publication: A01/KAN-23 to establish portal requirements or explicit blockers, then T13/KAN-22 packaging.
 
 - Final review: 4 Python ASTs, 6 Markdown files/228 local links, JSON and private-secret-value scan PASS; `git diff --check` and complete protected runtime/source comparison against `477ee8b` PASS. No owned T04/T05 test containers remain; original five services healthy. KAN-21 Done with acceptance comment `10023`; fresh read confirms protected fields unchanged. Main publication receipt follows.
+
+
+### 27 October 2026 — A01 / KAN-23 completed
+
+- Jira read before work; moved In Progress with start comment `10025`. User signed into HackOS in the in-app browser. Official rules plus seven authenticated requirement/guide resources and the team/submission pages were inspected at 07:08–07:19 UTC. The one-page new Zetaris scoring PDF was visually read enlarged.
+- [Competition checklist](./docs/competition.md) records nine source references, R1–R10 requirements, authority conflicts and B1–B4 precise blockers. Confirmed cutoff: 27 October 2026 23:45 UTC = 28 October 07:45 Singapore. Public repo, deck, 1–4 minute audio video, sponsor/provenance explanation required. Cursor optional; H-MEM supported; code approval permitted. No claim of formal approval of the exact reference revision.
+- Submission Hub shows no submission and only team leader Rachel Anne Liew can create/manage it. Actual form/upload constraints and final receipt remain unavailable to this member; owner responsibility must be confirmed. Detailed Track 3 page access and two-agent interpretation remain explicit gaps. The new three-datasource/USL scoring guidance exceeds the implemented one-datasource integration; no runtime scope was silently changed.
+- Updated README, context and reading map; historical implementation records retained. No credentials or participant emails copied. No forms, uploads, messages, roster changes or final submission performed.
+- Validation: `python3 /private/tmp/a01-doc-check.py` checks local Markdown targets, balanced fences and deadline conversion; `git diff --check` checks patch whitespace. PASS: five Markdown files, 221 local links, balanced fences/newlines and timezone conversion; whitespace check PASS after removing two new trailing-space lines. Application tests, fresh live model/database checks and final upload/submission: **NOT RUN** (documentation-only audit).
+- Acceptance: source-backed requirements plus precise blockers satisfy the explicit A01 gate. Next is T13/KAN-22 after Jira closure and commit/push; audit completion is not submission completion.
+
+- Jira closure: KAN-23 transitioned to **Done**, acceptance comment `10026`; summary, description, assignee, parent, labels and issue links unchanged. Publication follows this accepted documentation commit.
