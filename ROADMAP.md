@@ -7,6 +7,12 @@
 > **Previous authorized goal:** complete the entire roadmap sequentially, updating Jira and committing/pushing each completed task to `origin/main`. The user explicitly expanded the earlier single-task scope on 27 October. T00–T13 and A01 are DONE. The current user-authorized follow-up hardens Nightshift response contracts and diagnostics; it does not reopen the delivered roadmap or authorize final portal submission.
 > **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
 
+> **Current assignment, 27 October 2026:** user explicitly requested all U00–U06
+> from the supplied USL plan. Execute sequentially through their acceptance gates;
+> the document's sample U00-only prompt is not the user's request. These are local
+> extension IDs, with no Jira mapping or authorization to publish or submit.
+> See the U00–U06 completion record at the end of this file.
+
 ## 1. What changed from the earlier plan
 
 The previous roadmap used different numbers in its summary board and detailed tickets. It also bundled investigator, critic and orchestration into one large ticket. This revision replaces that task numbering with stable IDs T00–T13 and administrative task A01.
@@ -1608,3 +1614,91 @@ one-source/no-USL limitation and historical fallback package.
   main and normal `git push origin main`. Remote equality and PR state are
   verified after execution and reported to the user. No force push or branch
   deletion. Next work remains the leader's submission checklist, not started.
+
+## U00–U06 — Zetaris USL extension, 27 October 2026
+
+User explicitly assigned all seven tasks. The supplied document's U00-only
+handoff was not the active instruction. Existing T00–T16/A01 history and Jira
+statuses are unchanged; U IDs have no Jira mapping. Starting checkout was clean
+`main` at `232945a1015381561785f092cbe95bba917429d7`; local branch
+`codex/zetaris-usl`. No commit/push, Jira mutation or portal submission requested.
+
+| Task | Dependency | Status | Acceptance gate satisfied |
+|---|---|---|---|
+| U00 — Verify setup and USL capabilities | None | **DONE** | Real server 2.4.3.1/schema/inventory reads; smoke COMPILE/ACTIVATE/SELECT returns 40 cases |
+| U01 — Configure three independent sources | U00 | **DONE** | Existing PostgreSQL preserved; actual FileStore CSV and fixed REST connectors separately registered and queried |
+| U02 — Compile, activate and query USL | U01 | **DONE** | Genuine three-table model, exact raw/USL parity 40/4/3, ownership diagnostics, DP-0020 actual join 11400/2/2 |
+| U03 — Native quality checks | U02 | **DONE** | Three native PK and two FK checks pass; separate 2-row fixture returns 1 valid/1 invalid with the orphan identified |
+| U04 — Read-only integration adapter | U02/U03 | **DONE** | Disabled default; four bounded SELECTs, typed scoped output, no action dependencies; real preview and isolated failure tests pass |
+| U05 — Analyst provenance panel | U04 | **DONE** | Actual live preview displays provenance, joined counts, historical timestamps, unverified markers and dated DQ; independent case input survives inventory failure |
+| U06 — Regression and evidence | U00–U05 | **DONE** | 328 main + 16 reference integration tests; 30 dedicated tests; protected code/media and source/financial state unchanged; separate addendum |
+
+### Work log and reproducible evidence
+
+- [Evidence index](docs/zetaris-usl/demo-evidence.md), [setup](docs/zetaris-usl/README.md)
+  and [submission addendum](docs/submission/USL_ADDENDUM.md) distinguish live
+  Zetaris, isolated scripted tests, recorded DQ and proposed capabilities.
+- `getting-started/.venv/bin/python scripts/preflight.py --jdbc` (from its
+  directory, using `.venv/bin/python`): JDBC PASS after approved socket access;
+  overall exit 1 only for two missing REST-client API-key checks. The independent
+  data-source REST connector works via JDBC. No credentials changed.
+- `scripts/run_sql.py --dry-run <SQL file>` then `--channel jdbc <SQL file>`:
+  lifecycle/source/model/quality scripts verified. Main COMPILE transported as
+  one intact statement, three activation responses confirmed. Source inventory
+  after registration verified CSV id 919 and REST id 936. The separate
+  `quality_fixture` retains the controlled `DQ-ORPHAN → DP-9999` case.
+- From `dispute-demo`: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m integration.usl.verify_live`
+  PASS; `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m integration.usl_reads DP-0020 --enable`
+  PASS, actual four-query result. Freshness/atomicity remains unverified.
+- `HMEM_NODE=/Users/joellui/.nvm/versions/node/v24.13.0/bin/node PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m demo.verify --integrations`:
+  **328 main + 16 reference passed**, zero skips/failures/errors. Dedicated
+  `DISPUTE_UI_HTTP_TESTS=1 PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s tests -p test_usl_reads.py -v`:
+  **30 passed**, including final inventory-failure separation. Source failures
+  are injected tests, not outages imposed on shared services.
+- Live loopback UI `-m app.ui --port 8933 --no-memory --usl-preview`: actual
+  DP-0020 query displayed all three origins and two/two join counts; saved
+  screenshots show recorded DQ and explicit non-action authority. Existing
+  inventory timed out under load, then an independent unchanged 45-second
+  reader passed 40 cases in 30.08 seconds. Kept freshness/plan guards and timeout
+  unchanged; added an independent case-ID input to the optional panel.
+  Real DP-9999 showed unavailable with no returned case data. Saved both success
+  and failure screenshots; stopped the temporary UI server after verification.
+- `python3 /private/tmp/usl-final-db-check.py`: PASS six full source fingerprints,
+  4 decisions/2 credits/4 audits/1 review/revision 17 unchanged, restricted
+  action role verified. Baseline diff of policy/critic/writer/orchestrator/
+  Reviewer/fresh reads/data/migrations and accepted deck/video: no differences.
+- `node --check dispute-demo/app/web/app.js`, `git diff --check`, local Markdown
+  target/JSON/Python syntax review and configured-secret scan: PASS. No raw
+  private configuration or licensed platform bundle added.
+- New resources only: isolated fixed REST container, dedicated driver CSV
+  subdirectory, two Lightning databases and `dispute_usl_v1` models. Original
+  five services were not restarted. No shared PostgreSQL/memory reset or new
+  financial effect. Static source times and unknown model metadata stay visible.
+- Public event deadline rechecked. Anonymous requirements/hub retrieval was
+  inaccessible; authenticated form checks and final submission remain owner
+  work. New live model calls/commits, combined live memory, licensed clean-host
+  bootstrap and portal receipt **NOT RUN**. No time/accuracy benchmark or sponsor
+  score claimed. Preserve accepted media; the new walkthrough is an addendum.
+
+All assigned extension tasks complete. Recommended next action: owner review
+of the new addendum and the existing leader submission checklist. No further
+implementation or submission task started automatically.
+
+### U00–U06 publication follow-up — 27 October 2026
+
+- User explicitly requested opening a PR and merging it to `main`. This
+  supersedes the implementation phase's no-push scope; Jira and HackOS remain
+  unchanged. Only completed U00–U06 files and these publication notes are included.
+- `git fetch origin`: PASS. `git rev-list --left-right --count origin/main...HEAD`:
+  `0 0` before the extension commit, at baseline `232945a`. No existing open PR
+  for `codex/zetaris-usl` was returned by GitHub.
+- Publication checks: `git diff --check`, `node --check dispute-demo/app/web/app.js`,
+  local Markdown target checks, Python/JSON parsing, configured-secret scan and
+  protected-path baseline comparison. The recorded 328 + 16 integration passes
+  and final 30-test dedicated pass apply to unchanged application source.
+  Live integrations and financial commits are **NOT RUN again** for publication.
+- Publish using a normal branch push, a PR targeting `main`, and a merge bound
+  to the inspected head after GitHub mergeability/checks are verified. No force
+  push, bypass of required checks or branch deletion. Confirm remote merge state
+  and fast-forward local main after execution; the chat reports the actual PR
+  URL and merge commit.

@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "evidence_category": "isolated_tests",
+  "command": "DISPUTE_UI_HTTP_TESTS=1 PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s tests -p test_usl_reads.py -v",
+  "tests": 30,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "live_sources": "NOT RUN by this suite; disconnected sources are injected failures",
+  "final_ui_change": "inventory failure cannot prevent independent preview HTTP dispatch"
+}

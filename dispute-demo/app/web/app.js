@@ -2,6 +2,7 @@
 const $ = id => document.getElementById(id);
 const names = {provisional_credit:'Provisional credit',request_evidence:'Request evidence',decline:'Decline',human_review:'Human review'};
 let config, selected=localStorage.getItem('dispute-ui-selected'), busy=false, generation=0, polling;
+let uslGeneration=0;
 const make = (tag, text, cls) => {const x=document.createElement(tag); if(text!==undefined)x.textContent=String(text); if(cls)x.className=cls; return x;};
 const clear = id => {$(id).replaceChildren(); $(id).classList.remove('empty'); return $(id);};
 const human = value => String(value ?? 'Unavailable').replaceAll('_',' ');
@@ -99,11 +100,43 @@ async function refreshInventory(){
 async function selectCase(){
   const version=++generation;selected=$('case-select').value;if(!selected)return;
   localStorage.setItem('dispute-ui-selected',selected);
+  ++uslGeneration;$('usl-id').value=selected;
+  $('usl-status').textContent=config.usl_enabled?'Not loaded':'Disabled';$('usl-load').disabled=!config.usl_enabled;
+  clear('usl-data').append(make('p',config.usl_enabled?'Load the optional preview for this case.':'USL preview is disabled.','muted'));
   clearTimeout(polling);notice('');resetResult();setBusy(false);$('investigate').disabled=true;$('investigate').textContent='Investigate →';
   clear('case-summary').append(make('h2',selected));['facts','evidence','decisions','recoveries'].forEach(id=>clear(id).append(make('p','Loading this case…','empty')));$('source-stamp').textContent='Loading source';
   try{const data=await api('/api/case?id='+encodeURIComponent(selected));if(version!==generation)return;renderContext(data.snapshot.context);renderSaved(data.snapshot,data.recoveries);$('investigate').disabled=false;
     const last=localStorage.getItem('dispute-ui-last:'+selected);if(last){const job=await api('/api/job?id='+encodeURIComponent(last));if(version!==generation)return;renderJob(job);poll(job.operation_id,version);}
   }catch(e){if(version!==generation)return;notice(e.message,true);$('source-stamp').textContent='Source unavailable';}
+}
+async function loadUsl(){
+  if(!config.usl_enabled)return;
+  const caseId=$('usl-id').value;
+  const version=++uslGeneration;
+  if(!/^DP-[0-9]{4}$/.test(caseId)){$('usl-status').textContent='Invalid case ID';clear('usl-data').append(make('p','Enter a case ID such as DP-0020.','empty'));return;}
+  $('usl-load').disabled=true;$('usl-status').textContent='Loading';
+  clear('usl-data').append(make('p','Reading the three USL sources…','muted'));
+  try{
+    const data=await api('/api/usl?id='+encodeURIComponent(caseId));if(version!==uslGeneration)return;
+    $('usl-status').textContent=human(data.status);const box=clear('usl-data');
+    if(!data.case){box.append(make('p','Preview unavailable. No source records or quality pass can be inferred.','empty'));}
+    else{
+      box.append(make('p',`${data.dispute_id} · ${data.model} · Queried ${data.captured_at}`,'muted'));
+      box.append(make('p',`Scoped records: ${data.counts.merchant_evidence} merchant, ${data.counts.prior_cases} history. Ownership checked against PostgreSQL. These counts do not prove a refund.`));
+      box.append(make('p',`Zetaris cross-source join: ${data.joined_counts[0]} distinct merchant records, ${data.joined_counts[1]} distinct history records. Matches the scoped reads.`));
+      table(box,'Source provenance',['Records','Origin'],Object.entries(data.provenance).map(([k,v])=>[human(k),v]));
+      table(box,'Merchant metadata',['Record / case','Type / status','Source time / version'],data.merchant_evidence.map(r=>[`${r.evidence_id} / ${r.dispute_id}`,`${human(r.evidence_type)} / ${human(r.integrity_status)}`,`${r.source_updated_at} / ${r.source_version}`]));
+      table(box,'Advisory history',['Record / other case','Outcome','Source time / version'],data.prior_cases.map(r=>[`${r.history_id} / ${r.prior_dispute_id}`,r.prior_outcome,`${r.observed_at} / ${r.source_version}`]));
+      box.append(make('p',`Activation timestamp: ${data.activation_timestamp??'unknown'}. Model revision: ${data.model_revision??'unknown'}. Native DQ: ${human(data.native_dq)}.`,'muted'));
+    }
+    box.append(make('p',data.issues.map(human).join('; '),'muted'));
+    if(data.recorded_native_dq){const dq=data.recorded_native_dq;
+      box.append(make('h3',`Native DQ — recorded ${dq.verified_date_singapore}`),make('p','Historical live Zetaris result. DQ was not rerun by this preview.','muted'));
+      table(box,null,['Table / rule','Total','Valid','Invalid'],dq.rules.map(r=>[`${r.table} / ${r.rule}`,r.total,r.valid,r.invalid]));
+      const fixture=dq.controlled_fixture;box.append(make('p',`Separate invalid fixture: ${fixture.valid} valid, ${fixture.invalid} invalid. Caught ${fixture.invalid_record.evidence_id} → ${fixture.invalid_record.dispute_id}.`),make('p',dq.limitations,'muted'));
+    }
+  }catch(e){if(version!==uslGeneration)return;$('usl-status').textContent='Unavailable';clear('usl-data').append(make('p','USL preview failed. The decision workflow is separate.','empty'));}
+  finally{if(version===uslGeneration)$('usl-load').disabled=false;}
 }
 async function poll(id,version){
   try{const job=await api('/api/job?id='+encodeURIComponent(id));if(version!==generation)return;renderJob(job);if(job.status==='running'){polling=setTimeout(()=>poll(id,version),1500);return;}
@@ -118,5 +151,7 @@ async function submit(kind,run_id=null){
   catch(e){if(version!==generation)return;notice('Operation response unavailable: '+e.message+'. Refresh to check the retained operation before starting again.',true);}
 }
 $('case-select').addEventListener('change',selectCase);$('investigate').addEventListener('click',()=>submit('investigate'));
+$('usl-load').addEventListener('click',loadUsl);
+$('usl-id').addEventListener('input',()=>{++uslGeneration;$('usl-status').textContent='Not loaded';$('usl-load').disabled=!config?.usl_enabled;clear('usl-data').append(make('p','Load the optional preview for this case.','muted'));});
 $('refresh').addEventListener('click',async()=>{if(await refreshInventory())await selectCase();});
-(async()=>{try{config=await api('/api/config');$('mode').textContent='LIVE INTEGRATIONS · SYNTHETIC ACTIONS';if(await refreshInventory())await selectCase();}catch(e){notice(e.message,true);}})();
+(async()=>{try{config=await api('/api/config');$('mode').textContent='LIVE INTEGRATIONS · SYNTHETIC ACTIONS';$('usl-id').disabled=!config.usl_enabled;$('usl-load').disabled=!config.usl_enabled;if(config.usl_enabled){$('usl-status').textContent='Not loaded';clear('usl-data').append(make('p','Enter a case ID or select a source case, then load the optional preview.','muted'));}if(await refreshInventory())await selectCase();}catch(e){notice(e.message,true);}})();

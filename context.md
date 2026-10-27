@@ -5,6 +5,21 @@
 >
 > **Context last reviewed:** 2026-10-27, T13 delivery verification. T00–T13 and A01 are complete against their repository acceptance gates. The submission package includes a checked deck, narrated video, walkthrough and explicit owner blockers; HackOS submission is not complete. T12 passed all 267 main tests and 16 reference/compatibility checks. T13 independently reproduced setup and two isolated replay cycles from a public clean checkout. Live evidence remains separately dated; shared state is preserved. The user authorized the full roadmap sequentially with Jira updates and a commit/push to `origin/main` per completed task.
 
+> **Latest extension, 27 October 2026:** the user explicitly assigned all U00–U06.
+> [Three-source USL](docs/zetaris-usl/README.md) now runs on Zetaris 2.4.3.1 over
+> existing PostgreSQL, a new CSV FileStore and a fixed REST fixture. Real
+> COMPILE/ACTIVATE, exact 40/4/3 row parity, joined DP-0020 counts and native PK/FK
+> DQ are verified. A separate invalid fixture demonstrates one detected orphan.
+> The bounded adapter and optional dashboard panel are off by default and have
+> no action authority; freshness/atomicity remain unverified. The original
+> coherent decision path, policies, sources and financial effects are preserved.
+> Full isolated regression: 328 main + 16 reference tests passed. See the
+> [dated evidence](docs/zetaris-usl/demo-evidence.md) for live UI limits and commands.
+> U00–U06 was developed on `codex/zetaris-usl`. The user's subsequent request
+> authorizes committing, opening a PR and merging it to `main`; no Jira edit or
+> portal submission is included. T16 media remains unchanged. Earlier one-source/no-USL
+> statements below describe historical milestones, not this optional extension.
+
 ## 1. Project identity
 
 | Field | Context |

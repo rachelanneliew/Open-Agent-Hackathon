@@ -1,0 +1,8 @@
+channel=jdbc env=[private local configuration] statements=3
+  1. RUN DQ dispute_id TABLE lightning.metastore.dispute_usl_v1.dispute_resolution_usl.dispute_case
+      ['dispute_id', 'dispute_case', 'Primary Key Constraint', 40, 40, 0]
+  2. RUN DQ evidence_id TABLE lightning.metastore.dispute_usl_v1.dispute_resolution_usl.merchant_evidence
+      ['evidence_id', 'merchant_evidence', 'Primary Key Constraint', 4, 4, 0]
+  3. RUN DQ history_id TABLE lightning.metastore.dispute_usl_v1.dispute_resolution_usl.prior_case
+      ['history_id', 'prior_case', 'Primary Key Constraint', 3, 3, 0]
+done: 3/3 statements ok

@@ -91,11 +91,18 @@ other useful applications and a proposed USL improvement; comparisons and
 examples can earn additional credit. This is sponsor scoring guidance with an
 explicit flexibility note, not evidence that this repository implements it.
 
-The current integration uses one PostgreSQL datasource through Zetaris with
+At the original audit, the integration used one PostgreSQL datasource through Zetaris with
 multiple tables/read views. A table is not another datasource. No USL or
 three-source federation has been implemented or verified. T13 must state this
 scoring limitation. Any expansion would need a separate scoped implementation;
 do not relabel the existing bundle view as a USL or claim full sponsor marks.
+
+**27 October U00–U06 update:** the separately scoped
+[extension](zetaris-usl/README.md) now verifies three independent connectors,
+genuine COMPILE/ACTIVATE, joined queries and actual native DQ. Original T13/T16
+media is unchanged; use the [new addendum](submission/USL_ADDENDUM.md) for this
+evidence. No organizer score or acceptance is inferred. Public event deadline
+was rechecked; authenticated final-form checks remain owner work.
 
 ## Owner, access and precise remaining blockers
 

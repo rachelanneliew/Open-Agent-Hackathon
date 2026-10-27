@@ -1,0 +1,11 @@
+transactions|42|6d3056e00914e28a739166773b3b63eb
+settlements|54|4252998cfe961f4a01b09724c1f639ff
+disputes|40|ed5acd90618527af13691c6197958a98
+evidence|81|e9d5493550ffc00655a530878bbe48dd
+evidence_documents|81|379662737dc64021db01dbb07c2d644f
+policy_rules|16|53623278e63c87cc37941f6da40d1dd6
+decisions|4
+simulated_credits|2
+audit_events|4
+pending_reviews|1
+17
