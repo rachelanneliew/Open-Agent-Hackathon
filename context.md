@@ -3,7 +3,7 @@
 > **Canonical project brief for all coding agents and collaborators.**
 > Read this file **at the start of every task**, then consult [`ROADMAP.md`](./ROADMAP.md) for the active priorities. Read the actual code, policies, schemas, tests, and HackOS instructions before making implementation claims.
 >
-> **Context last reviewed:** 2026-10-27, T02 typed retrieval implementation from `b850ae8` on `codex/t02-typed-retrieval`. T00–T02 are complete against repository acceptance gates. **Evidence basis:** 50 root-suite tests, 6 offline prototype critic tests and separate live JDBC context/history/state checks; details in `ROADMAP.md`. Other prototype integration tasks remain open. Nightshift and H-MEM were NOT RUN for T02; earlier availability evidence remains historical. Jira status alone does not establish implementation acceptance.
+> **Context last reviewed:** 2026-10-27, T03 deterministic policy implementation from `3106cd5` on `codex/t03-policy-evaluation`. T00–T03 are complete against repository gates. **Evidence:** 70 main tests, 6 offline critic regressions, data validation and eight live JDBC policy evaluations pass. User-authorized startup resolved the initial service blocker. No action/model/memory integration is claimed; source revisions remain null.
 
 ## 1. Project identity
 
@@ -180,6 +180,14 @@ Keep **business outcome** (credit, evidence request, decline, human review) sepa
 - `source_revision=None` remains explicit; decision reads return `unsupported` without querying nonexistent storage. There is no coherent multi-read snapshot or commit freshness guarantee. Source dispute status/text is unversioned and cannot reconstruct past values. History is advisory and contains no inferred decision, credit or memory verification. See the [retrieval reference](./dispute-demo/docs/retrieval.md) for limits and commands.
 - T02 added no policy implementation, action writes or memory operations. Its separately authorized closure verified KAN-11 Done with completion comment `10003`; publication preparation is recorded in the roadmap. T03 / KAN-12 is recommended next and not started. The dated prototype table below describes the earlier PR #4 inspection; this T02 entry supersedes its retrieval gap list.
 
+### Verified in T03 — deterministic policy evaluation, 27 October 2026
+
+- [Canonical policy evaluator](./dispute-demo/app/policy_engine.py) now returns bound `PolicyResult` with all four outcomes, ordered rule checks, citations, missing categories and an optional credit cap. The old [dictionary entry point](./dispute-demo/agent/policy_engine.py) delegates to it; no second evaluator remains.
+- Exact supplied v1/v2 semantics, opening-date selection, first-terminal precedence, elapsed filing/review boundaries and primary-transaction completed balance are implemented. Unknown policy/currency, inconsistent ledger and unresolved input issues require review; no history threshold exists. No writes or model calls occur.
+- Whole synthetic document templates/metadata establish bounded support; missing required text requests evidence, and unknown additional material requires review. Known T02 missing-text diagnostics are classified through evidence rules without weakening T01. See [policy interpretation and limits](./dispute-demo/docs/policy.md).
+- 70 main tests (20 new policy tests covering all 40 authored cases), 6 offline critic regressions and data validation pass. After user-authorized startup of the existing stack, JDBC preflight, the read-only DP-0014 CLI and eight live case evaluations passed. All four outcomes, primary-balance/review boundaries and v1/v2 selection are verified. T03 is **DONE**. No source data was reloaded, reset or mutated; the stack is left running.
+- Pure critic, canonical PostgreSQL actions, investigator/controller and memory integration remain outstanding. Recommended next implementation task is T06 / KAN-15, not started. No Jira edits or publication performed.
+
 ### PR #4 prototypes — inspected 2026-10-27, integration acceptance outstanding
 
 [PR #4](https://github.com/rachelanneliew/Open-Agent-Hackathon/pull/4), merged on 2026-10-26, adds nine files and modifies retrieval. The local clean checkout matched its merge commit `76db7724ed8e32fac8b0fabaf33c556ddaa3bd29`; no older source was restored. These are source observations, not new passing test or live-service claims.
@@ -296,6 +304,7 @@ Choose actual dispute IDs only after inspecting fixture and policy files; do not
 
 | Date | Change and verification status | Evidence / file reference |
 |---|---|---|
+| 2026-10-27 | T03 typed policy evaluator accepted: 70 main tests, 6 critic regressions, data validation and 8 live JDBC cases; authorized existing-stack startup resolved initial blocker | `app/policy_engine.py`, `agent/policy_engine.py`, `tests/test_policy_engine.py`, `docs/policy.md`; T03 work log |
 | 2026-10-27 | T02 typed case/history/state reads accepted with 50 root tests, 6 offline critic tests and separate live JDBC checks; source revision/decision support remain unavailable | `app/tools.py`, `integration/get_dispute_context.py`, `docs/retrieval.md` under `dispute-demo/`; T02 work log in `ROADMAP.md` |
 | 2026-10-27 | Section 7 documentation alignment: recorded selective review/advisory history, mapped PR #4 prototypes and outstanding acceptance; no runtime tests or live application checks | PR #4 / local `76db772`; `ROADMAP.md` alignment log and new `docs/planning/JIRA_POST_MERGE_CHANGESET.md` preview |
 | 2026-10-26 | Established baseline context from progress audit; infrastructure working, agent workflow pending | `Open_Agent_Hackathon_Progress_2026-10-26.md` (external/source report) |

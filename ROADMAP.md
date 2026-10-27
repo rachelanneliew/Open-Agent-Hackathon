@@ -1,8 +1,8 @@
 # Task Roadmap — Synthetic Card-Dispute Resolution Agent
 
 > **Canonical work queue.** Read [`context.md`](./context.md) first, then [`agent.md`](./agent.md).
-> **Revision:** T02 typed retrieval completed 27 October 2026 on `codex/t02-typed-retrieval` from `b850ae8`. Offline and live JDBC acceptance evidence is recorded below. The earlier documentation alignment and prototype inventory remain dated history; other prototype integration tasks are still open.
-> **Next roadmap task:** T03 / KAN-12, only when assigned. T00 / KAN-9, T01 / KAN-10 and T02 / KAN-11 are DONE against their repository acceptance gates; T03–T13 and A01 remain NOT_STARTED. The authorized T02 follow-up verified KAN-11 Done with completion comment `10003`.
+> **Revision:** T03 deterministic policy evaluation completed locally on `codex/t03-policy-evaluation` from `3106cd5`, 27 October 2026. Offline and live JDBC acceptance pass; evidence is recorded below.
+> **Next roadmap task:** T06 / KAN-15, only when assigned, following the post-merge integration order. T00–T03 are DONE; T04–T13 and A01 remain NOT_STARTED. No Jira change is included in T03.
 > **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
 
 ## 1. What changed from the earlier plan
@@ -23,7 +23,7 @@ Use statuses `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED`, `DONE`. DONE requires reco
 
 Every task includes its own tests. T12 is cross-component testing, not the first time testing begins.
 
-**Post-merge integration order:** T02 is now complete; assign T03 next, then T06; T05 follows T03/T04 and benefits from the actual critic, then T07/T08. T04, T09 and A01 can progress separately when assigned. After T09, complete T10, then T11, T12 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
+**Post-merge integration order:** T03 is now complete; assign T06 next; T05 follows T03/T04 and benefits from the actual critic, then T07/T08. T04, T09 and A01 can progress separately when assigned. After T09, complete T10, then T11, T12 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
 
 ## Jira tracking (supplied kit dated 2026-10-26)
 
@@ -68,7 +68,7 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 | T00 | Verify the current repository baseline | None | DONE |
 | T01 | Define shared contracts and exact policy semantics | T00 | DONE |
 | T02 | Expose narrow case and history retrieval tools | T01 | DONE |
-| T03 | Implement deterministic policy evaluation | T01, T02 | NOT_STARTED |
+| T03 | Implement deterministic policy evaluation | T01, T02 | DONE |
 | T04 | Create sandbox decision, action and audit storage | T01 | NOT_STARTED |
 | T05 | Implement atomic simulated decision recording | T03, T04 | NOT_STARTED |
 | T06 | Build the mandatory critic and validator | T02, T03 | NOT_STARTED |
@@ -206,7 +206,7 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 ### T03 — Implement deterministic policy evaluation
 
 **Phase:** Foundation  
-**Status:** NOT_STARTED  
+**Status:** DONE
 **Depends on:** T01, T02  
 **Deliverable:** A pure policy evaluator that returns allowed outcomes, rule results, constraints and source-linked explanations.
 
@@ -214,24 +214,26 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **PR #4 integration requirements:**
 
-- [ ] Adapt `dispute-demo/agent/policy_engine.py` into the single canonical evaluator, returning a bound `PolicyResult` with all four outcomes explicitly allowed/blocked, rule checks, missing categories and optional credit limit. Apply the existing legacy mapping at an explicit boundary.
-- [ ] Preserve opening-date version selection, ascending first-terminal precedence, exact 30/45-day filing windows and review only above 20,000 SGD cents. Follow primary-transaction balance semantics; pending/failed amounts are not completed money and negative/corrupt balances must not silently become valid zero balances.
-- [ ] Evidence type alone cannot prove usable support. Document bounded synthetic delivery-template interpretation and reject unsupported/missing text. Normalize invalid evidence timestamps and missing transaction fields at the input boundary.
-- [ ] Test all applicable authored scenarios and just-inside/on/outside boundaries, malformed/incomplete/duplicate predicates, unexpected actions, mixed versions and unsupported policy/currency scope. No numeric repeat-claim rule is added.
+- [x] Adapt `dispute-demo/agent/policy_engine.py` into the single canonical evaluator, returning a bound `PolicyResult` with all four outcomes explicitly allowed/blocked, rule checks, missing categories and optional credit limit. Apply the existing legacy mapping at an explicit boundary.
+- [x] Preserve opening-date version selection, ascending first-terminal precedence, exact 30/45-day filing windows and review only above 20,000 SGD cents. Follow primary-transaction balance semantics; pending/failed amounts are not completed money and negative/corrupt balances must not silently become valid zero balances.
+- [x] Evidence type alone cannot prove usable support. Document bounded synthetic delivery-template interpretation and reject unsupported/missing text. Normalize invalid evidence timestamps and missing transaction fields at the input boundary.
+- [x] Test all applicable authored scenarios and just-inside/on/outside boundaries, malformed/incomplete/duplicate predicates, unexpected actions, mixed versions and unsupported policy/currency scope. No numeric repeat-claim rule is added.
 
 **Work:**
 
-- [ ] Implement evaluate_policy(context, evaluation_time) without model calls. Select the version applicable under the source policy date rule; do not substitute the newest policy simply because it is available.
-- [ ] Implement written filing-window, evidence, amount, settlement-integrity, precedence and human-review checks. Calculate amounts from authoritative movements in integer minor units according to the actual policy.
-- [ ] Return rule IDs, source evidence, missing requirements, allowed/blocked outcomes and credit limit or reason that no amount can be safely calculated.
-- [ ] Use verified history, not raw H-MEM text, for any history-dependent rule. Reevaluate after any newly verified evidence changes the case context.
-- [ ] Test all applicable existing fixture scenarios and explicit boundaries. Treat fixture disagreements as a discrepancy to investigate rather than permission to rewrite expected outcomes.
+- [x] Implement evaluate_policy(context, evaluation_time) without model calls. Select the version applicable under the source policy date rule; do not substitute the newest policy simply because it is available.
+- [x] Implement written filing-window, evidence, amount, settlement-integrity, precedence and human-review checks. Calculate amounts from authoritative movements in integer minor units according to the actual policy.
+- [x] Return rule IDs, source evidence, missing requirements, allowed/blocked outcomes and credit limit or reason that no amount can be safely calculated.
+- [x] Use verified history, not raw H-MEM text, for any history-dependent rule. Reevaluate after any newly verified evidence changes the case context.
+- [x] Test all applicable existing fixture scenarios and explicit boundaries. Treat fixture disagreements as a discrepancy to investigate rather than permission to rewrite expected outcomes.
 
 **Acceptance gate:** Policy tests pass with Nightshift disabled. An actual Zetaris context can be evaluated with auditable rules. Missing or contradictory facts never default to credit.
 
 **Not in this task:** No LLM enforcement, runtime expected-results lookup, ledger writes or invented history threshold.
 
-**Suggested paths/artifacts:** Proposed: dispute-demo/app/policy_engine.py, dispute-demo/tests/test_policy_engine.py. Reuse existing equivalents; these paths are not verified as present.
+**Implemented artifacts:** [typed evaluator](./dispute-demo/app/policy_engine.py), [delegating legacy adapter](./dispute-demo/agent/policy_engine.py), [policy tests](./dispute-demo/tests/test_policy_engine.py), [policy reference](./dispute-demo/docs/policy.md).
+
+**Acceptance state, 27 October 2026:** **DONE**. 70 root-suite tests (20 policy tests including all 40 authored cases), 6 prototype critic regressions and data validation pass. After user-authorized startup of the existing local stack, JDBC preflight and the live policy CLI passed. Eight live contexts cover all four outcomes, partial refunds, review threshold and v1/v2 boundaries with bound rules/citations and JSON round-trips. No source data was reloaded, reset or mutated. The initial blocked attempt and successful follow-up are retained in the work log.
 
 **Stop:** report evidence, update this task's status and the work log, then stop. Do not automatically start the next task.
 
@@ -947,6 +949,55 @@ PYCODE
 - Current handover/context notes now record the verified Jira closure. Earlier implementation and alignment entries retain their historical states. Runtime code did not change during this publication follow-up; the preceding T02 live JDBC evidence applies to the same sources. Live Zetaris/PostgreSQL/Nightshift/H-MEM/HackOS checks were **NOT RUN** again for publication.
 - Publication uses an explicit nine-file commit with a detailed behavior/validation/limitations message, followed by a fast-forward of local `main` and normal `git push origin main`. Commit identity, staged checks, push outcome and remote verification are reported after execution rather than asserted in advance. Temporary check scripts and API receipts remain outside the repository.
 - Recommended next task: **T03 / KAN-12 only**, not started. Source revisions and decision reads remain explicitly unsupported; no policy, source data, action storage or memory behavior changed in this follow-up.
+
+### 2026-10-27 — T03 / KAN-12: deterministic evaluator; live acceptance blocked
+
+- Status: **BLOCKED**, implementation/offline verification complete; actual Zetaris-context evaluation remains required. Owner: Codex, user-assigned T03 only. Baseline clean `main` / `origin/main` at `3106cd5`; branch `codex/t03-policy-evaluation`. T01/T02 prerequisites inspected against schemas, retrieval, source policies, generator and tests; baseline 50 tests passed.
+- Changed runtime: added `dispute-demo/app/policy_engine.py`; replaced the prototype `agent/policy_engine.py` with a dictionary-to-typed delegating adapter. Added `tests/test_policy_engine.py` and `docs/policy.md`; updated README, TEAM_SETUP, context, contract reference and this log. No schema, source-data, fixture, retrieval, critic/resolver writer or memory changes.
+- Behavior: exact supplied v1/v2 policy validation; immutable reference/cutoff binding; first-terminal precedence and explicit dispositions for all four outcomes; primary-only integer balance/claim cap; failed movements excluded, pending/negative/inconsistent balances reviewed; precise 30/45-day and 20,000-cent boundaries. Legacy output names are translated at the adapter, not treated as merchant refunds. No history threshold, fixture lookup, model call, action write or extra evaluator.
+- Evidence interpretation: recognize complete generated templates and source metadata, not labels/substrings. Missing required text becomes an explicit category request; additional uninterpretable evidence requires review. Known T02 unavailable-text diagnostics are resolved through evidence rules, while all other input issues remain fail-closed. Multiple captures, refunded duplicate companions and non-open lifecycle states are conservatively unsupported; these limits are documented rather than treated as new policies. Contracts and source policies are unchanged.
+- Exact commands from `dispute-demo/`, Python 3.13.7: `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -v` — **PASS, 70 tests**, 0 failures/errors/skips; `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s agent/tests -p test_critic.py -v` — **PASS, 6 tests**, 0 failures/errors/skips; `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python scripts/validate_synthetic_data.py` — **PASS**, 42 transactions, 54 settlements, 40 disputes, 81 evidence rows/documents, 16 rules, unchanged hashes/fixture integrity.
+- The 20 new tests cover all 40 independently authored outcomes/amounts/citations/reasons, microsecond filing boundaries in both versions, threshold ±1, primary/companion arithmetic, pending/failed/refund/reversal data, malformed policy/inputs, contradictory/missing/unusable/injected text, cutoff/version rules, serialization and purity. Offline SQL tests use isolated SQLite, not live Zetaris. Existing critic tests mock policy and use temporary SQLite, not PostgreSQL action acceptance.
+- Import/collection command from `dispute-demo/`: `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -` with assertions that importing `app.policy_engine` and `agent.policy_engine` leaves `sys.path` unchanged and does not import `jaydebeapi` or `sqlite3`, then `unittest.TestLoader().discover('agent/tests')` — **PASS**; 13 prototype tests collected, no import errors. The 7 external H-MEM tests were collected only, **NOT RUN**.
+- Live preflight from `getting-started/`: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/preflight.py --jdbc` — initial sandbox attempt failed with Operation not permitted; approved retry failed with **connection refused** on local port 10000. Driver JAR, JDK, venv and JayDeBeApi present. REST also failed because API key is unset. This is current unavailability, not T02 live acceptance regression evidence. The scoped connection instructions require stopping live work; startup of the existing stack was requested, pending response.
+- Live policy evaluation command, **NOT RUN** until preflight passes: from `dispute-demo/`, `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m app.policy_engine DP-0014`. The runner uses real T02/JDBC only and reports structured retrieval failure without a fixture fallback. No source records changed. Nightshift, H-MEM execution, action/concurrency tests and HackOS checks: **NOT RUN**, outside T03.
+- Final repository checks: `git diff --check` — PASS after removing a newly edited status line's trailing Markdown spaces. `PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/validate_t03_docs.py` — PASS: 6 documents, 90 local links, balanced fences/final newlines, all 15 task mappings/dependencies retained, only T03 status changed, prior work log preserved. `git diff --no-index --check -- /dev/null` for each new evaluator/test/reference file produced no diagnostics (expected exit 1 for new-file differences).
+- Protected-source check: `git diff --exit-code 3106cd5 -- dispute-demo/app/schemas.py dispute-demo/app/tools.py dispute-demo/data dispute-demo/policies dispute-demo/scripts dispute-demo/integration dispute-demo/tests/fixtures dispute-demo/agent/critic.py dispute-demo/agent/resolver.py dispute-demo/agent/memory_service.py dispute-demo/agent/hmem_client.py dispute-demo/agent/hmem_bridge getting-started zetaris-platform AGENTS.md CLAUDE.md` — PASS, exit 0. Exactly nine task paths changed; no source or prototype state migration.
+- Tooling corrections: an initial test-file write and initial documentation write used a duplicated relative directory and wrote nothing. Corrected paths before validation; the first test command collected zero tests (exit 5), superseded by the passing final 70-test run above.
+- Jira and Git publication: no Jira edits, commits, pushes or PRs authorized/performed. Existing sources, prototype state and services preserved. `context.md` records implemented versus acceptance-blocked capability. Finish T03 live acceptance next; recommend T06 / KAN-15 only afterward, not started.
+
+### 2026-10-27 — T03 live acceptance completed after authorized service startup
+
+- Status: **DONE** against the T03 repository gate. The user explicitly approved starting the existing local stack. This completes the preceding blocked attempt; no next task, Jira edit or Git publication started. Runtime sources are unchanged from the passing 70-test / 6-test offline run.
+- Startup: `docker ps -a --format '{{.Names}}\t{{.Status}}\t{{.Ports}}'` initially failed because Docker Desktop was stopped. `open -a Docker` launched the existing installation; the four persistent Zetaris services automatically restarted. `bash dispute-demo/integration/db.sh start dispute-postgres` started the existing source PostgreSQL container. Subsequent `docker ps -a --format '{{.Names}}\t{{.Status}}'` confirmed the dispute database and Zetaris postgres/driver/api/ui healthy; init/bootstrap remained exited successfully. No pulls, installs, container recreation, config changes, source loads, migrations or resets.
+- From `getting-started/`: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/preflight.py --jdbc` — **JDBC PASS**: port, Java/JAR/Python dependencies, `SELECT 1`, datasource `dispute`, Lightning databases NY_TAXI and TPCDS_DB. Overall exit 1 is the two REST-only checks for the unset API key; the connection guide explicitly permits JDBC to proceed. Existing SLF4J no-binding warnings did not affect queries.
+- From `dispute-demo/`: `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m app.policy_engine DP-0014` — **PASS, exit 0**, source channel `zetaris`, read status `ok`, v2, 6,000-minor-unit credit cap, matched `v2-APPROVE`, evidence EV-0027/EV-0028, completed movements ST-0021/ST-0022 (10,000 capture, 4,000 refund). This is read-only eligibility, not a recorded credit.
+- From `dispute-demo/`: `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -c "exec(compile(open('/private/tmp/verify_t03_live.py').read(), '/private/tmp/verify_t03_live.py', 'exec'))"` — **PASS, exit 0, eight actual JDBC contexts**. The temporary assertion script imports only runtime read tools/evaluator/schemas, not CSVs or expected-result fixtures. It checks all four outcome partitions, exact credit caps, selected version/rule, later rules not evaluated, citation membership, exact reference binding and JSON round-trip. Source revisions remain null; no freshness or persistence claim.
+
+| Live case | Result | Matched rule / amount |
+|---|---|---|
+| DP-0014 | provisional_credit | v2-APPROVE / 6,000 SGD minor units |
+| DP-0019 | request_evidence | v2-MISSING_EVIDENCE / absent refund_confirmation |
+| DP-0024 | human_review | v2-CONFLICTING_EVIDENCE |
+| DP-0029 | decline | v1-FILING_WINDOW |
+| DP-0008 | human_review | v2-REVIEW_THRESHOLD |
+| DP-0003 | provisional_credit | v2-APPROVE / exactly 20,000 SGD minor units |
+| DP-0033 | decline | v1-FILING_WINDOW, opening immediately before v2 |
+| DP-0034 | provisional_credit | v2-APPROVE / 10,000 SGD minor units, opening at v2 boundary |
+
+- Updated current README, context, roadmap, setup notes and policy/contract references to reflect acceptance. The earlier blocked log remains historical evidence. Existing local stack is left running as authorized. Offline suites were not redundantly rerun because runtime files did not change; their recorded 70 + 6 passing results and data validation remain applicable.
+- NOT RUN: Nightshift, H-MEM execution, PostgreSQL action/concurrency checks and HackOS. These are outside T03. REST remains unconfigured; JDBC acceptance is complete. No model calls, action writes or memory writes occurred.
+- Final documentation/scope checks: `PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/validate_t03_docs.py` — PASS, 6 documents, 91 local links, balanced fences/newlines, unchanged 15 task mappings/dependencies and prior history, only T03 advanced to DONE. `git diff --check` and the preceding protected-source `git diff --exit-code 3106cd5 -- ...` command both passed. Still exactly nine T03 paths changed; no runtime edits in this service-startup follow-up.
+- Remaining limits: bounded synthetic evidence interpretation; unsupported generalized ledger/lifecycle cases require review; source revision/commit freshness and canonical persistence remain T04/T05. Recommended next task: **T06 / KAN-15**, not started. All T03 changes remain local and uncommitted; Jira is unchanged.
+
+### 2026-10-27 — Publish and merge T03 through a pull request
+
+- Scope: the user explicitly requested a commit on `codex/t03-policy-evaluation`, a PR targeting `main`, and its merge. This authorizes publication/merge only; no next roadmap task or Jira edit.
+- Remote baseline: `git fetch origin` passed; `git rev-list --left-right --count origin/main...HEAD` returned `0 0` at `3106cd5`. GitHub confirmed push permission and no existing open PR for this head/base pair.
+- Fresh checks from `dispute-demo/`: `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -v` — PASS, 70 tests; `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s agent/tests -p test_critic.py -v` — PASS, 6 tests; both zero failures/errors/skips. `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python scripts/validate_synthetic_data.py` — PASS, all source counts/hashes/fixture checks.
+- Repository checks: `git diff --check`, the protected-source check recorded above, and `PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/validate_t03_docs.py` passed (six documents, 91 local links, task mappings/dependencies and historical logs preserved). Only the nine T03 implementation/test/documentation paths are included.
+- Runtime sources are unchanged from the eight successful live JDBC evaluations above. Live application checks were NOT RUN again for publication; no new integration capability is claimed.
+- Publication uses an explicit nine-file commit, `git push --set-upstream origin codex/t03-policy-evaluation`, then a GitHub PR and normal merge with an expected-head check after reviewing CI/mergeability. Commit/PR/merge identifiers and remote verification are reported after execution rather than asserted in advance. T03 remains DONE; T06 / KAN-15 is recommended and not started.
 
 ## 11. Deferred scope
 
