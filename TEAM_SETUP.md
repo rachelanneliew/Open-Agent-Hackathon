@@ -10,17 +10,9 @@ We are building one Nightshift investigator with a Python controller, determinis
 - Added reproducible generation, test fixtures, evidence documents and data-validation tests.
 - Rachel has loaded the project database and registered its tables in Zetaris.
 - Added `get_dispute_context.py`; it expects the Zetaris datasource name **`dispute`**
-- PR #4 supplied prototypes in `dispute-demo/agent/`. T02/T03 now provide typed retrieval/policy, T04 provides isolated-tested PostgreSQL storage, and T06 provides the pure critic and retires SQLite execution. T05 now provides the isolated-tested atomic action service. T07 now provides a tested real Nightshift investigator. Shared deployment/coherent reads, bounded workflow, verified portable memory setup and UI remain outstanding. See [context.md](./context.md) and [ROADMAP.md](./ROADMAP.md).
+- T00–T12 now implement and verify the canonical workflow, guarded deployment, reference memory, analyst UI and isolated reset/replay. [Context](./context.md) and [roadmap](./ROADMAP.md) retain dated acceptance evidence.
 
-**Evidence date:** T02 verified typed retrieval and live JDBC reads on 27 October 2026, with 50 root-suite tests and 6 offline critic tests passing. See [the retrieval reference](./dispute-demo/docs/retrieval.md) and ROADMAP for exact evidence. Nightshift discovery failure remains dated T00 evidence; Nightshift and H-MEM were NOT RUN for T02. Setup/start/load commands below are instructions for a new environment; no service startup, installation or source loading was performed in T02.
-
-**T03 follow-up, 27 October:** the canonical [policy evaluator](./dispute-demo/docs/policy.md)
-is accepted with 70 main tests, 6 offline critic regressions and eight live JDBC
-case evaluations passing. The prototype policy entry point delegates to it.
-The initial connection-refused blocker was resolved by user-authorized launch of
-the existing Docker Desktop and start of the existing dispute database container.
-All persistent services are healthy and left running. No install, configuration
-change, source reload or reset was needed. REST has no API key; JDBC passed.
+**Start with the [current reproducible walkthrough](./docs/submission/DEMO.md).** It separates the credential-free isolated rehearsal from live deployment. T12 passed 267 main and 16 reference/compatibility tests. The older task-specific acceptance sections below are historical milestones, not current missing features. A01's [authenticated requirements](./docs/competition.md) govern submission.
 
 GitHub shares code and generated files. It does **not** share running containers, database contents or passwords. These instructions create your own local setup on macOS/Linux using Bash. Windows users should use WSL2 with Docker integration and adapt their local paths.
 
@@ -241,7 +233,7 @@ After saving a provider key in Nightshift, run one small real inference check:
 python3 dispute-demo/integration/check_nightshift.py --chat
 ```
 
-**Ready when:** authenticated model discovery passes and the script receives a non-empty text reply through Nightshift. A running app or healthy endpoint alone does not prove a model can answer. This verifies only the connection; the structured investigator and prototype integration still need implementation and acceptance tests. The check follows the [Meterless provider contract](https://meterless.ai/engines.html).
+**Ready when:** authenticated model discovery passes and the script receives a non-empty text reply through Nightshift. A running app or healthy endpoint alone does not prove a model can answer. This verifies only the connection. The implemented structured investigator and controller require their separate source/policy/critic gates. The check follows the [Meterless provider contract](https://meterless.ai/engines.html).
 
 ## 8. Pinned H-MEM reference — T09 verified
 
@@ -249,7 +241,7 @@ Follow the [memory guide](./dispute-demo/docs/memory.md) for the tested setup,
 configurable paths, record contract, limits and exact verification commands.
 The selected source is official revision `1742dec56a66e58eef9dda2d2b865823758ca8cd`,
 with Node 24.13.0, npm 11.18.0, tsx 4.23.15 and Vitest 5.0.5 pinned. The reference
-has deterministic mock embeddings and JSON files; competition approval is A01.
+has deterministic mock embeddings and JSON files. A01 confirms H-MEM is allowed, without formal endorsement of the exact revision.
 
 The setup script fetches a hash-verified archive into ignored project outputs;
 `npm ci` uses the bridge lockfile. Select the pinned Node and set `HMEM_NODE`

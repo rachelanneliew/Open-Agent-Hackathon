@@ -1,0 +1,1114 @@
+{
+  "mode": "scripted_isolated_replay",
+  "reset_scope": "New disposable PostgreSQL container; two fresh cloned databases and private temporary memory/journal namespaces; owned resources removed afterward.",
+  "sources": "Read-only copies of committed synthetic files; shared database and memory untouched.",
+  "real_components": [
+    "PostgreSQL",
+    "canonical policy/critic/controller/action service",
+    "pinned H-MEM reference with mock embeddings"
+  ],
+  "simulated_components": [
+    "model responses",
+    "Zetaris transport (direct isolated PostgreSQL bundle read)"
+  ],
+  "requires": [
+    "Docker already running",
+    "existing postgres:16-alpine image",
+    "application Python dependencies",
+    "pinned H-MEM/Node setup"
+  ],
+  "status": "passed",
+  "report": {
+    "cycles": [
+      {
+        "cycle": 1,
+        "database": "t05_5a1e3b54823743a8a69264a708eb7b3b",
+        "initial_decisions": 0,
+        "initial_revision": 0,
+        "initial_memory_empty": true,
+        "decisions": 8,
+        "credits": 4,
+        "pending_reviews": 1,
+        "source_hashes": {
+          "transactions": "6dba363164adfb1d71ed781487de2b62",
+          "settlements": "85dbe3b7b1d0f3afa3d6e0f85a75f7e7",
+          "disputes": "13d8bcae9e3345a66ef3593be7949a32",
+          "evidence": "aad00e9ce3a8370053271422000fe3ba",
+          "evidence_documents": "c8c6e61f97a1c96230f7cff23e6c604e",
+          "policy_rules": "3404be2a15f958d23ace89edd79edb14"
+        },
+        "records": [
+          {
+            "dispute_id": "DP-0014",
+            "receipt": {
+              "run_id": "f66e4fde-7fa3-40ad-870e-645c74c6ab69",
+              "proposal_id": "97bd650e-4e70-4e80-b8dc-239cb164180f",
+              "idempotency_key": "490ea417-2e51-48d8-a45c-5862d743da34",
+              "reference": {
+                "dispute_id": "DP-0014",
+                "snapshot_id": "6a3f4d97-bb8d-4cc4-beff-35a6422ef69b",
+                "evaluation_at": "2026-10-27T07:38:03.081242Z",
+                "policy_version": "v2",
+                "source_revision": 0
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "854da873-6e10-4544-add0-cfe45e895725",
+              "recommendation": {
+                "outcome": "provisional_credit",
+                "currency": "SGD",
+                "amount_minor": 6000
+              },
+              "committed_at": "2026-10-27T07:38:04.336193Z",
+              "simulated_credit_id": "930ce738-e175-4b07-b324-39a08f4f1046"
+            },
+            "critic": "accepted",
+            "model_calls": 1,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0014",
+                    "snapshot_id": "6a3f4d97-bb8d-4cc4-beff-35a6422ef69b",
+                    "evaluation_at": "2026-10-27T07:38:03.081242Z",
+                    "policy_version": "v2",
+                    "source_revision": 0
+                  },
+                  "customer_id": "CUST-008",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "854da873-6e10-4544-add0-cfe45e895725"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:854da873-6e10-4544-add0-cfe45e895725",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "854da873-6e10-4544-add0-cfe45e895725",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0020",
+            "receipt": {
+              "run_id": "95dddd16-9ad8-452b-a51a-4f763176c2a4",
+              "proposal_id": "f0b73cc2-0ef5-42c9-8341-eeccdfcd7bff",
+              "idempotency_key": "261af8a0-b104-4e72-b156-be9ec8395a8d",
+              "reference": {
+                "dispute_id": "DP-0020",
+                "snapshot_id": "5c71c507-307a-4117-b807-f660a386e3dc",
+                "evaluation_at": "2026-10-27T07:38:04.642292Z",
+                "policy_version": "v2",
+                "source_revision": 5
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "c7ac8109-f956-412c-836b-eced5af23f3f",
+              "recommendation": {
+                "outcome": "request_evidence",
+                "currency": "SGD",
+                "amount_minor": null
+              },
+              "committed_at": "2026-10-27T07:38:04.960809Z",
+              "simulated_credit_id": null
+            },
+            "critic": "accepted",
+            "model_calls": 1,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0020",
+                    "snapshot_id": "5c71c507-307a-4117-b807-f660a386e3dc",
+                    "evaluation_at": "2026-10-27T07:38:04.642292Z",
+                    "policy_version": "v2",
+                    "source_revision": 5
+                  },
+                  "customer_id": "CUST-013",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "c7ac8109-f956-412c-836b-eced5af23f3f"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:c7ac8109-f956-412c-836b-eced5af23f3f",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "c7ac8109-f956-412c-836b-eced5af23f3f",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0029",
+            "receipt": {
+              "run_id": "d8763562-06bf-48dc-aee5-1700eaa5b72c",
+              "proposal_id": "57bc6060-031a-403d-9ff0-f968315e3731",
+              "idempotency_key": "17da7575-852d-4bba-8e81-d4fde27367a6",
+              "reference": {
+                "dispute_id": "DP-0029",
+                "snapshot_id": "5ba46d4f-cdb3-4e37-8d0e-48f8f9c431b7",
+                "evaluation_at": "2026-10-27T07:38:05.232441Z",
+                "policy_version": "v1",
+                "source_revision": 8
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "dbdb635a-b12e-4948-8fbf-89aef3dee858",
+              "recommendation": {
+                "outcome": "decline",
+                "currency": "SGD",
+                "amount_minor": null
+              },
+              "committed_at": "2026-10-27T07:38:05.696113Z",
+              "simulated_credit_id": null
+            },
+            "critic": "accepted",
+            "model_calls": 1,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0029",
+                    "snapshot_id": "5ba46d4f-cdb3-4e37-8d0e-48f8f9c431b7",
+                    "evaluation_at": "2026-10-27T07:38:05.232441Z",
+                    "policy_version": "v1",
+                    "source_revision": 8
+                  },
+                  "customer_id": "CUST-012",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "dbdb635a-b12e-4948-8fbf-89aef3dee858"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:dbdb635a-b12e-4948-8fbf-89aef3dee858",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "dbdb635a-b12e-4948-8fbf-89aef3dee858",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0008",
+            "receipt": {
+              "run_id": "44317cda-7ac7-4a79-81c2-01b9f951aa6e",
+              "proposal_id": "6dc39f60-9711-4a3c-b03f-e42cc0c80c0d",
+              "idempotency_key": "17c148f8-0474-468d-a63a-ef20fa5314d6",
+              "reference": {
+                "dispute_id": "DP-0008",
+                "snapshot_id": "087363d1-72b9-4b9f-a5d7-7c2579e228cf",
+                "evaluation_at": "2026-10-27T07:38:06.041451Z",
+                "policy_version": "v2",
+                "source_revision": 11
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "0e14cb4b-4266-4f6a-b6ed-5c7901981a51",
+              "recommendation": {
+                "outcome": "human_review",
+                "currency": "SGD",
+                "amount_minor": null
+              },
+              "committed_at": "2026-10-27T07:38:06.712741Z",
+              "simulated_credit_id": null
+            },
+            "critic": "accepted",
+            "model_calls": 1,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0008",
+                    "snapshot_id": "087363d1-72b9-4b9f-a5d7-7c2579e228cf",
+                    "evaluation_at": "2026-10-27T07:38:06.041451Z",
+                    "policy_version": "v2",
+                    "source_revision": 11
+                  },
+                  "customer_id": "CUST-006",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "0e14cb4b-4266-4f6a-b6ed-5c7901981a51"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:0e14cb4b-4266-4f6a-b6ed-5c7901981a51",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "0e14cb4b-4266-4f6a-b6ed-5c7901981a51",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0017",
+            "receipt": {
+              "run_id": "22909f67-07e8-4f4d-b94a-2e0008a9f1f0",
+              "proposal_id": "82c4fde7-3776-406e-9273-4dfe27262f62",
+              "idempotency_key": "3791584f-e466-4f73-b03c-116205aebdf0",
+              "reference": {
+                "dispute_id": "DP-0017",
+                "snapshot_id": "b8b7f05e-2736-4e33-9172-976c8feb380d",
+                "evaluation_at": "2026-10-27T07:38:07.434403Z",
+                "policy_version": "v2",
+                "source_revision": 15
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "f48f8d77-b997-4f22-bef4-fcb40a23f243",
+              "recommendation": {
+                "outcome": "provisional_credit",
+                "currency": "SGD",
+                "amount_minor": 5760
+              },
+              "committed_at": "2026-10-27T07:38:08.258561Z",
+              "simulated_credit_id": "c73093f4-f905-4e30-8b78-20de19b54b93"
+            },
+            "critic": "accepted",
+            "model_calls": 1,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0017",
+                    "snapshot_id": "b8b7f05e-2736-4e33-9172-976c8feb380d",
+                    "evaluation_at": "2026-10-27T07:38:07.434403Z",
+                    "policy_version": "v2",
+                    "source_revision": 15
+                  },
+                  "customer_id": "CUST-008",
+                  "records": [
+                    {
+                      "decision_id": "854da873-6e10-4544-add0-cfe45e895725",
+                      "original_reference": {
+                        "dispute_id": "DP-0014",
+                        "snapshot_id": "6a3f4d97-bb8d-4cc4-beff-35a6422ef69b",
+                        "evaluation_at": "2026-10-27T07:38:03.081242Z",
+                        "policy_version": "v2",
+                        "source_revision": 0
+                      },
+                      "recommendation": {
+                        "outcome": "provisional_credit",
+                        "currency": "SGD",
+                        "amount_minor": 6000
+                      },
+                      "committed_at": "2026-10-27T07:38:04.336193Z",
+                      "reason_code": "refund_missing",
+                      "source_reference": "postgresql:dispute_demo/dispute_actions.decisions/854da873-6e10-4544-add0-cfe45e895725",
+                      "verified_reference": {
+                        "dispute_id": "DP-0014",
+                        "snapshot_id": "b34406ba-c8df-4c68-9911-5b7665bf33b6",
+                        "evaluation_at": "2026-10-27T07:38:08.019610Z",
+                        "policy_version": "v2",
+                        "source_revision": 15
+                      }
+                    }
+                  ],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 1,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "f48f8d77-b997-4f22-bef4-fcb40a23f243"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:f48f8d77-b997-4f22-bef4-fcb40a23f243",
+                "memory_id": "mem-2",
+                "error": null,
+                "decision_id": "f48f8d77-b997-4f22-bef4-fcb40a23f243",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0033",
+            "receipt": {
+              "run_id": "5b311807-c8cb-4bd2-8978-49e802fe2d03",
+              "proposal_id": "cfdbc741-2b4c-4e31-a92f-5ea36e12d341",
+              "idempotency_key": "9984f7e0-09e0-47bc-8646-7fd419d4426f",
+              "reference": {
+                "dispute_id": "DP-0033",
+                "snapshot_id": "cb97ed1d-be41-4c9a-8f0e-d0d73f2a1272",
+                "evaluation_at": "2026-10-27T07:38:08.700420Z",
+                "policy_version": "v1",
+                "source_revision": 20
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "b18545b7-3bbd-4a6e-8b83-c86b3bb7ae32",
+              "recommendation": {
+                "outcome": "decline",
+                "currency": "SGD",
+                "amount_minor": null
+              },
+              "committed_at": "2026-10-27T07:38:09.190017Z",
+              "simulated_credit_id": null
+            },
+            "critic": "accepted",
+            "model_calls": 1,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0033",
+                    "snapshot_id": "cb97ed1d-be41-4c9a-8f0e-d0d73f2a1272",
+                    "evaluation_at": "2026-10-27T07:38:08.700420Z",
+                    "policy_version": "v1",
+                    "source_revision": 20
+                  },
+                  "customer_id": "CUST-015",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "b18545b7-3bbd-4a6e-8b83-c86b3bb7ae32"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:b18545b7-3bbd-4a6e-8b83-c86b3bb7ae32",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "b18545b7-3bbd-4a6e-8b83-c86b3bb7ae32",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0034",
+            "receipt": {
+              "run_id": "0639a3fb-e8b2-4f86-bc32-3e1656dd7c66",
+              "proposal_id": "cd41238d-8ed3-4549-a9e1-1e6c69671f89",
+              "idempotency_key": "6e9158c2-cfc3-433b-8a03-8a4bf9f6a6df",
+              "reference": {
+                "dispute_id": "DP-0034",
+                "snapshot_id": "1ff7f858-05e4-4a62-b65e-cc76186b3bc2",
+                "evaluation_at": "2026-10-27T07:38:09.542728Z",
+                "policy_version": "v2",
+                "source_revision": 23
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "db701032-df86-4c2c-99b0-dd43b67ed0aa",
+              "recommendation": {
+                "outcome": "provisional_credit",
+                "currency": "SGD",
+                "amount_minor": 10000
+              },
+              "committed_at": "2026-10-27T07:38:09.980044Z",
+              "simulated_credit_id": "811253e3-16fb-407b-ae86-e6f123a5a769"
+            },
+            "critic": "accepted",
+            "model_calls": 1,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0034",
+                    "snapshot_id": "1ff7f858-05e4-4a62-b65e-cc76186b3bc2",
+                    "evaluation_at": "2026-10-27T07:38:09.542728Z",
+                    "policy_version": "v2",
+                    "source_revision": 23
+                  },
+                  "customer_id": "CUST-004",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "db701032-df86-4c2c-99b0-dd43b67ed0aa"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:db701032-df86-4c2c-99b0-dd43b67ed0aa",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "db701032-df86-4c2c-99b0-dd43b67ed0aa",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0003",
+            "receipt": {
+              "run_id": "5c7691d1-9420-48bf-b68b-159a57b47576",
+              "proposal_id": "13774361-2dbf-4678-a608-3ce2b7215371",
+              "idempotency_key": "b489c8ab-f52a-45c2-b2b0-70edb159448f",
+              "reference": {
+                "dispute_id": "DP-0003",
+                "snapshot_id": "afacc145-f49c-4ac8-b44f-d731286f2b87",
+                "evaluation_at": "2026-10-27T07:38:10.270800Z",
+                "policy_version": "v2",
+                "source_revision": 28
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "c412a268-975e-4435-9849-6f374113b218",
+              "recommendation": {
+                "outcome": "provisional_credit",
+                "currency": "SGD",
+                "amount_minor": 20000
+              },
+              "committed_at": "2026-10-27T07:38:10.612756Z",
+              "simulated_credit_id": "8fb038f9-0e93-48d9-89f9-908c12882c20"
+            },
+            "critic": "accepted",
+            "model_calls": 2,
+            "correction": 1,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0003",
+                    "snapshot_id": "afacc145-f49c-4ac8-b44f-d731286f2b87",
+                    "evaluation_at": "2026-10-27T07:38:10.270800Z",
+                    "policy_version": "v2",
+                    "source_revision": 28
+                  },
+                  "customer_id": "CUST-010",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "c412a268-975e-4435-9849-6f374113b218"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:c412a268-975e-4435-9849-6f374113b218",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "c412a268-975e-4435-9849-6f374113b218",
+                "committed_result_preserved": true
+              }
+            ]
+          }
+        ],
+        "exact_retry": "reused",
+        "ordinary_rerun": "effective_credit_already_exists"
+      },
+      {
+        "cycle": 2,
+        "database": "t05_3ad4ca3feae54b5abc04b10484b7c527",
+        "initial_decisions": 0,
+        "initial_revision": 0,
+        "initial_memory_empty": true,
+        "decisions": 8,
+        "credits": 4,
+        "pending_reviews": 1,
+        "source_hashes": {
+          "transactions": "6dba363164adfb1d71ed781487de2b62",
+          "settlements": "85dbe3b7b1d0f3afa3d6e0f85a75f7e7",
+          "disputes": "13d8bcae9e3345a66ef3593be7949a32",
+          "evidence": "aad00e9ce3a8370053271422000fe3ba",
+          "evidence_documents": "c8c6e61f97a1c96230f7cff23e6c604e",
+          "policy_rules": "3404be2a15f958d23ace89edd79edb14"
+        },
+        "records": [
+          {
+            "dispute_id": "DP-0014",
+            "receipt": {
+              "run_id": "164cfc22-74b3-45eb-a894-ec15fe0e3e40",
+              "proposal_id": "0bd6f738-ef57-4bb6-abf6-0951c1fc8fce",
+              "idempotency_key": "be4f36ec-4a30-4cc4-9d47-3adcbbd2cc68",
+              "reference": {
+                "dispute_id": "DP-0014",
+                "snapshot_id": "2685164c-c20f-409e-bef9-3cae5229bb10",
+                "evaluation_at": "2026-10-27T07:38:13.800305Z",
+                "policy_version": "v2",
+                "source_revision": 0
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "1fb1c2b6-47ed-4bdd-b5aa-2f8af23f0c9e",
+              "recommendation": {
+                "outcome": "provisional_credit",
+                "currency": "SGD",
+                "amount_minor": 6000
+              },
+              "committed_at": "2026-10-27T07:38:21.337326Z",
+              "simulated_credit_id": "d76ebd28-608c-46a1-ac9a-c7e61ac7d36b"
+            },
+            "critic": "accepted",
+            "model_calls": 1,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0014",
+                    "snapshot_id": "2685164c-c20f-409e-bef9-3cae5229bb10",
+                    "evaluation_at": "2026-10-27T07:38:13.800305Z",
+                    "policy_version": "v2",
+                    "source_revision": 0
+                  },
+                  "customer_id": "CUST-008",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "1fb1c2b6-47ed-4bdd-b5aa-2f8af23f0c9e"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:1fb1c2b6-47ed-4bdd-b5aa-2f8af23f0c9e",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "1fb1c2b6-47ed-4bdd-b5aa-2f8af23f0c9e",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0020",
+            "receipt": {
+              "run_id": "aab4bd51-a996-4c36-a64c-45604a9212dd",
+              "proposal_id": "68403ae2-b386-4824-9f46-6cb05afd0c8d",
+              "idempotency_key": "12d2b589-adc0-437e-a82f-df09f9eb89b1",
+              "reference": {
+                "dispute_id": "DP-0020",
+                "snapshot_id": "1fa486d3-b0ea-44e3-a684-f0d62e364774",
+                "evaluation_at": "2026-10-27T07:38:23.504741Z",
+                "policy_version": "v2",
+                "source_revision": 5
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "fa55c0eb-2816-4ce4-9b60-6b153a803195",
+              "recommendation": {
+                "outcome": "request_evidence",
+                "currency": "SGD",
+                "amount_minor": null
+              },
+              "committed_at": "2026-10-27T07:38:24.637039Z",
+              "simulated_credit_id": null
+            },
+            "critic": "accepted",
+            "model_calls": 1,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0020",
+                    "snapshot_id": "1fa486d3-b0ea-44e3-a684-f0d62e364774",
+                    "evaluation_at": "2026-10-27T07:38:23.504741Z",
+                    "policy_version": "v2",
+                    "source_revision": 5
+                  },
+                  "customer_id": "CUST-013",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "fa55c0eb-2816-4ce4-9b60-6b153a803195"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:fa55c0eb-2816-4ce4-9b60-6b153a803195",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "fa55c0eb-2816-4ce4-9b60-6b153a803195",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0029",
+            "receipt": {
+              "run_id": "d3484d70-8008-437a-9dcd-2884cbe39fd6",
+              "proposal_id": "c857c110-8a77-434a-8678-73212787e276",
+              "idempotency_key": "7cac5ba5-c9fc-4e36-825b-a2442c4b074a",
+              "reference": {
+                "dispute_id": "DP-0029",
+                "snapshot_id": "532ba49d-a235-4ef3-8c2e-f133c5d317cf",
+                "evaluation_at": "2026-10-27T07:38:25.221707Z",
+                "policy_version": "v1",
+                "source_revision": 8
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "18820c6d-2661-422f-a2ea-3f61974afa85",
+              "recommendation": {
+                "outcome": "decline",
+                "currency": "SGD",
+                "amount_minor": null
+              },
+              "committed_at": "2026-10-27T07:38:25.822068Z",
+              "simulated_credit_id": null
+            },
+            "critic": "accepted",
+            "model_calls": 1,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0029",
+                    "snapshot_id": "532ba49d-a235-4ef3-8c2e-f133c5d317cf",
+                    "evaluation_at": "2026-10-27T07:38:25.221707Z",
+                    "policy_version": "v1",
+                    "source_revision": 8
+                  },
+                  "customer_id": "CUST-012",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "18820c6d-2661-422f-a2ea-3f61974afa85"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:18820c6d-2661-422f-a2ea-3f61974afa85",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "18820c6d-2661-422f-a2ea-3f61974afa85",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0008",
+            "receipt": {
+              "run_id": "4888a8a2-a963-4da5-85ed-da6f79b8a686",
+              "proposal_id": "c3fa7006-5b66-4a9f-9cfb-60388b37d15c",
+              "idempotency_key": "61b32e35-df9b-47da-9054-85fce9f93446",
+              "reference": {
+                "dispute_id": "DP-0008",
+                "snapshot_id": "f9dd4197-ed46-4e61-a2a2-970f664e5cff",
+                "evaluation_at": "2026-10-27T07:38:26.140926Z",
+                "policy_version": "v2",
+                "source_revision": 11
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "66e5c51d-7511-4f28-9fc5-e3f682d93c09",
+              "recommendation": {
+                "outcome": "human_review",
+                "currency": "SGD",
+                "amount_minor": null
+              },
+              "committed_at": "2026-10-27T07:38:26.481126Z",
+              "simulated_credit_id": null
+            },
+            "critic": "accepted",
+            "model_calls": 1,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0008",
+                    "snapshot_id": "f9dd4197-ed46-4e61-a2a2-970f664e5cff",
+                    "evaluation_at": "2026-10-27T07:38:26.140926Z",
+                    "policy_version": "v2",
+                    "source_revision": 11
+                  },
+                  "customer_id": "CUST-006",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "66e5c51d-7511-4f28-9fc5-e3f682d93c09"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:66e5c51d-7511-4f28-9fc5-e3f682d93c09",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "66e5c51d-7511-4f28-9fc5-e3f682d93c09",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0017",
+            "receipt": {
+              "run_id": "0e4ba60c-1546-4195-9330-1a73b1a7087f",
+              "proposal_id": "b0877044-b590-45ca-9017-610dd96d7a08",
+              "idempotency_key": "7bf1fd02-9b1a-4122-a658-c75423b5747d",
+              "reference": {
+                "dispute_id": "DP-0017",
+                "snapshot_id": "839292ae-3c3f-4a0c-8a65-b6cee952eddb",
+                "evaluation_at": "2026-10-27T07:38:26.757202Z",
+                "policy_version": "v2",
+                "source_revision": 15
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "e5dfa250-1f1f-4514-b5f2-27e1813c5399",
+              "recommendation": {
+                "outcome": "provisional_credit",
+                "currency": "SGD",
+                "amount_minor": 5760
+              },
+              "committed_at": "2026-10-27T07:38:27.187212Z",
+              "simulated_credit_id": "4c8e5a89-a709-43fb-b0af-c7a4aaeff9fb"
+            },
+            "critic": "accepted",
+            "model_calls": 1,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0017",
+                    "snapshot_id": "839292ae-3c3f-4a0c-8a65-b6cee952eddb",
+                    "evaluation_at": "2026-10-27T07:38:26.757202Z",
+                    "policy_version": "v2",
+                    "source_revision": 15
+                  },
+                  "customer_id": "CUST-008",
+                  "records": [
+                    {
+                      "decision_id": "1fb1c2b6-47ed-4bdd-b5aa-2f8af23f0c9e",
+                      "original_reference": {
+                        "dispute_id": "DP-0014",
+                        "snapshot_id": "2685164c-c20f-409e-bef9-3cae5229bb10",
+                        "evaluation_at": "2026-10-27T07:38:13.800305Z",
+                        "policy_version": "v2",
+                        "source_revision": 0
+                      },
+                      "recommendation": {
+                        "outcome": "provisional_credit",
+                        "currency": "SGD",
+                        "amount_minor": 6000
+                      },
+                      "committed_at": "2026-10-27T07:38:21.337326Z",
+                      "reason_code": "refund_missing",
+                      "source_reference": "postgresql:dispute_demo/dispute_actions.decisions/1fb1c2b6-47ed-4bdd-b5aa-2f8af23f0c9e",
+                      "verified_reference": {
+                        "dispute_id": "DP-0014",
+                        "snapshot_id": "ac363f94-90b1-4b73-9665-03b56fadfd28",
+                        "evaluation_at": "2026-10-27T07:38:27.051059Z",
+                        "policy_version": "v2",
+                        "source_revision": 15
+                      }
+                    }
+                  ],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 1,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "e5dfa250-1f1f-4514-b5f2-27e1813c5399"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:e5dfa250-1f1f-4514-b5f2-27e1813c5399",
+                "memory_id": "mem-2",
+                "error": null,
+                "decision_id": "e5dfa250-1f1f-4514-b5f2-27e1813c5399",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0033",
+            "receipt": {
+              "run_id": "73f9f6e1-faa8-4387-81b7-0cc0f03a78b3",
+              "proposal_id": "82dac44c-2a0f-487e-bd3c-e0717304a2fb",
+              "idempotency_key": "518b2504-1856-4eae-8540-d8e375f4e47d",
+              "reference": {
+                "dispute_id": "DP-0033",
+                "snapshot_id": "57f613b0-e514-4033-86b7-a4324047a1c9",
+                "evaluation_at": "2026-10-27T07:38:27.465185Z",
+                "policy_version": "v1",
+                "source_revision": 20
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "80417bce-804d-4881-998d-13344a6e87e8",
+              "recommendation": {
+                "outcome": "decline",
+                "currency": "SGD",
+                "amount_minor": null
+              },
+              "committed_at": "2026-10-27T07:38:27.804983Z",
+              "simulated_credit_id": null
+            },
+            "critic": "accepted",
+            "model_calls": 1,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0033",
+                    "snapshot_id": "57f613b0-e514-4033-86b7-a4324047a1c9",
+                    "evaluation_at": "2026-10-27T07:38:27.465185Z",
+                    "policy_version": "v1",
+                    "source_revision": 20
+                  },
+                  "customer_id": "CUST-015",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "80417bce-804d-4881-998d-13344a6e87e8"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:80417bce-804d-4881-998d-13344a6e87e8",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "80417bce-804d-4881-998d-13344a6e87e8",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0034",
+            "receipt": {
+              "run_id": "04de3098-7ecd-4258-a38d-c11ab8e1c2f0",
+              "proposal_id": "a1a7ffde-623a-4632-a97d-8906a22be911",
+              "idempotency_key": "ae88d0cc-33ef-4079-93f7-bbfd3869810c",
+              "reference": {
+                "dispute_id": "DP-0034",
+                "snapshot_id": "d021349d-35fd-4e4e-a482-ad29d6628b51",
+                "evaluation_at": "2026-10-27T07:38:28.049473Z",
+                "policy_version": "v2",
+                "source_revision": 23
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "8b54202c-d40d-445a-bcfb-6248b38e4ed1",
+              "recommendation": {
+                "outcome": "provisional_credit",
+                "currency": "SGD",
+                "amount_minor": 10000
+              },
+              "committed_at": "2026-10-27T07:38:28.370284Z",
+              "simulated_credit_id": "19686762-f83c-45d1-b824-bbe0910d4660"
+            },
+            "critic": "accepted",
+            "model_calls": 1,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0034",
+                    "snapshot_id": "d021349d-35fd-4e4e-a482-ad29d6628b51",
+                    "evaluation_at": "2026-10-27T07:38:28.049473Z",
+                    "policy_version": "v2",
+                    "source_revision": 23
+                  },
+                  "customer_id": "CUST-004",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "8b54202c-d40d-445a-bcfb-6248b38e4ed1"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:8b54202c-d40d-445a-bcfb-6248b38e4ed1",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "8b54202c-d40d-445a-bcfb-6248b38e4ed1",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0003",
+            "receipt": {
+              "run_id": "b8c723ab-1485-4980-9c23-cea84a7c623f",
+              "proposal_id": "f96c68e1-d7f5-4e6c-9ce9-974120b1a7f6",
+              "idempotency_key": "d1c7c9a4-453d-435d-957f-c156ca708ae3",
+              "reference": {
+                "dispute_id": "DP-0003",
+                "snapshot_id": "7c2b8044-e99e-4dbc-9cf5-1804ca515527",
+                "evaluation_at": "2026-10-27T07:38:28.601694Z",
+                "policy_version": "v2",
+                "source_revision": 28
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "05071652-5664-4970-a602-b9392612ee51",
+              "recommendation": {
+                "outcome": "provisional_credit",
+                "currency": "SGD",
+                "amount_minor": 20000
+              },
+              "committed_at": "2026-10-27T07:38:28.959683Z",
+              "simulated_credit_id": "11103a64-8c69-4ac7-bda5-94d18bad6457"
+            },
+            "critic": "accepted",
+            "model_calls": 2,
+            "correction": 1,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0003",
+                    "snapshot_id": "7c2b8044-e99e-4dbc-9cf5-1804ca515527",
+                    "evaluation_at": "2026-10-27T07:38:28.601694Z",
+                    "policy_version": "v2",
+                    "source_revision": 28
+                  },
+                  "customer_id": "CUST-010",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "05071652-5664-4970-a602-b9392612ee51"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:05071652-5664-4970-a602-b9392612ee51",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "05071652-5664-4970-a602-b9392612ee51",
+                "committed_result_preserved": true
+              }
+            ]
+          }
+        ],
+        "exact_retry": "reused",
+        "ordinary_rerun": "effective_credit_already_exists"
+      }
+    ],
+    "source_files_unchanged": true
+  }
+}

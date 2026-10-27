@@ -1,0 +1,89 @@
+{
+  "task": "T13 / KAN-22",
+  "date": "2026-10-27",
+  "mode": "actual live UI exact-request recovery of earlier T08 receipt",
+  "trace": {
+    "state": {
+      "run_id": "7238450e-5c65-4829-a1a6-fcd3657fddf0",
+      "phase": "finished",
+      "model_calls": 0,
+      "tool_calls": 0,
+      "proposal_revision": 0,
+      "reference": {
+        "dispute_id": "DP-0014",
+        "snapshot_id": "3b5079c7-0e42-449f-bb48-1eb93e9a9c96",
+        "evaluation_at": "2026-10-27T05:06:43.544935Z",
+        "policy_version": "v2",
+        "source_revision": 0
+      },
+      "commit_result": {
+        "run_id": "7238450e-5c65-4829-a1a6-fcd3657fddf0",
+        "proposal_id": "ff956920-5681-4604-a225-cfb9bc54a2f8",
+        "idempotency_key": "4d412ab7-ff27-456d-9a47-2c24f6ed73ae",
+        "reference": {
+          "dispute_id": "DP-0014",
+          "snapshot_id": "3b5079c7-0e42-449f-bb48-1eb93e9a9c96",
+          "evaluation_at": "2026-10-27T05:06:43.544935Z",
+          "policy_version": "v2",
+          "source_revision": 0
+        },
+        "status": "reused",
+        "message": "Original committed decision reused.",
+        "decision_id": "b2d7a3ef-b7a7-4546-ac93-183a672ef41d",
+        "recommendation": {
+          "outcome": "provisional_credit",
+          "currency": "SGD",
+          "amount_minor": 6000
+        },
+        "committed_at": "2026-10-27T05:06:57.770758Z",
+        "simulated_credit_id": "4ca53387-7b50-422c-9c40-d507685394a3"
+      },
+      "error": null
+    },
+    "events": [
+      {
+        "kind": "recovery",
+        "result": {
+          "run_id": "7238450e-5c65-4829-a1a6-fcd3657fddf0",
+          "proposal_id": "ff956920-5681-4604-a225-cfb9bc54a2f8",
+          "idempotency_key": "4d412ab7-ff27-456d-9a47-2c24f6ed73ae",
+          "reference": {
+            "dispute_id": "DP-0014",
+            "snapshot_id": "3b5079c7-0e42-449f-bb48-1eb93e9a9c96",
+            "evaluation_at": "2026-10-27T05:06:43.544935Z",
+            "policy_version": "v2",
+            "source_revision": 0
+          },
+          "status": "reused",
+          "message": "Original committed decision reused.",
+          "decision_id": "b2d7a3ef-b7a7-4546-ac93-183a672ef41d",
+          "recommendation": {
+            "outcome": "provisional_credit",
+            "currency": "SGD",
+            "amount_minor": 6000
+          },
+          "committed_at": "2026-10-27T05:06:57.770758Z",
+          "simulated_credit_id": "4ca53387-7b50-422c-9c40-d507685394a3"
+        }
+      },
+      {
+        "kind": "memory_save",
+        "status": "pending",
+        "decision_id": "b2d7a3ef-b7a7-4546-ac93-183a672ef41d"
+      },
+      {
+        "kind": "memory_save",
+        "status": "reused",
+        "source_id": "decision:b2d7a3ef-b7a7-4546-ac93-183a672ef41d",
+        "memory_id": "mem-1",
+        "error": null,
+        "decision_id": "b2d7a3ef-b7a7-4546-ac93-183a672ef41d",
+        "committed_result_preserved": true
+      }
+    ],
+    "mode": "live",
+    "memory_mode": "verified_advisory",
+    "persisted": true,
+    "recovery_request": "outputs/runs/7238450e-5c65-4829-a1a6-fcd3657fddf0.request.json"
+  }
+}

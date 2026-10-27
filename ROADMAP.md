@@ -23,7 +23,7 @@ Use statuses `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED`, `DONE`. DONE requires reco
 
 Every task includes its own tests. T12 is cross-component testing, not the first time testing begins.
 
-**Post-merge integration order:** T03–T08 are complete, including shared guarded deployment and live fresh-read/model/commit acceptance. T09–T12 and A01 are also complete; continue with T13 under the current goal. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
+**Post-merge integration order:** T03–T08 are complete, including shared guarded deployment and live fresh-read/model/commit acceptance. T09–T13 and A01 are also complete. The repository roadmap is delivered; final HackOS submission remains leader-owned with explicit package blockers. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
 
 ## Jira tracking (supplied kit dated 2026-10-26)
 
@@ -78,7 +78,7 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 | T10 | Integrate verified memory and repeat-history review | T02, T03, T08, T09 | DONE |
 | T11 | Build the thin analyst view and review queue | T08; memory display depends on T10 | DONE |
 | T12 | Run cross-component failure tests and repeatable reset | T08, T10, T11 for the intended complete demo; feature-specific tests run earlier | DONE |
-| T13 | Package the evidence-backed demo and submission | T12, A01; documentation can be drafted alongside earlier tasks | NOT_STARTED |
+| T13 | Package the evidence-backed demo and submission | T12, A01; documentation can be drafted alongside earlier tasks | DONE |
 | A01 | Confirm authenticated HackOS requirements | None; run alongside development | DONE |
 
 ### PR #4 implementation evidence, separate from task status
@@ -539,7 +539,7 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 ### T13 — Package the evidence-backed demo and submission
 
 **Phase:** Delivery  
-**Status:** NOT_STARTED  
+**Status:** DONE
 **Depends on:** T12, A01; documentation can be drafted alongside earlier tasks  
 **Deliverable:** A truthful README, demonstration walkthrough and all verified portal deliverables.
 
@@ -547,18 +547,20 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **Post-merge alignment requirements:**
 
-- [ ] Demonstrate autonomous eligible credit, evidence request and decline, plus policy-required no-credit review using inspected fixture/source IDs. Add duplicate prevention, one bounded correction and real memory continuity when verified.
-- [ ] Label prototype, live/model, reference H-MEM, sample, mock, fault-injection and no-memory modes truthfully. Merged source or a connectivity probe does not prove a complete agent or named responder. Cursor remains an optional development tool unless A01 records a conflicting requirement.
+- [x] Demonstrate autonomous eligible credit, evidence request and decline, plus policy-required no-credit review using inspected fixture/source IDs. Add duplicate prevention, one bounded correction and real memory continuity when verified.
+- [x] Label prototype, live/model, reference H-MEM, sample, mock, fault-injection and no-memory modes truthfully. Merged source or a connectivity probe does not prove a complete agent or named responder. Cursor remains an optional development tool unless A01 records a conflicting requirement.
 
 **Work:**
 
-- [ ] Document installation, private configuration names, sanitized env example, run/test/reset commands, architecture, limits and the exact working features.
-- [ ] Select fixture-backed demonstration cases. Show one valid outcome, duplicate prevention, a labelled critic-correction test, source-verified memory and a policy-version example as appropriate to the confirmed requirements.
-- [ ] Prepare only the slide/video/upload formats actually required by the authenticated portal. Do not assume an old public build-window date is the upload deadline.
-- [ ] Explain actual technology contributions and pre-existing work; distinguish development assistants from runtime services. Claim a named model only with evidence.
-- [ ] Check repository access, secrets in current files/history/logs/recordings, links and uploads. Record submission completion only after the owner verifies it.
+- [x] Document installation, private configuration names, sanitized env example, run/test/reset commands, architecture, limits and the exact working features.
+- [x] Select fixture-backed demonstration cases. Show one valid outcome, duplicate prevention, a labelled critic-correction test, source-verified memory and a policy-version example as appropriate to the confirmed requirements.
+- [x] Prepare only the slide/video/upload formats actually required by the authenticated portal. Do not assume an old public build-window date is the upload deadline.
+- [x] Explain actual technology contributions and pre-existing work; distinguish development assistants from runtime services. Claim a named model only with evidence.
+- [x] Check repository access, secrets in current files/history/logs/recordings, links and uploads. Record submission completion only after the owner verifies it.
 
 **Acceptance gate:** Another teammate can run the documented demo, required features have evidence, and every A01 submission item has a checked accessible artifact or an explicitly recorded blocker.
+
+**Evidence:** [Checked package and owner checklist](./docs/submission/README.md), [reproduction guide](./docs/submission/DEMO.md) and [T13 verification](./dispute-demo/docs/evidence/t13-package-checks.json). Every R1–R10 item has an artifact or explicit blocker. This repository gate is complete; leader-only portal upload/final receipt is **NOT RUN**, and organizer eligibility is not claimed.
 
 **Not in this task:** No unsupported compliance/deadline claims, manufactured model failures or submissions claimed without confirmation.
 
@@ -1375,3 +1377,41 @@ Commands from `dispute-demo/`, Python 3.13.7; reference commands use `HMEM_NODE=
 - Acceptance: source-backed requirements plus precise blockers satisfy the explicit A01 gate. Next is T13/KAN-22 after Jira closure and commit/push; audit completion is not submission completion.
 
 - Jira closure: KAN-23 transitioned to **Done**, acceptance comment `10026`; summary, description, assignee, parent, labels and issue links unchanged. Publication follows this accepted documentation commit.
+
+
+### 27 October 2026 — T13 started (KAN-22)
+
+- A01 published as `937b642`; KAN-23 Done with acceptance `10026` and publication `10027`. Required reading and actual sources/evidence inspected. KAN-22 In Progress, start comment `10028`.
+- Preparing portable demo instructions, cases/architecture/provenance, deck and narrated real-workflow video. Anonymous fresh clone succeeds. Dependencies and isolated replay will be checked in a separate checkout with no private service configuration. Confirmed requirements R1–R10 and blockers B1–B4 remain explicit.
+
+### 27 October 2026 — T13 / KAN-22 completed
+
+- Baseline `937b642`; A01/T12 prerequisites inspected. Delivered [submission package](./docs/submission/README.md), portable [demo walkthrough](./docs/submission/DEMO.md), architecture/provenance, eight-slide editable PPTX and 226.15-second 1080p MP4 with synthetic narration, transcript and captions. Actual product captures remain distinct from dated receipts and scripted isolated evidence. Every authenticated R1–R10 item maps to an artifact or precise blocker.
+- Anonymous public clone and fresh setup succeeded in `/private/tmp/t13-clean-repro`, detached at the baseline. Installed a separate Python 3.13.7 environment, pinned runtime requirements, hash-verified H-MEM and npm lockfile dependencies with Node 24.13.0/npm 11.18.0. No private configuration was copied; empty Git-link directories did not prevent the isolated route. Both rehearsal cycles passed with eight decisions/four credits/one review each, real reference continuity, duplicate/correction/version checks and unchanged source fingerprints.
+- Fresh offline verification collected both roots: 267 main tests, 194 pass/73 explicit integration skips; 16 agent tests, 4 pass/12 explicit reference skips; zero failures/errors. T12's full 267 + 16 integration pass is retained as dated evidence, not rerun for documentation/media-only work. Source validator passed.
+- Fresh JDBC preflight passed SELECT 1 and inventory. Overall exit 1 is solely the two missing-REST-key checks. One actual UI DP-0029 investigation read v1 policy and called Nightshift, then failed proposal-schema validation without critique/persistence. No artificial failure or repeated request forced the recording. Temporary source refresh failures were visible; a later refresh succeeded. Exact DP-0014 recovery reused original decision `b2d7a3ef-b7a7-4546-ac93-183a672ef41d`, credit `4ca53387-7b50-422c-9c40-d507685394a3` and memory summary, with zero model calls. [Refusal](./dispute-demo/docs/evidence/t13-live-refusal.json) and [recovery](./dispute-demo/docs/evidence/t13-recovery.json).
+- Final read-only shared check passed: all six source hashes, restricted role, 3 decisions/2 credits/3 audits/1 queued review, revision 14. Original five services remain healthy, no disposable test containers remain, and owned UI/media preview servers stopped. No shared service restart, source reload, migration or configuration change.
+- Deck package/font/geometry/native-table/import checks passed with zero findings. All eight 1920×1080 renders inspected. Reimported final PPTX renders match seven originals exactly; the image placement on slide 4 was reinspected and passed. Native PowerPoint execution **NOT RUN**. Video contains H.264/AAC, 6,784 decoded frames, non-silent audio (mean −16.0 dB/max −1.7 dB), and browser playback reached its 226.154667-second end without error. Ten scene frames inspected; approximate caption timing disclosed. Human listening review **NOT RUN**; leader review remains documented.
+- Secret audit checked 322 reachable Git blobs (5,819,643 bytes), eight configured private values and high-confidence credential patterns: zero findings/forbidden tracked paths. Changed files and decompressed deck parts also passed. Captures, slide text and narration contain synthetic case data and no credentials/private participant contacts. This does not claim detection of every unknown secret or unreachable Git object.
+
+Commands below use the indicated directories. For reference/replay commands, `HMEM_NODE=/Users/joellui/.nvm/versions/node/v24.13.0/bin/node`. Bundled media/artifact tool paths are recorded in the temporary build directory; they are authoring dependencies, not new application dependencies.
+
+| Exact command or check | Result |
+|---|---|
+| `git -c credential.helper= -c core.askPass= clone --no-checkout https://github.com/rachelanneliew/Open-Agent-Hackathon.git /private/tmp/t13-clean-repro`, then `git checkout --detach 937b642d9f48c9f5a5a2e336a51f5f1938231210` in that clone | PASS: anonymous public source access. |
+| `.venv/bin/python -m pip install --disable-pip-version-check -r requirements-runtime.txt`; `.venv/bin/python scripts/setup_hmem.py`; `npm --prefix agent/hmem_bridge ci --ignore-scripts --no-audit --no-fund` in clean `dispute-demo/` | PASS: fresh pinned setup without private configs. |
+| `HMEM_NODE=... PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m demo.replay --reset-isolated-demo` in clean `dispute-demo/` | PASS: two cycles, owned resources cleaned. |
+| `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m demo.verify` in clean `dispute-demo/` | PASS: 198 passed, 85 explicit integration/reference skips across 283 collected tests. |
+| `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/validate_synthetic_data.py` in clean `dispute-demo/` | PASS: 42/54/40/81/16 rows and document/fixture hashes. |
+| `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/preflight.py --jdbc` from `getting-started/` | JDBC PASS; exit 1 only missing REST API key checks. |
+| `HMEM_NODE=... PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m app.ui --memory-dir outputs/t10-live-memory` | Actual browser capture/refusal/recovery above; server stopped. |
+| `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python /private/tmp/t11-final-db-check.py` from original `dispute-demo/` | PASS after approved Docker socket access; shared sources/actions unchanged. |
+| Artifact-tool `build.mjs`, `finalizePresentation`, and `render_slides.py docs/submission/dispute-agent-deck.pptx --output_dir dispute-demo/outputs/t13-build/deck/final-renders --width 1920 --height 1080` | PASS: editable native deck, integrity/import/render verification. |
+| `python3 dispute-demo/outputs/t13-build/build-video.py`; FFmpeg `-hide_banner -i docs/submission/dispute-agent-demo.mp4 -af volumedetect -f null -` | PASS: 3:46, 1080p, complete decode and audio; browser playback subsequently ended successfully. |
+| `python3 /private/tmp/t13-review.py`; `git diff --check` | PASS: Markdown paths/fences, JSON, current/history secret scans and unchanged protected runtime/source paths. |
+
+- Initial media authoring could not discover the bundled font runtime until the explicit runtime environment was supplied. Sandboxed macOS speech returned a zero-audio file; approved local speech rendering produced the checked non-silent narration. An initial read-only Docker check lacked socket access; approved retry passed. No source or test expectation was weakened to resolve these authoring/environment failures.
+- **Remaining explicit blockers:** B1 leader responsibility/form formats/upload limits/portal playback/final receipt, B2 two-agent interpretation, B3 separate detailed challenge page, B4 exact-reference formal endorsement, and team confirmation of pre-event contributions/rights. One datasource/no USL is disclosed against the new scoring guidance. Final upload/submission and fresh licensed-stack bootstrap on another machine are **NOT RUN**. No submission, organizer acceptance or award eligibility is claimed.
+- Acceptance follows the explicit roadmap gate permitting checked artifacts **or precise blockers** for A01 items. All repository roadmap tasks are now delivered. No next implementation task is started. Jira acceptance and main publication receipts follow final review; anonymous new artifact URL checks are recorded with publication.
+
+- Jira KAN-22 acceptance comment `10029` records the repository gate, checks and precise owner blockers. All fourteen other mapped tasks were freshly read as Done. Final transition follows main publication and anonymous artifact verification; protected issue fields remain preserved.

@@ -1,6 +1,28 @@
 # Synthetic Card-Dispute Resolution Agent
 
-Open Agent Hackathon project for investigating fictional card disputes and recommending simulated outcomes. See [context.md](./context.md) for the project scope and verified implementation status.
+An analyst selects a fictional card dispute. The application reads evidence through Zetaris, applies versioned policy, obtains a Nightshift proposal, checks it with a deterministic critic and records a simulated outcome atomically in PostgreSQL. Source-verified H-MEM history supplies advisory context.
+
+**Track 3: Reasoning Architecture. Team: bob the builder.** All data, policies and financial effects are synthetic. Ordinary eligible credit, evidence requests and declines run autonomously. Policy-required review has no credit effect.
+
+- [Run the demo](./docs/submission/DEMO.md): clean-checkout rehearsal, live setup, exact cases and recovery.
+- [Architecture and sponsor evidence](./docs/submission/ARCHITECTURE.md): component roles, source links, provenance and limitations.
+- [Submission package](./docs/submission/README.md): deck, narrated video, requirements and remaining owner checks.
+- [Current implementation status](./context.md) and [task evidence](./ROADMAP.md).
+
+## Quick start
+
+Use macOS/Linux, Python 3.10+, Docker and the pinned Node 24.13.0/npm 11.18.0. The [walkthrough](./docs/submission/DEMO.md) provides first-time dependency/image setup. With that setup complete, run from `dispute-demo/`:
+
+```sh
+.venv/bin/python -m demo.replay                # preview only
+.venv/bin/python -m demo.replay --reset-isolated-demo
+.venv/bin/python -m demo.verify               # both roots, explicit skips
+.venv/bin/python -m demo.verify --integrations
+```
+
+The rehearsal uses real disposable PostgreSQL and reference H-MEM with **scripted model responses and direct isolated reads**. It makes no live Zetaris/Nightshift call and resets no shared state. T12 passed **267 main + 16 reference/compatibility tests, zero skips**. Dated live receipts separately establish actual integration behavior.
+
+For the normal live app, follow [TEAM_SETUP](./TEAM_SETUP.md), then run `.venv/bin/python -m app.ui` from `dispute-demo/` and open `http://127.0.0.1:8931`. It needs private service credentials, the licensed Zetaris/JDBC bundle, restricted action access and pinned reference setup. A clone alone does not provision these services. Malformed model output fails visibly without a sample fallback.
 
 ## Documentation guide
 
@@ -29,38 +51,8 @@ Open Agent Hackathon project for investigating fictional card disputes and recom
 
 For the current task and its Jira issue, start with the task board in [ROADMAP.md](./ROADMAP.md). Coding assistants must first follow [AGENTS.md](./AGENTS.md).
 
-## Handover: what to do next
+## Delivery status
 
-**Use [ROADMAP.md](./ROADMAP.md) as the source of truth for the next task.** It records each task's Jira issue, dependencies, required reading, work checklist, deliverable and acceptance gate. Its completion log records what was tested and any remaining blockers. Check the current task board and actual source before starting; older work-log entries describe historical states.
+T00–T13 and A01 are complete against the repository acceptance gates. The [submission package](./docs/submission/README.md) contains the checked deck, 3:46 narrated video, walkthrough and owner checklist. **HackOS submission remains unverified and leader-only.** The authenticated deadline is **27 October 2026 23:45 UTC / 28 October 07:45 SGT**. The [requirements audit](./docs/competition.md) records exact access/interpretation blockers, including the two-agent wording and the new three-datasource/USL scoring gap. This implementation has one model investigator, a deterministic critic and one PostgreSQL datasource.
 
-**Current handover, 27 October 2026:** T00–T12 and A01 are complete against repository gates. The [analyst workbench](./dispute-demo/docs/analyst-ui.md) uses the canonical workflow, and the [reliability guide](./dispute-demo/docs/reliability.md) now provides complete test collection and an explicit isolated reset/replay command.
-
-**267 main tests and 16 reference/compatibility tests pass with no skips.** The [two-cycle rehearsal](./dispute-demo/docs/evidence/t12-isolated-replay.json) covers all four outcomes, duplicate refusal, bounded correction, policy versions and real source-verified reference memory. Models are scripted and reads use isolated PostgreSQL; [dated live evidence](./dispute-demo/docs/evidence/t11-analyst.json) remains separately labelled. Shared totals remain three decisions, two credits, three audits and one review at revision 14; source fingerprints are unchanged.
-
-From `dispute-demo/`, run `python -m demo.verify --integrations` with the documented dependencies. `python -m demo.replay` previews its scope; `--reset-isolated-demo` creates/replays/cleans only disposable state. Normal CLI/UI state is durable and is never reset by this command. The owner-approved advisory history remains nonbinding. Live model output can fail strict validation; such failures remain visible without effects.
-
-Next: **[T13 / KAN-22 — Demo and submission packaging](https://luijoel24.atlassian.net/browse/KAN-22)**. The [authenticated checklist](./docs/competition.md) confirms required artifacts and the 27 October 23:45 UTC cutoff, and records leader-only submission access, agent-count interpretation and sponsor scoring limitations. The current goal authorizes sequential completion with Jira updates and a commit/push to `origin/main` after each accepted task.
-
-### Steps for the next teammate
-
-1. Read [AGENTS.md](./AGENTS.md), then [context.md](./context.md), [ROADMAP.md](./ROADMAP.md) and [agent.md](./agent.md), followed by the task-specific sources they list. Use [TEAM_SETUP.md](./TEAM_SETUP.md) if your environment needs setup.
-2. Confirm the single assigned task and its Jira issue. Check prerequisites against source and recorded test evidence, and preserve existing working changes.
-3. Work through that task's checklist and acceptance gate. Record missing dependencies or unclear policy decisions instead of silently expanding scope.
-4. Run the relevant checks and record exact commands, results and blockers in the roadmap. Label unavailable live checks **NOT RUN**. Update `context.md` if verified capabilities, contracts or architecture change.
-5. When Jira updates are authorized, move the assigned issue to In Progress when starting, post completion evidence, and mark it Done only after its acceptance gate passes. Update the roadmap task board and work log together.
-6. Hand over the changed files, commit/branch or PR, test results, remaining blockers and recommended next task. Stop after the assigned task; agree on ownership before starting the next one.
-
-### Copyable task handover
-
-```text
-Work on T13 / KAN-22 only:
-https://luijoel24.atlassian.net/browse/KAN-22
-
-Follow AGENTS.md and read context.md, ROADMAP.md, agent.md and applicable
-sources. Prepare the evidence-backed demo and required repository/deck/video
-using docs/competition.md. Preserve source/runtime labels and carry B1–B4
-forward. Verify clean-checkout setup and artifact access; do not claim submission.
-Update Jira and commit/push after the acceptance gate is satisfied.
-```
-
-Next: **T13 / KAN-22**, currently NOT_STARTED. A01 is DONE as an audit, with explicit unresolved submission details.
+Coding assistants must follow [AGENTS.md](./AGENTS.md) and use stable Jira mappings in the roadmap. The current user goal authorizes sequential completion with a Jira update and commit/push to `origin/main` after each accepted task.

@@ -1,0 +1,139 @@
+{
+  "task": "T13 / KAN-22",
+  "date": "2026-10-27",
+  "source_commit": "937b642d9f48c9f5a5a2e336a51f5f1938231210",
+  "anonymous_clone": "PASS: Git credential helper disabled; public HTTPS clone and exact detached checkout",
+  "clean_setup": "PASS: independent Python 3.13.7 venv, pinned requirements, fresh hash-verified H-MEM download and npm ci; no private configs copied; Git-link directories remain empty",
+  "clean_replay": {
+    "status": "passed",
+    "cycles": 2,
+    "sources_unchanged": true,
+    "live_zetaris": "NOT RUN",
+    "live_nightshift": "NOT RUN"
+  },
+  "clean_offline_tests": {
+    "status": "passed",
+    "python": "3.13.7",
+    "mode": "offline",
+    "live_zetaris": "NOT RUN",
+    "live_nightshift": "NOT RUN",
+    "suites": [
+      {
+        "root": "tests",
+        "collected": 267,
+        "run": 267,
+        "passed": 194,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 73,
+        "expected_failures": 0,
+        "unexpected_successes": 0,
+        "collection_errors": 0
+      },
+      {
+        "root": "agent/tests",
+        "collected": 16,
+        "run": 16,
+        "passed": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 12,
+        "expected_failures": 0,
+        "unexpected_successes": 0,
+        "collection_errors": 0
+      }
+    ]
+  },
+  "git_history_scan": {
+    "scan": "all reachable Git blobs, configured local secret-value matches and high-confidence credential patterns",
+    "blobs": 322,
+    "bytes": 5819643,
+    "known_values_compared": 8,
+    "findings": [],
+    "forbidden_tracked_paths": [],
+    "limits": "Pattern/value scan cannot prove absence of every unknown secret. Images and final media need visual/content review; unreachable objects not audited."
+  },
+  "live_capture": {
+    "jdbc_preflight": "PASS: JDBC SELECT 1 and datasource inventory; overall exit 1 only for two REST missing-key checks",
+    "case": "DP-0029",
+    "run_id": "6d508835-8978-457c-9bd0-a06299b3ea11",
+    "result": "investigator_invalid_output / proposal_schema; not persisted",
+    "other_observations": [
+      "Temporary source refresh failures shown visibly; subsequent refresh succeeded.",
+      "Saved DP-0014 recovery and actual pending DP-0008 queue were displayed; no new action attributed to these views."
+    ],
+    "same_request_recovery": {
+      "status": "reused",
+      "decision_id": "b2d7a3ef-b7a7-4546-ac93-183a672ef41d",
+      "credit_id": "4ca53387-7b50-422c-9c40-d507685394a3",
+      "model_calls": 0,
+      "memory_save": "reused"
+    }
+  },
+  "artifact_checks": {
+    "deck": {
+      "slides": 8,
+      "bytes": 77494,
+      "sha256": "9b4c867d9084403010f3303a1a584866c74592dd6a2d03f8ae624173dc3f2d2c",
+      "native_editable_tables": 2,
+      "package_geometry_font_import": "passed, zero findings",
+      "render_review": "all eight full-size renders inspected; final PPTX import renders identical for seven slides, image-placement render on slide 4 reinspected and passed",
+      "native_powerpoint_execution": "NOT RUN"
+    },
+    "video": {
+      "duration_seconds": 226.154667,
+      "bytes": 6897136,
+      "sha256": "63c3b4dc04ef97541f75e5c31007bc38f79e17e5526b842a239f19b354267019",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "fps": 30,
+      "video_codec": "H.264 High/yuv420p",
+      "audio_codec": "AAC LC/48kHz mono",
+      "full_decode": "PASS: 6784 frames, exit 0",
+      "mean_volume_db": -16.0,
+      "max_volume_db": -1.7,
+      "browser_playback": "PASS: actual HTML video progressed from 21 to 155 seconds and ended at 226.154667, readyState 4, no error",
+      "visual_review": "all ten source scene frames inspected; four actual UI captures plus six previously reviewed evidence slides",
+      "narration": "macOS Samantha synthetic voice, original authored script; no imitated person",
+      "human_listening_review": "NOT RUN",
+      "caption_timing": "approximate sentence timing; full transcript included"
+    },
+    "content_security": {
+      "status": "passed",
+      "changed_files": 21,
+      "markdown_files": 9,
+      "local_link_targets": 269,
+      "json_files": 4,
+      "scanned_file_or_archive_parts": 81,
+      "known_secret_values": 8,
+      "findings": [],
+      "protected_runtime_source_paths": "unchanged from 937b642",
+      "whitespace": "passed",
+      "limits": "No claim to detect all unknown secrets; actual PNGs/slide frames and narration were reviewed separately."
+    },
+    "anonymous_published_artifacts": "Public source clone PASS. New media URL checks follow main publication and are recorded in the Jira publication receipt. Final portal embed/upload verification remains B1."
+  },
+  "final_submission": "NOT RUN: member lacks leader submission rights",
+  "clean_data_validation": "PASS: 42 transactions, 54 settlements, 40 disputes, 81 evidence items, 16 rules; document hashes and fixture references",
+  "shared_state": {
+    "source_fingerprints": "all six unchanged",
+    "decisions": 3,
+    "credits": 2,
+    "audits": 3,
+    "pending_reviews": 1,
+    "revision": 14,
+    "restricted_role": "unchanged",
+    "services": "original five healthy; no temporary replay containers remain",
+    "owned_preview": "stopped"
+  },
+  "blockers": {
+    "B1": "Only leader Rachel Anne Liew can create/manage submission; responsibility, form limits/deck format, final portal playback/upload and receipt unverified",
+    "B2": "One model investigator plus deterministic critic: organizer interpretation of two-agent wording unresolved",
+    "B3": "Separate detailed Track 3 page unavailable; authenticated summary verified",
+    "B4": "No formal endorsement of exact reference revision found; engine/reference guidance verified",
+    "owner_provenance": "Team must confirm pre-event product contributions and contributor permissions",
+    "scoring_gap": "One PostgreSQL datasource, no USL; three-source/USL guidance not satisfied"
+  }
+}
