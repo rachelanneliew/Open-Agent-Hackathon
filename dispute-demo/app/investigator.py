@@ -69,10 +69,18 @@ OR {"kind":"proposal","proposal":{"proposal_id":"SUPPLIED_ID","run_id":"SUPPLIED
 "reference":SUPPLIED_REFERENCE,"recommendation":{"outcome":"OUTCOME","currency":"CURRENCY","amount_minor":INTEGER_OR_NULL},
 "rationale":"SUPPORTED_RATIONALE","evidence_ids":[],"policy_rule_ids":[],"missing_evidence":[],"revision":SUPPLIED_REVISION},"uncertainties":[]}.
 Include every proposal field. Copy the supplied identity/reference/revision exactly.
-Non-credit amounts are null. Cite every evaluated rule, never not_evaluated rules,
+recommendation.amount_minor is the NEW CREDIT EFFECT, not the claim or eligible
+amount. Only provisional_credit may have an integer amount. For human_review,
+request_evidence and decline, amount_minor MUST be the literal JSON null,
+including when a review threshold was exceeded. Never copy the claim/balance
+into a non-credit recommendation. Example: {"outcome":"human_review",
+"currency":"SGD","amount_minor":null}. Cite every evaluated rule, never not_evaluated rules,
 and the evidence supporting those checks. Missing requirements are exact objects
 with category, reason, policy_rule_id, never fabricated evidence IDs. Rationale
 must equal supported_rationale; the critic cannot verify arbitrary prose. Report
+the supplied supported_rationale string verbatim, preserving every newline and
+punctuation mark. Encode newlines as \\n inside the JSON string. Do not replace
+newlines with semicolons, merge sentences, paraphrase, or add a conclusion. Report
 material uncertainty in uncertainties (at most 8 short source-linked statements,
 240 characters each). Unresolved uncertainty prevents committing this proposal.
 Do not output private chain-of-thought, internal reasoning, or claim a saved

@@ -2,7 +2,7 @@
 
 > **Canonical work queue.** Read [`context.md`](./context.md) first, then [`agent.md`](./agent.md).
 > **Revision:** T10 verified advisory memory accepted, 27 October 2026: owner-approved advisory MVP scope, 238 passing main tests, 16 reference/compatibility checks, live source-verified later-case processing and memory-only restart/retry.
-> **Current authorized goal:** complete the entire roadmap sequentially, updating Jira and committing/pushing each completed task to `origin/main`. The user explicitly expanded the earlier single-task scope on 27 October. T00–T10 are DONE; next is T11 / KAN-20. Remaining tasks retain their acceptance gates and explicit scope decisions.
+> **Current authorized goal:** complete the entire roadmap sequentially, updating Jira and committing/pushing each completed task to `origin/main`. The user explicitly expanded the earlier single-task scope on 27 October. T00–T11 are DONE; next is T12 / KAN-21. Remaining tasks retain their acceptance gates and explicit scope decisions.
 > **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
 
 ## 1. What changed from the earlier plan
@@ -23,7 +23,7 @@ Use statuses `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED`, `DONE`. DONE requires reco
 
 Every task includes its own tests. T12 is cross-component testing, not the first time testing begins.
 
-**Post-merge integration order:** T03–T08 are complete, including shared guarded deployment and live fresh-read/model/commit acceptance. T09/T10 are also complete; continue with T11 under the current goal. A01 verification remains independently available. Complete T11, T12 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
+**Post-merge integration order:** T03–T08 are complete, including shared guarded deployment and live fresh-read/model/commit acceptance. T09–T11 are also complete; continue with T12 under the current goal. A01 verification remains independently available. Complete T12, A01 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
 
 ## Jira tracking (supplied kit dated 2026-10-26)
 
@@ -76,7 +76,7 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 | T08 | Wire the bounded workflow and command-line runner | T02, T03, T05, T06, T07 | DONE |
 | T09 | Verify and wrap the actual H-MEM integration | T00, T01; may run in parallel with T02–T08 | DONE |
 | T10 | Integrate verified memory and repeat-history review | T02, T03, T08, T09 | DONE |
-| T11 | Build the thin analyst view and review queue | T08; memory display depends on T10 | NOT_STARTED |
+| T11 | Build the thin analyst view and review queue | T08; memory display depends on T10 | DONE |
 | T12 | Run cross-component failure tests and repeatable reset | T08, T10, T11 for the intended complete demo; feature-specific tests run earlier | NOT_STARTED |
 | T13 | Package the evidence-backed demo and submission | T12, A01; documentation can be drafted alongside earlier tasks | NOT_STARTED |
 | A01 | Confirm authenticated HackOS requirements | None; run alongside development | NOT_STARTED |
@@ -474,7 +474,7 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 ### T11 — Build the thin analyst view and review queue
 
 **Phase:** Memory and presentation  
-**Status:** NOT_STARTED  
+**Status:** DONE
 **Depends on:** T08; memory display depends on T10  
 **Deliverable:** A simple analyst-facing page over the tested workflow, not a second implementation.
 
@@ -482,18 +482,20 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **Post-merge alignment requirements:**
 
-- [ ] Show four business outcomes, critic verdict and persistence status separately, with citations and missing categories. Do not add a fifth business outcome for queue lifecycle.
-- [ ] Show advisory history as context rather than a mandatory hold or fraud finding. No compulsory Approve click for ordinary policy-permitted outcomes; only actually persisted review cases are queued. Keep manual adjudication/writeback outside the MVP unless assigned.
+- [x] Show four business outcomes, critic verdict and persistence status separately, with citations and missing categories. Do not add a fifth business outcome for queue lifecycle.
+- [x] Show advisory history as context rather than a mandatory hold or fraud finding. No compulsory Approve click for ordinary policy-permitted outcomes; only actually persisted review cases are queued. Keep manual adjudication/writeback outside the MVP unless assigned.
 
 **Work:**
 
-- [ ] Add dispute selection and Investigate, plus source facts, policy results, investigator recommendation, critic feedback and final persisted status.
-- [ ] Expose prior-result reuse, requested evidence and human-review queue items. A full manual adjudication/writeback workflow is out of scope unless separately agreed.
-- [ ] Display recalled memory with source references only after integration is real. Use no-memory/not-available labels where appropriate.
-- [ ] Make live/synthetic/sample distinctions explicit. Every financial effect is synthetic, even when model and data calls are live.
-- [ ] Call the existing orchestrator and action service; do not duplicate rule evaluation or create a UI-only write shortcut.
+- [x] Add dispute selection and Investigate, plus source facts, policy results, investigator recommendation, critic feedback and final persisted status.
+- [x] Expose prior-result reuse, requested evidence and human-review queue items. A full manual adjudication/writeback workflow is out of scope unless separately agreed.
+- [x] Display recalled memory with source references only after integration is real. Use no-memory/not-available labels where appropriate.
+- [x] Make live/synthetic/sample distinctions explicit. Every financial effect is synthetic, even when model and data calls are live.
+- [x] Call the existing orchestrator and action service; do not duplicate rule evaluation or create a UI-only write shortcut.
 
 **Acceptance gate:** A teammate can explain a case, its rules, critique and action status without terminal logs. Double-click/retry behavior cannot create a second credit.
+
+**Verified 2026-10-27:** 260 main tests and 16 reference/compatibility tests pass with no skips. Live browser created one no-credit review, displayed verified history/refusals and reused an existing credit. See [guide](./dispute-demo/docs/analyst-ui.md), [sanitized evidence](./dispute-demo/docs/evidence/t11-analyst.json) and completion log.
 
 **Not in this task:** No complex frontend, external notifications, production authentication or new independent business logic.
 
@@ -1292,3 +1294,35 @@ Authenticated HackOS and final UI checks: **NOT RUN** for T10 (A01/T11). Model r
 
 - Final review: `python3 /private/tmp/t10-review.py` PASS (9 Python ASTs, 7 Markdown files, 210 local links, JSON, private-secret-value scan, protected sources/contracts/critic/action/read adapters unchanged). `git diff --check` PASS. Final 238-test run completed in 168.980 seconds; separate 16-test reference/compatibility run in 6.924 seconds.
 - Jira KAN-19 is Done; owner approval comment `10016`, acceptance comment `10017`. Read-back verifies status and protected summary/description/assignee/parent/labels/links unchanged.
+
+### 27 October 2026 — T11 started (KAN-20)
+
+- T10/KAN-19 completed and published to `origin/main` as `221e66b`. Required reading and current source inspection completed for T11. KAN-20 moved to In Progress; start comment `10019`.
+- Building a local analyst UI over the canonical controller with durable UI operation IDs, exact action recovery, independent memory retry and read-only source-backed review queue. No new financial writer or policy logic.
+- JDBC preflight passed (REST-only missing-key checks remain unrelated). Initial inventory probe found Zetaris omits the UUID-typed queue decision ID; the read projection joins its textual history ID by case/commit instant and independently checks complete one-to-one queue membership under the existing revision guard. No schema or registration change.
+
+### 27 October 2026 — T11 / KAN-20 completed
+
+- Baseline `221e66b`; delivered a buildless local analyst workbench using only the existing controller/action service. New `app/ui.py`, `ui_jobs.py`, web assets and bounded `integration/analyst_reads.py`; no new dependency or policy/write path. Exact-request recovery and memory-only retry reuse canonical implementations.
+- The page separates business outcome, critic verdict and persistence; shows source facts/citations, policy checks, missing categories, advisory verified history and independent memory status. Queue entries come only from the actual pending-review view. Live calls and synthetic actions are labelled; no sample fallback or compulsory Approve button.
+- Private durable operation IDs, OS single-owner lock, pre-action journal association, same-operation coalescing and restart replay prevent duplicate dispatch. Interrupted operations require exact saved-request recovery; they never automatically mint another key. Host/Origin/token checks, fixed assets, CSP/text-only rendering and exact BIGINT transport constrain the local UI.
+- Live browser double-click/refresh for DP-0008 committed review `c2332e78-023a-49aa-aefa-8560376b8327`, run `6d67f5e6-a7bd-407c-a948-2372ec2d4758`, with no monetary effect. Source queue subsequently showed that actual row at revision 14. DP-0014 recovery reused original decision `b2d7a3ef-b7a7-4546-ac93-183a672ef41d` and credit `4ca53387-7b50-422c-9c40-d507685394a3`; no new credit.
+- Live DP-0020 displayed missing `refund_confirmation`; model schema/rationale failures remained not persisted and never appeared in the queue. DP-0030 displayed two source-verified prior decisions before a schema refusal. Clarified the existing investigator prompt: non-credit amounts must be null and supported rationale must preserve newlines verbatim. No output repair or weakened schema/critic. Live model reliability remains imperfect; all four UI outcomes are covered separately by real PostgreSQL tests using an explicitly scripted model.
+- [Sanitized operation evidence](./dispute-demo/docs/evidence/t11-analyst.json) and [browser screenshot](./dispute-demo/docs/evidence/t11-analyst.png) recorded. Responsive 545-pixel viewport: no horizontal overflow. Desktop-width visual check and authenticated HackOS: **NOT RUN**. Source generation standalone validator not rerun in T11; unchanged generation tests are included in the suite.
+- Shared database remains 3 decisions, 2 credits, 3 audits, 1 queued review, revision 14. All six original source fingerprints and restricted action login unchanged. No shared reset, reload, migration, registration, credential or existing-service changes. Disposable PostgreSQL test resources cleaned up.
+
+Commands from `dispute-demo/` unless noted; `HMEM_NODE=/Users/joellui/.nvm/versions/node/v24.13.0/bin/node` for reference tests.
+
+| Command | Result |
+|---|---|
+| `HMEM_NODE=... DISPUTE_UI_HTTP_TESTS=1 DISPUTE_ACTION_TESTS=1 DISPUTE_STORAGE_TESTS=1 DISPUTE_HMEM_TESTS=1 DISPUTE_NIGHTSHIFT_HTTP_TESTS=1 PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s tests -v` | PASS: 260, zero skips, 67.049 seconds. Includes 18 UI/read/job/HTTP tests and 3 real PostgreSQL UI integration tests. |
+| `HMEM_NODE=... DISPUTE_HMEM_TESTS=1 PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s agent/tests -v` | PASS: 16 reference/compatibility tests, zero skips, 5.638 seconds. |
+| `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s tests -p test_investigator.py -v` | PASS: 18, 0.671 seconds, after final verbatim-rationale prompt clarification. |
+| `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/preflight.py --jdbc` from `getting-started/` | JDBC PASS; exit 1 only for two missing-REST-key checks. |
+| `HMEM_NODE=... PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m app.ui --memory-dir outputs/t10-live-memory` | Live browser acceptance above; owned preview stopped after verification. |
+| `.venv/bin/python /private/tmp/t11-final-db-check.py` | PASS: source fingerprints, restricted role and 3/2/3/1 sidecar counts, revision 14. |
+| Pinned Node `--check app/web/app.js` | PASS after final UI edit. |
+
+- README, context, task reading map, setup and analyst guide updated. Next task after Jira closure and main publication: T12 / KAN-21. A01 remains open; no competition approval is claimed.
+
+- Final review PASS: 8 Python ASTs, 6 Markdown files/211 local links, JSON, private-secret-value scan, protected paths unchanged and `git diff --check`. KAN-20 is Done (acceptance comment `10020`); fresh read confirms protected fields unchanged. Main publication receipt follows.

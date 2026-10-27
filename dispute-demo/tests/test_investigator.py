@@ -157,6 +157,19 @@ class InvestigatorTests(unittest.TestCase):
             self.client.complete.return_value = completion(obj)
             self.assertEqual(self.call().status, 'invalid_output')
 
+    def test_noncredit_model_amount_is_rejected_without_repair(self):
+        for did in ('DP-0008', 'DP-0019', 'DP-0029'):
+            context = self.source.tools.get_dispute_context(did).data
+            valid = self.envelope(self.proposal(context))
+            for amount in (context.dispute.claimed_amount_minor, 0, 'null'):
+                bad = json.loads(json.dumps(valid))
+                bad['proposal']['recommendation']['amount_minor'] = amount
+                self.client.complete.return_value = completion(bad)
+                result = self.call(context)
+                self.assertEqual(result.status, 'invalid_output')
+                self.assertIsNone(result.proposal)
+            self.client.complete.return_value = completion(valid)
+            self.assertEqual(self.call(context).status, 'proposal')
     def test_empty_multiple_truncated_refusal_and_native_tools_rejected(self):
         responses = [{}, {'choices': []}, {'choices': [None]}, {'choices': [1, 2]}]
         for reason in ('length', 'tool_calls', 'content_filter', None):

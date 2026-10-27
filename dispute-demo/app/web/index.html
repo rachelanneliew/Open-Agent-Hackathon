@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dispute workbench</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body>
+<aside class="rail"><a class="brand" href="/" aria-label="Dispute workbench home"><span class="mark">D</span> Dispute desk</a><div class="rail-label">ANALYST WORKSPACE</div><a class="nav active" href="#workspace">◈ &nbsp; Investigations</a><a class="nav" href="#queue-section">▤ &nbsp; Review queue <span id="queue-count">—</span></a><div class="rail-foot">Open Agent Hackathon<br><strong>Synthetic sandbox</strong><p>No real payment effects.</p></div></aside>
+<main id="workspace">
+<header><div class="breadcrumb">Operations <span>/</span> Dispute investigations</div><span id="mode" class="badge">Connecting…</span></header>
+<section class="intro"><div><div class="eyebrow">SOURCE → POLICY → DECISION</div><h1>Dispute workbench</h1><p>Follow the evidence. See the decision and what was actually saved.</p></div><button id="refresh" class="secondary">Refresh source</button></section>
+<div id="notice" role="status" aria-live="polite" hidden></div>
+<section class="selection"><div><label for="case-select">Select a dispute</label><select id="case-select" disabled><option>Loading source cases…</option></select></div><div class="selection-note">Live Zetaris facts · Nightshift investigator<br>All credits and decisions are simulated.</div><button id="investigate" disabled>Investigate <span aria-hidden="true">→</span></button></section>
+<section id="case-summary" class="case-summary"><h2>Select a case to begin</h2></section>
+<div id="running" class="running" role="status" hidden>Investigation in progress. The controller is checking source facts, policy, proposal and persistence. You can safely refresh this page.</div>
+<section class="decision-strip" aria-label="Decision status"><div><span class="eyebrow">BUSINESS OUTCOME</span><h3 id="outcome">Not investigated</h3><p id="amount">No new effect reported</p></div><div><span class="eyebrow">CRITIC VERDICT</span><h3 id="verdict">Not evaluated</h3><p id="feedback">A proposal requires independent validation.</p></div><div><span class="eyebrow">PERSISTENCE</span><h3 id="persistence">Not attempted</h3><p id="persist-detail">Queue membership is read from saved records.</p></div></section>
+<div class="columns"><div class="primary-column">
+<section class="panel"><div class="section-heading"><h2>Source facts</h2><span id="source-stamp" class="muted">Awaiting source</span></div><div id="facts" class="empty">Select a case to inspect its authoritative records.</div></section>
+<section class="panel"><div class="section-heading"><h2>Policy &amp; recommendation</h2><span id="policy-version" class="badge">Not evaluated</span></div><div id="policy" class="empty">Investigate to see the applied rules and investigator proposal.</div></section>
+<section class="panel"><h2>Evidence &amp; citations</h2><div id="evidence" class="empty">Source evidence will appear here.</div></section>
+</div><div class="secondary-column">
+<section class="panel"><h2>Advisory history</h2><p class="muted">Source-verified prior decisions provide context. They do not create a hold or establish fraud.</p><div id="memory">Not recalled for this view.</div></section>
+<section class="panel"><h2>Saved decisions</h2><p class="muted">Previously committed outcomes for this case. These are separate from the current investigation.</p><div id="decisions" class="empty">Select a case.</div></section>
+<section class="panel"><h2>Recovery</h2><p class="muted">Reuse the exact saved request after an uncertain response. Retrying memory only saves its summary.</p><div id="recoveries" class="empty">No saved request loaded.</div></section>
+</div></div>
+<section class="panel" id="queue-section"><div class="section-heading"><div><div class="eyebrow">PERSISTED EXCEPTIONS</div><h2>Human review queue</h2></div><span id="queue-stamp" class="muted">Awaiting source</span></div><p class="muted">Only committed, currently pending review entries appear here. A critic refusal alone does not queue a case.</p><div id="queue" class="empty">Loading persisted review records…</div></section>
+<footer>Four business outcomes: provisional credit · request evidence · decline · human review. <br>Ordinary policy-permitted outcomes run automatically. Manual adjudication is outside this demo.</footer>
+</main></body></html>

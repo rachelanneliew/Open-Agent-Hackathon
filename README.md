@@ -16,6 +16,7 @@ Open Agent Hackathon project for investigating fictional card disputes and recom
 | [Pure critic](./dispute-demo/docs/critic.md) | T06 validation, supported rationale/citations, correction limits and retired SQLite writer. |
 | [Nightshift investigator](./dispute-demo/docs/investigator.md) | T07 typed model/read envelopes, bounded transport, correction and real read-only inference evidence. |
 | [Canonical workflow](./dispute-demo/docs/workflow.md) | T08 CLI, coherent fresh reads, bounded transitions, recovery and real persisted acceptance. |
+| [Analyst workbench](./dispute-demo/docs/analyst-ui.md) | Local UI, persisted review queue, exact-request recovery and memory-only retry. |
 | [H-MEM reference](./dispute-demo/docs/memory.md) | T09/T10 pinned engine, source-verified advisory history, post-commit storage and action-free memory retries. |
 | [Atomic actions](./dispute-demo/docs/actions.md) | T05 write interface, protected rereads, recovery, PostgreSQL test setup and deployment limits. |
 | [Decision storage](./dispute-demo/docs/storage.md) | T04 PostgreSQL migration, revision guard, lifecycle/duplicate scope and isolated integration tests; deployment boundary. |
@@ -31,15 +32,13 @@ For the current task and its Jira issue, start with the task board in [ROADMAP.m
 
 **Use [ROADMAP.md](./ROADMAP.md) as the source of truth for the next task.** It records each task's Jira issue, dependencies, required reading, work checklist, deliverable and acceptance gate. Its completion log records what was tested and any remaining blockers. Check the current task board and actual source before starting; older work-log entries describe historical states.
 
-**Current handover, 27 October 2026:** T00–T10 are complete against repository gates. The owner approved **advisory history for the MVP**. The canonical workflow now verifies prior decision memory through Zetaris before policy/proposal evaluation, then stores only confirmed action receipts. Source policies, critic checks and commit-time safeguards remain unchanged; no claim-count threshold is introduced.
+**Current handover, 27 October 2026:** T00–T11 are complete against repository gates. The local [analyst workbench](./dispute-demo/docs/analyst-ui.md) now exposes the canonical workflow, source facts, policy checks, critique, independent persistence/memory statuses and the actual pending-review queue. Durable UI operations support refresh, exact-request recovery and memory-only retry.
 
-**238 main tests pass with no skips**, plus 16 reference/compatibility tests and data validation. [T10 live evidence](./dispute-demo/docs/evidence/t10-verified-memory.json) shows DP-0017 verifying the earlier DP-0014 decision, committing one synthetic SGD 57.60 credit, saving its summary and reusing that summary after process restart. Shared totals: two decisions, two credits, two audits, no reviews, revision 10. All six source fingerprints are unchanged.
+**260 main tests pass with no skips**, plus 16 reference/compatibility tests. [T11 live evidence](./dispute-demo/docs/evidence/t11-analyst.json) records a no-credit review for DP-0008, reuse of DP-0014's existing credit, source-verified advisory history and honest model refusals. Shared totals: three decisions, two credits, three audits, one review, revision 14; all six source fingerprints unchanged. All four outcomes pass real PostgreSQL UI tests with a scripted model; live model schema/rationale reliability remains imperfect.
 
-Normal CLI runs enable verified advisory memory; `--no-memory` disables it. `--retry-memory <trace.json>` freshly verifies the receipt and retries storage without calling the action service. See the [memory guide](./dispute-demo/docs/memory.md) for pinned Node setup, bounded partial recall, failure traces and exact commands. The pinned H-MEM reference uses mock embeddings; competition approval remains A01.
+Run `python -m app.ui` from the configured `dispute-demo/` environment; see the guide for pinned Node, memory setup and recovery. CLI and UI share the sole controller/action path. The owner approved advisory MVP history; it creates no binding count threshold or fraud hold. H-MEM uses the pinned reference with mock embeddings; competition approval remains A01.
 
-Migrations 001/002, restricted runtime login and four read-only Zetaris views are deployed. The model remains bound to the selected case's read tools; prior-case verification is trusted application work scoped by authoritative customer history. The target uses one Nightshift investigator, a pure critic and one action service for all four outcomes. Policy-permitted credit, evidence requests and declines are autonomous; policy-required review creates no credit.
-
-Next: **[T11 / KAN-20 — Thin analyst view and review queue](https://luijoel24.atlassian.net/browse/KAN-20)**. The current goal authorizes the full roadmap sequentially, with Jira evidence and a commit/push to `origin/main` after every accepted task.
+Next: **[T12 / KAN-21 — Cross-component failures and isolated reset](https://luijoel24.atlassian.net/browse/KAN-21)**. The current goal authorizes the full roadmap sequentially, with Jira evidence and a commit/push to `origin/main` after every accepted task.
 
 ### Steps for the next teammate
 
@@ -53,17 +52,16 @@ Next: **[T11 / KAN-20 — Thin analyst view and review queue](https://luijoel24.
 ### Copyable task handover
 
 ```text
-Work on T11 / KAN-20 only:
-https://luijoel24.atlassian.net/browse/KAN-20
+Work on T12 / KAN-21 only:
+https://luijoel24.atlassian.net/browse/KAN-21
 
 Follow AGENTS.md and read context.md, ROADMAP.md, agent.md and applicable
-sources. Build the thin analyst view over the tested canonical workflow.
-Show facts, policy, proposal, critique, confirmed action status, advisory
-history and actually persisted review items. Preserve the sole action path
-and duplicate safeguards. Verify the acceptance gate, update Jira, then
-commit and push to origin/main after completion.
-
+sources. Verify the cross-component failure matrix and both test roots.
+Add an explicit, target-verified isolated demo reset/replay including its
+memory namespace; preserve shared source and action data. Label live and
+scripted checks honestly. Verify acceptance, update Jira, then commit and
+push to origin/main after completion.
 ```
 
-Next task: **T11 / KAN-20: thin analyst view and review queue**.
-T11–T13 and A01 remain NOT_STARTED. A01 requirements verification remains open.
+Next task: **T12 / KAN-21: cross-component failure tests and repeatable reset**.
+T12–T13 and A01 remain NOT_STARTED. A01 requirements verification remains open.

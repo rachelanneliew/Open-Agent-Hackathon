@@ -400,3 +400,21 @@ live fault got one correction attempt then stopped on invalid proposal schema,
 without a write. All 198 main-suite tests pass with all opt-in flags enabled,
 plus four compatibility tests and data validation. See [live evidence](./dispute-demo/docs/evidence/t08-live-workflow.json).
 H-MEM and HackOS are still NOT RUN for this milestone.
+
+## T11 local analyst workbench
+
+After JDBC preflight, from `dispute-demo/`:
+
+```sh
+# Use the pinned Node 24.13.0 (set HMEM_NODE if needed).
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m app.ui
+# Alternative: explicit no-memory mode
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m app.ui --no-memory
+```
+
+Open `http://127.0.0.1:8931`. Follow the [analyst guide](./dispute-demo/docs/analyst-ui.md)
+for source facts, policy/citations, separate critic/persistence status, persisted
+review queue and exact saved-request recovery. `--memory-dir` selects the same
+private H-MEM store as the CLI. The UI adds no dependencies or database migration.
+All effects are synthetic even when integrations are live. The server is local
+only; no manual approval/adjudication or shared-data reset is provided.

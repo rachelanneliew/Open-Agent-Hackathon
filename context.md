@@ -3,7 +3,7 @@
 > **Canonical project brief for all coding agents and collaborators.**
 > Read this file **at the start of every task**, then consult [`ROADMAP.md`](./ROADMAP.md) for the active priorities. Read the actual code, policies, schemas, tests, and HackOS instructions before making implementation claims.
 >
-> **Context last reviewed:** 2026-10-27, T10 verified advisory memory. T00–T10 are complete against repository gates; the owner explicitly approved advisory MVP history. All 238 main tests and 16 reference/compatibility checks pass. Live DP-0017 verified DP-0014 history before its synthetic credit; memory-only retry reused the stored summary. The user authorized the full roadmap sequentially with Jira updates and a commit/push to `origin/main` per completed task.
+> **Context last reviewed:** 2026-10-27, T11 analyst UI. T00–T11 are complete against repository gates; owner-approved advisory history remains nonbinding. All 260 main tests and 16 reference/compatibility checks pass. Live UI verified review persistence, credit reuse and honest model failures. The user authorized the full roadmap sequentially with Jira updates and a commit/push to `origin/main` per completed task.
 
 ## 1. Project identity
 
@@ -300,6 +300,13 @@ integration and still needs its explicit advisory-scope acceptance decision.
 | Policy rules | 16 across two versions |
 
 Counts agree between local validation and the live Zetaris verification queries. The dataset and expected-result fixtures were preserved.
+
+### Verified in T11 — local analyst workbench, 2026-10-27
+
+- [Local UI and guide](./dispute-demo/docs/analyst-ui.md) use the existing controller, critic and sole action service. Source facts, policy/citations, proposal, critic verdict, persistence, verified advisory history and independent memory status are visible. Only persisted pending reviews are queued; there is no manual approval/writeback workflow.
+- Durable private UI operation IDs, an OS lock, exact journal association and saved-request recovery preserve retry safety across double-clicks, refresh and restart. Memory-only retry cannot call an action. Display inventory uses bounded direct Zetaris reads and a revision guard; its queue/history join is checked one-to-one against independently read queue membership.
+- Live DP-0008 committed one review with no credit; DP-0014 recovery reused its original credit. DP-0020 schema/rationale failures and DP-0030's verified history followed by schema refusal were visibly not persisted. Prompt clarifications do not repair invalid output or weaken safety checks. Shared totals: 3 decisions, 2 credits, 3 audits, 1 queued review, revision 14; source fingerprints unchanged.
+- 260 main tests and 16 reference/compatibility tests pass with no skips; 18 investigator tests pass after the final prompt clarification. UI PostgreSQL tests cover all four outcomes with a scripted model. [Sanitized evidence](./dispute-demo/docs/evidence/t11-analyst.json) and [screenshot](./dispute-demo/docs/evidence/t11-analyst.png) distinguish actual browser checks from scripted tests. Desktop-width visual inspection and authenticated HackOS NOT RUN. T12 owns isolated reset/replay; the UI has no shared reset.
 
 ## 5. Repository paths and reading entry points
 

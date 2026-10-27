@@ -60,6 +60,10 @@ def commit(request, *, timeout_seconds):
     return CommitResult.from_dict(_call('commit', request.to_dict(), timeout_seconds))
 
 
+def read_inventory(*, timeout_seconds=45):
+    return _call('inventory', {}, timeout_seconds)
+
+
 def _main():
     try:
         request = _json(sys.stdin.read(MAX_BUNDLE_BYTES + 1))
@@ -67,13 +71,16 @@ def _main():
             raise ValueError()
         if request['operation'] == 'read' and set(request['payload']) == {'dispute_id'}:
             result = get_snapshot(request['payload']['dispute_id'])
+        elif request['operation'] == 'inventory' and request['payload'] == {}:
+            from integration.analyst_reads import read_inventory
+            result = read_inventory()
         elif request['operation'] == 'commit':
             payload = CommitRequest.from_dict(request['payload'])
             _action_environment()
             result = commit_simulated_decision(payload)
         else:
             raise ValueError()
-        encoded = json.dumps({'result': result.to_dict()}, allow_nan=False)
+        encoded = json.dumps({'result': result if type(result) is dict else result.to_dict()}, allow_nan=False)
         if len(encoded.encode()) > MAX_BUNDLE_BYTES:
             raise ValueError()
     except Exception:
