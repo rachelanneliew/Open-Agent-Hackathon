@@ -1,0 +1,4 @@
+# Canonical CLI: independently provisioned environment, no bundled-env changes.
+-r requirements-actions.txt
+JayDeBeApi==1.2.3
+JPype1==1.7.1

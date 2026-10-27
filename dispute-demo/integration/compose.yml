@@ -8,6 +8,8 @@ services:
       POSTGRES_PASSWORD: ${DISPUTE_DB_PASSWORD:?Set DISPUTE_DB_PASSWORD in ../.env.local}
     volumes:
       - dispute-pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:${DISPUTE_DB_PORT:-55432}:5432"
     networks:
       - zetaris
     healthcheck:

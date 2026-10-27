@@ -1,4 +1,4 @@
-"""Bounded text-only Nightshift transport; no provider feature assumptions.
+"""Bounded Nightshift JSON transport, verified against installed 0.92.7.
 
 Reuse the existing private configuration/authentication conventions. Each HTTP
 request runs in a short-lived child so the parent enforces a wall-clock deadline
@@ -80,7 +80,8 @@ def _http_request(request):
     data = None
     if payload is not None:
         data = json.dumps(payload, allow_nan=False).encode()
-        headers.update({'Content-Type': 'application/json', 'meterless-scope': 'user'})
+        headers.update({'Content-Type': 'application/json', 'meterless-scope': 'user',
+                        'meterless-tier-split': 'off'})
     req = urllib.request.Request(request['url'], data=data, headers=headers)
     opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect())
     try:
@@ -144,10 +145,13 @@ class NightshiftClient:
         return ids
 
     def complete(self, messages, *, timeout_seconds=180):
-        # Prompt JSON is validated locally. No native tools or response_format
-        # fields: the published provider contract guarantees text completions.
+        # Installed proxy.js forwards json_object and disables semantic caching
+        # for structured requests. tool_choice:none also selects the structured
+        # path, skipping Nightshift answer-memory/scaffold injection; no native
+        # tools are supplied or authorized. Still validate every result locally.
         return self._request('/chat/completions', {'model': self.config.route,
-            'messages': messages, 'max_tokens': 4096, 'stream': False}, timeout_seconds)
+            'messages': messages, 'max_tokens': 4096, 'stream': False, 'temperature': 0,
+            'tool_choice': 'none', 'response_format': {'type': 'json_object'}}, timeout_seconds)
 
 
 def _main():

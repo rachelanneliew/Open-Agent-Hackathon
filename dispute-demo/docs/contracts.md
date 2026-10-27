@@ -1,5 +1,11 @@
 # T01 shared contracts and policy semantics
 
+**T08 integration update:** the [workflow guide](./workflow.md) describes the
+canonical controller, fresh coherent Zetaris snapshots, guarded shared sandbox
+deployment, CLI and identical-request recovery. Earlier task acceptance and
+deployment statements below are dated evidence. Historical T02 reads retain
+their null revisions; normal runs use the new fresh snapshot adapter.
+
 Implemented in [app/schemas.py](../app/schemas.py); tested in
 [tests/test_schemas.py](../tests/test_schemas.py). These are immutable transport
 types and structural validation, not a policy evaluator, factual critic,
@@ -144,7 +150,7 @@ Future/generalized ledger patterns require the decisions listed below.
 
 ## Workflow and business-state boundaries
 
-This table specifies the future T08 controller protocol; T01 validates individual
+This table specifies the T08 controller protocol; T01 validates individual
 state shapes and does not execute transitions or enforce call/time budgets.
 
 | From | To | Required condition |

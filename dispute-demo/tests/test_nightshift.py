@@ -41,10 +41,13 @@ class NightshiftTests(unittest.TestCase):
         request = json.loads(run.call_args.kwargs['input'])
         self.assertEqual(run.call_args.kwargs['timeout'], 3)
         self.assertEqual(request['url'], 'http://127.0.0.1:8088/v1/chat/completions')
-        self.assertEqual(set(request['payload']), {'model', 'messages', 'max_tokens', 'stream'})
+        self.assertEqual(set(request['payload']), {'model', 'messages', 'max_tokens', 'stream',
+            'temperature', 'tool_choice', 'response_format'})
         self.assertFalse(request['payload']['stream'])
         self.assertNotIn('tools', request['payload'])
-        self.assertNotIn('response_format', request['payload'])
+        self.assertEqual(request['payload']['response_format'], {'type': 'json_object'})
+        self.assertEqual(request['payload']['tool_choice'], 'none')
+        self.assertEqual(request['payload']['temperature'], 0)
 
     def test_timeout_untrusted_stderr_and_malformed_worker_output(self):
         for result, code in ((subprocess.TimeoutExpired('secret', 1, output='PRIVATE'), 'timeout'),
@@ -123,6 +126,7 @@ class LocalHTTPTests(unittest.TestCase):
         self.assertEqual(seen[0][0], '/v1/models')
         self.assertEqual(seen[0][1]['authorization'], 'Bearer TEST_TOKEN')
         self.assertEqual(seen[1][1]['meterless-scope'], 'user')
+        self.assertEqual(seen[1][1]['meterless-tier-split'], 'off')
         self.assertEqual(seen[1][1]['meterless-app'], 'dispute-investigation')
         self.assertEqual(json.loads(seen[1][2])['messages'][0]['content'], 'synthetic')
 

@@ -15,6 +15,7 @@ Open Agent Hackathon project for investigating fictional card disputes and recom
 | [Policy v1](./dispute-demo/policies/synthetic_policy_v1.md) / [Policy v2](./dispute-demo/policies/synthetic_policy_v2.md) | Exact fictional dispute rules that the implementation must follow. |
 | [Pure critic](./dispute-demo/docs/critic.md) | T06 validation, supported rationale/citations, correction limits and retired SQLite writer. |
 | [Nightshift investigator](./dispute-demo/docs/investigator.md) | T07 typed model/read envelopes, bounded transport, correction and real read-only inference evidence. |
+| [Canonical workflow](./dispute-demo/docs/workflow.md) | T08 CLI, coherent fresh reads, bounded transitions, recovery and real persisted acceptance. |
 | [Atomic actions](./dispute-demo/docs/actions.md) | T05 write interface, protected rereads, recovery, PostgreSQL test setup and deployment limits. |
 | [Decision storage](./dispute-demo/docs/storage.md) | T04 PostgreSQL migration, revision guard, lifecycle/duplicate scope and isolated integration tests; deployment boundary. |
 | [Policy evaluation](./dispute-demo/docs/policy.md) | T03 typed evaluator, supported synthetic evidence/ledger semantics, offline and live acceptance results. |
@@ -29,13 +30,13 @@ For the current task and its Jira issue, start with the task board in [ROADMAP.m
 
 **Use [ROADMAP.md](./ROADMAP.md) as the source of truth for the next task.** It records each task's Jira issue, dependencies, required reading, work checklist, deliverable and acceptance gate. Its completion log records what was tested and any remaining blockers. Check the current task board and actual source before starting; older work-log entries describe historical states.
 
-**Current handover, 27 October 2026:** T00–T07 are complete against repository gates. The [Nightshift investigator](./dispute-demo/docs/investigator.md) returns typed proposals or approved read requests with strict binding, one correction and bounded transport. **121 tests pass**, with 45 PostgreSQL opt-in skips; four compatibility tests and data validation pass. [Live evidence](./dispute-demo/docs/evidence/t07-live-DP-0014.json) records real Zetaris facts, a 6,000-minor-unit model proposal and an accepted pure critique. Requested route: `meterless/auto`; reported response model: `nvidia/nemotron-3.5-bolt-e4b`. No action was persisted.
+**Current handover, 27 October 2026:** T00–T08 are complete against repository gates. The [canonical no-memory workflow](./dispute-demo/docs/workflow.md) now runs fresh Zetaris reads, a Nightshift proposal, pure critic and restricted PostgreSQL commit. **198 tests pass with no skips**, plus four compatibility tests and data validation. [Live evidence](./dispute-demo/docs/evidence/t08-live-workflow.json) records a 6,000-minor-unit DP-0014 credit, exact-request reuse, ordinary rerun refusal and safe handling of an explicitly faulty proposal. Shared sandbox totals remain one decision and one credit.
 
-T05's atomic action service and T04 storage are tested in isolated PostgreSQL. Shared deployment, runtime writer credentials and coherent fresh Zetaris reads remain pending. Current reads return null revisions and cannot commit. T08 must resolve that deployment gate and implement the bounded controller before claiming a live end-to-end flow.
+Migrations 001/002, restricted runtime login and four read-only Zetaris views are deployed. All source fingerprints are unchanged. Fresh runs use one source snapshot, a verified direct scan, source clock and revision checks. Historical `app.tools` diagnostics retain their null revisions. Nightshift 0.92.7's verified JSON-object path disables tier splitting and native tools; strict local validation remains mandatory. Early prose responses failed before any action; the final live route was `meterless/auto`, reporting `nvidia/nemotron-3.5-bolt-e4b`.
 
 The target uses one Nightshift investigator, a pure deterministic critic and one PostgreSQL action service. Policy-permitted `provisional_credit`, `request_evidence` and `decline` run autonomously; `human_review` is exceptional and creates no credit. Only confirmed persistence creates a queued review item. Verified history remains advisory; no numeric history policy has been introduced. T10 still needs an explicit advisory-scope acceptance decision or an approved versioned history rule.
 
-Next: **[T08 / KAN-17 — Bounded workflow and command-line runner](https://luijoel24.atlassian.net/browse/KAN-17)**. The current user goal explicitly authorizes proceeding through the full roadmap sequentially, with Jira completion evidence and a commit/push to `origin/main` after every accepted task. Individual handovers below remain single-task templates.
+Next: **[T09 / KAN-18 — Actual H-MEM integration](https://luijoel24.atlassian.net/browse/KAN-18)**. The current user goal explicitly authorizes proceeding through the full roadmap sequentially, with Jira completion evidence and a commit/push to `origin/main` after every accepted task. Individual handovers below remain single-task templates.
 
 ### Steps for the next teammate
 
@@ -49,20 +50,18 @@ Next: **[T08 / KAN-17 — Bounded workflow and command-line runner](https://luij
 ### Copyable task handover
 
 ```text
-Work on T08 / KAN-17 only:
-https://luijoel24.atlassian.net/browse/KAN-17
+Work on T09 / KAN-18 only:
+https://luijoel24.atlassian.net/browse/KAN-18
 
 Follow AGENTS.md and read context.md, ROADMAP.md, agent.md and applicable
-sources. Verify T02/T03/T05/T06/T07 interfaces. Resolve shared deployment,
-restricted runtime credentials and coherent fresh Zetaris reads. Build the
-bounded controller/CLI, consume every model/tool attempt from run budgets,
-allow one correction, reject unresolved model uncertainties and preserve
-confirmed commits independently of optional post-commit work. Label no-memory
-mode. Prove actual Zetaris + Nightshift + persisted synthetic result, duplicate
-prevention and correction/safe failure. Update docs/Jira, commit and push only
-after acceptance; never claim queued review without confirmed persistence.
+sources. Verify the selected official H-MEM reference, pin reproducible
+setup, inspect the existing Python/TypeScript bridge, and prove actual
+save/restart/recall plus safe failure handling. Preserve T08's no-memory
+workflow until T10 integrates verified memory. Do not introduce a numeric
+repeat-history policy. Record exact evidence and remaining limitations,
+update Jira, then commit and push after the T09 gate passes.
 
 ```
 
-Next task: **T08 / KAN-17: bounded workflow and command-line runner**.
-T09 and A01 are independently ready. T08–T13 and A01 remain NOT_STARTED.
+Next task: **T09 / KAN-18: actual H-MEM integration**.
+T09 and A01 are independently ready. T09–T13 and A01 remain NOT_STARTED.

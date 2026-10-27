@@ -1,0 +1,20 @@
+{
+  "migrations": [
+    "1",
+    "2"
+  ],
+  "source_fingerprints": {
+    "transactions": "42:6dba363164adfb1d71ed781487de2b62",
+    "settlements": "54:85dbe3b7b1d0f3afa3d6e0f85a75f7e7",
+    "disputes": "40:13d8bcae9e3345a66ef3593be7949a32",
+    "evidence": "81:aad00e9ce3a8370053271422000fe3ba",
+    "evidence_documents": "81:c8c6e61f97a1c96230f7cff23e6c604e",
+    "policy_rules": "16:3404be2a15f958d23ace89edd79edb14"
+  },
+  "sources_unchanged": true,
+  "backup": "outputs/backups/t08-before-migrations.sql (private, ignored)",
+  "backup_sha256": "1a191ff54dd88568f9665f31207a09273486dfa10c984f71bf3aef8793bdfbe3",
+  "runtime_role": "dispute_app",
+  "role_grant": "dispute_action_writer",
+  "credentials_saved_privately": true
+}

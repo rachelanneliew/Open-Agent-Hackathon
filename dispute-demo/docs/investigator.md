@@ -1,11 +1,17 @@
 # T07 Nightshift investigator
 
+**T08 integration update:** the [workflow guide](./workflow.md) describes the
+canonical controller, fresh coherent Zetaris snapshots, guarded shared sandbox
+deployment, CLI and identical-request recovery. Earlier task acceptance and
+deployment statements below are dated evidence. Historical T02 reads retain
+their null revisions; normal runs use the new fresh snapshot adapter.
+
 [Investigator.step](../app/investigator.py) makes one model call and returns an
 immutable `InvestigatorResult`: a typed `AgentProposal`, an unexecuted
 `ReadRequest`, or a sanitized failure. It never dispatches a tool, opens a ledger,
 calls the action service or saves memory. The [legacy resolver](../agent/resolver.py)
 remains a labelled deterministic prototype with a retired writer, not this model
-integration. T08 owns its replacement and the complete workflow.
+integration. The canonical T08 workflow is `app.orchestrator.Controller` / `app.main`.
 
 ## Interface and trust boundary
 
@@ -60,11 +66,18 @@ Provider keys stay in Nightshift; no token or endpoint is model-selectable.
 
 The [published Meterless provider contract](https://meterless.ai/engines.html)
 (checked 27 October 2026) documents authenticated `/v1/models` and text chat
-completions with the app/scope headers. It does not establish native tools or JSON
-schema support for this installed runtime. We therefore send text-only messages,
-`stream=false`, `max_tokens=4096` and validate the JSON envelope locally. No
-`tools` or `response_format` fields are assumed. Explicit `discover()` checks the
-configured route is advertised; the controller should do this before a run.
+completions with the app/scope headers. T08 additionally inspected installed
+Nightshift 0.92.7 (`proxy.js`, `orchestrator.js`, `providers.js`,
+`structured-output.js`) and verified its JSON-object request path live. Calls
+now send `response_format={"type":"json_object"}`, `tool_choice="none"`,
+`temperature=0`, `stream=false`, `max_tokens=4096`, and
+`meterless-tier-split: off`. No native tools are supplied. This path disables
+runtime semantic response caching and skips its answer-memory and reasoning
+scaffold injection. Unsupported providers fail rather than dropping the
+contract. Provider-enforced JSON/schema support is still not assumed: local
+strict JSON/schema/binding checks remain mandatory. Runtime review requirements
+or reported native-tool execution also fail validation. `discover()` checks
+advertised availability during setup; a listing alone does not prove inference.
 
 Each HTTP request runs in a fresh Python child, using the current interpreter and
 project working directory. The parent kills and waits for it at the supplied
@@ -82,8 +95,8 @@ a routing label, not evidence of a named responder. Provider identity is unknown
 unless independently observed; assistant prose and advertised model lists do not
 establish it. No named NVIDIA/Nemotron responder is inferred from `meterless/auto`.
 
-T08 must own total model/tool/duration limits, consume a model-call allowance on
-every attempt, permit at most one correction, reevaluate new facts and validate
+The T08 controller owns total model/tool/duration limits, consumes a model-call allowance on
+every attempt, permits at most one correction, reevaluates new facts and validates
 the result before the sole action boundary. T07 enforces one call per step and
 the correction input contract, but has no persistent run history. Repeating
 revision 0 calls cannot be used to reset the controller's budget.

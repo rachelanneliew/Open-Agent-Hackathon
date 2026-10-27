@@ -2,7 +2,7 @@
 
 > **Canonical work queue.** Read [`context.md`](./context.md) first, then [`agent.md`](./agent.md).
 > **Revision:** T07 Nightshift investigator accepted, 27 October 2026: 121 passing tests, 45 PostgreSQL opt-in skips, four compatibility tests and data validation; a real Zetaris/Nightshift proposal passed the pure critic. Evidence is recorded below.
-> **Current authorized goal:** complete the entire roadmap sequentially, updating Jira and committing/pushing each completed task to `origin/main`. The user explicitly expanded the earlier single-task scope on 27 October. T00–T07 are DONE; next is T08 / KAN-17. Remaining tasks retain their acceptance gates and explicit scope decisions.
+> **Current authorized goal:** complete the entire roadmap sequentially, updating Jira and committing/pushing each completed task to `origin/main`. The user explicitly expanded the earlier single-task scope on 27 October. T00–T08 are DONE; next is T09 / KAN-18. Remaining tasks retain their acceptance gates and explicit scope decisions.
 > **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
 
 ## 1. What changed from the earlier plan
@@ -23,7 +23,7 @@ Use statuses `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED`, `DONE`. DONE requires reco
 
 Every task includes its own tests. T12 is cross-component testing, not the first time testing begins.
 
-**Post-merge integration order:** T03–T07 are complete; continue with T08 under the current goal. T08 must resolve shared deployment and coherent fresh Zetaris reads before live commits. T09 and A01 can progress separately when assigned. After T09, complete T10, then T11, T12 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
+**Post-merge integration order:** T03–T08 are complete, including shared guarded deployment and live fresh-read/model/commit acceptance. Continue with T09 under the current goal. T09 and A01 can progress separately when assigned. After T09, complete T10, then T11, T12 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
 
 ## Jira tracking (supplied kit dated 2026-10-26)
 
@@ -73,7 +73,7 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 | T05 | Implement atomic simulated decision recording | T03, T04 | DONE |
 | T06 | Build the mandatory critic and validator | T02, T03 | DONE |
 | T07 | Implement the investigator through Nightshift | T02, T03, T06 | DONE |
-| T08 | Wire the bounded workflow and command-line runner | T02, T03, T05, T06, T07 | NOT_STARTED |
+| T08 | Wire the bounded workflow and command-line runner | T02, T03, T05, T06, T07 | DONE |
 | T09 | Verify and wrap the actual H-MEM integration | T00, T01; may run in parallel with T02–T08 | NOT_STARTED |
 | T10 | Integrate verified memory and repeat-history review | T02, T03, T08, T09 | NOT_STARTED |
 | T11 | Build the thin analyst view and review queue | T08; memory display depends on T10 | NOT_STARTED |
@@ -372,7 +372,7 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 ### T08 — Wire the bounded workflow and command-line runner
 
 **Phase:** Agent workflow  
-**Status:** NOT_STARTED  
+**Status:** DONE
 **Depends on:** T02, T03, T05, T06, T07  
 **Deliverable:** The first working end-to-end investigation with an observable audit trail.
 
@@ -380,21 +380,23 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **PR #4 integration requirements:**
 
-- [ ] Replace the prototype resolver as the normal-runtime path with one canonical controller and explicit run/proposal/reference identities. Handle all four outcomes without blanket manual approval and invalidate earlier results when verified facts change.
-- [ ] A critic review verdict cannot commit its rejected credit proposal. Validate a safe allowed review proposal through the action boundary or report no-credit failure; show queued review only after successful persistence.
-- [ ] Support a labelled no-memory milestone until T10. `remember=False` currently disables saving only; neither mode may silently call the SQLite writer. Configure tool/model/duration limits and at most one correction.
-- [ ] Return confirmed commit independently of optional post-commit work. Memory saving errors must not hide the action result or trigger a repeated action.
+- [x] Replace the prototype resolver as the normal-runtime path with one canonical controller and explicit run/proposal/reference identities. Handle all four outcomes without blanket manual approval and invalidate earlier results when verified facts change.
+- [x] A critic review verdict cannot commit its rejected credit proposal. Validate a safe allowed review proposal through the action boundary or report no-credit failure; show queued review only after successful persistence.
+- [x] Support a labelled no-memory milestone until T10. `remember=False` currently disables saving only; neither mode may silently call the SQLite writer. Configure tool/model/duration limits and at most one correction.
+- [x] Return confirmed commit independently of optional post-commit work. Memory saving errors must not hide the action result or trigger a repeated action.
 
 **Work:**
 
-- [ ] Implement a Python workflow controller: retrieve -> evaluate -> investigate -> validate -> commit -> display. The controller, not an LLM, controls transitions and write access.
-- [ ] Execute only validated allowlisted tool requests. Merge newly verified facts into context and rerun the policy evaluator before validating a proposal based on them.
-- [ ] Use at most one proposal-correction pass for the MVP. Define explicit tool-call, timeout and total-run budgets in configuration; no endless retries or loop resets.
-- [ ] On unresolved critique or unavailable required facts, construct an honest no-credit error/review outcome. Persist a review decision only when the write service confirms it. Never relabel failed persistence as saved.
-- [ ] Add a CLI accepting a real synthetic dispute ID. Show facts, rules, proposal, critic feedback and commit status; differentiate reused results from new simulated effects.
-- [ ] Record a public event trace with source and rule IDs, versions, actions and errors. Use scripted faulty proposals only in explicitly labelled fault-injection tests/demos.
+- [x] Implement a Python workflow controller: retrieve -> evaluate -> investigate -> validate -> commit -> display. The controller, not an LLM, controls transitions and write access.
+- [x] Execute only validated allowlisted tool requests. Merge newly verified facts into context and rerun the policy evaluator before validating a proposal based on them.
+- [x] Use at most one proposal-correction pass for the MVP. Define explicit tool-call, timeout and total-run budgets in configuration; no endless retries or loop resets.
+- [x] On unresolved critique or unavailable required facts, construct an honest no-credit error/review outcome. Persist a review decision only when the write service confirms it. Never relabel failed persistence as saved.
+- [x] Add a CLI accepting a real synthetic dispute ID. Show facts, rules, proposal, critic feedback and commit status; differentiate reused results from new simulated effects.
+- [x] Record a public event trace with source and rule IDs, versions, actions and errors. Use scripted faulty proposals only in explicitly labelled fault-injection tests/demos.
 
 **Acceptance gate:** A live Zetaris + Nightshift case reaches a persisted sandbox result; reprocessing causes no extra credit; a faulty proposal is corrected once or routed safely. Unit/mocked runs are clearly distinguished from live integration evidence.
+
+**Acceptance, 27 October 2026:** 198 tests pass with no skips (52 real isolated PostgreSQL checks and five local HTTP fixtures), plus four compatibility tests and data validation. Live Zetaris → Nightshift → critic → PostgreSQL committed DP-0014 for 6,000 SGD minor units. Identical recovery reused the original decision; ordinary rerun rejected an existing credit; a labelled faulty proposal consumed one correction then failed safely on invalid output. Shared counts remain one decision/credit/audit. [Live evidence](./dispute-demo/docs/evidence/t08-live-workflow.json), [deployment receipt](./dispute-demo/docs/evidence/t08-deployment.json), [workflow guide](./dispute-demo/docs/workflow.md).
 
 **Not in this task:** No dashboard requirement, autonomous agent swarm, unlimited loop or claim of memory use before T10.
 
@@ -1140,6 +1142,45 @@ Exact verification from `dispute-demo/`, existing Python 3.13.7, unless noted:
 - Repository checks: `git diff --check` and protected-source comparison against `29eb6ae` passed. `PYTHONDONTWRITEBYTECODE=1 getting-started/.venv/bin/python /private/tmp/validate_t07_docs.py` checks local links, syntax, task status scope, retained history and sanitized live evidence. No packages installed; the existing Nightshift app is left open for subsequent live work.
 - Jira: KAN-16 received completion comment **10009** and transition 31 confirmed **Done**. Its summary, description, assignee, parent, labels and links were checked unchanged before closure. Publication uses an explicit 13-path commit and normal push to `origin/main`; the final commit and remote match are verified after execution.
 - Context updated for verified T07 capabilities, returned model metadata, explicit persistence/budget limits and the authorized sequential full-roadmap scope. Next task: **T08 / KAN-17**, after this task's Jira closure and commit/push.
+
+### 2026-10-27 — T08 / KAN-17: prerequisite inspection and deployment preparation
+
+- Status: **IN_PROGRESS**, continuing the authorized full-roadmap goal. T07 commit `87267ed9ba6e8078a15db7700d4d5b945d260251` is pushed to `origin/main`; KAN-16 is Done with acceptance comment `10009` and publication receipt `10010`. Initial working tree clean. KAN-17 description/dependencies read and transition 21 confirmed In Progress.
+- Inspected current T01–T07 interfaces, root/scoped instructions, source policies/schema/generator, JDBC helper, storage migration/action service/tests, Compose and SQL/cache guides. T07's current-session preflight passes JDBC; no new credentials or endpoint change.
+- Read-only Docker/PG inventory confirms the original five persistent services healthy, source database internal port 5432 only, no `dispute_control`/`dispute_actions` schemas, source counts 42/54/40/81/81/16. No deployment or source write yet.
+- Previewed and executed read-only registration/cache/query-plan checks through the approved JDBC path: existing seven source tables registered; per-table cache policies unset; `OFFSITE CACHE TABLE DETAILS dispute.disputes` empty. `EXPLAIN SELECT dispute_id FROM dispute.disputes WHERE dispute_id = 'DP-0014'` shows `Scan InsertableJDBCTableRelation` with pushed case filter and masked source connection metadata. No in-memory scan. This is scoped observation, not yet a verified coherent read protocol or write readiness.
+- T08 must provide bounded fresh reads, deployment/restricted action access, controller/CLI and real end-to-end acceptance before DONE. No task acceptance or persistence is claimed from the inspection.
+
+### 2026-10-27 — T08 / KAN-17: accepted bounded live workflow
+
+- **DONE gate satisfied.** Normal runtime is `python -m app.main`, with `app.orchestrator.Controller`, coherent fresh read projections, process-bounded read/write adapters and a private pre-dispatch recovery journal. Four outcomes use the same pure policy/critic and sole PostgreSQL writer. No application H-MEM import/recall/save, deterministic model fallback, SQLite writer or arbitrary SQL/model write tool.
+- Default budgets: four model requests, three reads including initial retrieval, 300 seconds total; 120/45/25 seconds per model/read/commit. Every attempt consumes its budget. One correction only; new facts invalidate prior observations and force reevaluation. New reads during correction stop safely without resetting the allowance. Uncertainty or unresolved/malformed proposals cannot write. A failed proposal is not relabelled as a queued review.
+- Migration 002's `dispute_read_bundle` view computes case facts, source revision, current source-side clock, customer history and stored decision receipts in one PostgreSQL statement snapshot. The approved Zetaris channel checks every SELECT's direct `InsertableJDBCTableRelation` plan, before/bundle/after revision agreement, source clock and bounded collections/2 MiB envelope. Unknown/cached plans or incoherence fail closed. Historical T02 reads preserve their null-revision behavior. Internal PostgreSQL rereads remain exclusive to commit validation.
+- Shared deployment: a private `pg_dump` backup precedes migrations 001/002. Both apply without source-row changes. A new restricted `dispute_app` LOGIN receives only `dispute_action_writer`; its random credential/DSN stays in mode-0600 `.env.local`. The project container alone was recreated with its existing volume to publish loopback port 55432. Existing Zetaris services/metastore were preserved. Four read-only views were previewed and registered through the approved JDBC workflow. [Sanitized receipt](./dispute-demo/docs/evidence/t08-deployment.json). All six source fingerprints still match; counts 42/54/40/81/81/16.
+- Nightshift integration finding: four initial `meterless/auto` runs failed strict output parsing, and one advertised Lightning route was unavailable. All stopped before writes. Installed Nightshift 0.92.7 source inspection (`proxy.js`, `orchestrator.js`, `providers.js`, `structured-output.js`; hashes in evidence) showed JSON-object forwarding/validation, semantic-cache bypass and tier-split controls. Final requests use `response_format=json_object`, `tool_choice=none`, temperature 0 and `meterless-tier-split: off`; this structured path skips runtime answer-memory/scaffold injection. No app/provider credential or saved model-setting change. Local validation still rejects malformed JSON, unsupported schema/binding, reported native-tool execution or runtime review. No provider-enforced schema claim.
+
+Exact checks (commands run from `dispute-demo/` unless specified):
+
+| Command / operation | Result |
+|---|---|
+| `../getting-started/.venv/bin/python -m venv .venv`; `.venv/bin/python -m pip install -r requirements-runtime.txt` | Dedicated Python 3.13.7 environment created; Psycopg/binary 3.2.10, JayDeBeApi 1.2.3, JPype1 1.7.1 installed. Initial sandbox network lookup failed; approved network retry passed. Bundled environment unchanged; `.venv/` ignored. |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -p test_orchestrator.py -v` | Initial 16 pass/1 test-fixture error used nonexistent `settlement_type`; corrected to actual `movement_type`. Final 17/17 pass. Seven new coherent-read adversarial tests pass. |
+| `DISPUTE_ACTION_TESTS=1 PYTHONDONTWRITEBYTECODE=1 /private/tmp/dispute-t05-venv/bin/python -m unittest discover -s tests -p test_end_to_end.py -v` | Seven real isolated PostgreSQL + explicitly scripted-model workflow tests pass: four outcomes, exact reuse/ordinary rerun, corrected/terminal faults, changed revision, lost acknowledgement and additive view/role scope. No live-model claim from these tests. |
+| `DISPUTE_ACTION_TESTS=1 DISPUTE_STORAGE_TESTS=1 DISPUTE_NIGHTSHIFT_HTTP_TESTS=1 PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s tests -v > /private/tmp/t08-acceptance-tests.log 2>&1` | **198/198 PASS, zero skips**, 46.285 seconds: 52 real isolated PostgreSQL checks, five real loopback HTTP fixtures, 141 other tests. Earlier full runs passed 177 with 20 storage skips, then 197 with all flags; final count includes the new runtime-review/native-tool refusal test. |
+| `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s agent/tests -p test_critic.py -v`; `.venv/bin/python scripts/validate_synthetic_data.py` | Four compatibility tests PASS; generated data/keys/timestamps/policy coverage/documents/hashes/fixture references PASS. Source files, policies and fixtures unchanged. One targeted investigator invocation from repository root failed import `app`; rerun through the final correctly scoped suite passes. |
+| `.venv/bin/python /private/tmp/t08-deploy.py`; `bash integration/db.sh up -d --no-deps dispute-postgres` | Private backup and additive migrations/restricted login PASS; loopback publication retained the project volume. No loader/reset or source edits. |
+| From `getting-started/`: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/run_sql.py --dry-run ../dispute-demo/integration/action_registration.sql`, then same command with `--channel jdbc` instead of `--dry-run` | Four-statement preview PASS; four registrations PASS. Current-session JDBC preflight passed; two REST-only missing-key checks remain unrelated to this JDBC path. |
+| `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m app.main DP-0014 --no-memory > outputs/t08-live-DP-0014-structured.json` | **Live PASS, exit 0**: fresh Zetaris reference revision 0; actual Nightshift proposal, accepted pure critic, confirmed 6,000 SGD minor-unit credit. Run `7238450e-5c65-4829-a1a6-fcd3657fddf0`; decision `b2d7a3ef-b7a7-4546-ac93-183a672ef41d`; credit `4ca53387-7b50-422c-9c40-d507685394a3`. Requested `meterless/auto`, response label `nvidia/nemotron-3.5-bolt-e4b` (metadata, not independent provider attestation). |
+| `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m app.main --retry-request outputs/runs/7238450e-5c65-4829-a1a6-fcd3657fddf0.request.json` | **Live PASS, exit 0**: `reused`, identical original decision/credit, zero model/read calls. No new effect. |
+| `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m app.main DP-0014 --no-memory > outputs/t08-live-DP-0014-rerun.json` | **Expected safe refusal, exit 1**: fresh revision 5, real proposal/accepted critique; writer returns `effective_credit_already_exists`. No duplicate. |
+| `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m integration.check_workflow_fault DP-0014 --inject-credit-overstatement` | **Live labelled fault safely contained, exit 1**: +1 minor unit injected after actual initial model proposal; critic REVISE; exactly one real correction attempt fails proposal schema. Two model calls, one read, revision 1; no action or invented queued review. Successful correction is separately proven by real-PG/scripted-model tests. |
+| `.venv/bin/python /private/tmp/t08-final-db-check.py` | PASS: source fingerprints unchanged; exactly 1 decision, 1 credit, 1 audit, 0 reviews, revision 5; action login has no superuser/create/replication/bypass/owner/source-writer rights. |
+| `.venv/bin/python /private/tmp/validate_t08_docs.py`; `git diff --check`; canonical import check | PASS: changed Markdown local links and Python ASTs valid; protected source/policy/fixture/platform paths unchanged. Importing canonical CLI/controller/fresh adapters preserves `sys.path` and initializes no JDBC/Psycopg/SQLite/legacy resolver/H-MEM. |
+
+- [Public live traces](./dispute-demo/docs/evidence/t08-live-workflow.json) contain only source facts, rules, typed proposals/critique and explicit execution statuses. No secrets, raw model reasoning, authored expected labels or private backup contents are tracked. Original full recovery requests and traces remain in ignored `outputs/`.
+- Confirmed commit acknowledgement survives optional post-commit callback/trace-save failures; no second action occurs. Uncertain commits retain their exact saved request/key for recovery. The no-memory milestone is explicit and does not claim actual H-MEM persistence.
+- **NOT RUN:** actual external H-MEM conformance/save-restart-recall; authenticated HackOS requirements; live all-four-outcome commits (covered in isolated PostgreSQL), shared database restart after action (isolated restart test passes). No real payment integration.
+- Jira KAN-17 received completion comment **10011**; transition 31 and a fresh read confirm status/resolution **Done**. Summary, description, assignee, parent, labels and links were checked unchanged before closure. Direct-main commit/push and remote equality are verified after publication. Next under the authorized goal: **T09 / KAN-18**, after publishing this completed task.
 
 ## 11. Deferred scope
 

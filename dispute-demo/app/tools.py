@@ -15,7 +15,7 @@ from uuid import uuid4
 
 from integration import get_dispute_context as source
 from .schemas import (Contract, ContractError, ContextRef, Dispute, DisputeContext,
-                      Evidence, Outcome, PolicyRule, Settlement, Transaction,
+                      CommitResult, Evidence, Outcome, PolicyRule, Settlement, Transaction,
                       require, source_id, unique, uuid_id)
 
 
@@ -49,16 +49,17 @@ class CustomerHistory(Contract):
     captured_at: datetime
     source_channel: str
     cases: tuple[HistoricalDispute, ...]
-    source_revision: None = None
+    source_revision: int | None = None
     decisions_supported: bool = False
 
     def _check(self):
         source_id(self.dispute_id, 'DP')
         source_id(self.customer_id, 'CUST', 3)
         uuid_id(self.snapshot_id)
+        require(self.source_revision is None or self.source_revision >= 0, 'Invalid revision')
         require(self.source_channel in ('zetaris', 'offline_test'), 'Invalid source channel')
         require(self.captured_at >= self.evaluation_at, 'Capture precedes cutoff')
-        require(not self.decisions_supported, 'Decision reads require T04 support')
+        require(not self.decisions_supported, 'Use the separate decision-history projection')
         unique(tuple(c.dispute.dispute_id for c in self.cases))
         for case in self.cases:
             require(case.dispute.dispute_id != self.dispute_id, 'Current case is not history')
@@ -69,22 +70,42 @@ class CustomerHistory(Contract):
 
 @dataclass(frozen=True, kw_only=True)
 class DisputeState(Contract):
-    """Currently stored source row; no versioned lifecycle or commit freshness."""
+    """Source row projection; only the fresh adapter supplies a verified revision."""
     dispute: Dispute
     captured_at: datetime
     source_channel: str
-    source_revision: None = None
+    source_revision: int | None = None
 
     def _check(self):
         require(self.source_channel in ('zetaris', 'offline_test'), 'Invalid source channel')
+        require(self.source_revision is None or self.source_revision >= 0, 'Invalid revision')
         require(self.captured_at >= self.dispute.evaluation_at, 'Capture precedes cutoff')
+
+
+@dataclass(frozen=True, kw_only=True)
+class DecisionHistory(Contract):
+    """Observed original receipts, never claims of actions by this read/run."""
+    reference: ContextRef
+    captured_at: datetime
+    source_channel: str
+    decisions: tuple[CommitResult, ...]
+
+    def _check(self):
+        require(self.source_channel in ('zetaris', 'offline_test'), 'Invalid source channel')
+        require(self.reference.source_revision is not None, 'Decision reads require a revision')
+        require(self.captured_at >= self.reference.evaluation_at, 'Capture precedes cutoff')
+        unique(tuple(d.decision_id for d in self.decisions))
+        for d in self.decisions:
+            require(d.decision_id is not None and d.reference.dispute_id == self.reference.dispute_id,
+                    'Invalid stored decision scope')
+            require(d.committed_at <= self.reference.evaluation_at, 'Decision after cutoff')
 
 
 @dataclass(frozen=True, kw_only=True)
 class ReadResult(Contract):
     status: ReadStatus
     message: str
-    data: DisputeContext | CustomerHistory | DisputeState | None = None
+    data: DisputeContext | CustomerHistory | DisputeState | DecisionHistory | None = None
     issues: tuple[str, ...] = ()
 
     def _check(self):
@@ -275,7 +296,7 @@ class ReadTools:
 
     def get_existing_decisions(self, dispute_id):
         return self._read(dispute_id, lambda: ReadResult(status=ReadStatus.UNSUPPORTED,
-            message='Decision storage and Zetaris registration are not implemented (T04)'))
+            message='Historical adapter has no decision projection; use the fresh snapshot adapter'))
 
 
 TOOL_NAMES = ('get_dispute_context', 'get_customer_history', 'get_dispute_state', 'get_existing_decisions')

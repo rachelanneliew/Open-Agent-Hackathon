@@ -11,7 +11,7 @@ from .nightshift import MAX_BYTES, ModelError, label, strict_json
 from .policy_engine import evaluate_policy
 from .schemas import (AgentProposal, Contract, ContractError, CriticResult,
                       CriticVerdict, DisputeContext, PolicyResult, require, source_id, uuid_id)
-from .tools import CustomerHistory, DisputeState, ReadResult, TOOL_NAMES
+from .tools import CustomerHistory, DecisionHistory, DisputeState, ReadResult, TOOL_NAMES
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -76,7 +76,11 @@ material uncertainty in uncertainties (at most 8 short source-linked statements,
 240 characters each). Unresolved uncertainty prevents committing this proposal.
 Do not output private chain-of-thought, internal reasoning, or claim a saved
 decision. A proposal is never an executed action. A correction uses revision 1
-and the supplied new proposal ID; no further correction is permitted.'''
+and the supplied new proposal ID; no further correction is permitted.
+OUTPUT FORMAT: Your entire assistant content must be one valid JSON object,
+starting with { and ending with }. Do not print the checklist, analysis, labels,
+a preamble, or a summary before or after that object. JSON is parsed directly;
+any prose causes the application to refuse the response without an action.'''
 
 
 def _observations(context, observations):
@@ -88,16 +92,20 @@ def _observations(context, observations):
         require(obs.request.dispute_id == context.reference.dispute_id, 'Observation outside case')
         value = obs.result.data
         expected_type = {'get_dispute_context': DisputeContext, 'get_customer_history': CustomerHistory,
-                         'get_dispute_state': DisputeState, 'get_existing_decisions': type(None)}[obs.request.name]
+                         'get_dispute_state': DisputeState, 'get_existing_decisions': DecisionHistory}[obs.request.name]
         require(value is None or type(value) is expected_type, 'Read response type mismatch')
         if isinstance(value, DisputeContext):
             require(value == context, 'New case facts require reevaluation')
         elif isinstance(value, CustomerHistory):
             require(value.dispute_id == context.reference.dispute_id and
                     value.evaluation_at == context.reference.evaluation_at and
-                    value.customer_id in customer_ids, 'History outside authorized scope')
+                    value.customer_id in customer_ids and
+                    value.source_revision == context.reference.source_revision, 'History outside authorized scope')
         elif isinstance(value, DisputeState):
-            require(value.dispute == context.dispute, 'Changed state requires reevaluation')
+            require(value.dispute == context.dispute and value.source_revision == context.reference.source_revision,
+                    'Changed state requires reevaluation')
+        elif isinstance(value, DecisionHistory):
+            require(value.reference == context.reference, 'Changed decisions require reevaluation')
     return [x.to_dict() for x in observations]
 
 
@@ -152,9 +160,16 @@ class Investigator:
             return failed(status, 'Nightshift did not return a usable completion; no action executed.')
         except Exception:
             return failed('unavailable', 'Model transport unavailable; no action executed.')
+        stage = 'completion'
         try:
             require(type(response) is dict, 'Invalid completion')
             response_model = label(response.get('model'))
+            metadata = response.get('meterless')
+            if metadata is not None:
+                require(type(metadata) is dict and not metadata.get('requires_review'), 'Runtime review required')
+                mcp = metadata.get('mcp')
+                require(mcp is None or (type(mcp) is dict and not mcp.get('calls') and not mcp.get('trace')),
+                        'Runtime executed unexpected native tools')
             choices = response['choices']
             require(type(choices) is list and len(choices) == 1, 'Expected one completion')
             choice = choices[0]
@@ -164,7 +179,9 @@ class Investigator:
                     not message.get('function_call') and not message.get('refusal'), 'Unsupported completion')
             content = message['content']
             require(type(content) is str, 'Expected text')
+            stage = 'json'
             obj = strict_json(content)
+            stage = 'envelope'
             require(type(obj) is dict and obj.get('kind') in ('proposal', 'read'), 'Invalid response envelope')
             kind = obj['kind']
             require(set(obj) == {'kind', 'uncertainties', 'proposal' if kind == 'proposal' else 'request'},
@@ -173,16 +190,19 @@ class Investigator:
             require(type(uncertainties) is list and len(uncertainties) <= 8 and
                     all(type(x) is str and x.strip() and len(x) <= 240 for x in uncertainties), 'Invalid uncertainty')
             if kind == 'read':
+                stage = 'read_scope'
                 request = ReadRequest.from_dict(obj['request'])
                 require(request.dispute_id == context.reference.dispute_id, 'Tool outside case')
                 return InvestigatorResult(status='read', message='Read requested; controller dispatch required.',
                     requested_route=route, response_model=response_model, read_request=request,
                     uncertainties=tuple(uncertainties))
+            stage = 'proposal_schema'
             proposal = AgentProposal.from_dict(obj['proposal'])
+            stage = 'proposal_binding'
             require(proposal.run_id == run_id and proposal.proposal_id == proposal_id and
                     proposal.reference == context.reference and proposal.revision == revision, 'Proposal identity mismatch')
             return InvestigatorResult(status='proposal', message='Unapproved model proposal; mandatory critic required.',
                 requested_route=route, response_model=response_model, proposal=proposal,
                 uncertainties=tuple(uncertainties))
         except (ContractError, ValueError, TypeError, KeyError, IndexError, UnicodeError, RecursionError):
-            return failed('invalid_output', 'Model output failed envelope, scope or binding validation; no action executed.')
+            return failed('invalid_output', 'Model output failed ' + stage + ' validation; no action executed.')

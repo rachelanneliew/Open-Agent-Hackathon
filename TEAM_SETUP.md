@@ -350,3 +350,41 @@ enables five ephemeral local HTTP fixture checks, not real model calls. T07's
 full suite passed 121 tests with 45 PostgreSQL opt-in skips; four compatibility
 tests and data validation passed. No package installation or private setting
 changes. T08 owns deployment, coherent reads and the complete bounded workflow.
+
+## T08 canonical workflow — current shared sandbox
+
+T08 supersedes the earlier task-specific deployment limits above. Migrations
+001/002 and four read views are installed, source fingerprints are unchanged,
+and `dispute_app` is a restricted action login. The private DSN points to project
+PostgreSQL on loopback port 55432. Never use the metastore port or loader login.
+The [workflow guide](./dispute-demo/docs/workflow.md) covers setup, budgets,
+coherent reads, exact-request recovery and refusal semantics.
+
+```sh
+cd dispute-demo
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements-runtime.txt
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m app.main DP-0014 --no-memory
+# Recovery uses the original saved request; replace the placeholder with its path.
+.venv/bin/python -m app.main --retry-request "outputs/runs/<run_id>.request.json"
+```
+
+The existing application venv has Python 3.13.7, Psycopg 3.2.10, JayDeBeApi 1.2.3
+and JPype1 1.7.1; the bundled JDBC venv was preserved. Do not recreate a working
+environment unnecessarily. The canonical CLI imports no H-MEM and never calls
+the deprecated resolver. Nightshift uses the verified JSON-object/no-native-tool
+request path with tier splitting off; unsupported or malformed replies fail.
+
+Live DP-0014 already has a simulated SGD 60 credit. An ordinary new run returns
+`effective_credit_already_exists`; exact saved-request recovery returns `reused`.
+Both leave one credit. The labelled fault demo is separate from normal runtime:
+
+```sh
+.venv/bin/python -m integration.check_workflow_fault DP-0014 --inject-credit-overstatement
+```
+
+Its exit 1 can be an expected safe refusal; inspect the explicit trace. T08's
+live fault got one correction attempt then stopped on invalid proposal schema,
+without a write. All 198 main-suite tests pass with all opt-in flags enabled,
+plus four compatibility tests and data validation. See [live evidence](./dispute-demo/docs/evidence/t08-live-workflow.json).
+H-MEM and HackOS are still NOT RUN for this milestone.

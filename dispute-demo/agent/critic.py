@@ -1,7 +1,7 @@
 """Compatibility import for the pure critic; the SQLite writer is retired.
 
 Existing local ledger files are neither opened, migrated nor deleted. The old
-resolver receives an explicit unavailable result until T05/T08 provide the
+resolver receives an explicit unavailable result; use app.main for the
 canonical PostgreSQL action boundary. Validation is available via review_proposal.
 """
 from app.critic import policy_rationale, review_proposal
@@ -16,6 +16,6 @@ def review_and_simulate(context, proposal, *, ledger_path=None):
         'status': 'unavailable',
         'reason_code': 'LEGACY_ACTION_PATH_RETIRED',
         'explanation': 'Use app.critic.review_proposal for pure validation; '
-                       'PostgreSQL action integration is pending T05/T08.',
+                       'Use python -m app.main for the canonical PostgreSQL workflow.',
         'simulated_credit_created': False,
     }

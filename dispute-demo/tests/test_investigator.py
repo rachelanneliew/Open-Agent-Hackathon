@@ -130,6 +130,13 @@ class InvestigatorTests(unittest.TestCase):
         self.assertEqual(r.proposal, p)
         self.assertEqual(review_proposal(self.context, evaluate_policy(self.context), p).verdict, CriticVerdict.REVISE)
 
+    def test_runtime_review_or_unexpected_native_tool_execution_refused(self):
+        for metadata in ({'requires_review': True}, {'mcp': {'calls': 1}}, {'mcp': {'trace': [{}]}}):
+            self.client.complete.return_value = completion(self.envelope(), meterless=metadata)
+            self.assertEqual(self.call().status, 'invalid_output')
+        self.client.complete.return_value = completion(self.envelope(), meterless={'mcp': {'calls': 0}})
+        self.assertEqual(self.call().status, 'proposal')
+
     def test_malformed_json_duplicate_keys_constants_and_fences(self):
         for content in ('null', '[]', '{}', 'not json', '{"x":NaN}', '{"kind":"read","kind":"proposal"}',
                         '```json\n' + json.dumps(self.envelope()) + '\n```', '[' * 2000,

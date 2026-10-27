@@ -1,5 +1,11 @@
 # T05 atomic simulated decision service
 
+**T08 integration update:** the [workflow guide](./workflow.md) describes the
+canonical controller, fresh coherent Zetaris snapshots, guarded shared sandbox
+deployment, CLI and identical-request recovery. Earlier task acceptance and
+deployment statements below are dated evidence. Historical T02 reads retain
+their null revisions; normal runs use the new fresh snapshot adapter.
+
 [app/action_service.py](../app/action_service.py) provides the sole canonical
 application write API, `commit_simulated_decision(CommitRequest) -> CommitResult`.
 It uses the [T04 migration](./storage.md), the existing [policy evaluator](./policy.md)

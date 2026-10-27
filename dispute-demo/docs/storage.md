@@ -1,13 +1,19 @@
 # T04 PostgreSQL decision storage
 
+**T08 integration update:** the [workflow guide](./workflow.md) describes the
+canonical controller, fresh coherent Zetaris snapshots, guarded shared sandbox
+deployment, CLI and identical-request recovery. Earlier task acceptance and
+deployment statements below are dated evidence. Historical T02 reads retain
+their null revisions; normal runs use the new fresh snapshot adapter.
+
 [Migration 001](../db/migrations/001_decision_storage.sql) extends the existing
 six public source tables without changing their rows. It stores all four
 synthetic outcomes and enforces durable credit uniqueness. It is **storage,
 not the T05 action service**: policy evaluation, exact proposal/critic binding,
 identical-retry recovery and commit-time freshness validation still belong to
 T05/T06. No runtime login receives writer membership from this migration.
-The prototype SQLite writer remains unintegrated pending those tasks; this
-migration does not read, delete or migrate its local state.
+T06 retired the prototype SQLite writer. This migration does not read, delete
+or migrate its local state.
 
 ## Records and invariants
 

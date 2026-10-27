@@ -1,9 +1,10 @@
 """Legacy prototype only: H-MEM recall, deterministic policy, retired critic.
 
 Memory is advisory only. It cannot change policy outcomes or skip critic checks.
-This is not the Nightshift investigator or the canonical controller. The retired
-critic cannot persist actions. T07 model turns live in app.investigator; T08 owns
-replacement of this prototype workflow (including its unconditional recall).
+The normal runtime is now ``python -m app.main`` / app.orchestrator.Controller.
+This retained prototype is not imported by that path. Its unconditional recall
+is not a no-memory mode. The retired critic cannot persist actions. T09/T10 own
+the remaining memory migration; never use this prototype as a setup probe.
 """
 from __future__ import annotations
 

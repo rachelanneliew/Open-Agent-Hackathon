@@ -1,5 +1,11 @@
 # T02 typed read tools
 
+**T08 integration update:** the [workflow guide](./workflow.md) describes the
+canonical controller, fresh coherent Zetaris snapshots, guarded shared sandbox
+deployment, CLI and identical-request recovery. Earlier task acceptance and
+deployment statements below are dated evidence. Historical T02 reads retain
+their null revisions; normal runs use the new fresh snapshot adapter.
+
 [app/tools.py](../app/tools.py) is the canonical application read boundary over
 [the existing Zetaris/JDBC integration](../integration/get_dispute_context.py).
 It uses the unchanged [T01 contracts](./contracts.md). No policy evaluation,
