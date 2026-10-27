@@ -1,0 +1,3396 @@
+{
+  "mode": "scripted_isolated_replay",
+  "reset_scope": "New disposable PostgreSQL container; two fresh cloned databases and private temporary memory/journal namespaces; owned resources removed afterward.",
+  "sources": "Read-only copies of committed synthetic files; shared database and memory untouched.",
+  "real_components": [
+    "PostgreSQL",
+    "canonical policy/critic/controller/action service",
+    "pinned H-MEM reference with mock embeddings"
+  ],
+  "simulated_components": [
+    "model responses",
+    "Zetaris transport (direct isolated PostgreSQL bundle read)"
+  ],
+  "requires": [
+    "Docker already running",
+    "existing postgres:16-alpine image",
+    "application Python dependencies",
+    "pinned H-MEM/Node setup"
+  ],
+  "status": "passed",
+  "report": {
+    "cycles": [
+      {
+        "cycle": 1,
+        "database": "t05_6296d3e14ae349bd9119d0c08698a615",
+        "initial_decisions": 0,
+        "initial_revision": 0,
+        "initial_memory_empty": true,
+        "decisions": 8,
+        "credits": 4,
+        "pending_reviews": 1,
+        "source_hashes": {
+          "transactions": "6dba363164adfb1d71ed781487de2b62",
+          "settlements": "85dbe3b7b1d0f3afa3d6e0f85a75f7e7",
+          "disputes": "13d8bcae9e3345a66ef3593be7949a32",
+          "evidence": "aad00e9ce3a8370053271422000fe3ba",
+          "evidence_documents": "c8c6e61f97a1c96230f7cff23e6c604e",
+          "policy_rules": "3404be2a15f958d23ace89edd79edb14"
+        },
+        "records": [
+          {
+            "dispute_id": "DP-0014",
+            "receipt": {
+              "run_id": "97cea804-87c0-430b-8c65-40aead8d8bba",
+              "proposal_id": "996b8eb4-81cd-4b69-86fd-12139a164e46",
+              "idempotency_key": "e5c1f97e-18bb-470e-93dc-9cde809ba1fd",
+              "reference": {
+                "dispute_id": "DP-0014",
+                "snapshot_id": "04e83b5f-96df-444e-905e-365343e72237",
+                "evaluation_at": "2026-10-27T10:16:46.308090Z",
+                "policy_version": "v2",
+                "source_revision": 0
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "738fe6b7-b13b-4184-960d-e7cee5520507",
+              "recommendation": {
+                "outcome": "provisional_credit",
+                "currency": "SGD",
+                "amount_minor": 6000
+              },
+              "committed_at": "2026-10-27T10:16:46.919863Z",
+              "simulated_credit_id": "3f150e2c-a85a-4b5d-bf04-54c1ef6ecdae"
+            },
+            "collaboration": [
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "996b8eb4-81cd-4b69-86fd-12139a164e46",
+                    "run_id": "97cea804-87c0-430b-8c65-40aead8d8bba",
+                    "reference": {
+                      "dispute_id": "DP-0014",
+                      "snapshot_id": "04e83b5f-96df-444e-905e-365343e72237",
+                      "evaluation_at": "2026-10-27T10:16:46.308090Z",
+                      "policy_version": "v2",
+                      "source_revision": 0
+                    },
+                    "recommendation": {
+                      "outcome": "provisional_credit",
+                      "currency": "SGD",
+                      "amount_minor": 6000
+                    },
+                    "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0014: filing age 10 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0014, completed movements ST-0021, ST-0022: remaining balance 6000 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Required synthetic support verified against case and source fields.\nv2-UNSUPPORTED: No complete unambiguous contradiction of the claim.\nv2-REVIEW_THRESHOLD: Eligible primary-transaction amount 6000; review only above 20000 SGD minor units.\nv2-APPROVE: Supported claim; min(claimed, primary completed balance) = 6000 SGD minor units.",
+                    "evidence_ids": [
+                      "EV-0027",
+                      "EV-0028"
+                    ],
+                    "policy_rule_ids": [
+                      "v2-DATA_INTEGRITY",
+                      "v2-FILING_WINDOW",
+                      "v2-ALREADY_REFUNDED",
+                      "v2-CONFLICTING_EVIDENCE",
+                      "v2-MISSING_EVIDENCE",
+                      "v2-UNSUPPORTED",
+                      "v2-REVIEW_THRESHOLD",
+                      "v2-APPROVE"
+                    ],
+                    "missing_evidence": [],
+                    "revision": 0
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "97cea804-87c0-430b-8c65-40aead8d8bba",
+                "proposal_id": "996b8eb4-81cd-4b69-86fd-12139a164e46",
+                "reference": {
+                  "dispute_id": "DP-0014",
+                  "snapshot_id": "04e83b5f-96df-444e-905e-365343e72237",
+                  "evaluation_at": "2026-10-27T10:16:46.308090Z",
+                  "policy_version": "v2",
+                  "source_revision": 0
+                },
+                "revision": 0,
+                "model_call": 1
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "996b8eb4-81cd-4b69-86fd-12139a164e46",
+                  "reference": {
+                    "dispute_id": "DP-0014",
+                    "snapshot_id": "04e83b5f-96df-444e-905e-365343e72237",
+                    "evaluation_at": "2026-10-27T10:16:46.308090Z",
+                    "policy_version": "v2",
+                    "source_revision": 0
+                  },
+                  "verdict": "accepted",
+                  "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+                  "failed_checks": []
+                },
+                "run_id": "97cea804-87c0-430b-8c65-40aead8d8bba",
+                "proposal_id": "996b8eb4-81cd-4b69-86fd-12139a164e46",
+                "revision": 0
+              },
+              {
+                "kind": "reviewer",
+                "result": {
+                  "status": "reviewed",
+                  "run_id": "97cea804-87c0-430b-8c65-40aead8d8bba",
+                  "proposal_id": "996b8eb4-81cd-4b69-86fd-12139a164e46",
+                  "reference": {
+                    "dispute_id": "DP-0014",
+                    "snapshot_id": "04e83b5f-96df-444e-905e-365343e72237",
+                    "evaluation_at": "2026-10-27T10:16:46.308090Z",
+                    "policy_version": "v2",
+                    "source_revision": 0
+                  },
+                  "attempt": 0,
+                  "requested_route": "test/scripted-reviewer",
+                  "feedback": {
+                    "verdict": "accept",
+                    "issue_codes": [],
+                    "evidence_ids": [],
+                    "policy_rule_ids": [],
+                    "feedback": "SCRIPTED reviewer acceptance for isolated testing.",
+                    "uncertainties": []
+                  },
+                  "response_model": "test/scripted-reviewer",
+                  "error": null
+                },
+                "model_call": 2
+              },
+              {
+                "kind": "final_gate",
+                "run_id": "97cea804-87c0-430b-8c65-40aead8d8bba",
+                "proposal_id": "996b8eb4-81cd-4b69-86fd-12139a164e46",
+                "reference": {
+                  "dispute_id": "DP-0014",
+                  "snapshot_id": "04e83b5f-96df-444e-905e-365343e72237",
+                  "evaluation_at": "2026-10-27T10:16:46.308090Z",
+                  "policy_version": "v2",
+                  "source_revision": 0
+                },
+                "critic": "accepted",
+                "reviewer": "accept"
+              }
+            ],
+            "critic": "accepted",
+            "model_calls": 2,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0014",
+                    "snapshot_id": "04e83b5f-96df-444e-905e-365343e72237",
+                    "evaluation_at": "2026-10-27T10:16:46.308090Z",
+                    "policy_version": "v2",
+                    "source_revision": 0
+                  },
+                  "customer_id": "CUST-008",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "738fe6b7-b13b-4184-960d-e7cee5520507"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:738fe6b7-b13b-4184-960d-e7cee5520507",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "738fe6b7-b13b-4184-960d-e7cee5520507",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0020",
+            "receipt": {
+              "run_id": "75d704d3-deaa-444b-b40e-25f0b5b9c6ab",
+              "proposal_id": "727ed0b1-3374-4f35-a3c8-89e9c5c1be9d",
+              "idempotency_key": "7dd21e34-92d0-4eca-ba5f-4cfec2aaf321",
+              "reference": {
+                "dispute_id": "DP-0020",
+                "snapshot_id": "4a813da6-326b-408a-8b4b-61926493d1cd",
+                "evaluation_at": "2026-10-27T10:16:47.087692Z",
+                "policy_version": "v2",
+                "source_revision": 5
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "0da9fc5e-0d56-46ed-bdab-40b5727534c8",
+              "recommendation": {
+                "outcome": "request_evidence",
+                "currency": "SGD",
+                "amount_minor": null
+              },
+              "committed_at": "2026-10-27T10:16:47.331137Z",
+              "simulated_credit_id": null
+            },
+            "collaboration": [
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "9405e662-fa1d-4710-a02e-aa9ca0688f90",
+                    "run_id": "75d704d3-deaa-444b-b40e-25f0b5b9c6ab",
+                    "reference": {
+                      "dispute_id": "DP-0020",
+                      "snapshot_id": "4a813da6-326b-408a-8b4b-61926493d1cd",
+                      "evaluation_at": "2026-10-27T10:16:47.087692Z",
+                      "policy_version": "v2",
+                      "source_revision": 5
+                    },
+                    "recommendation": {
+                      "outcome": "request_evidence",
+                      "currency": "SGD",
+                      "amount_minor": null
+                    },
+                    "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0020: filing age 10 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0020, completed movements ST-0032: remaining balance 11400 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Missing/unusable: refund_confirmation",
+                    "evidence_ids": [
+                      "EV-0039"
+                    ],
+                    "policy_rule_ids": [
+                      "v2-DATA_INTEGRITY",
+                      "v2-FILING_WINDOW",
+                      "v2-ALREADY_REFUNDED",
+                      "v2-CONFLICTING_EVIDENCE",
+                      "v2-MISSING_EVIDENCE"
+                    ],
+                    "missing_evidence": [
+                      {
+                        "category": "refund_confirmation",
+                        "reason": "absent",
+                        "policy_rule_id": "v2-MISSING_EVIDENCE"
+                      }
+                    ],
+                    "revision": 0
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "75d704d3-deaa-444b-b40e-25f0b5b9c6ab",
+                "proposal_id": "9405e662-fa1d-4710-a02e-aa9ca0688f90",
+                "reference": {
+                  "dispute_id": "DP-0020",
+                  "snapshot_id": "4a813da6-326b-408a-8b4b-61926493d1cd",
+                  "evaluation_at": "2026-10-27T10:16:47.087692Z",
+                  "policy_version": "v2",
+                  "source_revision": 5
+                },
+                "revision": 0,
+                "model_call": 1
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "9405e662-fa1d-4710-a02e-aa9ca0688f90",
+                  "reference": {
+                    "dispute_id": "DP-0020",
+                    "snapshot_id": "4a813da6-326b-408a-8b4b-61926493d1cd",
+                    "evaluation_at": "2026-10-27T10:16:47.087692Z",
+                    "policy_version": "v2",
+                    "source_revision": 5
+                  },
+                  "verdict": "accepted",
+                  "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+                  "failed_checks": []
+                },
+                "run_id": "75d704d3-deaa-444b-b40e-25f0b5b9c6ab",
+                "proposal_id": "9405e662-fa1d-4710-a02e-aa9ca0688f90",
+                "revision": 0
+              },
+              {
+                "kind": "reviewer",
+                "result": {
+                  "status": "reviewed",
+                  "run_id": "75d704d3-deaa-444b-b40e-25f0b5b9c6ab",
+                  "proposal_id": "9405e662-fa1d-4710-a02e-aa9ca0688f90",
+                  "reference": {
+                    "dispute_id": "DP-0020",
+                    "snapshot_id": "4a813da6-326b-408a-8b4b-61926493d1cd",
+                    "evaluation_at": "2026-10-27T10:16:47.087692Z",
+                    "policy_version": "v2",
+                    "source_revision": 5
+                  },
+                  "attempt": 0,
+                  "requested_route": "test/scripted-reviewer",
+                  "feedback": {
+                    "verdict": "revise",
+                    "issue_codes": [
+                      "material_omission"
+                    ],
+                    "evidence_ids": [],
+                    "policy_rule_ids": [],
+                    "feedback": "SCRIPTED challenge: recheck supporting evidence and policy precedence.",
+                    "uncertainties": []
+                  },
+                  "response_model": "test/scripted-reviewer",
+                  "error": null
+                },
+                "model_call": 2
+              },
+              {
+                "kind": "correction",
+                "source": "independent_reviewer",
+                "proposal_id": "9405e662-fa1d-4710-a02e-aa9ca0688f90",
+                "revision": 1
+              },
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "727ed0b1-3374-4f35-a3c8-89e9c5c1be9d",
+                    "run_id": "75d704d3-deaa-444b-b40e-25f0b5b9c6ab",
+                    "reference": {
+                      "dispute_id": "DP-0020",
+                      "snapshot_id": "4a813da6-326b-408a-8b4b-61926493d1cd",
+                      "evaluation_at": "2026-10-27T10:16:47.087692Z",
+                      "policy_version": "v2",
+                      "source_revision": 5
+                    },
+                    "recommendation": {
+                      "outcome": "request_evidence",
+                      "currency": "SGD",
+                      "amount_minor": null
+                    },
+                    "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0020: filing age 10 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0020, completed movements ST-0032: remaining balance 11400 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Missing/unusable: refund_confirmation",
+                    "evidence_ids": [
+                      "EV-0039"
+                    ],
+                    "policy_rule_ids": [
+                      "v2-DATA_INTEGRITY",
+                      "v2-FILING_WINDOW",
+                      "v2-ALREADY_REFUNDED",
+                      "v2-CONFLICTING_EVIDENCE",
+                      "v2-MISSING_EVIDENCE"
+                    ],
+                    "missing_evidence": [
+                      {
+                        "category": "refund_confirmation",
+                        "reason": "absent",
+                        "policy_rule_id": "v2-MISSING_EVIDENCE"
+                      }
+                    ],
+                    "revision": 1
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "75d704d3-deaa-444b-b40e-25f0b5b9c6ab",
+                "proposal_id": "727ed0b1-3374-4f35-a3c8-89e9c5c1be9d",
+                "reference": {
+                  "dispute_id": "DP-0020",
+                  "snapshot_id": "4a813da6-326b-408a-8b4b-61926493d1cd",
+                  "evaluation_at": "2026-10-27T10:16:47.087692Z",
+                  "policy_version": "v2",
+                  "source_revision": 5
+                },
+                "revision": 1,
+                "model_call": 3
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "727ed0b1-3374-4f35-a3c8-89e9c5c1be9d",
+                  "reference": {
+                    "dispute_id": "DP-0020",
+                    "snapshot_id": "4a813da6-326b-408a-8b4b-61926493d1cd",
+                    "evaluation_at": "2026-10-27T10:16:47.087692Z",
+                    "policy_version": "v2",
+                    "source_revision": 5
+                  },
+                  "verdict": "accepted",
+                  "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+                  "failed_checks": []
+                },
+                "run_id": "75d704d3-deaa-444b-b40e-25f0b5b9c6ab",
+                "proposal_id": "727ed0b1-3374-4f35-a3c8-89e9c5c1be9d",
+                "revision": 1
+              },
+              {
+                "kind": "reviewer",
+                "result": {
+                  "status": "reviewed",
+                  "run_id": "75d704d3-deaa-444b-b40e-25f0b5b9c6ab",
+                  "proposal_id": "727ed0b1-3374-4f35-a3c8-89e9c5c1be9d",
+                  "reference": {
+                    "dispute_id": "DP-0020",
+                    "snapshot_id": "4a813da6-326b-408a-8b4b-61926493d1cd",
+                    "evaluation_at": "2026-10-27T10:16:47.087692Z",
+                    "policy_version": "v2",
+                    "source_revision": 5
+                  },
+                  "attempt": 1,
+                  "requested_route": "test/scripted-reviewer",
+                  "feedback": {
+                    "verdict": "accept",
+                    "issue_codes": [],
+                    "evidence_ids": [],
+                    "policy_rule_ids": [],
+                    "feedback": "SCRIPTED reviewer acceptance for isolated testing.",
+                    "uncertainties": []
+                  },
+                  "response_model": "test/scripted-reviewer",
+                  "error": null
+                },
+                "model_call": 4
+              },
+              {
+                "kind": "final_gate",
+                "run_id": "75d704d3-deaa-444b-b40e-25f0b5b9c6ab",
+                "proposal_id": "727ed0b1-3374-4f35-a3c8-89e9c5c1be9d",
+                "reference": {
+                  "dispute_id": "DP-0020",
+                  "snapshot_id": "4a813da6-326b-408a-8b4b-61926493d1cd",
+                  "evaluation_at": "2026-10-27T10:16:47.087692Z",
+                  "policy_version": "v2",
+                  "source_revision": 5
+                },
+                "critic": "accepted",
+                "reviewer": "accept"
+              }
+            ],
+            "critic": "accepted",
+            "model_calls": 4,
+            "correction": 1,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0020",
+                    "snapshot_id": "4a813da6-326b-408a-8b4b-61926493d1cd",
+                    "evaluation_at": "2026-10-27T10:16:47.087692Z",
+                    "policy_version": "v2",
+                    "source_revision": 5
+                  },
+                  "customer_id": "CUST-013",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "0da9fc5e-0d56-46ed-bdab-40b5727534c8"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:0da9fc5e-0d56-46ed-bdab-40b5727534c8",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "0da9fc5e-0d56-46ed-bdab-40b5727534c8",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0029",
+            "receipt": {
+              "run_id": "7650abe7-59ff-4b81-8c1a-04682472a854",
+              "proposal_id": "7a0c11fc-c056-49c8-8188-ff6bf653addf",
+              "idempotency_key": "e549e9be-b492-4fd2-8830-232f9ac492ba",
+              "reference": {
+                "dispute_id": "DP-0029",
+                "snapshot_id": "7dcf507a-3903-44cc-b844-e47364be7ad2",
+                "evaluation_at": "2026-10-27T10:16:47.512294Z",
+                "policy_version": "v1",
+                "source_revision": 8
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "79dbaa32-7c57-4426-89f1-245228d83b57",
+              "recommendation": {
+                "outcome": "decline",
+                "currency": "SGD",
+                "amount_minor": null
+              },
+              "committed_at": "2026-10-27T10:16:47.744041Z",
+              "simulated_credit_id": null
+            },
+            "collaboration": [
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "7a0c11fc-c056-49c8-8188-ff6bf653addf",
+                    "run_id": "7650abe7-59ff-4b81-8c1a-04682472a854",
+                    "reference": {
+                      "dispute_id": "DP-0029",
+                      "snapshot_id": "7dcf507a-3903-44cc-b844-e47364be7ad2",
+                      "evaluation_at": "2026-10-27T10:16:47.512294Z",
+                      "policy_version": "v1",
+                      "source_revision": 8
+                    },
+                    "recommendation": {
+                      "outcome": "decline",
+                      "currency": "SGD",
+                      "amount_minor": null
+                    },
+                    "rationale": "v1-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv1-FILING_WINDOW: Primary transaction TX-0029: filing age 30 days, 0:00:01; inclusive limit 30 days.",
+                    "evidence_ids": [],
+                    "policy_rule_ids": [
+                      "v1-DATA_INTEGRITY",
+                      "v1-FILING_WINDOW"
+                    ],
+                    "missing_evidence": [],
+                    "revision": 0
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "7650abe7-59ff-4b81-8c1a-04682472a854",
+                "proposal_id": "7a0c11fc-c056-49c8-8188-ff6bf653addf",
+                "reference": {
+                  "dispute_id": "DP-0029",
+                  "snapshot_id": "7dcf507a-3903-44cc-b844-e47364be7ad2",
+                  "evaluation_at": "2026-10-27T10:16:47.512294Z",
+                  "policy_version": "v1",
+                  "source_revision": 8
+                },
+                "revision": 0,
+                "model_call": 1
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "7a0c11fc-c056-49c8-8188-ff6bf653addf",
+                  "reference": {
+                    "dispute_id": "DP-0029",
+                    "snapshot_id": "7dcf507a-3903-44cc-b844-e47364be7ad2",
+                    "evaluation_at": "2026-10-27T10:16:47.512294Z",
+                    "policy_version": "v1",
+                    "source_revision": 8
+                  },
+                  "verdict": "accepted",
+                  "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+                  "failed_checks": []
+                },
+                "run_id": "7650abe7-59ff-4b81-8c1a-04682472a854",
+                "proposal_id": "7a0c11fc-c056-49c8-8188-ff6bf653addf",
+                "revision": 0
+              },
+              {
+                "kind": "reviewer",
+                "result": {
+                  "status": "reviewed",
+                  "run_id": "7650abe7-59ff-4b81-8c1a-04682472a854",
+                  "proposal_id": "7a0c11fc-c056-49c8-8188-ff6bf653addf",
+                  "reference": {
+                    "dispute_id": "DP-0029",
+                    "snapshot_id": "7dcf507a-3903-44cc-b844-e47364be7ad2",
+                    "evaluation_at": "2026-10-27T10:16:47.512294Z",
+                    "policy_version": "v1",
+                    "source_revision": 8
+                  },
+                  "attempt": 0,
+                  "requested_route": "test/scripted-reviewer",
+                  "feedback": {
+                    "verdict": "accept",
+                    "issue_codes": [],
+                    "evidence_ids": [],
+                    "policy_rule_ids": [],
+                    "feedback": "SCRIPTED reviewer acceptance for isolated testing.",
+                    "uncertainties": []
+                  },
+                  "response_model": "test/scripted-reviewer",
+                  "error": null
+                },
+                "model_call": 2
+              },
+              {
+                "kind": "final_gate",
+                "run_id": "7650abe7-59ff-4b81-8c1a-04682472a854",
+                "proposal_id": "7a0c11fc-c056-49c8-8188-ff6bf653addf",
+                "reference": {
+                  "dispute_id": "DP-0029",
+                  "snapshot_id": "7dcf507a-3903-44cc-b844-e47364be7ad2",
+                  "evaluation_at": "2026-10-27T10:16:47.512294Z",
+                  "policy_version": "v1",
+                  "source_revision": 8
+                },
+                "critic": "accepted",
+                "reviewer": "accept"
+              }
+            ],
+            "critic": "accepted",
+            "model_calls": 2,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0029",
+                    "snapshot_id": "7dcf507a-3903-44cc-b844-e47364be7ad2",
+                    "evaluation_at": "2026-10-27T10:16:47.512294Z",
+                    "policy_version": "v1",
+                    "source_revision": 8
+                  },
+                  "customer_id": "CUST-012",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "79dbaa32-7c57-4426-89f1-245228d83b57"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:79dbaa32-7c57-4426-89f1-245228d83b57",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "79dbaa32-7c57-4426-89f1-245228d83b57",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0008",
+            "receipt": {
+              "run_id": "dcbd1dc1-66e3-475a-b874-f3ef20d7e024",
+              "proposal_id": "1f5c991a-2dc7-4b13-a7ba-11b1dce9d257",
+              "idempotency_key": "4d0310de-d6e0-4520-b926-433bccab6576",
+              "reference": {
+                "dispute_id": "DP-0008",
+                "snapshot_id": "4800dcfc-e629-48ed-b5a8-b6c50f10ada6",
+                "evaluation_at": "2026-10-27T10:16:48.018296Z",
+                "policy_version": "v2",
+                "source_revision": 11
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "e4e6f9ea-dcfc-4954-a436-fac0732df44b",
+              "recommendation": {
+                "outcome": "human_review",
+                "currency": "SGD",
+                "amount_minor": null
+              },
+              "committed_at": "2026-10-27T10:16:48.288228Z",
+              "simulated_credit_id": null
+            },
+            "collaboration": [
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "1f5c991a-2dc7-4b13-a7ba-11b1dce9d257",
+                    "run_id": "dcbd1dc1-66e3-475a-b874-f3ef20d7e024",
+                    "reference": {
+                      "dispute_id": "DP-0008",
+                      "snapshot_id": "4800dcfc-e629-48ed-b5a8-b6c50f10ada6",
+                      "evaluation_at": "2026-10-27T10:16:48.018296Z",
+                      "policy_version": "v2",
+                      "source_revision": 11
+                    },
+                    "recommendation": {
+                      "outcome": "human_review",
+                      "currency": "SGD",
+                      "amount_minor": null
+                    },
+                    "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0008: filing age 10 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0008, completed movements ST-0010: remaining balance 25000 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Required synthetic support verified against case and source fields.\nv2-UNSUPPORTED: No complete unambiguous contradiction of the claim.\nv2-REVIEW_THRESHOLD: Eligible primary-transaction amount 25000; review only above 20000 SGD minor units.",
+                    "evidence_ids": [
+                      "EV-0015",
+                      "EV-0016"
+                    ],
+                    "policy_rule_ids": [
+                      "v2-DATA_INTEGRITY",
+                      "v2-FILING_WINDOW",
+                      "v2-ALREADY_REFUNDED",
+                      "v2-CONFLICTING_EVIDENCE",
+                      "v2-MISSING_EVIDENCE",
+                      "v2-UNSUPPORTED",
+                      "v2-REVIEW_THRESHOLD"
+                    ],
+                    "missing_evidence": [],
+                    "revision": 0
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "dcbd1dc1-66e3-475a-b874-f3ef20d7e024",
+                "proposal_id": "1f5c991a-2dc7-4b13-a7ba-11b1dce9d257",
+                "reference": {
+                  "dispute_id": "DP-0008",
+                  "snapshot_id": "4800dcfc-e629-48ed-b5a8-b6c50f10ada6",
+                  "evaluation_at": "2026-10-27T10:16:48.018296Z",
+                  "policy_version": "v2",
+                  "source_revision": 11
+                },
+                "revision": 0,
+                "model_call": 1
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "1f5c991a-2dc7-4b13-a7ba-11b1dce9d257",
+                  "reference": {
+                    "dispute_id": "DP-0008",
+                    "snapshot_id": "4800dcfc-e629-48ed-b5a8-b6c50f10ada6",
+                    "evaluation_at": "2026-10-27T10:16:48.018296Z",
+                    "policy_version": "v2",
+                    "source_revision": 11
+                  },
+                  "verdict": "accepted",
+                  "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+                  "failed_checks": []
+                },
+                "run_id": "dcbd1dc1-66e3-475a-b874-f3ef20d7e024",
+                "proposal_id": "1f5c991a-2dc7-4b13-a7ba-11b1dce9d257",
+                "revision": 0
+              },
+              {
+                "kind": "reviewer",
+                "result": {
+                  "status": "reviewed",
+                  "run_id": "dcbd1dc1-66e3-475a-b874-f3ef20d7e024",
+                  "proposal_id": "1f5c991a-2dc7-4b13-a7ba-11b1dce9d257",
+                  "reference": {
+                    "dispute_id": "DP-0008",
+                    "snapshot_id": "4800dcfc-e629-48ed-b5a8-b6c50f10ada6",
+                    "evaluation_at": "2026-10-27T10:16:48.018296Z",
+                    "policy_version": "v2",
+                    "source_revision": 11
+                  },
+                  "attempt": 0,
+                  "requested_route": "test/scripted-reviewer",
+                  "feedback": {
+                    "verdict": "accept",
+                    "issue_codes": [],
+                    "evidence_ids": [],
+                    "policy_rule_ids": [],
+                    "feedback": "SCRIPTED reviewer acceptance for isolated testing.",
+                    "uncertainties": []
+                  },
+                  "response_model": "test/scripted-reviewer",
+                  "error": null
+                },
+                "model_call": 2
+              },
+              {
+                "kind": "final_gate",
+                "run_id": "dcbd1dc1-66e3-475a-b874-f3ef20d7e024",
+                "proposal_id": "1f5c991a-2dc7-4b13-a7ba-11b1dce9d257",
+                "reference": {
+                  "dispute_id": "DP-0008",
+                  "snapshot_id": "4800dcfc-e629-48ed-b5a8-b6c50f10ada6",
+                  "evaluation_at": "2026-10-27T10:16:48.018296Z",
+                  "policy_version": "v2",
+                  "source_revision": 11
+                },
+                "critic": "accepted",
+                "reviewer": "accept"
+              }
+            ],
+            "critic": "accepted",
+            "model_calls": 2,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0008",
+                    "snapshot_id": "4800dcfc-e629-48ed-b5a8-b6c50f10ada6",
+                    "evaluation_at": "2026-10-27T10:16:48.018296Z",
+                    "policy_version": "v2",
+                    "source_revision": 11
+                  },
+                  "customer_id": "CUST-006",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "e4e6f9ea-dcfc-4954-a436-fac0732df44b"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:e4e6f9ea-dcfc-4954-a436-fac0732df44b",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "e4e6f9ea-dcfc-4954-a436-fac0732df44b",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0017",
+            "receipt": {
+              "run_id": "3e5f997a-6a97-43b6-910d-ef948db256a4",
+              "proposal_id": "202d361c-4b7d-4f0f-8de1-4e7e896b9e1a",
+              "idempotency_key": "c2b4db3f-2e8e-4e79-8389-d16ec0dee509",
+              "reference": {
+                "dispute_id": "DP-0017",
+                "snapshot_id": "d3e5cad0-bc38-49d0-ab3c-eeb523e743c8",
+                "evaluation_at": "2026-10-27T10:16:48.468752Z",
+                "policy_version": "v2",
+                "source_revision": 15
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "f61a5f54-f9c9-4e93-94db-36e12e50eadd",
+              "recommendation": {
+                "outcome": "provisional_credit",
+                "currency": "SGD",
+                "amount_minor": 5760
+              },
+              "committed_at": "2026-10-27T10:16:48.773128Z",
+              "simulated_credit_id": "b3118f53-a9d6-453f-8fbd-5e24421d44cd"
+            },
+            "collaboration": [
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "202d361c-4b7d-4f0f-8de1-4e7e896b9e1a",
+                    "run_id": "3e5f997a-6a97-43b6-910d-ef948db256a4",
+                    "reference": {
+                      "dispute_id": "DP-0017",
+                      "snapshot_id": "d3e5cad0-bc38-49d0-ab3c-eeb523e743c8",
+                      "evaluation_at": "2026-10-27T10:16:48.468752Z",
+                      "policy_version": "v2",
+                      "source_revision": 15
+                    },
+                    "recommendation": {
+                      "outcome": "provisional_credit",
+                      "currency": "SGD",
+                      "amount_minor": 5760
+                    },
+                    "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0017: filing age 10 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0017, completed movements ST-0027, ST-0028: remaining balance 5760 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Required synthetic support verified against case and source fields.\nv2-UNSUPPORTED: No complete unambiguous contradiction of the claim.\nv2-REVIEW_THRESHOLD: Eligible primary-transaction amount 5760; review only above 20000 SGD minor units.\nv2-APPROVE: Supported claim; min(claimed, primary completed balance) = 5760 SGD minor units.",
+                    "evidence_ids": [
+                      "EV-0033",
+                      "EV-0034"
+                    ],
+                    "policy_rule_ids": [
+                      "v2-DATA_INTEGRITY",
+                      "v2-FILING_WINDOW",
+                      "v2-ALREADY_REFUNDED",
+                      "v2-CONFLICTING_EVIDENCE",
+                      "v2-MISSING_EVIDENCE",
+                      "v2-UNSUPPORTED",
+                      "v2-REVIEW_THRESHOLD",
+                      "v2-APPROVE"
+                    ],
+                    "missing_evidence": [],
+                    "revision": 0
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "3e5f997a-6a97-43b6-910d-ef948db256a4",
+                "proposal_id": "202d361c-4b7d-4f0f-8de1-4e7e896b9e1a",
+                "reference": {
+                  "dispute_id": "DP-0017",
+                  "snapshot_id": "d3e5cad0-bc38-49d0-ab3c-eeb523e743c8",
+                  "evaluation_at": "2026-10-27T10:16:48.468752Z",
+                  "policy_version": "v2",
+                  "source_revision": 15
+                },
+                "revision": 0,
+                "model_call": 1
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "202d361c-4b7d-4f0f-8de1-4e7e896b9e1a",
+                  "reference": {
+                    "dispute_id": "DP-0017",
+                    "snapshot_id": "d3e5cad0-bc38-49d0-ab3c-eeb523e743c8",
+                    "evaluation_at": "2026-10-27T10:16:48.468752Z",
+                    "policy_version": "v2",
+                    "source_revision": 15
+                  },
+                  "verdict": "accepted",
+                  "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+                  "failed_checks": []
+                },
+                "run_id": "3e5f997a-6a97-43b6-910d-ef948db256a4",
+                "proposal_id": "202d361c-4b7d-4f0f-8de1-4e7e896b9e1a",
+                "revision": 0
+              },
+              {
+                "kind": "reviewer",
+                "result": {
+                  "status": "reviewed",
+                  "run_id": "3e5f997a-6a97-43b6-910d-ef948db256a4",
+                  "proposal_id": "202d361c-4b7d-4f0f-8de1-4e7e896b9e1a",
+                  "reference": {
+                    "dispute_id": "DP-0017",
+                    "snapshot_id": "d3e5cad0-bc38-49d0-ab3c-eeb523e743c8",
+                    "evaluation_at": "2026-10-27T10:16:48.468752Z",
+                    "policy_version": "v2",
+                    "source_revision": 15
+                  },
+                  "attempt": 0,
+                  "requested_route": "test/scripted-reviewer",
+                  "feedback": {
+                    "verdict": "accept",
+                    "issue_codes": [],
+                    "evidence_ids": [],
+                    "policy_rule_ids": [],
+                    "feedback": "SCRIPTED reviewer acceptance for isolated testing.",
+                    "uncertainties": []
+                  },
+                  "response_model": "test/scripted-reviewer",
+                  "error": null
+                },
+                "model_call": 2
+              },
+              {
+                "kind": "final_gate",
+                "run_id": "3e5f997a-6a97-43b6-910d-ef948db256a4",
+                "proposal_id": "202d361c-4b7d-4f0f-8de1-4e7e896b9e1a",
+                "reference": {
+                  "dispute_id": "DP-0017",
+                  "snapshot_id": "d3e5cad0-bc38-49d0-ab3c-eeb523e743c8",
+                  "evaluation_at": "2026-10-27T10:16:48.468752Z",
+                  "policy_version": "v2",
+                  "source_revision": 15
+                },
+                "critic": "accepted",
+                "reviewer": "accept"
+              }
+            ],
+            "critic": "accepted",
+            "model_calls": 2,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0017",
+                    "snapshot_id": "d3e5cad0-bc38-49d0-ab3c-eeb523e743c8",
+                    "evaluation_at": "2026-10-27T10:16:48.468752Z",
+                    "policy_version": "v2",
+                    "source_revision": 15
+                  },
+                  "customer_id": "CUST-008",
+                  "records": [
+                    {
+                      "decision_id": "738fe6b7-b13b-4184-960d-e7cee5520507",
+                      "original_reference": {
+                        "dispute_id": "DP-0014",
+                        "snapshot_id": "04e83b5f-96df-444e-905e-365343e72237",
+                        "evaluation_at": "2026-10-27T10:16:46.308090Z",
+                        "policy_version": "v2",
+                        "source_revision": 0
+                      },
+                      "recommendation": {
+                        "outcome": "provisional_credit",
+                        "currency": "SGD",
+                        "amount_minor": 6000
+                      },
+                      "committed_at": "2026-10-27T10:16:46.919863Z",
+                      "reason_code": "refund_missing",
+                      "source_reference": "postgresql:dispute_demo/dispute_actions.decisions/738fe6b7-b13b-4184-960d-e7cee5520507",
+                      "verified_reference": {
+                        "dispute_id": "DP-0014",
+                        "snapshot_id": "11d0be5e-2249-497f-b0df-fad4c0b9d6c4",
+                        "evaluation_at": "2026-10-27T10:16:48.666998Z",
+                        "policy_version": "v2",
+                        "source_revision": 15
+                      }
+                    }
+                  ],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 1,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "f61a5f54-f9c9-4e93-94db-36e12e50eadd"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:f61a5f54-f9c9-4e93-94db-36e12e50eadd",
+                "memory_id": "mem-2",
+                "error": null,
+                "decision_id": "f61a5f54-f9c9-4e93-94db-36e12e50eadd",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0033",
+            "receipt": {
+              "run_id": "0ea2e80f-3a73-4969-9ead-85411e15acb3",
+              "proposal_id": "d1753c66-5c60-41c7-8316-06760992934a",
+              "idempotency_key": "60d93e48-bf55-4f5d-adf2-8bca82ec1591",
+              "reference": {
+                "dispute_id": "DP-0033",
+                "snapshot_id": "32781e5a-d505-45c8-9ca7-249bfd1aeac9",
+                "evaluation_at": "2026-10-27T10:16:48.962572Z",
+                "policy_version": "v1",
+                "source_revision": 20
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "eb3f30bc-aaa1-40d5-986f-3220860954d0",
+              "recommendation": {
+                "outcome": "decline",
+                "currency": "SGD",
+                "amount_minor": null
+              },
+              "committed_at": "2026-10-27T10:16:49.176324Z",
+              "simulated_credit_id": null
+            },
+            "collaboration": [
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "d1753c66-5c60-41c7-8316-06760992934a",
+                    "run_id": "0ea2e80f-3a73-4969-9ead-85411e15acb3",
+                    "reference": {
+                      "dispute_id": "DP-0033",
+                      "snapshot_id": "32781e5a-d505-45c8-9ca7-249bfd1aeac9",
+                      "evaluation_at": "2026-10-27T10:16:48.962572Z",
+                      "policy_version": "v1",
+                      "source_revision": 20
+                    },
+                    "recommendation": {
+                      "outcome": "decline",
+                      "currency": "SGD",
+                      "amount_minor": null
+                    },
+                    "rationale": "v1-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv1-FILING_WINDOW: Primary transaction TX-0033: filing age 35 days, 0:00:00; inclusive limit 30 days.",
+                    "evidence_ids": [],
+                    "policy_rule_ids": [
+                      "v1-DATA_INTEGRITY",
+                      "v1-FILING_WINDOW"
+                    ],
+                    "missing_evidence": [],
+                    "revision": 0
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "0ea2e80f-3a73-4969-9ead-85411e15acb3",
+                "proposal_id": "d1753c66-5c60-41c7-8316-06760992934a",
+                "reference": {
+                  "dispute_id": "DP-0033",
+                  "snapshot_id": "32781e5a-d505-45c8-9ca7-249bfd1aeac9",
+                  "evaluation_at": "2026-10-27T10:16:48.962572Z",
+                  "policy_version": "v1",
+                  "source_revision": 20
+                },
+                "revision": 0,
+                "model_call": 1
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "d1753c66-5c60-41c7-8316-06760992934a",
+                  "reference": {
+                    "dispute_id": "DP-0033",
+                    "snapshot_id": "32781e5a-d505-45c8-9ca7-249bfd1aeac9",
+                    "evaluation_at": "2026-10-27T10:16:48.962572Z",
+                    "policy_version": "v1",
+                    "source_revision": 20
+                  },
+                  "verdict": "accepted",
+                  "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+                  "failed_checks": []
+                },
+                "run_id": "0ea2e80f-3a73-4969-9ead-85411e15acb3",
+                "proposal_id": "d1753c66-5c60-41c7-8316-06760992934a",
+                "revision": 0
+              },
+              {
+                "kind": "reviewer",
+                "result": {
+                  "status": "reviewed",
+                  "run_id": "0ea2e80f-3a73-4969-9ead-85411e15acb3",
+                  "proposal_id": "d1753c66-5c60-41c7-8316-06760992934a",
+                  "reference": {
+                    "dispute_id": "DP-0033",
+                    "snapshot_id": "32781e5a-d505-45c8-9ca7-249bfd1aeac9",
+                    "evaluation_at": "2026-10-27T10:16:48.962572Z",
+                    "policy_version": "v1",
+                    "source_revision": 20
+                  },
+                  "attempt": 0,
+                  "requested_route": "test/scripted-reviewer",
+                  "feedback": {
+                    "verdict": "accept",
+                    "issue_codes": [],
+                    "evidence_ids": [],
+                    "policy_rule_ids": [],
+                    "feedback": "SCRIPTED reviewer acceptance for isolated testing.",
+                    "uncertainties": []
+                  },
+                  "response_model": "test/scripted-reviewer",
+                  "error": null
+                },
+                "model_call": 2
+              },
+              {
+                "kind": "final_gate",
+                "run_id": "0ea2e80f-3a73-4969-9ead-85411e15acb3",
+                "proposal_id": "d1753c66-5c60-41c7-8316-06760992934a",
+                "reference": {
+                  "dispute_id": "DP-0033",
+                  "snapshot_id": "32781e5a-d505-45c8-9ca7-249bfd1aeac9",
+                  "evaluation_at": "2026-10-27T10:16:48.962572Z",
+                  "policy_version": "v1",
+                  "source_revision": 20
+                },
+                "critic": "accepted",
+                "reviewer": "accept"
+              }
+            ],
+            "critic": "accepted",
+            "model_calls": 2,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0033",
+                    "snapshot_id": "32781e5a-d505-45c8-9ca7-249bfd1aeac9",
+                    "evaluation_at": "2026-10-27T10:16:48.962572Z",
+                    "policy_version": "v1",
+                    "source_revision": 20
+                  },
+                  "customer_id": "CUST-015",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "eb3f30bc-aaa1-40d5-986f-3220860954d0"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:eb3f30bc-aaa1-40d5-986f-3220860954d0",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "eb3f30bc-aaa1-40d5-986f-3220860954d0",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0034",
+            "receipt": {
+              "run_id": "e26aec50-ebbd-4ec4-8e26-92db559ec966",
+              "proposal_id": "82deee69-8c9d-4be9-9e33-4f4bea30cdc1",
+              "idempotency_key": "25e4504d-c24d-4de5-bdf5-08aa04af4ba0",
+              "reference": {
+                "dispute_id": "DP-0034",
+                "snapshot_id": "301673f3-6131-4897-bd82-8c6faa88b595",
+                "evaluation_at": "2026-10-27T10:16:49.344800Z",
+                "policy_version": "v2",
+                "source_revision": 23
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "34ed1a23-6244-4587-90b8-df6d2666e6f4",
+              "recommendation": {
+                "outcome": "provisional_credit",
+                "currency": "SGD",
+                "amount_minor": 10000
+              },
+              "committed_at": "2026-10-27T10:16:49.571294Z",
+              "simulated_credit_id": "65b9583d-2449-45f7-a309-5dd130398374"
+            },
+            "collaboration": [
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "82deee69-8c9d-4be9-9e33-4f4bea30cdc1",
+                    "run_id": "e26aec50-ebbd-4ec4-8e26-92db559ec966",
+                    "reference": {
+                      "dispute_id": "DP-0034",
+                      "snapshot_id": "301673f3-6131-4897-bd82-8c6faa88b595",
+                      "evaluation_at": "2026-10-27T10:16:49.344800Z",
+                      "policy_version": "v2",
+                      "source_revision": 23
+                    },
+                    "recommendation": {
+                      "outcome": "provisional_credit",
+                      "currency": "SGD",
+                      "amount_minor": 10000
+                    },
+                    "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0034: filing age 35 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0034, completed movements ST-0046: remaining balance 10000 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Required synthetic support verified against case and source fields.\nv2-UNSUPPORTED: No complete unambiguous contradiction of the claim.\nv2-REVIEW_THRESHOLD: Eligible primary-transaction amount 10000; review only above 20000 SGD minor units.\nv2-APPROVE: Supported claim; min(claimed, primary completed balance) = 10000 SGD minor units.",
+                    "evidence_ids": [
+                      "EV-0068",
+                      "EV-0069"
+                    ],
+                    "policy_rule_ids": [
+                      "v2-DATA_INTEGRITY",
+                      "v2-FILING_WINDOW",
+                      "v2-ALREADY_REFUNDED",
+                      "v2-CONFLICTING_EVIDENCE",
+                      "v2-MISSING_EVIDENCE",
+                      "v2-UNSUPPORTED",
+                      "v2-REVIEW_THRESHOLD",
+                      "v2-APPROVE"
+                    ],
+                    "missing_evidence": [],
+                    "revision": 0
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "e26aec50-ebbd-4ec4-8e26-92db559ec966",
+                "proposal_id": "82deee69-8c9d-4be9-9e33-4f4bea30cdc1",
+                "reference": {
+                  "dispute_id": "DP-0034",
+                  "snapshot_id": "301673f3-6131-4897-bd82-8c6faa88b595",
+                  "evaluation_at": "2026-10-27T10:16:49.344800Z",
+                  "policy_version": "v2",
+                  "source_revision": 23
+                },
+                "revision": 0,
+                "model_call": 1
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "82deee69-8c9d-4be9-9e33-4f4bea30cdc1",
+                  "reference": {
+                    "dispute_id": "DP-0034",
+                    "snapshot_id": "301673f3-6131-4897-bd82-8c6faa88b595",
+                    "evaluation_at": "2026-10-27T10:16:49.344800Z",
+                    "policy_version": "v2",
+                    "source_revision": 23
+                  },
+                  "verdict": "accepted",
+                  "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+                  "failed_checks": []
+                },
+                "run_id": "e26aec50-ebbd-4ec4-8e26-92db559ec966",
+                "proposal_id": "82deee69-8c9d-4be9-9e33-4f4bea30cdc1",
+                "revision": 0
+              },
+              {
+                "kind": "reviewer",
+                "result": {
+                  "status": "reviewed",
+                  "run_id": "e26aec50-ebbd-4ec4-8e26-92db559ec966",
+                  "proposal_id": "82deee69-8c9d-4be9-9e33-4f4bea30cdc1",
+                  "reference": {
+                    "dispute_id": "DP-0034",
+                    "snapshot_id": "301673f3-6131-4897-bd82-8c6faa88b595",
+                    "evaluation_at": "2026-10-27T10:16:49.344800Z",
+                    "policy_version": "v2",
+                    "source_revision": 23
+                  },
+                  "attempt": 0,
+                  "requested_route": "test/scripted-reviewer",
+                  "feedback": {
+                    "verdict": "accept",
+                    "issue_codes": [],
+                    "evidence_ids": [],
+                    "policy_rule_ids": [],
+                    "feedback": "SCRIPTED reviewer acceptance for isolated testing.",
+                    "uncertainties": []
+                  },
+                  "response_model": "test/scripted-reviewer",
+                  "error": null
+                },
+                "model_call": 2
+              },
+              {
+                "kind": "final_gate",
+                "run_id": "e26aec50-ebbd-4ec4-8e26-92db559ec966",
+                "proposal_id": "82deee69-8c9d-4be9-9e33-4f4bea30cdc1",
+                "reference": {
+                  "dispute_id": "DP-0034",
+                  "snapshot_id": "301673f3-6131-4897-bd82-8c6faa88b595",
+                  "evaluation_at": "2026-10-27T10:16:49.344800Z",
+                  "policy_version": "v2",
+                  "source_revision": 23
+                },
+                "critic": "accepted",
+                "reviewer": "accept"
+              }
+            ],
+            "critic": "accepted",
+            "model_calls": 2,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0034",
+                    "snapshot_id": "301673f3-6131-4897-bd82-8c6faa88b595",
+                    "evaluation_at": "2026-10-27T10:16:49.344800Z",
+                    "policy_version": "v2",
+                    "source_revision": 23
+                  },
+                  "customer_id": "CUST-004",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "34ed1a23-6244-4587-90b8-df6d2666e6f4"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:34ed1a23-6244-4587-90b8-df6d2666e6f4",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "34ed1a23-6244-4587-90b8-df6d2666e6f4",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0003",
+            "receipt": {
+              "run_id": "8bb75da5-439c-49e8-91b9-3e9519969244",
+              "proposal_id": "2108c442-80b1-415d-9ac2-d58d515bcd41",
+              "idempotency_key": "12c70835-c5de-42b7-86df-2863d3e4a2f7",
+              "reference": {
+                "dispute_id": "DP-0003",
+                "snapshot_id": "9da79c92-ccb5-4e52-90df-9d0f56d6da56",
+                "evaluation_at": "2026-10-27T10:16:49.745742Z",
+                "policy_version": "v2",
+                "source_revision": 28
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "8d6c7cca-84d0-4aac-a0dc-e733740e78b6",
+              "recommendation": {
+                "outcome": "provisional_credit",
+                "currency": "SGD",
+                "amount_minor": 20000
+              },
+              "committed_at": "2026-10-27T10:16:49.995494Z",
+              "simulated_credit_id": "873344d9-541b-43c2-a56c-ec5d16fbc3df"
+            },
+            "collaboration": [
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "1d4094be-37b5-4997-b134-c734684c9c8c",
+                    "run_id": "8bb75da5-439c-49e8-91b9-3e9519969244",
+                    "reference": {
+                      "dispute_id": "DP-0003",
+                      "snapshot_id": "9da79c92-ccb5-4e52-90df-9d0f56d6da56",
+                      "evaluation_at": "2026-10-27T10:16:49.745742Z",
+                      "policy_version": "v2",
+                      "source_revision": 28
+                    },
+                    "recommendation": {
+                      "outcome": "provisional_credit",
+                      "currency": "SGD",
+                      "amount_minor": 20001
+                    },
+                    "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0003: filing age 10 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0003, completed movements ST-0003: remaining balance 20000 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Required synthetic support verified against case and source fields.\nv2-UNSUPPORTED: No complete unambiguous contradiction of the claim.\nv2-REVIEW_THRESHOLD: Eligible primary-transaction amount 20000; review only above 20000 SGD minor units.\nv2-APPROVE: Supported claim; min(claimed, primary completed balance) = 20000 SGD minor units.",
+                    "evidence_ids": [
+                      "EV-0005",
+                      "EV-0006"
+                    ],
+                    "policy_rule_ids": [
+                      "v2-DATA_INTEGRITY",
+                      "v2-FILING_WINDOW",
+                      "v2-ALREADY_REFUNDED",
+                      "v2-CONFLICTING_EVIDENCE",
+                      "v2-MISSING_EVIDENCE",
+                      "v2-UNSUPPORTED",
+                      "v2-REVIEW_THRESHOLD",
+                      "v2-APPROVE"
+                    ],
+                    "missing_evidence": [],
+                    "revision": 0
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "8bb75da5-439c-49e8-91b9-3e9519969244",
+                "proposal_id": "1d4094be-37b5-4997-b134-c734684c9c8c",
+                "reference": {
+                  "dispute_id": "DP-0003",
+                  "snapshot_id": "9da79c92-ccb5-4e52-90df-9d0f56d6da56",
+                  "evaluation_at": "2026-10-27T10:16:49.745742Z",
+                  "policy_version": "v2",
+                  "source_revision": 28
+                },
+                "revision": 0,
+                "model_call": 1
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "1d4094be-37b5-4997-b134-c734684c9c8c",
+                  "reference": {
+                    "dispute_id": "DP-0003",
+                    "snapshot_id": "9da79c92-ccb5-4e52-90df-9d0f56d6da56",
+                    "evaluation_at": "2026-10-27T10:16:49.745742Z",
+                    "policy_version": "v2",
+                    "source_revision": 28
+                  },
+                  "verdict": "revise",
+                  "feedback": "Use exactly 20000 SGD minor units. One correction is permitted with revision 1 and a new proposal ID.",
+                  "failed_checks": [
+                    "amount_mismatch"
+                  ]
+                },
+                "run_id": "8bb75da5-439c-49e8-91b9-3e9519969244",
+                "proposal_id": "1d4094be-37b5-4997-b134-c734684c9c8c",
+                "revision": 0
+              },
+              {
+                "kind": "correction",
+                "source": "python_critic",
+                "proposal_id": "1d4094be-37b5-4997-b134-c734684c9c8c",
+                "revision": 1
+              },
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "2108c442-80b1-415d-9ac2-d58d515bcd41",
+                    "run_id": "8bb75da5-439c-49e8-91b9-3e9519969244",
+                    "reference": {
+                      "dispute_id": "DP-0003",
+                      "snapshot_id": "9da79c92-ccb5-4e52-90df-9d0f56d6da56",
+                      "evaluation_at": "2026-10-27T10:16:49.745742Z",
+                      "policy_version": "v2",
+                      "source_revision": 28
+                    },
+                    "recommendation": {
+                      "outcome": "provisional_credit",
+                      "currency": "SGD",
+                      "amount_minor": 20000
+                    },
+                    "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0003: filing age 10 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0003, completed movements ST-0003: remaining balance 20000 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Required synthetic support verified against case and source fields.\nv2-UNSUPPORTED: No complete unambiguous contradiction of the claim.\nv2-REVIEW_THRESHOLD: Eligible primary-transaction amount 20000; review only above 20000 SGD minor units.\nv2-APPROVE: Supported claim; min(claimed, primary completed balance) = 20000 SGD minor units.",
+                    "evidence_ids": [
+                      "EV-0005",
+                      "EV-0006"
+                    ],
+                    "policy_rule_ids": [
+                      "v2-DATA_INTEGRITY",
+                      "v2-FILING_WINDOW",
+                      "v2-ALREADY_REFUNDED",
+                      "v2-CONFLICTING_EVIDENCE",
+                      "v2-MISSING_EVIDENCE",
+                      "v2-UNSUPPORTED",
+                      "v2-REVIEW_THRESHOLD",
+                      "v2-APPROVE"
+                    ],
+                    "missing_evidence": [],
+                    "revision": 1
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "8bb75da5-439c-49e8-91b9-3e9519969244",
+                "proposal_id": "2108c442-80b1-415d-9ac2-d58d515bcd41",
+                "reference": {
+                  "dispute_id": "DP-0003",
+                  "snapshot_id": "9da79c92-ccb5-4e52-90df-9d0f56d6da56",
+                  "evaluation_at": "2026-10-27T10:16:49.745742Z",
+                  "policy_version": "v2",
+                  "source_revision": 28
+                },
+                "revision": 1,
+                "model_call": 2
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "2108c442-80b1-415d-9ac2-d58d515bcd41",
+                  "reference": {
+                    "dispute_id": "DP-0003",
+                    "snapshot_id": "9da79c92-ccb5-4e52-90df-9d0f56d6da56",
+                    "evaluation_at": "2026-10-27T10:16:49.745742Z",
+                    "policy_version": "v2",
+                    "source_revision": 28
+                  },
+                  "verdict": "accepted",
+                  "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+                  "failed_checks": []
+                },
+                "run_id": "8bb75da5-439c-49e8-91b9-3e9519969244",
+                "proposal_id": "2108c442-80b1-415d-9ac2-d58d515bcd41",
+                "revision": 1
+              },
+              {
+                "kind": "reviewer",
+                "result": {
+                  "status": "reviewed",
+                  "run_id": "8bb75da5-439c-49e8-91b9-3e9519969244",
+                  "proposal_id": "2108c442-80b1-415d-9ac2-d58d515bcd41",
+                  "reference": {
+                    "dispute_id": "DP-0003",
+                    "snapshot_id": "9da79c92-ccb5-4e52-90df-9d0f56d6da56",
+                    "evaluation_at": "2026-10-27T10:16:49.745742Z",
+                    "policy_version": "v2",
+                    "source_revision": 28
+                  },
+                  "attempt": 0,
+                  "requested_route": "test/scripted-reviewer",
+                  "feedback": {
+                    "verdict": "accept",
+                    "issue_codes": [],
+                    "evidence_ids": [],
+                    "policy_rule_ids": [],
+                    "feedback": "SCRIPTED reviewer acceptance for isolated testing.",
+                    "uncertainties": []
+                  },
+                  "response_model": "test/scripted-reviewer",
+                  "error": null
+                },
+                "model_call": 3
+              },
+              {
+                "kind": "final_gate",
+                "run_id": "8bb75da5-439c-49e8-91b9-3e9519969244",
+                "proposal_id": "2108c442-80b1-415d-9ac2-d58d515bcd41",
+                "reference": {
+                  "dispute_id": "DP-0003",
+                  "snapshot_id": "9da79c92-ccb5-4e52-90df-9d0f56d6da56",
+                  "evaluation_at": "2026-10-27T10:16:49.745742Z",
+                  "policy_version": "v2",
+                  "source_revision": 28
+                },
+                "critic": "accepted",
+                "reviewer": "accept"
+              }
+            ],
+            "critic": "accepted",
+            "model_calls": 3,
+            "correction": 1,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0003",
+                    "snapshot_id": "9da79c92-ccb5-4e52-90df-9d0f56d6da56",
+                    "evaluation_at": "2026-10-27T10:16:49.745742Z",
+                    "policy_version": "v2",
+                    "source_revision": 28
+                  },
+                  "customer_id": "CUST-010",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "8d6c7cca-84d0-4aac-a0dc-e733740e78b6"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:8d6c7cca-84d0-4aac-a0dc-e733740e78b6",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "8d6c7cca-84d0-4aac-a0dc-e733740e78b6",
+                "committed_result_preserved": true
+              }
+            ]
+          }
+        ],
+        "exact_retry": "reused",
+        "ordinary_rerun": "effective_credit_already_exists"
+      },
+      {
+        "cycle": 2,
+        "database": "t05_362822c738324921b611b55256e96b4e",
+        "initial_decisions": 0,
+        "initial_revision": 0,
+        "initial_memory_empty": true,
+        "decisions": 8,
+        "credits": 4,
+        "pending_reviews": 1,
+        "source_hashes": {
+          "transactions": "6dba363164adfb1d71ed781487de2b62",
+          "settlements": "85dbe3b7b1d0f3afa3d6e0f85a75f7e7",
+          "disputes": "13d8bcae9e3345a66ef3593be7949a32",
+          "evidence": "aad00e9ce3a8370053271422000fe3ba",
+          "evidence_documents": "c8c6e61f97a1c96230f7cff23e6c604e",
+          "policy_rules": "3404be2a15f958d23ace89edd79edb14"
+        },
+        "records": [
+          {
+            "dispute_id": "DP-0014",
+            "receipt": {
+              "run_id": "0a4805cc-2056-456b-9394-cf35295306fb",
+              "proposal_id": "12ef73d7-87d1-458e-93de-d4703b1abb36",
+              "idempotency_key": "9416e997-add5-469f-936a-691b2c4807f5",
+              "reference": {
+                "dispute_id": "DP-0014",
+                "snapshot_id": "c9ae1c8e-16a0-4047-bb41-7a504aea1a23",
+                "evaluation_at": "2026-10-27T10:16:51.051445Z",
+                "policy_version": "v2",
+                "source_revision": 0
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "3d1c0032-e800-4701-b8ca-3500aa74de71",
+              "recommendation": {
+                "outcome": "provisional_credit",
+                "currency": "SGD",
+                "amount_minor": 6000
+              },
+              "committed_at": "2026-10-27T10:16:51.322797Z",
+              "simulated_credit_id": "806e312b-1028-41cf-beea-a7601e5d40df"
+            },
+            "collaboration": [
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "12ef73d7-87d1-458e-93de-d4703b1abb36",
+                    "run_id": "0a4805cc-2056-456b-9394-cf35295306fb",
+                    "reference": {
+                      "dispute_id": "DP-0014",
+                      "snapshot_id": "c9ae1c8e-16a0-4047-bb41-7a504aea1a23",
+                      "evaluation_at": "2026-10-27T10:16:51.051445Z",
+                      "policy_version": "v2",
+                      "source_revision": 0
+                    },
+                    "recommendation": {
+                      "outcome": "provisional_credit",
+                      "currency": "SGD",
+                      "amount_minor": 6000
+                    },
+                    "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0014: filing age 10 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0014, completed movements ST-0021, ST-0022: remaining balance 6000 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Required synthetic support verified against case and source fields.\nv2-UNSUPPORTED: No complete unambiguous contradiction of the claim.\nv2-REVIEW_THRESHOLD: Eligible primary-transaction amount 6000; review only above 20000 SGD minor units.\nv2-APPROVE: Supported claim; min(claimed, primary completed balance) = 6000 SGD minor units.",
+                    "evidence_ids": [
+                      "EV-0027",
+                      "EV-0028"
+                    ],
+                    "policy_rule_ids": [
+                      "v2-DATA_INTEGRITY",
+                      "v2-FILING_WINDOW",
+                      "v2-ALREADY_REFUNDED",
+                      "v2-CONFLICTING_EVIDENCE",
+                      "v2-MISSING_EVIDENCE",
+                      "v2-UNSUPPORTED",
+                      "v2-REVIEW_THRESHOLD",
+                      "v2-APPROVE"
+                    ],
+                    "missing_evidence": [],
+                    "revision": 0
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "0a4805cc-2056-456b-9394-cf35295306fb",
+                "proposal_id": "12ef73d7-87d1-458e-93de-d4703b1abb36",
+                "reference": {
+                  "dispute_id": "DP-0014",
+                  "snapshot_id": "c9ae1c8e-16a0-4047-bb41-7a504aea1a23",
+                  "evaluation_at": "2026-10-27T10:16:51.051445Z",
+                  "policy_version": "v2",
+                  "source_revision": 0
+                },
+                "revision": 0,
+                "model_call": 1
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "12ef73d7-87d1-458e-93de-d4703b1abb36",
+                  "reference": {
+                    "dispute_id": "DP-0014",
+                    "snapshot_id": "c9ae1c8e-16a0-4047-bb41-7a504aea1a23",
+                    "evaluation_at": "2026-10-27T10:16:51.051445Z",
+                    "policy_version": "v2",
+                    "source_revision": 0
+                  },
+                  "verdict": "accepted",
+                  "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+                  "failed_checks": []
+                },
+                "run_id": "0a4805cc-2056-456b-9394-cf35295306fb",
+                "proposal_id": "12ef73d7-87d1-458e-93de-d4703b1abb36",
+                "revision": 0
+              },
+              {
+                "kind": "reviewer",
+                "result": {
+                  "status": "reviewed",
+                  "run_id": "0a4805cc-2056-456b-9394-cf35295306fb",
+                  "proposal_id": "12ef73d7-87d1-458e-93de-d4703b1abb36",
+                  "reference": {
+                    "dispute_id": "DP-0014",
+                    "snapshot_id": "c9ae1c8e-16a0-4047-bb41-7a504aea1a23",
+                    "evaluation_at": "2026-10-27T10:16:51.051445Z",
+                    "policy_version": "v2",
+                    "source_revision": 0
+                  },
+                  "attempt": 0,
+                  "requested_route": "test/scripted-reviewer",
+                  "feedback": {
+                    "verdict": "accept",
+                    "issue_codes": [],
+                    "evidence_ids": [],
+                    "policy_rule_ids": [],
+                    "feedback": "SCRIPTED reviewer acceptance for isolated testing.",
+                    "uncertainties": []
+                  },
+                  "response_model": "test/scripted-reviewer",
+                  "error": null
+                },
+                "model_call": 2
+              },
+              {
+                "kind": "final_gate",
+                "run_id": "0a4805cc-2056-456b-9394-cf35295306fb",
+                "proposal_id": "12ef73d7-87d1-458e-93de-d4703b1abb36",
+                "reference": {
+                  "dispute_id": "DP-0014",
+                  "snapshot_id": "c9ae1c8e-16a0-4047-bb41-7a504aea1a23",
+                  "evaluation_at": "2026-10-27T10:16:51.051445Z",
+                  "policy_version": "v2",
+                  "source_revision": 0
+                },
+                "critic": "accepted",
+                "reviewer": "accept"
+              }
+            ],
+            "critic": "accepted",
+            "model_calls": 2,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0014",
+                    "snapshot_id": "c9ae1c8e-16a0-4047-bb41-7a504aea1a23",
+                    "evaluation_at": "2026-10-27T10:16:51.051445Z",
+                    "policy_version": "v2",
+                    "source_revision": 0
+                  },
+                  "customer_id": "CUST-008",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "3d1c0032-e800-4701-b8ca-3500aa74de71"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:3d1c0032-e800-4701-b8ca-3500aa74de71",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "3d1c0032-e800-4701-b8ca-3500aa74de71",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0020",
+            "receipt": {
+              "run_id": "e56522ed-2806-419d-b412-cef5b178de2b",
+              "proposal_id": "a804796b-6f3f-4b67-81d7-7a5b651a5888",
+              "idempotency_key": "0fc559af-0bf8-48b3-b496-b4b4b743228e",
+              "reference": {
+                "dispute_id": "DP-0020",
+                "snapshot_id": "7e40d8b5-6e83-47a1-80c4-b5762f058778",
+                "evaluation_at": "2026-10-27T10:16:51.500452Z",
+                "policy_version": "v2",
+                "source_revision": 5
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "de768197-8aba-4c54-85ce-4ff27fa5d50a",
+              "recommendation": {
+                "outcome": "request_evidence",
+                "currency": "SGD",
+                "amount_minor": null
+              },
+              "committed_at": "2026-10-27T10:16:51.751686Z",
+              "simulated_credit_id": null
+            },
+            "collaboration": [
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "18e3b2dd-ba97-40bb-a23e-b60569abaff9",
+                    "run_id": "e56522ed-2806-419d-b412-cef5b178de2b",
+                    "reference": {
+                      "dispute_id": "DP-0020",
+                      "snapshot_id": "7e40d8b5-6e83-47a1-80c4-b5762f058778",
+                      "evaluation_at": "2026-10-27T10:16:51.500452Z",
+                      "policy_version": "v2",
+                      "source_revision": 5
+                    },
+                    "recommendation": {
+                      "outcome": "request_evidence",
+                      "currency": "SGD",
+                      "amount_minor": null
+                    },
+                    "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0020: filing age 10 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0020, completed movements ST-0032: remaining balance 11400 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Missing/unusable: refund_confirmation",
+                    "evidence_ids": [
+                      "EV-0039"
+                    ],
+                    "policy_rule_ids": [
+                      "v2-DATA_INTEGRITY",
+                      "v2-FILING_WINDOW",
+                      "v2-ALREADY_REFUNDED",
+                      "v2-CONFLICTING_EVIDENCE",
+                      "v2-MISSING_EVIDENCE"
+                    ],
+                    "missing_evidence": [
+                      {
+                        "category": "refund_confirmation",
+                        "reason": "absent",
+                        "policy_rule_id": "v2-MISSING_EVIDENCE"
+                      }
+                    ],
+                    "revision": 0
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "e56522ed-2806-419d-b412-cef5b178de2b",
+                "proposal_id": "18e3b2dd-ba97-40bb-a23e-b60569abaff9",
+                "reference": {
+                  "dispute_id": "DP-0020",
+                  "snapshot_id": "7e40d8b5-6e83-47a1-80c4-b5762f058778",
+                  "evaluation_at": "2026-10-27T10:16:51.500452Z",
+                  "policy_version": "v2",
+                  "source_revision": 5
+                },
+                "revision": 0,
+                "model_call": 1
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "18e3b2dd-ba97-40bb-a23e-b60569abaff9",
+                  "reference": {
+                    "dispute_id": "DP-0020",
+                    "snapshot_id": "7e40d8b5-6e83-47a1-80c4-b5762f058778",
+                    "evaluation_at": "2026-10-27T10:16:51.500452Z",
+                    "policy_version": "v2",
+                    "source_revision": 5
+                  },
+                  "verdict": "accepted",
+                  "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+                  "failed_checks": []
+                },
+                "run_id": "e56522ed-2806-419d-b412-cef5b178de2b",
+                "proposal_id": "18e3b2dd-ba97-40bb-a23e-b60569abaff9",
+                "revision": 0
+              },
+              {
+                "kind": "reviewer",
+                "result": {
+                  "status": "reviewed",
+                  "run_id": "e56522ed-2806-419d-b412-cef5b178de2b",
+                  "proposal_id": "18e3b2dd-ba97-40bb-a23e-b60569abaff9",
+                  "reference": {
+                    "dispute_id": "DP-0020",
+                    "snapshot_id": "7e40d8b5-6e83-47a1-80c4-b5762f058778",
+                    "evaluation_at": "2026-10-27T10:16:51.500452Z",
+                    "policy_version": "v2",
+                    "source_revision": 5
+                  },
+                  "attempt": 0,
+                  "requested_route": "test/scripted-reviewer",
+                  "feedback": {
+                    "verdict": "revise",
+                    "issue_codes": [
+                      "material_omission"
+                    ],
+                    "evidence_ids": [],
+                    "policy_rule_ids": [],
+                    "feedback": "SCRIPTED challenge: recheck supporting evidence and policy precedence.",
+                    "uncertainties": []
+                  },
+                  "response_model": "test/scripted-reviewer",
+                  "error": null
+                },
+                "model_call": 2
+              },
+              {
+                "kind": "correction",
+                "source": "independent_reviewer",
+                "proposal_id": "18e3b2dd-ba97-40bb-a23e-b60569abaff9",
+                "revision": 1
+              },
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "a804796b-6f3f-4b67-81d7-7a5b651a5888",
+                    "run_id": "e56522ed-2806-419d-b412-cef5b178de2b",
+                    "reference": {
+                      "dispute_id": "DP-0020",
+                      "snapshot_id": "7e40d8b5-6e83-47a1-80c4-b5762f058778",
+                      "evaluation_at": "2026-10-27T10:16:51.500452Z",
+                      "policy_version": "v2",
+                      "source_revision": 5
+                    },
+                    "recommendation": {
+                      "outcome": "request_evidence",
+                      "currency": "SGD",
+                      "amount_minor": null
+                    },
+                    "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0020: filing age 10 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0020, completed movements ST-0032: remaining balance 11400 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Missing/unusable: refund_confirmation",
+                    "evidence_ids": [
+                      "EV-0039"
+                    ],
+                    "policy_rule_ids": [
+                      "v2-DATA_INTEGRITY",
+                      "v2-FILING_WINDOW",
+                      "v2-ALREADY_REFUNDED",
+                      "v2-CONFLICTING_EVIDENCE",
+                      "v2-MISSING_EVIDENCE"
+                    ],
+                    "missing_evidence": [
+                      {
+                        "category": "refund_confirmation",
+                        "reason": "absent",
+                        "policy_rule_id": "v2-MISSING_EVIDENCE"
+                      }
+                    ],
+                    "revision": 1
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "e56522ed-2806-419d-b412-cef5b178de2b",
+                "proposal_id": "a804796b-6f3f-4b67-81d7-7a5b651a5888",
+                "reference": {
+                  "dispute_id": "DP-0020",
+                  "snapshot_id": "7e40d8b5-6e83-47a1-80c4-b5762f058778",
+                  "evaluation_at": "2026-10-27T10:16:51.500452Z",
+                  "policy_version": "v2",
+                  "source_revision": 5
+                },
+                "revision": 1,
+                "model_call": 3
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "a804796b-6f3f-4b67-81d7-7a5b651a5888",
+                  "reference": {
+                    "dispute_id": "DP-0020",
+                    "snapshot_id": "7e40d8b5-6e83-47a1-80c4-b5762f058778",
+                    "evaluation_at": "2026-10-27T10:16:51.500452Z",
+                    "policy_version": "v2",
+                    "source_revision": 5
+                  },
+                  "verdict": "accepted",
+                  "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+                  "failed_checks": []
+                },
+                "run_id": "e56522ed-2806-419d-b412-cef5b178de2b",
+                "proposal_id": "a804796b-6f3f-4b67-81d7-7a5b651a5888",
+                "revision": 1
+              },
+              {
+                "kind": "reviewer",
+                "result": {
+                  "status": "reviewed",
+                  "run_id": "e56522ed-2806-419d-b412-cef5b178de2b",
+                  "proposal_id": "a804796b-6f3f-4b67-81d7-7a5b651a5888",
+                  "reference": {
+                    "dispute_id": "DP-0020",
+                    "snapshot_id": "7e40d8b5-6e83-47a1-80c4-b5762f058778",
+                    "evaluation_at": "2026-10-27T10:16:51.500452Z",
+                    "policy_version": "v2",
+                    "source_revision": 5
+                  },
+                  "attempt": 1,
+                  "requested_route": "test/scripted-reviewer",
+                  "feedback": {
+                    "verdict": "accept",
+                    "issue_codes": [],
+                    "evidence_ids": [],
+                    "policy_rule_ids": [],
+                    "feedback": "SCRIPTED reviewer acceptance for isolated testing.",
+                    "uncertainties": []
+                  },
+                  "response_model": "test/scripted-reviewer",
+                  "error": null
+                },
+                "model_call": 4
+              },
+              {
+                "kind": "final_gate",
+                "run_id": "e56522ed-2806-419d-b412-cef5b178de2b",
+                "proposal_id": "a804796b-6f3f-4b67-81d7-7a5b651a5888",
+                "reference": {
+                  "dispute_id": "DP-0020",
+                  "snapshot_id": "7e40d8b5-6e83-47a1-80c4-b5762f058778",
+                  "evaluation_at": "2026-10-27T10:16:51.500452Z",
+                  "policy_version": "v2",
+                  "source_revision": 5
+                },
+                "critic": "accepted",
+                "reviewer": "accept"
+              }
+            ],
+            "critic": "accepted",
+            "model_calls": 4,
+            "correction": 1,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0020",
+                    "snapshot_id": "7e40d8b5-6e83-47a1-80c4-b5762f058778",
+                    "evaluation_at": "2026-10-27T10:16:51.500452Z",
+                    "policy_version": "v2",
+                    "source_revision": 5
+                  },
+                  "customer_id": "CUST-013",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "de768197-8aba-4c54-85ce-4ff27fa5d50a"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:de768197-8aba-4c54-85ce-4ff27fa5d50a",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "de768197-8aba-4c54-85ce-4ff27fa5d50a",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0029",
+            "receipt": {
+              "run_id": "20827324-df05-4549-b5ed-c3ab9be66c1f",
+              "proposal_id": "23aa7285-7f6c-4ee9-8db9-90f4b2e54dcb",
+              "idempotency_key": "1f411ddb-c84c-4cd6-80b7-f443957e7a16",
+              "reference": {
+                "dispute_id": "DP-0029",
+                "snapshot_id": "d472d15c-42ca-4844-9a36-e3566ba0e141",
+                "evaluation_at": "2026-10-27T10:16:51.925528Z",
+                "policy_version": "v1",
+                "source_revision": 8
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "63b14397-0130-41e3-9f1f-5863b7c8b2ff",
+              "recommendation": {
+                "outcome": "decline",
+                "currency": "SGD",
+                "amount_minor": null
+              },
+              "committed_at": "2026-10-27T10:16:52.149683Z",
+              "simulated_credit_id": null
+            },
+            "collaboration": [
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "23aa7285-7f6c-4ee9-8db9-90f4b2e54dcb",
+                    "run_id": "20827324-df05-4549-b5ed-c3ab9be66c1f",
+                    "reference": {
+                      "dispute_id": "DP-0029",
+                      "snapshot_id": "d472d15c-42ca-4844-9a36-e3566ba0e141",
+                      "evaluation_at": "2026-10-27T10:16:51.925528Z",
+                      "policy_version": "v1",
+                      "source_revision": 8
+                    },
+                    "recommendation": {
+                      "outcome": "decline",
+                      "currency": "SGD",
+                      "amount_minor": null
+                    },
+                    "rationale": "v1-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv1-FILING_WINDOW: Primary transaction TX-0029: filing age 30 days, 0:00:01; inclusive limit 30 days.",
+                    "evidence_ids": [],
+                    "policy_rule_ids": [
+                      "v1-DATA_INTEGRITY",
+                      "v1-FILING_WINDOW"
+                    ],
+                    "missing_evidence": [],
+                    "revision": 0
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "20827324-df05-4549-b5ed-c3ab9be66c1f",
+                "proposal_id": "23aa7285-7f6c-4ee9-8db9-90f4b2e54dcb",
+                "reference": {
+                  "dispute_id": "DP-0029",
+                  "snapshot_id": "d472d15c-42ca-4844-9a36-e3566ba0e141",
+                  "evaluation_at": "2026-10-27T10:16:51.925528Z",
+                  "policy_version": "v1",
+                  "source_revision": 8
+                },
+                "revision": 0,
+                "model_call": 1
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "23aa7285-7f6c-4ee9-8db9-90f4b2e54dcb",
+                  "reference": {
+                    "dispute_id": "DP-0029",
+                    "snapshot_id": "d472d15c-42ca-4844-9a36-e3566ba0e141",
+                    "evaluation_at": "2026-10-27T10:16:51.925528Z",
+                    "policy_version": "v1",
+                    "source_revision": 8
+                  },
+                  "verdict": "accepted",
+                  "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+                  "failed_checks": []
+                },
+                "run_id": "20827324-df05-4549-b5ed-c3ab9be66c1f",
+                "proposal_id": "23aa7285-7f6c-4ee9-8db9-90f4b2e54dcb",
+                "revision": 0
+              },
+              {
+                "kind": "reviewer",
+                "result": {
+                  "status": "reviewed",
+                  "run_id": "20827324-df05-4549-b5ed-c3ab9be66c1f",
+                  "proposal_id": "23aa7285-7f6c-4ee9-8db9-90f4b2e54dcb",
+                  "reference": {
+                    "dispute_id": "DP-0029",
+                    "snapshot_id": "d472d15c-42ca-4844-9a36-e3566ba0e141",
+                    "evaluation_at": "2026-10-27T10:16:51.925528Z",
+                    "policy_version": "v1",
+                    "source_revision": 8
+                  },
+                  "attempt": 0,
+                  "requested_route": "test/scripted-reviewer",
+                  "feedback": {
+                    "verdict": "accept",
+                    "issue_codes": [],
+                    "evidence_ids": [],
+                    "policy_rule_ids": [],
+                    "feedback": "SCRIPTED reviewer acceptance for isolated testing.",
+                    "uncertainties": []
+                  },
+                  "response_model": "test/scripted-reviewer",
+                  "error": null
+                },
+                "model_call": 2
+              },
+              {
+                "kind": "final_gate",
+                "run_id": "20827324-df05-4549-b5ed-c3ab9be66c1f",
+                "proposal_id": "23aa7285-7f6c-4ee9-8db9-90f4b2e54dcb",
+                "reference": {
+                  "dispute_id": "DP-0029",
+                  "snapshot_id": "d472d15c-42ca-4844-9a36-e3566ba0e141",
+                  "evaluation_at": "2026-10-27T10:16:51.925528Z",
+                  "policy_version": "v1",
+                  "source_revision": 8
+                },
+                "critic": "accepted",
+                "reviewer": "accept"
+              }
+            ],
+            "critic": "accepted",
+            "model_calls": 2,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0029",
+                    "snapshot_id": "d472d15c-42ca-4844-9a36-e3566ba0e141",
+                    "evaluation_at": "2026-10-27T10:16:51.925528Z",
+                    "policy_version": "v1",
+                    "source_revision": 8
+                  },
+                  "customer_id": "CUST-012",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "63b14397-0130-41e3-9f1f-5863b7c8b2ff"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:63b14397-0130-41e3-9f1f-5863b7c8b2ff",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "63b14397-0130-41e3-9f1f-5863b7c8b2ff",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0008",
+            "receipt": {
+              "run_id": "3d0952e8-5780-45b1-8752-83c8194f5e56",
+              "proposal_id": "23d67c63-ab28-4184-9f59-5ad79046abc0",
+              "idempotency_key": "0f705ad2-c6d9-439d-a85a-c0d7eed52c98",
+              "reference": {
+                "dispute_id": "DP-0008",
+                "snapshot_id": "fe80ce25-3adf-4ad2-b95f-7c05250af81c",
+                "evaluation_at": "2026-10-27T10:16:52.314904Z",
+                "policy_version": "v2",
+                "source_revision": 11
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "a6bcc615-d3bc-43aa-8489-d80b86cbf2e7",
+              "recommendation": {
+                "outcome": "human_review",
+                "currency": "SGD",
+                "amount_minor": null
+              },
+              "committed_at": "2026-10-27T10:16:52.575177Z",
+              "simulated_credit_id": null
+            },
+            "collaboration": [
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "23d67c63-ab28-4184-9f59-5ad79046abc0",
+                    "run_id": "3d0952e8-5780-45b1-8752-83c8194f5e56",
+                    "reference": {
+                      "dispute_id": "DP-0008",
+                      "snapshot_id": "fe80ce25-3adf-4ad2-b95f-7c05250af81c",
+                      "evaluation_at": "2026-10-27T10:16:52.314904Z",
+                      "policy_version": "v2",
+                      "source_revision": 11
+                    },
+                    "recommendation": {
+                      "outcome": "human_review",
+                      "currency": "SGD",
+                      "amount_minor": null
+                    },
+                    "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0008: filing age 10 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0008, completed movements ST-0010: remaining balance 25000 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Required synthetic support verified against case and source fields.\nv2-UNSUPPORTED: No complete unambiguous contradiction of the claim.\nv2-REVIEW_THRESHOLD: Eligible primary-transaction amount 25000; review only above 20000 SGD minor units.",
+                    "evidence_ids": [
+                      "EV-0015",
+                      "EV-0016"
+                    ],
+                    "policy_rule_ids": [
+                      "v2-DATA_INTEGRITY",
+                      "v2-FILING_WINDOW",
+                      "v2-ALREADY_REFUNDED",
+                      "v2-CONFLICTING_EVIDENCE",
+                      "v2-MISSING_EVIDENCE",
+                      "v2-UNSUPPORTED",
+                      "v2-REVIEW_THRESHOLD"
+                    ],
+                    "missing_evidence": [],
+                    "revision": 0
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "3d0952e8-5780-45b1-8752-83c8194f5e56",
+                "proposal_id": "23d67c63-ab28-4184-9f59-5ad79046abc0",
+                "reference": {
+                  "dispute_id": "DP-0008",
+                  "snapshot_id": "fe80ce25-3adf-4ad2-b95f-7c05250af81c",
+                  "evaluation_at": "2026-10-27T10:16:52.314904Z",
+                  "policy_version": "v2",
+                  "source_revision": 11
+                },
+                "revision": 0,
+                "model_call": 1
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "23d67c63-ab28-4184-9f59-5ad79046abc0",
+                  "reference": {
+                    "dispute_id": "DP-0008",
+                    "snapshot_id": "fe80ce25-3adf-4ad2-b95f-7c05250af81c",
+                    "evaluation_at": "2026-10-27T10:16:52.314904Z",
+                    "policy_version": "v2",
+                    "source_revision": 11
+                  },
+                  "verdict": "accepted",
+                  "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+                  "failed_checks": []
+                },
+                "run_id": "3d0952e8-5780-45b1-8752-83c8194f5e56",
+                "proposal_id": "23d67c63-ab28-4184-9f59-5ad79046abc0",
+                "revision": 0
+              },
+              {
+                "kind": "reviewer",
+                "result": {
+                  "status": "reviewed",
+                  "run_id": "3d0952e8-5780-45b1-8752-83c8194f5e56",
+                  "proposal_id": "23d67c63-ab28-4184-9f59-5ad79046abc0",
+                  "reference": {
+                    "dispute_id": "DP-0008",
+                    "snapshot_id": "fe80ce25-3adf-4ad2-b95f-7c05250af81c",
+                    "evaluation_at": "2026-10-27T10:16:52.314904Z",
+                    "policy_version": "v2",
+                    "source_revision": 11
+                  },
+                  "attempt": 0,
+                  "requested_route": "test/scripted-reviewer",
+                  "feedback": {
+                    "verdict": "accept",
+                    "issue_codes": [],
+                    "evidence_ids": [],
+                    "policy_rule_ids": [],
+                    "feedback": "SCRIPTED reviewer acceptance for isolated testing.",
+                    "uncertainties": []
+                  },
+                  "response_model": "test/scripted-reviewer",
+                  "error": null
+                },
+                "model_call": 2
+              },
+              {
+                "kind": "final_gate",
+                "run_id": "3d0952e8-5780-45b1-8752-83c8194f5e56",
+                "proposal_id": "23d67c63-ab28-4184-9f59-5ad79046abc0",
+                "reference": {
+                  "dispute_id": "DP-0008",
+                  "snapshot_id": "fe80ce25-3adf-4ad2-b95f-7c05250af81c",
+                  "evaluation_at": "2026-10-27T10:16:52.314904Z",
+                  "policy_version": "v2",
+                  "source_revision": 11
+                },
+                "critic": "accepted",
+                "reviewer": "accept"
+              }
+            ],
+            "critic": "accepted",
+            "model_calls": 2,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0008",
+                    "snapshot_id": "fe80ce25-3adf-4ad2-b95f-7c05250af81c",
+                    "evaluation_at": "2026-10-27T10:16:52.314904Z",
+                    "policy_version": "v2",
+                    "source_revision": 11
+                  },
+                  "customer_id": "CUST-006",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "a6bcc615-d3bc-43aa-8489-d80b86cbf2e7"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:a6bcc615-d3bc-43aa-8489-d80b86cbf2e7",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "a6bcc615-d3bc-43aa-8489-d80b86cbf2e7",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0017",
+            "receipt": {
+              "run_id": "63ca9716-de3c-42a3-88c6-24dd91624fbe",
+              "proposal_id": "1443fe41-5b17-465f-8cae-865fbf366b7a",
+              "idempotency_key": "6a636fc9-627e-4182-8ccf-7399c2971945",
+              "reference": {
+                "dispute_id": "DP-0017",
+                "snapshot_id": "3ca3ecfd-f354-4bb1-8e49-db9e5cb2bbd6",
+                "evaluation_at": "2026-10-27T10:16:52.748453Z",
+                "policy_version": "v2",
+                "source_revision": 15
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "20a70e4a-1995-4a47-bbaa-9a45e0a01b7d",
+              "recommendation": {
+                "outcome": "provisional_credit",
+                "currency": "SGD",
+                "amount_minor": 5760
+              },
+              "committed_at": "2026-10-27T10:16:53.110625Z",
+              "simulated_credit_id": "e24b0d96-638c-42d1-b60a-abb9d06a5d12"
+            },
+            "collaboration": [
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "1443fe41-5b17-465f-8cae-865fbf366b7a",
+                    "run_id": "63ca9716-de3c-42a3-88c6-24dd91624fbe",
+                    "reference": {
+                      "dispute_id": "DP-0017",
+                      "snapshot_id": "3ca3ecfd-f354-4bb1-8e49-db9e5cb2bbd6",
+                      "evaluation_at": "2026-10-27T10:16:52.748453Z",
+                      "policy_version": "v2",
+                      "source_revision": 15
+                    },
+                    "recommendation": {
+                      "outcome": "provisional_credit",
+                      "currency": "SGD",
+                      "amount_minor": 5760
+                    },
+                    "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0017: filing age 10 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0017, completed movements ST-0027, ST-0028: remaining balance 5760 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Required synthetic support verified against case and source fields.\nv2-UNSUPPORTED: No complete unambiguous contradiction of the claim.\nv2-REVIEW_THRESHOLD: Eligible primary-transaction amount 5760; review only above 20000 SGD minor units.\nv2-APPROVE: Supported claim; min(claimed, primary completed balance) = 5760 SGD minor units.",
+                    "evidence_ids": [
+                      "EV-0033",
+                      "EV-0034"
+                    ],
+                    "policy_rule_ids": [
+                      "v2-DATA_INTEGRITY",
+                      "v2-FILING_WINDOW",
+                      "v2-ALREADY_REFUNDED",
+                      "v2-CONFLICTING_EVIDENCE",
+                      "v2-MISSING_EVIDENCE",
+                      "v2-UNSUPPORTED",
+                      "v2-REVIEW_THRESHOLD",
+                      "v2-APPROVE"
+                    ],
+                    "missing_evidence": [],
+                    "revision": 0
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "63ca9716-de3c-42a3-88c6-24dd91624fbe",
+                "proposal_id": "1443fe41-5b17-465f-8cae-865fbf366b7a",
+                "reference": {
+                  "dispute_id": "DP-0017",
+                  "snapshot_id": "3ca3ecfd-f354-4bb1-8e49-db9e5cb2bbd6",
+                  "evaluation_at": "2026-10-27T10:16:52.748453Z",
+                  "policy_version": "v2",
+                  "source_revision": 15
+                },
+                "revision": 0,
+                "model_call": 1
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "1443fe41-5b17-465f-8cae-865fbf366b7a",
+                  "reference": {
+                    "dispute_id": "DP-0017",
+                    "snapshot_id": "3ca3ecfd-f354-4bb1-8e49-db9e5cb2bbd6",
+                    "evaluation_at": "2026-10-27T10:16:52.748453Z",
+                    "policy_version": "v2",
+                    "source_revision": 15
+                  },
+                  "verdict": "accepted",
+                  "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+                  "failed_checks": []
+                },
+                "run_id": "63ca9716-de3c-42a3-88c6-24dd91624fbe",
+                "proposal_id": "1443fe41-5b17-465f-8cae-865fbf366b7a",
+                "revision": 0
+              },
+              {
+                "kind": "reviewer",
+                "result": {
+                  "status": "reviewed",
+                  "run_id": "63ca9716-de3c-42a3-88c6-24dd91624fbe",
+                  "proposal_id": "1443fe41-5b17-465f-8cae-865fbf366b7a",
+                  "reference": {
+                    "dispute_id": "DP-0017",
+                    "snapshot_id": "3ca3ecfd-f354-4bb1-8e49-db9e5cb2bbd6",
+                    "evaluation_at": "2026-10-27T10:16:52.748453Z",
+                    "policy_version": "v2",
+                    "source_revision": 15
+                  },
+                  "attempt": 0,
+                  "requested_route": "test/scripted-reviewer",
+                  "feedback": {
+                    "verdict": "accept",
+                    "issue_codes": [],
+                    "evidence_ids": [],
+                    "policy_rule_ids": [],
+                    "feedback": "SCRIPTED reviewer acceptance for isolated testing.",
+                    "uncertainties": []
+                  },
+                  "response_model": "test/scripted-reviewer",
+                  "error": null
+                },
+                "model_call": 2
+              },
+              {
+                "kind": "final_gate",
+                "run_id": "63ca9716-de3c-42a3-88c6-24dd91624fbe",
+                "proposal_id": "1443fe41-5b17-465f-8cae-865fbf366b7a",
+                "reference": {
+                  "dispute_id": "DP-0017",
+                  "snapshot_id": "3ca3ecfd-f354-4bb1-8e49-db9e5cb2bbd6",
+                  "evaluation_at": "2026-10-27T10:16:52.748453Z",
+                  "policy_version": "v2",
+                  "source_revision": 15
+                },
+                "critic": "accepted",
+                "reviewer": "accept"
+              }
+            ],
+            "critic": "accepted",
+            "model_calls": 2,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0017",
+                    "snapshot_id": "3ca3ecfd-f354-4bb1-8e49-db9e5cb2bbd6",
+                    "evaluation_at": "2026-10-27T10:16:52.748453Z",
+                    "policy_version": "v2",
+                    "source_revision": 15
+                  },
+                  "customer_id": "CUST-008",
+                  "records": [
+                    {
+                      "decision_id": "3d1c0032-e800-4701-b8ca-3500aa74de71",
+                      "original_reference": {
+                        "dispute_id": "DP-0014",
+                        "snapshot_id": "c9ae1c8e-16a0-4047-bb41-7a504aea1a23",
+                        "evaluation_at": "2026-10-27T10:16:51.051445Z",
+                        "policy_version": "v2",
+                        "source_revision": 0
+                      },
+                      "recommendation": {
+                        "outcome": "provisional_credit",
+                        "currency": "SGD",
+                        "amount_minor": 6000
+                      },
+                      "committed_at": "2026-10-27T10:16:51.322797Z",
+                      "reason_code": "refund_missing",
+                      "source_reference": "postgresql:dispute_demo/dispute_actions.decisions/3d1c0032-e800-4701-b8ca-3500aa74de71",
+                      "verified_reference": {
+                        "dispute_id": "DP-0014",
+                        "snapshot_id": "a15ddda3-3583-4ee1-9460-ef77b3323782",
+                        "evaluation_at": "2026-10-27T10:16:52.977014Z",
+                        "policy_version": "v2",
+                        "source_revision": 15
+                      }
+                    }
+                  ],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 1,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "20a70e4a-1995-4a47-bbaa-9a45e0a01b7d"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:20a70e4a-1995-4a47-bbaa-9a45e0a01b7d",
+                "memory_id": "mem-2",
+                "error": null,
+                "decision_id": "20a70e4a-1995-4a47-bbaa-9a45e0a01b7d",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0033",
+            "receipt": {
+              "run_id": "90e4fcdc-11a9-4b16-9738-ce13469a66b1",
+              "proposal_id": "99cadeb9-566f-4887-8985-56ee42dcac94",
+              "idempotency_key": "41f7f73b-ff90-42c8-bdd9-d55d8ee36300",
+              "reference": {
+                "dispute_id": "DP-0033",
+                "snapshot_id": "485caa55-ac21-4bc0-bd2b-bf4e1f25c813",
+                "evaluation_at": "2026-10-27T10:16:53.289678Z",
+                "policy_version": "v1",
+                "source_revision": 20
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "c16914be-94a8-47a0-9ee6-a0c7229ec59e",
+              "recommendation": {
+                "outcome": "decline",
+                "currency": "SGD",
+                "amount_minor": null
+              },
+              "committed_at": "2026-10-27T10:16:53.615895Z",
+              "simulated_credit_id": null
+            },
+            "collaboration": [
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "99cadeb9-566f-4887-8985-56ee42dcac94",
+                    "run_id": "90e4fcdc-11a9-4b16-9738-ce13469a66b1",
+                    "reference": {
+                      "dispute_id": "DP-0033",
+                      "snapshot_id": "485caa55-ac21-4bc0-bd2b-bf4e1f25c813",
+                      "evaluation_at": "2026-10-27T10:16:53.289678Z",
+                      "policy_version": "v1",
+                      "source_revision": 20
+                    },
+                    "recommendation": {
+                      "outcome": "decline",
+                      "currency": "SGD",
+                      "amount_minor": null
+                    },
+                    "rationale": "v1-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv1-FILING_WINDOW: Primary transaction TX-0033: filing age 35 days, 0:00:00; inclusive limit 30 days.",
+                    "evidence_ids": [],
+                    "policy_rule_ids": [
+                      "v1-DATA_INTEGRITY",
+                      "v1-FILING_WINDOW"
+                    ],
+                    "missing_evidence": [],
+                    "revision": 0
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "90e4fcdc-11a9-4b16-9738-ce13469a66b1",
+                "proposal_id": "99cadeb9-566f-4887-8985-56ee42dcac94",
+                "reference": {
+                  "dispute_id": "DP-0033",
+                  "snapshot_id": "485caa55-ac21-4bc0-bd2b-bf4e1f25c813",
+                  "evaluation_at": "2026-10-27T10:16:53.289678Z",
+                  "policy_version": "v1",
+                  "source_revision": 20
+                },
+                "revision": 0,
+                "model_call": 1
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "99cadeb9-566f-4887-8985-56ee42dcac94",
+                  "reference": {
+                    "dispute_id": "DP-0033",
+                    "snapshot_id": "485caa55-ac21-4bc0-bd2b-bf4e1f25c813",
+                    "evaluation_at": "2026-10-27T10:16:53.289678Z",
+                    "policy_version": "v1",
+                    "source_revision": 20
+                  },
+                  "verdict": "accepted",
+                  "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+                  "failed_checks": []
+                },
+                "run_id": "90e4fcdc-11a9-4b16-9738-ce13469a66b1",
+                "proposal_id": "99cadeb9-566f-4887-8985-56ee42dcac94",
+                "revision": 0
+              },
+              {
+                "kind": "reviewer",
+                "result": {
+                  "status": "reviewed",
+                  "run_id": "90e4fcdc-11a9-4b16-9738-ce13469a66b1",
+                  "proposal_id": "99cadeb9-566f-4887-8985-56ee42dcac94",
+                  "reference": {
+                    "dispute_id": "DP-0033",
+                    "snapshot_id": "485caa55-ac21-4bc0-bd2b-bf4e1f25c813",
+                    "evaluation_at": "2026-10-27T10:16:53.289678Z",
+                    "policy_version": "v1",
+                    "source_revision": 20
+                  },
+                  "attempt": 0,
+                  "requested_route": "test/scripted-reviewer",
+                  "feedback": {
+                    "verdict": "accept",
+                    "issue_codes": [],
+                    "evidence_ids": [],
+                    "policy_rule_ids": [],
+                    "feedback": "SCRIPTED reviewer acceptance for isolated testing.",
+                    "uncertainties": []
+                  },
+                  "response_model": "test/scripted-reviewer",
+                  "error": null
+                },
+                "model_call": 2
+              },
+              {
+                "kind": "final_gate",
+                "run_id": "90e4fcdc-11a9-4b16-9738-ce13469a66b1",
+                "proposal_id": "99cadeb9-566f-4887-8985-56ee42dcac94",
+                "reference": {
+                  "dispute_id": "DP-0033",
+                  "snapshot_id": "485caa55-ac21-4bc0-bd2b-bf4e1f25c813",
+                  "evaluation_at": "2026-10-27T10:16:53.289678Z",
+                  "policy_version": "v1",
+                  "source_revision": 20
+                },
+                "critic": "accepted",
+                "reviewer": "accept"
+              }
+            ],
+            "critic": "accepted",
+            "model_calls": 2,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0033",
+                    "snapshot_id": "485caa55-ac21-4bc0-bd2b-bf4e1f25c813",
+                    "evaluation_at": "2026-10-27T10:16:53.289678Z",
+                    "policy_version": "v1",
+                    "source_revision": 20
+                  },
+                  "customer_id": "CUST-015",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "c16914be-94a8-47a0-9ee6-a0c7229ec59e"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:c16914be-94a8-47a0-9ee6-a0c7229ec59e",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "c16914be-94a8-47a0-9ee6-a0c7229ec59e",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0034",
+            "receipt": {
+              "run_id": "030c814a-6b84-4b19-a27d-2c46a60e3485",
+              "proposal_id": "70286da3-b523-44fb-8308-f1894972ebbd",
+              "idempotency_key": "2326dafd-049c-47a5-bbd6-6d46c001e2e6",
+              "reference": {
+                "dispute_id": "DP-0034",
+                "snapshot_id": "9b7eba59-a4d3-4ebd-b5b0-135d07395720",
+                "evaluation_at": "2026-10-27T10:16:53.888951Z",
+                "policy_version": "v2",
+                "source_revision": 23
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "d0282a82-ab88-4c5a-804c-dfc3dfe39203",
+              "recommendation": {
+                "outcome": "provisional_credit",
+                "currency": "SGD",
+                "amount_minor": 10000
+              },
+              "committed_at": "2026-10-27T10:16:54.289917Z",
+              "simulated_credit_id": "92fe2127-8c6a-4d1f-bc25-185cb1d12fc8"
+            },
+            "collaboration": [
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "70286da3-b523-44fb-8308-f1894972ebbd",
+                    "run_id": "030c814a-6b84-4b19-a27d-2c46a60e3485",
+                    "reference": {
+                      "dispute_id": "DP-0034",
+                      "snapshot_id": "9b7eba59-a4d3-4ebd-b5b0-135d07395720",
+                      "evaluation_at": "2026-10-27T10:16:53.888951Z",
+                      "policy_version": "v2",
+                      "source_revision": 23
+                    },
+                    "recommendation": {
+                      "outcome": "provisional_credit",
+                      "currency": "SGD",
+                      "amount_minor": 10000
+                    },
+                    "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0034: filing age 35 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0034, completed movements ST-0046: remaining balance 10000 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Required synthetic support verified against case and source fields.\nv2-UNSUPPORTED: No complete unambiguous contradiction of the claim.\nv2-REVIEW_THRESHOLD: Eligible primary-transaction amount 10000; review only above 20000 SGD minor units.\nv2-APPROVE: Supported claim; min(claimed, primary completed balance) = 10000 SGD minor units.",
+                    "evidence_ids": [
+                      "EV-0068",
+                      "EV-0069"
+                    ],
+                    "policy_rule_ids": [
+                      "v2-DATA_INTEGRITY",
+                      "v2-FILING_WINDOW",
+                      "v2-ALREADY_REFUNDED",
+                      "v2-CONFLICTING_EVIDENCE",
+                      "v2-MISSING_EVIDENCE",
+                      "v2-UNSUPPORTED",
+                      "v2-REVIEW_THRESHOLD",
+                      "v2-APPROVE"
+                    ],
+                    "missing_evidence": [],
+                    "revision": 0
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "030c814a-6b84-4b19-a27d-2c46a60e3485",
+                "proposal_id": "70286da3-b523-44fb-8308-f1894972ebbd",
+                "reference": {
+                  "dispute_id": "DP-0034",
+                  "snapshot_id": "9b7eba59-a4d3-4ebd-b5b0-135d07395720",
+                  "evaluation_at": "2026-10-27T10:16:53.888951Z",
+                  "policy_version": "v2",
+                  "source_revision": 23
+                },
+                "revision": 0,
+                "model_call": 1
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "70286da3-b523-44fb-8308-f1894972ebbd",
+                  "reference": {
+                    "dispute_id": "DP-0034",
+                    "snapshot_id": "9b7eba59-a4d3-4ebd-b5b0-135d07395720",
+                    "evaluation_at": "2026-10-27T10:16:53.888951Z",
+                    "policy_version": "v2",
+                    "source_revision": 23
+                  },
+                  "verdict": "accepted",
+                  "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+                  "failed_checks": []
+                },
+                "run_id": "030c814a-6b84-4b19-a27d-2c46a60e3485",
+                "proposal_id": "70286da3-b523-44fb-8308-f1894972ebbd",
+                "revision": 0
+              },
+              {
+                "kind": "reviewer",
+                "result": {
+                  "status": "reviewed",
+                  "run_id": "030c814a-6b84-4b19-a27d-2c46a60e3485",
+                  "proposal_id": "70286da3-b523-44fb-8308-f1894972ebbd",
+                  "reference": {
+                    "dispute_id": "DP-0034",
+                    "snapshot_id": "9b7eba59-a4d3-4ebd-b5b0-135d07395720",
+                    "evaluation_at": "2026-10-27T10:16:53.888951Z",
+                    "policy_version": "v2",
+                    "source_revision": 23
+                  },
+                  "attempt": 0,
+                  "requested_route": "test/scripted-reviewer",
+                  "feedback": {
+                    "verdict": "accept",
+                    "issue_codes": [],
+                    "evidence_ids": [],
+                    "policy_rule_ids": [],
+                    "feedback": "SCRIPTED reviewer acceptance for isolated testing.",
+                    "uncertainties": []
+                  },
+                  "response_model": "test/scripted-reviewer",
+                  "error": null
+                },
+                "model_call": 2
+              },
+              {
+                "kind": "final_gate",
+                "run_id": "030c814a-6b84-4b19-a27d-2c46a60e3485",
+                "proposal_id": "70286da3-b523-44fb-8308-f1894972ebbd",
+                "reference": {
+                  "dispute_id": "DP-0034",
+                  "snapshot_id": "9b7eba59-a4d3-4ebd-b5b0-135d07395720",
+                  "evaluation_at": "2026-10-27T10:16:53.888951Z",
+                  "policy_version": "v2",
+                  "source_revision": 23
+                },
+                "critic": "accepted",
+                "reviewer": "accept"
+              }
+            ],
+            "critic": "accepted",
+            "model_calls": 2,
+            "correction": 0,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0034",
+                    "snapshot_id": "9b7eba59-a4d3-4ebd-b5b0-135d07395720",
+                    "evaluation_at": "2026-10-27T10:16:53.888951Z",
+                    "policy_version": "v2",
+                    "source_revision": 23
+                  },
+                  "customer_id": "CUST-004",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "d0282a82-ab88-4c5a-804c-dfc3dfe39203"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:d0282a82-ab88-4c5a-804c-dfc3dfe39203",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "d0282a82-ab88-4c5a-804c-dfc3dfe39203",
+                "committed_result_preserved": true
+              }
+            ]
+          },
+          {
+            "dispute_id": "DP-0003",
+            "receipt": {
+              "run_id": "95a5ae04-5a73-44e2-a1cf-f16f0059e5cd",
+              "proposal_id": "57313f64-0fc5-4e75-802e-a902208b63f6",
+              "idempotency_key": "cc06a8cf-279f-4598-9b69-0f8b22f63201",
+              "reference": {
+                "dispute_id": "DP-0003",
+                "snapshot_id": "415dad60-19fb-485d-9a49-47ea5f00b49c",
+                "evaluation_at": "2026-10-27T10:16:54.624783Z",
+                "policy_version": "v2",
+                "source_revision": 28
+              },
+              "status": "committed",
+              "message": "Synthetic decision committed.",
+              "decision_id": "1be22e1a-ca74-47cb-b3d7-ce44397f1a1b",
+              "recommendation": {
+                "outcome": "provisional_credit",
+                "currency": "SGD",
+                "amount_minor": 20000
+              },
+              "committed_at": "2026-10-27T10:16:55.039302Z",
+              "simulated_credit_id": "93b740dc-a3d5-46b3-a951-44138d4a54da"
+            },
+            "collaboration": [
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "1137c0f7-aa94-42e6-a004-31bdfc486c58",
+                    "run_id": "95a5ae04-5a73-44e2-a1cf-f16f0059e5cd",
+                    "reference": {
+                      "dispute_id": "DP-0003",
+                      "snapshot_id": "415dad60-19fb-485d-9a49-47ea5f00b49c",
+                      "evaluation_at": "2026-10-27T10:16:54.624783Z",
+                      "policy_version": "v2",
+                      "source_revision": 28
+                    },
+                    "recommendation": {
+                      "outcome": "provisional_credit",
+                      "currency": "SGD",
+                      "amount_minor": 20001
+                    },
+                    "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0003: filing age 10 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0003, completed movements ST-0003: remaining balance 20000 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Required synthetic support verified against case and source fields.\nv2-UNSUPPORTED: No complete unambiguous contradiction of the claim.\nv2-REVIEW_THRESHOLD: Eligible primary-transaction amount 20000; review only above 20000 SGD minor units.\nv2-APPROVE: Supported claim; min(claimed, primary completed balance) = 20000 SGD minor units.",
+                    "evidence_ids": [
+                      "EV-0005",
+                      "EV-0006"
+                    ],
+                    "policy_rule_ids": [
+                      "v2-DATA_INTEGRITY",
+                      "v2-FILING_WINDOW",
+                      "v2-ALREADY_REFUNDED",
+                      "v2-CONFLICTING_EVIDENCE",
+                      "v2-MISSING_EVIDENCE",
+                      "v2-UNSUPPORTED",
+                      "v2-REVIEW_THRESHOLD",
+                      "v2-APPROVE"
+                    ],
+                    "missing_evidence": [],
+                    "revision": 0
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "95a5ae04-5a73-44e2-a1cf-f16f0059e5cd",
+                "proposal_id": "1137c0f7-aa94-42e6-a004-31bdfc486c58",
+                "reference": {
+                  "dispute_id": "DP-0003",
+                  "snapshot_id": "415dad60-19fb-485d-9a49-47ea5f00b49c",
+                  "evaluation_at": "2026-10-27T10:16:54.624783Z",
+                  "policy_version": "v2",
+                  "source_revision": 28
+                },
+                "revision": 0,
+                "model_call": 1
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "1137c0f7-aa94-42e6-a004-31bdfc486c58",
+                  "reference": {
+                    "dispute_id": "DP-0003",
+                    "snapshot_id": "415dad60-19fb-485d-9a49-47ea5f00b49c",
+                    "evaluation_at": "2026-10-27T10:16:54.624783Z",
+                    "policy_version": "v2",
+                    "source_revision": 28
+                  },
+                  "verdict": "revise",
+                  "feedback": "Use exactly 20000 SGD minor units. One correction is permitted with revision 1 and a new proposal ID.",
+                  "failed_checks": [
+                    "amount_mismatch"
+                  ]
+                },
+                "run_id": "95a5ae04-5a73-44e2-a1cf-f16f0059e5cd",
+                "proposal_id": "1137c0f7-aa94-42e6-a004-31bdfc486c58",
+                "revision": 0
+              },
+              {
+                "kind": "correction",
+                "source": "python_critic",
+                "proposal_id": "1137c0f7-aa94-42e6-a004-31bdfc486c58",
+                "revision": 1
+              },
+              {
+                "kind": "investigator",
+                "result": {
+                  "status": "proposal",
+                  "message": "Unapproved model proposal; mandatory critic required.",
+                  "requested_route": "test/stub",
+                  "proposal": {
+                    "proposal_id": "57313f64-0fc5-4e75-802e-a902208b63f6",
+                    "run_id": "95a5ae04-5a73-44e2-a1cf-f16f0059e5cd",
+                    "reference": {
+                      "dispute_id": "DP-0003",
+                      "snapshot_id": "415dad60-19fb-485d-9a49-47ea5f00b49c",
+                      "evaluation_at": "2026-10-27T10:16:54.624783Z",
+                      "policy_version": "v2",
+                      "source_revision": 28
+                    },
+                    "recommendation": {
+                      "outcome": "provisional_credit",
+                      "currency": "SGD",
+                      "amount_minor": 20000
+                    },
+                    "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0003: filing age 10 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0003, completed movements ST-0003: remaining balance 20000 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Required synthetic support verified against case and source fields.\nv2-UNSUPPORTED: No complete unambiguous contradiction of the claim.\nv2-REVIEW_THRESHOLD: Eligible primary-transaction amount 20000; review only above 20000 SGD minor units.\nv2-APPROVE: Supported claim; min(claimed, primary completed balance) = 20000 SGD minor units.",
+                    "evidence_ids": [
+                      "EV-0005",
+                      "EV-0006"
+                    ],
+                    "policy_rule_ids": [
+                      "v2-DATA_INTEGRITY",
+                      "v2-FILING_WINDOW",
+                      "v2-ALREADY_REFUNDED",
+                      "v2-CONFLICTING_EVIDENCE",
+                      "v2-MISSING_EVIDENCE",
+                      "v2-UNSUPPORTED",
+                      "v2-REVIEW_THRESHOLD",
+                      "v2-APPROVE"
+                    ],
+                    "missing_evidence": [],
+                    "revision": 1
+                  },
+                  "read_request": null,
+                  "uncertainties": [],
+                  "response_model": "test/stub",
+                  "validation_failure": null,
+                  "provider_error": null
+                },
+                "run_id": "95a5ae04-5a73-44e2-a1cf-f16f0059e5cd",
+                "proposal_id": "57313f64-0fc5-4e75-802e-a902208b63f6",
+                "reference": {
+                  "dispute_id": "DP-0003",
+                  "snapshot_id": "415dad60-19fb-485d-9a49-47ea5f00b49c",
+                  "evaluation_at": "2026-10-27T10:16:54.624783Z",
+                  "policy_version": "v2",
+                  "source_revision": 28
+                },
+                "revision": 1,
+                "model_call": 2
+              },
+              {
+                "kind": "critic",
+                "result": {
+                  "proposal_id": "57313f64-0fc5-4e75-802e-a902208b63f6",
+                  "reference": {
+                    "dispute_id": "DP-0003",
+                    "snapshot_id": "415dad60-19fb-485d-9a49-47ea5f00b49c",
+                    "evaluation_at": "2026-10-27T10:16:54.624783Z",
+                    "policy_version": "v2",
+                    "source_revision": 28
+                  },
+                  "verdict": "accepted",
+                  "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+                  "failed_checks": []
+                },
+                "run_id": "95a5ae04-5a73-44e2-a1cf-f16f0059e5cd",
+                "proposal_id": "57313f64-0fc5-4e75-802e-a902208b63f6",
+                "revision": 1
+              },
+              {
+                "kind": "reviewer",
+                "result": {
+                  "status": "reviewed",
+                  "run_id": "95a5ae04-5a73-44e2-a1cf-f16f0059e5cd",
+                  "proposal_id": "57313f64-0fc5-4e75-802e-a902208b63f6",
+                  "reference": {
+                    "dispute_id": "DP-0003",
+                    "snapshot_id": "415dad60-19fb-485d-9a49-47ea5f00b49c",
+                    "evaluation_at": "2026-10-27T10:16:54.624783Z",
+                    "policy_version": "v2",
+                    "source_revision": 28
+                  },
+                  "attempt": 0,
+                  "requested_route": "test/scripted-reviewer",
+                  "feedback": {
+                    "verdict": "accept",
+                    "issue_codes": [],
+                    "evidence_ids": [],
+                    "policy_rule_ids": [],
+                    "feedback": "SCRIPTED reviewer acceptance for isolated testing.",
+                    "uncertainties": []
+                  },
+                  "response_model": "test/scripted-reviewer",
+                  "error": null
+                },
+                "model_call": 3
+              },
+              {
+                "kind": "final_gate",
+                "run_id": "95a5ae04-5a73-44e2-a1cf-f16f0059e5cd",
+                "proposal_id": "57313f64-0fc5-4e75-802e-a902208b63f6",
+                "reference": {
+                  "dispute_id": "DP-0003",
+                  "snapshot_id": "415dad60-19fb-485d-9a49-47ea5f00b49c",
+                  "evaluation_at": "2026-10-27T10:16:54.624783Z",
+                  "policy_version": "v2",
+                  "source_revision": 28
+                },
+                "critic": "accepted",
+                "reviewer": "accept"
+              }
+            ],
+            "critic": "accepted",
+            "model_calls": 3,
+            "correction": 1,
+            "memory": [
+              {
+                "kind": "memory_verified",
+                "history": {
+                  "reference": {
+                    "dispute_id": "DP-0003",
+                    "snapshot_id": "415dad60-19fb-485d-9a49-47ea5f00b49c",
+                    "evaluation_at": "2026-10-27T10:16:54.624783Z",
+                    "policy_version": "v2",
+                    "source_revision": 28
+                  },
+                  "customer_id": "CUST-010",
+                  "records": [],
+                  "scope": "advisory_no_binding_history_rule"
+                },
+                "distinct_cases": 0,
+                "complete_history": false,
+                "binding_rule": null
+              },
+              {
+                "kind": "memory_save",
+                "status": "pending",
+                "decision_id": "1be22e1a-ca74-47cb-b3d7-ce44397f1a1b"
+              },
+              {
+                "kind": "memory_save",
+                "status": "stored",
+                "source_id": "decision:1be22e1a-ca74-47cb-b3d7-ce44397f1a1b",
+                "memory_id": "mem-1",
+                "error": null,
+                "decision_id": "1be22e1a-ca74-47cb-b3d7-ce44397f1a1b",
+                "committed_result_preserved": true
+              }
+            ]
+          }
+        ],
+        "exact_retry": "reused",
+        "ordinary_rerun": "effective_credit_already_exists"
+      }
+    ],
+    "source_files_unchanged": true
+  }
+}

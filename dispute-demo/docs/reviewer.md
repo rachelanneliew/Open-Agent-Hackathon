@@ -33,3 +33,15 @@ cd dispute-demo
 PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s tests -p 'test_reviewer*.py' -v
 PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m demo.verify
 ```
+
+## T16 live evidence
+
+Separate real calls are now verified: [DP-0020 accepted](./evidence/t16-live-accepted.json)
+committed a missing-evidence request after two calls. [DP-0029](./evidence/t16-live-refusal.json)
+used four calls: Reviewer revise, Investigator revision, Reviewer revise, no
+action. Both roles returned `nvidia/nemotron-3.5-bolt-e4b` via `meterless/auto`.
+These are metadata labels, not independent provider attestation. The second
+objection appears inconsistent with first-terminal policy ordering; this is a
+known conservative-refusal limitation, not authority to change policy or bypass
+the Reviewer. Exact-request recovery used zero calls. Live runs disabled memory;
+combined memory behavior is covered by the real isolated reference suite.

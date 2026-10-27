@@ -118,3 +118,13 @@ also pass disposable PostgreSQL UI tests using a scripted model. Live model
 schema/rationale reliability is imperfect; a refusal is visible and creates no
 queue entry. The observed shared state is 3 decisions, 2 credits, 3 audits and
 1 pending review at revision 14. The owned acceptance preview was stopped.
+
+## T16 role trace
+
+The Agent collaboration section shows ordered Investigator, deterministic critic,
+independent Reviewer, correction handoff, final acceptance gate and writer events.
+It includes proposal IDs, returned model labels and bounded feedback. All model
+text uses textContent, never HTML. Reviewer acceptance is distinct from actual
+persistence; an unresolved objection displays no persisted outcome or invented
+review queue. Recovery displays no new agent call. The page presents completed
+events after the job finishes; it does not stream intermediate provider tokens.

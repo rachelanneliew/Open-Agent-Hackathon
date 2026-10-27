@@ -1,127 +1,113 @@
 # Submission package
 
 **Synthetic Card-Dispute Resolution Agent** — team **bob the builder**, Track 3:
-**Reasoning Architecture**. Prepared on 27 October 2026. All cases, policies and
+**Reasoning Architecture**. T16 refresh, 27 October 2026. All cases, policies and
 financial effects are fictional.
 
-This is the checked repository delivery package. **HackOS submission has not
-been created or verified.** The signed-in member sees a leader-only submission
-screen. Rachel Anne Liew is the platform-designated leader; she must confirm
-responsibility and complete the owner steps below. The authenticated deadline
-is **27 October 2026 23:45 UTC / 28 October 2026 07:45 SGT**.
+**HackOS submission has not been created or verified by this task.** The last
+authenticated check showed leader-only access. Rachel Anne Liew is the designated
+leader. The recorded deadline is **27 October 2026 23:45 UTC / 28 October 07:45
+SGT**; this task did not recheck the portal or obtain a receipt.
 
-## Artifacts
+## Current two-agent package
 
-- [Eight-slide editable deck](./dispute-agent-deck.pptx).
-- [Narrated MP4 demo](./dispute-agent-demo.mp4), [transcript](./VIDEO.md) and
-  [optional captions](./dispute-agent-demo.srt).
-- [Reproduce the demo](./DEMO.md): fresh-checkout rehearsal, separately configured
-  live UI/CLI, exact source cases, tests and safe recovery.
-- [Architecture, technology evidence and provenance](./ARCHITECTURE.md).
-- [Package checks](../../dispute-demo/docs/evidence/t13-package-checks.json),
-  [fresh-checkout replay](../../dispute-demo/docs/evidence/t13-clean-replay.json),
-  [actual live refusal](../../dispute-demo/docs/evidence/t13-live-refusal.json),
-  and [same-request recovery](../../dispute-demo/docs/evidence/t13-recovery.json).
+- [Eight-slide editable deck](./dispute-two-agent-deck.pptx).
+- [Narrated demo](./dispute-two-agent-demo.mp4), [transcript](./VIDEO_TWO_AGENT.md)
+  and [captions](./dispute-two-agent-demo.srt).
+- [Reproduction guide](./DEMO.md) and [architecture](./ARCHITECTURE.md).
+- [Real accepted workflow](../../dispute-demo/docs/evidence/t16-live-accepted.json):
+  DP-0020, two independent Nightshift calls, accepted missing-evidence request,
+  committed decision and audit, no credit effect.
+- [Real feedback/refusal](../../dispute-demo/docs/evidence/t16-live-refusal.json):
+  DP-0029, Reviewer objection, one Investigator revision, second objection,
+  four calls and no write. The objection appears overly conservative about
+  first-terminal policy ordering; it is not presented as a policy defect.
+- [Request reconstruction](../../dispute-demo/docs/evidence/t16-request-reconstruction.json):
+  both role prompts, schemas and exact accepted inputs, reconstructed from the
+  private saved request and current builders. This is **not a raw HTTP capture**.
+- [Exact recovery](../../dispute-demo/docs/evidence/t16-recovery.json),
+  [314 passing integration tests](../../dispute-demo/docs/evidence/t16-verification.json),
+  [labelled scripted replay](../../dispute-demo/docs/evidence/t16-isolated-replay.json),
+  [fresh-clone replay](../../dispute-demo/docs/evidence/t16-clean-replay.json) and
+  [package checks](../../dispute-demo/docs/evidence/t16-package-checks.json).
 
-The video is an edited walkthrough of actual application captures and dated
-evidence slides, not a continuous screen recording. Waiting time is removed.
-The DP-0029 input, running state and schema refusal are from one actual live
-run. DP-0014 recovery reuses an earlier live commit. All four committed outcomes
-and the injected correction are separately labelled isolated scripted-model
-rehearsals. Narration uses the installed macOS Samantha synthetic voice. No
-participant voice or likeness is imitated. Captions use approximate sentence
-timing; the full transcript is authoritative.
+The video uses actual UI captures and evidence slides, with wait time removed.
+It is not continuous screen recording. The successful scripted correction is
+explicitly separate from both real runs. Narration uses the installed macOS
+Samantha synthetic voice, without imitating a participant. Captions use
+approximate sentence timing. Live T16 runs used no-memory mode; real isolated
+reference tests verify combined two-agent memory behavior. Earlier live memory
+acceptance remains separately dated.
 
-Published public URLs (anonymous HTTP 200 and exact-byte matches verified):
+Current source and artifacts are on **`codex/t14-t16-two-agent-reviewer`**, pending
+review. Main still contains the historical package. Public download checks are
+recorded in the package evidence; a GitHub download is not verified portal
+playback or a final submission.
 
-| Field | URL |
+| Field | Current branch URL |
 |---|---|
-| Repository | <https://github.com/rachelanneliew/Open-Agent-Hackathon> |
-| Package and evidence index | <https://github.com/rachelanneliew/Open-Agent-Hackathon/tree/main/docs/submission> |
-| Video download (hosting check still required) | <https://raw.githubusercontent.com/rachelanneliew/Open-Agent-Hackathon/main/docs/submission/dispute-agent-demo.mp4> |
-| Deck download | <https://raw.githubusercontent.com/rachelanneliew/Open-Agent-Hackathon/main/docs/submission/dispute-agent-deck.pptx> |
+| Repository | [Public source](https://github.com/rachelanneliew/Open-Agent-Hackathon) |
+| Current package | [Two-agent branch package](https://github.com/rachelanneliew/Open-Agent-Hackathon/tree/codex/t14-t16-two-agent-reviewer/docs/submission) |
+| Video download | [Current MP4](https://raw.githubusercontent.com/rachelanneliew/Open-Agent-Hackathon/refs/heads/codex/t14-t16-two-agent-reviewer/docs/submission/dispute-two-agent-demo.mp4) |
+| Deck download | [Current PPTX](https://raw.githubusercontent.com/rachelanneliew/Open-Agent-Hackathon/refs/heads/codex/t14-t16-two-agent-reviewer/docs/submission/dispute-two-agent-deck.pptx) |
 
-Both binary artifacts return `application/octet-stream`. The MP4 is publicly
-downloadable, but the in-app browser blocked inline playback of its raw GitHub
-URL. Local playback completed successfully. **B1 therefore includes providing
-a verified playable video-host link** for the actual portal. The leader must
-upload the same MP4 to an unrestricted video host accepted by the form and
-check it signed out. Portal preview, accepted deck formats, upload limits and
-final receipt remain **NOT RUN**. No speculative form limits or submission URL
-are invented here.
+## Historical fallback
+
+The original [one-agent deck](./dispute-agent-deck.pptx),
+[3:46 video](./dispute-agent-demo.mp4), [transcript](./VIDEO.md),
+[captions](./dispute-agent-demo.srt) and
+[T13 checks](../../dispute-demo/docs/evidence/t13-package-checks.json) are preserved
+unchanged. They do not depict the new Reviewer runtime.
 
 ## Prepared project text
 
-**Short description:** A synthetic dispute workbench that turns verified
-source evidence and versioned policy into bounded, auditable simulated actions.
+**Short description:** Two separately invoked agents connect verified dispute
+evidence and versioned policy to bounded, auditable simulated actions.
 
-**Project description:** An analyst selects a synthetic card dispute. Zetaris
-retrieves source facts and the applicable policy. A Nightshift investigator
-proposes an outcome, a deterministic critic checks it, and a restricted
-PostgreSQL service rechecks the source before atomically recording the decision,
-optional credit, audit and review entry. The controller bounds calls and permits
-one correction. Exact-request recovery prevents duplicate effects. The pinned
-Meterless H-MEM reference stores confirmed summaries and supplies prior cases
-only after source verification. The workbench exposes evidence, policy,
-critique, persistence and the actual review queue. An isolated rehearsal
-reproduces all four outcomes without provider credentials. All effects are
-simulated; history remains advisory.
+**Project description:** An analyst selects a synthetic dispute. Zetaris supplies
+fresh facts and applicable policy. A Nightshift Investigator proposes an outcome,
+a deterministic critic checks it, and a separate Nightshift Reviewer challenges
+the evidence. The controller permits one shared correction and requires both
+checks to accept the final proposal. A restricted PostgreSQL writer rechecks the
+source and records the decision, optional credit, audit and review entry
+atomically. Exact-request recovery prevents duplicate effects. Source-verified
+H-MEM supplies advisory context and stores confirmed summaries. The workbench
+shows each role, correction and actual persistence. Isolated scripted rehearsals
+reproduce all four outcomes without private credentials.
 
-**Sponsor explanation:** Zetaris is the live JDBC data layer. Nightshift is the
-primary live model transport. H-MEM provides actual persistent reference
-storage/recall with mock embeddings. Live response metadata returned
-`nvidia/nemotron-3.5-bolt-e4b`; this is not independent provider attestation or a
-claim of award eligibility. Cursor, Codex and Claude Code are development tools.
-The [architecture](./ARCHITECTURE.md) links concrete sponsor evidence.
+**Sponsor explanation:** Zetaris is the live JDBC data layer. Nightshift invokes
+both model roles independently. H-MEM uses the pinned official reference with
+mock embeddings. Both live roles returned `nvidia/nemotron-3.5-bolt-e4b` metadata;
+this is not independent provider attestation or an award eligibility claim.
+Codex, Cursor and Claude Code are development tools.
 
-**Distinctive contribution:** A complete source/proposal/critic/transaction
-boundary, durable exact-request recovery and independent receipt-verified memory.
-The system refuses malformed output and preserves confirmed decisions when
-memory fails. No measured business time saving is claimed.
+**Contribution:** Observable model-to-model feedback inside mandatory policy and
+transaction checks, durable exact recovery and receipt-verified memory. No
+measured business time savings or model accuracy improvement is claimed.
 
-**Earlier-work declaration for owner review:** Reachable Git history begins
-24 October 2026, but commit dates alone cannot establish when every contribution
-was first authored. The team must confirm product code/data predating
-22 October 00:00 UTC and contributor permissions. Provider platforms, the
-Meterless reference, onboarding helpers and open-source dependencies are
-pre-existing external work and are credited. Do not submit an unqualified
-“no earlier work” declaration from Git dates alone.
+**Earlier-work declaration:** Reachable Git history starts 24 October 2026, but
+commit dates do not prove when every contribution was authored. The team must
+confirm work predating 22 October 00:00 UTC and contributor rights. External
+platforms, the Meterless reference, onboarding helpers and dependencies are
+pre-existing work, credited in the architecture.
 
-## Requirement-to-evidence checklist
+## Requirement and owner checks
 
-The source audit and source identifiers are in [competition.md](../competition.md).
-“Checked” describes the named artifact/test, not organizer acceptance.
+See [competition.md](../competition.md) for the dated source audit.
 
-| Requirement | Checked artifact or precise remaining blocker |
+| Requirement | Evidence or remaining limit |
 |---|---|
-| R1 Deadline and submission | Cutoff recorded above from authenticated instructions. **B1:** leader has not created/verified submission or final receipt. |
-| R2 Primary Track 3 | README, deck and video use Reasoning Architecture. **B3:** separate detailed challenge page remains unavailable; authenticated summary is verified. |
-| R3 Required working technology | Dated T08/T10/T11 live evidence, reference tests and architecture document actual Zetaris/Nightshift/H-MEM use. **B4:** no formal endorsement of the exact reference commit was found. |
-| R4 Cursor/NVIDIA | Development tools are separated from runtime. Returned Nemotron model metadata is recorded with its limitation. No award eligibility claim. |
-| R5 Workflow video | MP4 and transcript show real UI input/running/refusal and confirmed recovery, plus labelled rehearsal/memory evidence. **B2:** guide's two-agent wording needs clarification for one model plus deterministic critic. |
-| R6 Deck | Eight editable slides cover users/problem, solution, workflow, stack, integrations, contribution, actual product capture and future work. Rendered and inspected slide by slide. **B1:** actual form's accepted deck formats remain unavailable. |
-| R7 Public repository/setup | Anonymous clone with disabled credential helper succeeded. A separate checkout installed fresh pinned dependencies and passed two replay cycles and offline tests without private configuration. Live licensed-stack bootstrap on a clean machine: **NOT RUN**, prerequisites documented. |
-| R8 Technology/provenance | Architecture and linked evidence distinguish real calls, scripted responses, reference/mock memory and development tools. Owner must confirm pre-event contributions and rights before submitting. |
-| R9 Project/team fields | Name, descriptions, track and sponsor copy are prepared above. **B1:** leader completes private contact fields and confirms roster before creation locks it. No participant email or phone is published. |
-| R10 Video/audio/access | MP4 contains H.264 video and non-silent AAC narration at 1080p within 1–4 minutes; exact checks are in package evidence. **B1:** raw GitHub MP4 is a verified public download; inline playback was blocked, so a playable video-host link and portal visibility need leader verification. |
+| Distinct collaborating agents | Real separate Investigator/Reviewer calls, correction trace and acceptance. The deterministic critic remains code. Organizer acceptance is unverified. |
+| Working integrations | Dated live Zetaris/Nightshift plus prior live H-MEM evidence; current combined reference tests. Exact reference endorsement remains unverified. |
+| Reproducibility | Fresh clone of runtime commit, independent dependencies, no private config, two replay cycles and both offline test roots passed. Clean-machine licensed live bootstrap NOT RUN. |
+| Video and deck | Current narrated MP4, captions and eight editable slides; historical fallback preserved. Media checks are in package evidence. Native PowerPoint and human listening review NOT RUN. |
+| Public access | Branch source and downloads checked separately. Leader must provide an accepted unrestricted playable video-host link and inspect portal preview. |
+| Submission | Leader-only form access, accepted formats/limits, roster, terms and final receipt remain owner checks. No submission claimed. |
+| Scoring scope | **One PostgreSQL datasource and no USL.** Multiple tables are not multiple datasources. A second agent does not close this scoring gap. |
+| Track and provenance | Detailed Track 3 page access, exact reference endorsement and contributor declarations retain the dated audit limitations. |
 
-The new Zetaris scoring guide asks for three datasources and USL demonstrations.
-This implementation has **one PostgreSQL datasource and no USL**. Tables and
-views are not presented as separate datasources. This scoring gap is explicitly
-disclosed and has not been hidden by changing the implemented roadmap scope.
-
-## Owner steps before submitting
-
-1. Sign in as the authorized leader at the
-   [Submission Hub](https://hackathon.genai.works/submissions), confirm the roster
-   and responsibility, and inspect the actual form before creating a submission.
-2. Resolve or explicitly disclose B2/B3/B4 from the requirements audit, the USL
-   scoring gap, and the earlier-work/contributor declaration above.
-3. Use the prepared project text and public artifact links. Check video sound,
-   playback and deck download from a signed-out browser and the actual portal
-   preview. If required, upload the same MP4/deck to a permitted unrestricted
-   host. Confirm the form's limits rather than assuming them.
-4. Review applicable submission terms, complete private participant fields,
-   submit before the cutoff and retain the actual confirmation URL/time.
-5. Only after that confirmation, record submission completion. No receipt or
-   successful upload is claimed by this repository package.
+The leader should inspect the [Submission Hub](https://hackathon.genai.works/submissions),
+confirm roster and declarations, verify unrestricted video playback and deck
+format, review the prepared fields and submit within the applicable deadline.
+Record completion only from an actual confirmation URL and time. Do not treat
+this checked repository package or Jira completion as a submission receipt.

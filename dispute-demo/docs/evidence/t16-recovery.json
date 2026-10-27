@@ -1,0 +1,70 @@
+{
+  "state": {
+    "run_id": "c876d95c-aed4-42a6-877e-95de4af8ba7f",
+    "phase": "finished",
+    "model_calls": 0,
+    "tool_calls": 0,
+    "proposal_revision": 0,
+    "reference": {
+      "dispute_id": "DP-0020",
+      "snapshot_id": "bd81ce22-dcf0-471e-99c3-92e348961805",
+      "evaluation_at": "2026-10-27T10:18:23.619032Z",
+      "policy_version": "v2",
+      "source_revision": 14
+    },
+    "commit_result": {
+      "run_id": "c876d95c-aed4-42a6-877e-95de4af8ba7f",
+      "proposal_id": "c929b909-eed9-4788-8a34-9a01f487e03e",
+      "idempotency_key": "3531716f-ace1-458b-830d-8e007740cbc4",
+      "reference": {
+        "dispute_id": "DP-0020",
+        "snapshot_id": "bd81ce22-dcf0-471e-99c3-92e348961805",
+        "evaluation_at": "2026-10-27T10:18:23.619032Z",
+        "policy_version": "v2",
+        "source_revision": 14
+      },
+      "status": "reused",
+      "message": "Original committed decision reused.",
+      "decision_id": "fa29319b-8749-4f55-a9a2-42f5d1c8a9c6",
+      "recommendation": {
+        "outcome": "request_evidence",
+        "currency": "SGD",
+        "amount_minor": null
+      },
+      "committed_at": "2026-10-27T10:18:33.196275Z",
+      "simulated_credit_id": null
+    },
+    "error": null
+  },
+  "events": [
+    {
+      "kind": "recovery",
+      "result": {
+        "run_id": "c876d95c-aed4-42a6-877e-95de4af8ba7f",
+        "proposal_id": "c929b909-eed9-4788-8a34-9a01f487e03e",
+        "idempotency_key": "3531716f-ace1-458b-830d-8e007740cbc4",
+        "reference": {
+          "dispute_id": "DP-0020",
+          "snapshot_id": "bd81ce22-dcf0-471e-99c3-92e348961805",
+          "evaluation_at": "2026-10-27T10:18:23.619032Z",
+          "policy_version": "v2",
+          "source_revision": 14
+        },
+        "status": "reused",
+        "message": "Original committed decision reused.",
+        "decision_id": "fa29319b-8749-4f55-a9a2-42f5d1c8a9c6",
+        "recommendation": {
+          "outcome": "request_evidence",
+          "currency": "SGD",
+          "amount_minor": null
+        },
+        "committed_at": "2026-10-27T10:18:33.196275Z",
+        "simulated_credit_id": null
+      }
+    }
+  ],
+  "mode": "live",
+  "memory_mode": "no_memory",
+  "persisted": true,
+  "recovery_request": "private exact request retained locally; not published"
+}

@@ -493,3 +493,31 @@ remain unchanged. Exact-request recovery calls neither agent. The full isolated
 regression passed 298 application and 16 reference tests, zero skips. Live
 two-agent verification is still pending T16; this supersedes earlier one-model
 runtime descriptions without retroactively relabelling historical evidence.
+
+## T16 live two-agent evidence (27 October 2026)
+
+Two distinct Nightshift role calls now have real observed evidence. DP-0020
+completed Investigator proposal, pure critic acceptance, independent Reviewer
+acceptance and the same-proposal final gate before committing an evidence
+request. Decision `fa29319b-8749-4f55-a9a2-42f5d1c8a9c6`; no credit. Exact recovery
+returned reused with zero model calls. Both roles returned the same Nemotron
+label; separate prompts/invocations do not imply separate model providers.
+DP-0029 demonstrated four real calls and one correction, then safe refusal after
+a second Reviewer objection. That objection appears overly conservative about
+first-terminal filing-window precedence. It is preserved as a known limitation.
+
+Live T16 used no-memory mode. Two-agent verified memory and all four outcomes
+passed two isolated scripted-model rehearsal cycles with real PostgreSQL and
+pinned H-MEM. Full matrix: 298 application + 16 reference tests, no skips. Fresh
+clone of runtime commit b6d71f2 reproduced both cycles with independent dependency
+setup and no private configuration. The UI exposes role feedback, revision,
+model metadata and final persistence separately. Six source fingerprints and
+restricted role are unchanged; shared totals are 4 decisions, 2 credits, 4 audits,
+1 review, revision 17.
+
+New eight-slide deck and 3:18 narrated video are in the current submission index;
+historical one-agent media remains unchanged. Distinct live agent roles address
+the implementation gap behind B2, not formal organizer approval. One PostgreSQL
+datasource/no USL, exact-reference endorsement, contributor declarations and
+leader-only portal submission/receipt remain explicit limitations. This feature
+branch is pending review; main has not been changed by T14–T16.

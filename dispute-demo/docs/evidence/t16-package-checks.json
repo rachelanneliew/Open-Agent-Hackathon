@@ -1,0 +1,181 @@
+{
+  "task": "T16 / KAN-26",
+  "date": "2026-10-27",
+  "runtime_commit": "b6d71f2",
+  "branch": "codex/t14-t16-two-agent-reviewer",
+  "clean_setup": "PASS: independent local clone of runtime commit, fresh Python 3.13.7 venv, pinned Python dependencies, fresh hash-verified H-MEM download and npm ci; no private configs copied. Git-link directories empty.",
+  "clean_replay": {
+    "status": "passed",
+    "cycles": 2,
+    "source_files_unchanged": true,
+    "live_zetaris": "NOT RUN",
+    "live_nightshift": "NOT RUN"
+  },
+  "clean_offline_tests": {
+    "status": "passed",
+    "python": "3.13.7",
+    "mode": "offline",
+    "live_zetaris": "NOT RUN",
+    "live_nightshift": "NOT RUN",
+    "suites": [
+      {
+        "root": "tests",
+        "collected": 298,
+        "run": 298,
+        "passed": 222,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 76,
+        "expected_failures": 0,
+        "unexpected_successes": 0,
+        "collection_errors": 0
+      },
+      {
+        "root": "agent/tests",
+        "collected": 16,
+        "run": 16,
+        "passed": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 12,
+        "expected_failures": 0,
+        "unexpected_successes": 0,
+        "collection_errors": 0
+      }
+    ]
+  },
+  "full_matrix": {
+    "status": "passed",
+    "python": "3.13.7",
+    "mode": "isolated_integrations",
+    "live_zetaris": "NOT RUN",
+    "live_nightshift": "NOT RUN",
+    "suites": [
+      {
+        "root": "tests",
+        "collected": 298,
+        "run": 298,
+        "passed": 298,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "expected_failures": 0,
+        "unexpected_successes": 0,
+        "collection_errors": 0
+      },
+      {
+        "root": "agent/tests",
+        "collected": 16,
+        "run": 16,
+        "passed": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "expected_failures": 0,
+        "unexpected_successes": 0,
+        "collection_errors": 0
+      }
+    ]
+  },
+  "live": {
+    "jdbc_preflight": "PASS SELECT 1 and existing datasource inventory; overall exit 1 solely for missing REST key checks",
+    "accepted_run": "c876d95c-aed4-42a6-877e-95de4af8ba7f",
+    "accepted_case": "DP-0020",
+    "model_calls": 2,
+    "decision_id": "fa29319b-8749-4f55-a9a2-42f5d1c8a9c6",
+    "outcome": "request_evidence",
+    "credit_effect": false,
+    "refusal_run": "ae176ff7-6cbc-427c-bdc3-f060c4c86fd0",
+    "refusal_case": "DP-0029",
+    "refusal_model_calls": 4,
+    "refusal_corrections": 1,
+    "refusal_persisted": false,
+    "observed_model": "nvidia/nemotron-3.5-bolt-e4b",
+    "route": "meterless/auto",
+    "model_label_limit": "Returned metadata; not independent attestation",
+    "memory_mode": "no_memory",
+    "exact_recovery": "reused same decision, zero calls",
+    "request_evidence": "Reconstructed exact accepted inputs and schemas, explicitly not raw HTTP capture"
+  },
+  "shared_state": {
+    "source_fingerprints": "all six unchanged",
+    "decisions": 4,
+    "credits": 2,
+    "audits": 4,
+    "pending_reviews": 1,
+    "revision": 17,
+    "restricted_role": "unchanged",
+    "delta": "one evidence-request decision and audit; zero additional credits or queue entries"
+  },
+  "artifacts": {
+    "dispute-two-agent-deck.pptx": {
+      "bytes": 119797,
+      "sha256": "221f0f8314db612676a87c610f7deed80d91d0afaa04da60e1002ed824ba812f"
+    },
+    "dispute-two-agent-demo.mp4": {
+      "bytes": 6132344,
+      "sha256": "6e7f084ffb9a3cd536ce72d418f0e7e22f9b1bdd73122efcd64a1bfadd167938"
+    },
+    "dispute-two-agent-demo.srt": {
+      "bytes": 4785,
+      "sha256": "7f2888d5eb30eb7967f2687c4768254f72b4a91089063af3533cf1d9b19cba0f"
+    },
+    "deck_checks": {
+      "slides": 8,
+      "editable_tables": 3,
+      "package_geometry_font_import": "PASS zero findings",
+      "visual_review": "All eight full-size source slides inspected; all final PPTX reimport renders byte-identical",
+      "native_powerpoint": "NOT RUN"
+    },
+    "video_checks": {
+      "duration_seconds": 197.5,
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "fps": 30,
+      "video": "H.264",
+      "audio": "AAC 48kHz mono; macOS Samantha synthetic narration",
+      "full_decode": "PASS 5925 frames, exit 0",
+      "mean_volume_db": -16.0,
+      "max_volume_db": -1.6,
+      "visual_review": "All nine scene frames inspected, including real UI capture",
+      "human_listening": "NOT RUN",
+      "caption_timing": "Approximate sentence timing"
+    }
+  },
+  "public_access": "Pending publication checks",
+  "browser_playback": "Pending completion",
+  "final_submission": "NOT RUN: no leader-supplied receipt; no portal action in T16",
+  "limits": [
+    "One PostgreSQL datasource, no USL",
+    "Synthetic document templates and canonical rationale",
+    "Reviewer can cause conservative refusals, observed on DP-0029",
+    "No production authentication",
+    "H-MEM mock embeddings; exact reference endorsement unverified",
+    "Organizer acceptance, detailed challenge page and contributor declarations remain owner checks",
+    "Playable public video hosting and actual portal format/preview unverified"
+  ],
+  "content_security": {
+    "status": "passed",
+    "changed_files": 48,
+    "markdown_files": 13,
+    "local_link_targets": 314,
+    "json_files": 8,
+    "scanned_file_or_archive_parts": 109,
+    "known_secret_values": 8,
+    "findings": [],
+    "protected_source_policy_contract_critic_writer_migrations": "unchanged from pre-T14 baseline",
+    "whitespace": "passed",
+    "limits": "No claim to detect all unknown secrets; actual PNGs/slide frames and narration were reviewed separately."
+  },
+  "history_security": {
+    "scan": "all reachable Git blobs, configured local secret-value matches and high-confidence credential patterns",
+    "blobs": 381,
+    "bytes": 14550205,
+    "known_values_compared": 8,
+    "findings": [],
+    "forbidden_tracked_paths": [],
+    "limits": "Pattern/value scan cannot prove absence of every unknown secret. Images and final media need visual/content review; unreachable objects not audited."
+  }
+}

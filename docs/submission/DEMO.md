@@ -48,7 +48,7 @@ For checks from the same directory:
 
 The first collects both roots with explicit skips. The second needs the same
 Docker/reference setup and uses real isolated database/reference/loopback HTTP
-checks. T12 recorded **267 + 16 passing tests, zero skips**. This is functional
+checks. T16 recorded **298 + 16 passing tests, zero skips**. This is functional
 and safety evidence, not a live model accuracy benchmark.
 
 The outer repository records `getting-started` and `zetaris-platform` as
@@ -87,14 +87,16 @@ After setup, from `dispute-demo/`:
 ```
 
 A new live investigation can persist a simulated decision. On the team's
-existing sandbox DP-0014 and DP-0017 already have credits, so fresh ordinary
+existing sandbox DP-0014 and DP-0017 already have credits, and DP-0020 has a saved evidence request, so fresh ordinary
 runs must not add another. An empty memory directory has no seeded history.
 Use the same private memory directory across related runs. The team's dated
 acceptance used `outputs/t10-live-memory`, which is deliberately not in Git.
 The analyst server is loopback-only and must not be exposed through a tunnel.
 
 UI workflow: select case, inspect source facts, click **Investigate**, then
-read the distinct outcome, critic and persistence fields. Expand evidence and
+read the distinct outcome, critic, Reviewer and persistence fields. The Agent
+collaboration table shows each role, correction provenance, proposal identity
+and final acceptance gate. Expand evidence and
 inspect policy citations. Only confirmed pending reviews appear in the queue.
 There is no mandatory Approve click or manual adjudication feature.
 
@@ -103,8 +105,8 @@ There is no mandatory Approve click or manual adjudication feature.
 | Case | Source-defined demonstration | Recorded evidence |
 |---|---|---|
 | DP-0014 | SGD 100 capture, SGD 40 merchant refund, SGD 60 simulated credit under v2. | Live T08 commit and same-request reuse, isolated rehearsal. |
-| DP-0020 | Missing `refund_confirmation`, evidence request with no amount. | Isolated committed rehearsal. T11 live model output failed validation without persistence. |
-| DP-0029 | Outside the 30-day v1 filing window, decline with no amount. | Isolated committed rehearsal. T13 live run failed proposal schema validation without persistence. |
+| DP-0020 | Missing `refund_confirmation`, evidence request with no amount. | Isolated committed rehearsal. T16 live two-agent acceptance committed this evidence request with no credit. T11 earlier output failed validation. |
+| DP-0029 | Outside the 30-day v1 filing window, decline with no amount. | Isolated committed rehearsal. T16 real Reviewer requested revision twice; one correction then safe refusal, no write. T13 earlier schema refusal is historical. |
 | DP-0008 | Otherwise eligible amount above SGD 200 requires review, no credit. | Live T11 saved review and actual queue, isolated rehearsal. |
 | DP-0017 | SGD 57.60 credit with source-verified earlier DP-0014 context for CUST-008. | Live T10 commit/memory-only reuse and isolated reference rehearsal. |
 | DP-0003 | Exactly SGD 200 is eligible. Inject +1 minor unit, reject, correct once. | Labelled scripted fault with real isolated PostgreSQL. Live T08 fault instead stopped safely after malformed correction. |
@@ -112,7 +114,9 @@ There is no mandatory Approve click or manual adjudication feature.
 
 These outcomes come from the inspected source policies and test evidence.
 Expected-result fixtures stay test-only and never enter a live prompt or tool.
-A normal model can produce malformed output and fail visibly. Do not edit a
+A normal model can produce malformed output or a conservative Reviewer objection
+and fail visibly. DP-0029 demonstrates a false-positive semantic challenge after
+a terminal filing-window rule; its refusal is preserved, not silently overridden. Do not edit a
 trace, change policy or retry indefinitely to force a desired recording.
 
 Recovery uses the original full request, after inspecting the saved run ID:
@@ -129,7 +133,17 @@ new idempotency key after an uncertain acknowledgement. CLI exit 0 means
 confirmed persistence, exit 1 a refusal/failure, exit 2 invalid input/config.
 Memory status is separate from action success.
 
-## Evidence to inspect
+## T16 two-agent evidence
+
+- [Actual accepted workflow](../../dispute-demo/docs/evidence/t16-live-accepted.json): DP-0020, two separate live calls, critic/Reviewer acceptance and committed evidence request.
+- [Actual feedback loop and refusal](../../dispute-demo/docs/evidence/t16-live-refusal.json): DP-0029, four real calls, one correction, no write.
+- [Exact recovery](../../dispute-demo/docs/evidence/t16-recovery.json): same DP-0020 decision, zero model calls.
+- [Isolated replay](../../dispute-demo/docs/evidence/t16-isolated-replay.json): DP-0020 uses an explicitly scripted Reviewer objection, revised proposal, critic and Reviewer recheck, then real isolated commit. DP-0003 retains the separate critic fault. Both cycles keep all four outcomes and memory verification.
+- [Full matrix](../../dispute-demo/docs/evidence/t16-verification.json): 298 application + 16 reference tests.
+
+Current runtime is on feature branch `codex/t14-t16-two-agent-reviewer`; check out that branch for this revision until it is reviewed and merged. Live T16 used `--no-memory`; combined two-agent memory behavior is verified by isolated reference tests. Earlier live memory evidence remains dated separately.
+
+## Historical evidence to inspect
 
 - [Live workflow](../../dispute-demo/docs/evidence/t08-live-workflow.json): source, proposal, critic, commit, recovery and safe refusal.
 - [Live advisory memory](../../dispute-demo/docs/evidence/t10-verified-memory.json): verified prior receipt, new result and action-free memory retry.

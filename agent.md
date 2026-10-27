@@ -5,7 +5,7 @@
 ## Start each task
 
 1. Read context.md first, ROADMAP.md second, and this entire file third. Then read the applicable task-specific sources below and scoped `AGENTS.md` files before planning implementation, editing files, running project code/tests, or calling services. Read-only tools needed to locate and read the instructions are allowed during bootstrap.
-2. Locate the **single assigned task ID** (T00–T13 or A01). Verify its prerequisites against actual source and test evidence.
+2. Locate the **single assigned task ID** (T00–T16 or A01). Verify its prerequisites against actual source and test evidence.
 3. Inspect existing code, policies, schemas, migrations and tests before editing. Suggested file paths and dated reports are not proof a component exists.
 4. For roadmap work, if no task is assigned, identify the next dependency-ready task and report it. Do not assume permission to execute the whole roadmap. When explicitly asked to choose and implement the next task, select one task only. A specific user request outside the roadmap remains authorized work; complete it without inventing a task ID or starting unrelated roadmap tasks.
 5. The dated Open_Agent_Hackathon_Progress reports are historical evidence. Do not use their obsolete ticket numbers as the active backlog.
@@ -16,6 +16,8 @@ Read the applicable rows before performing that work; these supplement the three
 
 | Task | Read first |
 |---|---|
+| T14–T15 independent Reviewer and controller | [Reviewer](./dispute-demo/app/reviewer.py), [feedback contract](./dispute-demo/app/reviewer_contract.py), [Investigator](./dispute-demo/app/investigator.py), [controller](./dispute-demo/app/orchestrator.py), policy/critic/writer contracts and [two-agent tests](./dispute-demo/tests/test_two_agent.py). Preserve the shared correction bound and exact-request recovery. |
+| T16 evidence and submission refresh | [Submission package](./docs/submission/README.md), [requirements audit](./docs/competition.md), UI/source/replay code, dated live evidence and current media. Distinguish real roles, scripted rehearsal and organizer approval. |
 | Post-merge documentation/alignment | The user-supplied alignment brief, [README.md](./README.md), [TEAM_SETUP.md](./TEAM_SETUP.md), the current prototype modules/tests listed below and the [Jira preview](./docs/planning/JIRA_POST_MERGE_CHANGESET.md) created in the 2026-10-27 pass. Compare current source with reviewed PR #4; preserve newer work and dated evidence. |
 | Shared contracts / T02 typed retrieval | [schemas.py](./dispute-demo/app/schemas.py), [contract reference](./dispute-demo/docs/contracts.md), [schema tests](./dispute-demo/tests/test_schemas.py), existing retrieval and [memory_service.py](./dispute-demo/agent/memory_service.py). Preserve transaction `customer_id`; keep typed history separate from current-case collections and unsupported revision/storage states explicit. |
 | T03 policy integration | Existing [policy_engine.py](./dispute-demo/agent/policy_engine.py), canonical schemas, contract reference, both source policies, generator and test-only fixtures. Integrate the prototype; do not create a second independent evaluator. |
@@ -44,7 +46,7 @@ Existing uncommitted changes may belong to the user. Inspect the working tree af
 - Keep all records/actions synthetic. Distinguish settlement refunds/reversals from a new simulated provisional-credit effect; money uses integer minor units.
 - Keep expected-result fixtures test-only. Do not put them in runtime tools, model prompts, memory or retrieval.
 - Keep credentials, arbitrary SQL and direct write access away from models. Validate allowlisted tool requests in application code.
-- Deterministic rules, mandatory critic checks and commit-time transactional safeguards are binding. An optional second LLM cannot overrule them.
+- Deterministic rules, mandatory critic checks and commit-time transactional safeguards are binding. The mandatory independent Reviewer cannot overrule them.
 - Preserve four business outcomes and selective human review: ordinary policy-permitted credit, evidence requests and declines are autonomous. Mandatory policy review excludes credit; advisory history is not a hold. Do not adopt the prototype's three-claim count or add a fifth business outcome. A critic verdict is not a persisted queue entry.
 - Refuse unsupported credit, stale state, invented evidence and duplicate effective actions. On a database failure, report not persisted rather than pretending review was recorded.
 - H-MEM is advisory and source-linked. Verify recall against source records; save final summaries after commit and never repeat an action to retry memory storage.

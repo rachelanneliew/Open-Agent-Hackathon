@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "python": "3.13.7",
+  "mode": "isolated_integrations",
+  "live_zetaris": "NOT RUN",
+  "live_nightshift": "NOT RUN",
+  "suites": [
+    {
+      "root": "tests",
+      "collected": 298,
+      "run": 298,
+      "passed": 298,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "collection_errors": 0
+    },
+    {
+      "root": "agent/tests",
+      "collected": 16,
+      "run": 16,
+      "passed": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "collection_errors": 0
+    }
+  ]
+}

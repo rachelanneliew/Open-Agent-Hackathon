@@ -1517,3 +1517,49 @@ one-source/no-USL limitation and historical fallback package.
   locating the runtime import check in the verifier. No acceptance from that search.
 - Live Nightshift/Zetaris and portal checks **NOT RUN** for T15; next authorized
   task T16 supplies live evidence and refreshed public artifacts.
+
+### 27 October 2026 — T16 verification and package refresh
+
+- Added the ordered UI collaboration trace: Investigator, pure critic, independent
+  Reviewer, correction source, final same-proposal gate and actual writer result.
+  Bounded model feedback remains text, never HTML. Exact recovery calls no agent.
+- JDBC preflight: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/preflight.py --jdbc`
+  from getting-started: SELECT 1, driver and inventory PASS; exit 1 solely for
+  the two missing REST-key checks. No credential or environment changes.
+- Live UI on loopback 8932: DP-0029 run `ae176ff7-6cbc-427c-bdc3-f060c4c86fd0`
+  used four real calls, one correction, and stopped on unresolved Reviewer
+  feedback with no write. DP-0020 run `c876d95c-aed4-42a6-877e-95de4af8ba7f`
+  used two real calls and committed an evidence request, no credit. Both roles
+  returned `nvidia/nemotron-3.5-bolt-e4b`; this is metadata, not attestation.
+- `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m app.main --retry-request outputs/runs/c876d95c-aed4-42a6-877e-95de4af8ba7f.request.json --no-memory`: PASS reused original decision, zero calls.
+- `python3 /private/tmp/t16-final-db-check.py`: PASS six source fingerprints and
+  restricted writer role unchanged; 4 decisions, 2 credits, 4 audits, 1 review,
+  revision 17. Delta is exactly one evidence request plus audit.
+- `HMEM_NODE=/Users/joellui/.nvm/versions/node/v24.13.0/bin/node PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m demo.verify --integrations`: PASS **298 + 16**, zero skips/failures/errors.
+- Same environment with `-m demo.replay --reset-isolated-demo`: PASS two owned
+  disposable cycles, each 8 decisions/4 credits/1 review. DP-0020 now scripts a
+  Reviewer objection, new proposal, critic/reviewer recheck and guarded commit.
+  DP-0003 retains the separate +1 critic fault. No shared-state reset.
+- Fresh local clone of runtime commit `b6d71f2` at `/private/tmp/t16-clean-repro`: new
+  venv, `pip install -r requirements-runtime.txt`, hash-verified `scripts/setup_hmem.py`,
+  pinned `npm ci --ignore-scripts --no-audit --no-fund`; no private config copied.
+  `-m demo.replay --reset-isolated-demo`: PASS twice. `-m demo.verify`: main
+  298 collected/222 passed/76 explicit skips; reference 16/4 passed/12 skips.
+  Both roots zero failures/errors.
+- `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/validate_synthetic_data.py`: PASS
+  42 transactions, 54 settlements, 40 disputes, 81 evidence, 16 rules and hashes.
+  `node --check dispute-demo/app/web/app.js` and `git diff --check`: PASS.
+- Eight editable slides and a 197.5-second narrated video refresh the package;
+  existing deck/video/transcript/captions are unchanged. All slides inspected,
+  all final PPTX reimport renders byte-identical, package/geometry/font/import
+  checks zero findings. All nine video frames inspected; full decode 5925 frames
+  passed with non-silent AAC audio. Native PowerPoint/human listening NOT RUN.
+- Initial deck invocation lacked the runtime font inventory environment; supplying
+  the documented RUNTIME_NODE_MODULES resolved it. Sandboxed speech produced an
+  empty stream; approved local speech access produced the verified narration.
+  Two malformed orchestration calls executed nothing and were corrected.
+- Live memory combined with both agents, fresh-machine licensed-stack bootstrap
+  and portal submission/receipt NOT RUN. Existing live memory remains dated;
+  combined memory is proven by the isolated reference suite. B2 implementation
+  gap addressed, organizer approval unclaimed. One datasource/no USL unchanged.
+- Public-access/media playback final checks and Jira closure follow below.

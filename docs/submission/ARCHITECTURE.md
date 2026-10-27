@@ -1,6 +1,7 @@
 # Architecture and technology evidence
 
-One model investigator proposes a structured outcome. Deterministic code owns
+A Nightshift Investigator proposes a structured outcome. A separate Nightshift
+Reviewer challenges it after the deterministic critic. Deterministic code owns
 policy, validation, bounded execution and persistence. All records and effects
 are synthetic.
 
@@ -16,7 +17,10 @@ flowchart TD
     P --> N[Nightshift investigator]
     N --> K[Deterministic critic]
     K -->|one correction maximum| N
-    K -->|accepted proposal| W[Restricted PostgreSQL action service]
+    K -->|accepted proposal| R[Independent Nightshift Reviewer]
+    R -->|shared one correction allowance| N
+    R -->|accept same final proposal| F[Final critic and reviewer binding gate]
+    F --> W[Restricted PostgreSQL action service]
     W --> G[Lock revision and reread source, policy and critique]
     G --> D[(Atomic decision, optional credit, audit and review)]
     D --> H[Post-commit H-MEM summary]
@@ -25,10 +29,14 @@ flowchart TD
 ```
 
 The investigator never executes SQL or writes to the database. The controller
-allows four model requests, three reads and 300 seconds by default, with at most
-one critic correction. A failed model or required source read cannot create a
+allows six shared model requests, three reads and 300 seconds by default, with at most
+one correction shared by critic and Reviewer. A failed model or required source read cannot create a
 credit or fictitious review item. Rationale currently must match canonical
-policy explanations. The deterministic critic is not a second language model.
+policy explanations. The deterministic critic remains code; the Reviewer is a
+separate completion with a distinct prompt. Both roles may use the same model.
+The ordinary controller enforces review acceptance; the unchanged writer does
+not independently validate Reviewer feedback. Exact saved-request recovery
+reuses the original accepted request without calling either agent.
 
 The writer uses an unprivileged login and a global revision guard enforced for
 source and action writers. It compares fresh facts, reevaluates policy and
@@ -46,7 +54,7 @@ confirmed decision. Retrying memory cannot invoke an action.
 | Technology | Working use and evidence | Limit |
 |---|---|---|
 | Zetaris | JDBC retrieval of source facts, current policy, revision-bounded bundle and prior receipts. [T08](../../dispute-demo/docs/evidence/t08-live-workflow.json), [T10](../../dispute-demo/docs/evidence/t10-verified-memory.json). | One PostgreSQL datasource. No three-source federation or USL. REST is unconfigured. |
-| Meterless Nightshift | Primary live model transport for strict proposals and one correction. [T07](../../dispute-demo/docs/evidence/t07-live-DP-0014.json) and T08/T10/T11. | Malformed output can fail validation. No deterministic replacement in normal runtime. |
+| Meterless Nightshift | Primary live model transport for separate proposals and independent review. [T16 accepted](../../dispute-demo/docs/evidence/t16-live-accepted.json) and [T16 refusal](../../dispute-demo/docs/evidence/t16-live-refusal.json). [T07](../../dispute-demo/docs/evidence/t07-live-DP-0014.json) and T08/T10/T11. | Malformed output can fail validation. No deterministic replacement in normal runtime. |
 | NVIDIA | Requested `meterless/auto`, observed response model `nvidia/nemotron-3.5-bolt-e4b` in actual model metadata. | Returned label is not independent provider attestation. No claim of award eligibility from model discovery alone. |
 | Meterless H-MEM | Official reference pinned at `1742dec56a66e58eef9dda2d2b865823758ca8cd`, actual persistent storage/retrieval and source verification. [T09](../../dispute-demo/docs/evidence/t09-reference-memory.json), T10, T12. | Deterministic mock embeddings. Dreaming/sleep/conflict workflows are not implemented. No formal approval of exact revision found. |
 | PostgreSQL | Protected rereads, atomic all-outcome decisions, concurrency constraints and durable recovery. [T12 matrix](../../dispute-demo/docs/reliability.md). | Trusted administrator remains a privileged boundary. No actual banking integration. |
@@ -81,7 +89,7 @@ confirm contributor permission and any earlier-work declaration.
 ## Delivery limitations
 
 The [authenticated audit](../competition.md) records leader-only submission
-access, detailed Track 3 page access, two-agent interpretation and exact-reference
+access, detailed Track 3 page access, organizer acceptance and exact-reference
 endorsement limits. New Zetaris scoring guidance asks for three datasources and
 USL demonstrations. The present one-datasource workflow does not satisfy that
 scoring example. Future work can add richer evidence interpretation, production

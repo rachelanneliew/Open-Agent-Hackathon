@@ -1,0 +1,473 @@
+{
+  "state": {
+    "run_id": "ae176ff7-6cbc-427c-bdc3-f060c4c86fd0",
+    "phase": "failed",
+    "model_calls": 4,
+    "tool_calls": 1,
+    "proposal_revision": 1,
+    "reference": {
+      "dispute_id": "DP-0029",
+      "snapshot_id": "516e5197-d670-4f77-8891-1eaecf2e9c94",
+      "evaluation_at": "2026-10-27T10:16:55.172492Z",
+      "policy_version": "v1",
+      "source_revision": 14
+    },
+    "commit_result": null,
+    "error": "reviewer_unresolved_no_action"
+  },
+  "events": [
+    {
+      "kind": "facts",
+      "reference": {
+        "dispute_id": "DP-0029",
+        "snapshot_id": "516e5197-d670-4f77-8891-1eaecf2e9c94",
+        "evaluation_at": "2026-10-27T10:16:55.172492Z",
+        "policy_version": "v1",
+        "source_revision": 14
+      },
+      "transactions": [
+        {
+          "transaction_id": "TX-0029",
+          "order_id": "OR-0029",
+          "customer_id": "CUST-012",
+          "merchant_id": "MER-004",
+          "amount_minor": 13000,
+          "currency": "SGD",
+          "transaction_status": "captured",
+          "occurred_at": "2026-08-31T23:59:58Z",
+          "recorded_at": "2026-09-01T00:00:58Z"
+        }
+      ],
+      "settlements": [
+        {
+          "settlement_id": "ST-0041",
+          "transaction_id": "TX-0029",
+          "movement_type": "capture",
+          "amount_minor": 13000,
+          "currency": "SGD",
+          "settlement_status": "completed",
+          "occurred_at": "2026-09-01T00:59:58Z",
+          "recorded_at": "2026-09-01T01:00:58Z"
+        }
+      ],
+      "evidence_ids": [
+        "EV-0058",
+        "EV-0059"
+      ],
+      "issues": [],
+      "prior_decisions": []
+    },
+    {
+      "kind": "policy",
+      "result": {
+        "reference": {
+          "dispute_id": "DP-0029",
+          "snapshot_id": "516e5197-d670-4f77-8891-1eaecf2e9c94",
+          "evaluation_at": "2026-10-27T10:16:55.172492Z",
+          "policy_version": "v1",
+          "source_revision": 14
+        },
+        "allowed_outcomes": [
+          "decline"
+        ],
+        "blocked_outcomes": [
+          "provisional_credit",
+          "request_evidence",
+          "human_review"
+        ],
+        "rule_checks": [
+          {
+            "policy_rule_id": "v1-DATA_INTEGRITY",
+            "status": "not_matched",
+            "explanation": "Linked captures and completed balances are consistent; failed movements excluded.",
+            "evidence_ids": []
+          },
+          {
+            "policy_rule_id": "v1-FILING_WINDOW",
+            "status": "matched",
+            "explanation": "Primary transaction TX-0029: filing age 30 days, 0:00:01; inclusive limit 30 days.",
+            "evidence_ids": []
+          },
+          {
+            "policy_rule_id": "v1-ALREADY_REFUNDED",
+            "status": "not_evaluated",
+            "explanation": "Earlier terminal rule matched.",
+            "evidence_ids": []
+          },
+          {
+            "policy_rule_id": "v1-CONFLICTING_EVIDENCE",
+            "status": "not_evaluated",
+            "explanation": "Earlier terminal rule matched.",
+            "evidence_ids": []
+          },
+          {
+            "policy_rule_id": "v1-MISSING_EVIDENCE",
+            "status": "not_evaluated",
+            "explanation": "Earlier terminal rule matched.",
+            "evidence_ids": []
+          },
+          {
+            "policy_rule_id": "v1-UNSUPPORTED",
+            "status": "not_evaluated",
+            "explanation": "Earlier terminal rule matched.",
+            "evidence_ids": []
+          },
+          {
+            "policy_rule_id": "v1-REVIEW_THRESHOLD",
+            "status": "not_evaluated",
+            "explanation": "Earlier terminal rule matched.",
+            "evidence_ids": []
+          },
+          {
+            "policy_rule_id": "v1-APPROVE",
+            "status": "not_evaluated",
+            "explanation": "Earlier terminal rule matched.",
+            "evidence_ids": []
+          }
+        ],
+        "currency": "SGD",
+        "credit_limit_minor": null,
+        "missing_evidence": [],
+        "data_issues": []
+      }
+    },
+    {
+      "kind": "investigator",
+      "result": {
+        "status": "proposal",
+        "message": "Unapproved model proposal; mandatory critic required.",
+        "requested_route": "meterless/auto",
+        "proposal": {
+          "proposal_id": "3ec23f25-4f0b-48a3-a017-66d35a0b4beb",
+          "run_id": "ae176ff7-6cbc-427c-bdc3-f060c4c86fd0",
+          "reference": {
+            "dispute_id": "DP-0029",
+            "snapshot_id": "516e5197-d670-4f77-8891-1eaecf2e9c94",
+            "evaluation_at": "2026-10-27T10:16:55.172492Z",
+            "policy_version": "v1",
+            "source_revision": 14
+          },
+          "recommendation": {
+            "outcome": "decline",
+            "currency": "SGD",
+            "amount_minor": null
+          },
+          "rationale": "v1-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv1-FILING_WINDOW: Primary transaction TX-0029: filing age 30 days, 0:00:01; inclusive limit 30 days.",
+          "evidence_ids": [],
+          "policy_rule_ids": [
+            "v1-DATA_INTEGRITY",
+            "v1-FILING_WINDOW"
+          ],
+          "missing_evidence": [],
+          "revision": 0
+        },
+        "read_request": null,
+        "uncertainties": [],
+        "response_model": "nvidia/nemotron-3.5-bolt-e4b",
+        "validation_failure": null,
+        "provider_error": null
+      },
+      "run_id": "ae176ff7-6cbc-427c-bdc3-f060c4c86fd0",
+      "proposal_id": "3ec23f25-4f0b-48a3-a017-66d35a0b4beb",
+      "reference": {
+        "dispute_id": "DP-0029",
+        "snapshot_id": "516e5197-d670-4f77-8891-1eaecf2e9c94",
+        "evaluation_at": "2026-10-27T10:16:55.172492Z",
+        "policy_version": "v1",
+        "source_revision": 14
+      },
+      "revision": 0,
+      "model_call": 1
+    },
+    {
+      "kind": "critic",
+      "result": {
+        "proposal_id": "3ec23f25-4f0b-48a3-a017-66d35a0b4beb",
+        "reference": {
+          "dispute_id": "DP-0029",
+          "snapshot_id": "516e5197-d670-4f77-8891-1eaecf2e9c94",
+          "evaluation_at": "2026-10-27T10:16:55.172492Z",
+          "policy_version": "v1",
+          "source_revision": 14
+        },
+        "verdict": "accepted",
+        "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+        "failed_checks": []
+      },
+      "run_id": "ae176ff7-6cbc-427c-bdc3-f060c4c86fd0",
+      "proposal_id": "3ec23f25-4f0b-48a3-a017-66d35a0b4beb",
+      "revision": 0
+    },
+    {
+      "kind": "reviewer",
+      "result": {
+        "status": "reviewed",
+        "run_id": "ae176ff7-6cbc-427c-bdc3-f060c4c86fd0",
+        "proposal_id": "3ec23f25-4f0b-48a3-a017-66d35a0b4beb",
+        "reference": {
+          "dispute_id": "DP-0029",
+          "snapshot_id": "516e5197-d670-4f77-8891-1eaecf2e9c94",
+          "evaluation_at": "2026-10-27T10:16:55.172492Z",
+          "policy_version": "v1",
+          "source_revision": 14
+        },
+        "attempt": 0,
+        "requested_route": "meterless/auto",
+        "feedback": {
+          "verdict": "revise",
+          "issue_codes": [
+            "conflicting_evidence"
+          ],
+          "evidence_ids": [
+            "EV-0059"
+          ],
+          "policy_rule_ids": [
+            "v1-DATA_INTEGRITY",
+            "v1-FILING_WINDOW"
+          ],
+          "feedback": "Evidence EV-0059 states the merchant committed to a full refund but does not confirm payment movement completion, which contradicts a simple decline based only on data integrity and filing window.",
+          "uncertainties": [
+            "None"
+          ]
+        },
+        "response_model": "nvidia/nemotron-3.5-bolt-e4b",
+        "error": null
+      },
+      "model_call": 2
+    },
+    {
+      "kind": "correction",
+      "source": "independent_reviewer",
+      "proposal_id": "3ec23f25-4f0b-48a3-a017-66d35a0b4beb",
+      "revision": 1
+    },
+    {
+      "kind": "facts",
+      "reference": {
+        "dispute_id": "DP-0029",
+        "snapshot_id": "516e5197-d670-4f77-8891-1eaecf2e9c94",
+        "evaluation_at": "2026-10-27T10:16:55.172492Z",
+        "policy_version": "v1",
+        "source_revision": 14
+      },
+      "transactions": [
+        {
+          "transaction_id": "TX-0029",
+          "order_id": "OR-0029",
+          "customer_id": "CUST-012",
+          "merchant_id": "MER-004",
+          "amount_minor": 13000,
+          "currency": "SGD",
+          "transaction_status": "captured",
+          "occurred_at": "2026-08-31T23:59:58Z",
+          "recorded_at": "2026-09-01T00:00:58Z"
+        }
+      ],
+      "settlements": [
+        {
+          "settlement_id": "ST-0041",
+          "transaction_id": "TX-0029",
+          "movement_type": "capture",
+          "amount_minor": 13000,
+          "currency": "SGD",
+          "settlement_status": "completed",
+          "occurred_at": "2026-09-01T00:59:58Z",
+          "recorded_at": "2026-09-01T01:00:58Z"
+        }
+      ],
+      "evidence_ids": [
+        "EV-0058",
+        "EV-0059"
+      ],
+      "issues": [],
+      "prior_decisions": []
+    },
+    {
+      "kind": "policy",
+      "result": {
+        "reference": {
+          "dispute_id": "DP-0029",
+          "snapshot_id": "516e5197-d670-4f77-8891-1eaecf2e9c94",
+          "evaluation_at": "2026-10-27T10:16:55.172492Z",
+          "policy_version": "v1",
+          "source_revision": 14
+        },
+        "allowed_outcomes": [
+          "decline"
+        ],
+        "blocked_outcomes": [
+          "provisional_credit",
+          "request_evidence",
+          "human_review"
+        ],
+        "rule_checks": [
+          {
+            "policy_rule_id": "v1-DATA_INTEGRITY",
+            "status": "not_matched",
+            "explanation": "Linked captures and completed balances are consistent; failed movements excluded.",
+            "evidence_ids": []
+          },
+          {
+            "policy_rule_id": "v1-FILING_WINDOW",
+            "status": "matched",
+            "explanation": "Primary transaction TX-0029: filing age 30 days, 0:00:01; inclusive limit 30 days.",
+            "evidence_ids": []
+          },
+          {
+            "policy_rule_id": "v1-ALREADY_REFUNDED",
+            "status": "not_evaluated",
+            "explanation": "Earlier terminal rule matched.",
+            "evidence_ids": []
+          },
+          {
+            "policy_rule_id": "v1-CONFLICTING_EVIDENCE",
+            "status": "not_evaluated",
+            "explanation": "Earlier terminal rule matched.",
+            "evidence_ids": []
+          },
+          {
+            "policy_rule_id": "v1-MISSING_EVIDENCE",
+            "status": "not_evaluated",
+            "explanation": "Earlier terminal rule matched.",
+            "evidence_ids": []
+          },
+          {
+            "policy_rule_id": "v1-UNSUPPORTED",
+            "status": "not_evaluated",
+            "explanation": "Earlier terminal rule matched.",
+            "evidence_ids": []
+          },
+          {
+            "policy_rule_id": "v1-REVIEW_THRESHOLD",
+            "status": "not_evaluated",
+            "explanation": "Earlier terminal rule matched.",
+            "evidence_ids": []
+          },
+          {
+            "policy_rule_id": "v1-APPROVE",
+            "status": "not_evaluated",
+            "explanation": "Earlier terminal rule matched.",
+            "evidence_ids": []
+          }
+        ],
+        "currency": "SGD",
+        "credit_limit_minor": null,
+        "missing_evidence": [],
+        "data_issues": []
+      }
+    },
+    {
+      "kind": "investigator",
+      "result": {
+        "status": "proposal",
+        "message": "Unapproved model proposal; mandatory critic required.",
+        "requested_route": "meterless/auto",
+        "proposal": {
+          "proposal_id": "314c4ccb-d710-4944-b71c-24831f477685",
+          "run_id": "ae176ff7-6cbc-427c-bdc3-f060c4c86fd0",
+          "reference": {
+            "dispute_id": "DP-0029",
+            "snapshot_id": "516e5197-d670-4f77-8891-1eaecf2e9c94",
+            "evaluation_at": "2026-10-27T10:16:55.172492Z",
+            "policy_version": "v1",
+            "source_revision": 14
+          },
+          "recommendation": {
+            "outcome": "decline",
+            "currency": "SGD",
+            "amount_minor": null
+          },
+          "rationale": "v1-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv1-FILING_WINDOW: Primary transaction TX-0029: filing age 30 days, 0:00:01; inclusive limit 30 days.",
+          "evidence_ids": [],
+          "policy_rule_ids": [
+            "v1-DATA_INTEGRITY",
+            "v1-FILING_WINDOW"
+          ],
+          "missing_evidence": [],
+          "revision": 1
+        },
+        "read_request": null,
+        "uncertainties": [],
+        "response_model": "nvidia/nemotron-3.5-bolt-e4b",
+        "validation_failure": null,
+        "provider_error": null
+      },
+      "run_id": "ae176ff7-6cbc-427c-bdc3-f060c4c86fd0",
+      "proposal_id": "314c4ccb-d710-4944-b71c-24831f477685",
+      "reference": {
+        "dispute_id": "DP-0029",
+        "snapshot_id": "516e5197-d670-4f77-8891-1eaecf2e9c94",
+        "evaluation_at": "2026-10-27T10:16:55.172492Z",
+        "policy_version": "v1",
+        "source_revision": 14
+      },
+      "revision": 1,
+      "model_call": 3
+    },
+    {
+      "kind": "critic",
+      "result": {
+        "proposal_id": "314c4ccb-d710-4944-b71c-24831f477685",
+        "reference": {
+          "dispute_id": "DP-0029",
+          "snapshot_id": "516e5197-d670-4f77-8891-1eaecf2e9c94",
+          "evaluation_at": "2026-10-27T10:16:55.172492Z",
+          "policy_version": "v1",
+          "source_revision": 14
+        },
+        "verdict": "accepted",
+        "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+        "failed_checks": []
+      },
+      "run_id": "ae176ff7-6cbc-427c-bdc3-f060c4c86fd0",
+      "proposal_id": "314c4ccb-d710-4944-b71c-24831f477685",
+      "revision": 1
+    },
+    {
+      "kind": "reviewer",
+      "result": {
+        "status": "reviewed",
+        "run_id": "ae176ff7-6cbc-427c-bdc3-f060c4c86fd0",
+        "proposal_id": "314c4ccb-d710-4944-b71c-24831f477685",
+        "reference": {
+          "dispute_id": "DP-0029",
+          "snapshot_id": "516e5197-d670-4f77-8891-1eaecf2e9c94",
+          "evaluation_at": "2026-10-27T10:16:55.172492Z",
+          "policy_version": "v1",
+          "source_revision": 14
+        },
+        "attempt": 1,
+        "requested_route": "meterless/auto",
+        "feedback": {
+          "verdict": "revise",
+          "issue_codes": [
+            "conflicting_evidence"
+          ],
+          "evidence_ids": [
+            "EV-0059"
+          ],
+          "policy_rule_ids": [
+            "v1-DATA_INTEGRITY",
+            "v1-FILING_WINDOW"
+          ],
+          "feedback": "Evidence EV-0059 states the merchant committed to a full refund but does not confirm payment movement completion, which contradicts a blanket decline based only on data integrity and filing window.",
+          "uncertainties": [
+            "None"
+          ]
+        },
+        "response_model": "nvidia/nemotron-3.5-bolt-e4b",
+        "error": null
+      },
+      "model_call": 4
+    },
+    {
+      "kind": "failed",
+      "code": "reviewer_unresolved_no_action",
+      "persisted": false
+    }
+  ],
+  "mode": "live",
+  "memory_mode": "no_memory",
+  "persisted": false,
+  "recovery_request": null
+}

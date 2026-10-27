@@ -1,0 +1,171 @@
+1
+00:00:00,000 --> 00:00:07,036
+This is the synthetic card dispute workbench from team bob the builder, for Track Three, Reasoning Architecture.
+
+2
+00:00:07,036 --> 00:00:10,761
+Two separately invoked agents investigate and challenge a proposal.
+
+3
+00:00:10,761 --> 00:00:12,831
+Deterministic code protects every action.
+
+4
+00:00:12,831 --> 00:00:15,728
+All records and financial effects are fictional.
+
+5
+00:00:15,728 --> 00:00:19,867
+This edited walkthrough uses actual application captures and dated evidence.
+
+6
+00:00:20,267 --> 00:00:23,886
+A dispute analyst needs more than a plausible answer.
+
+7
+00:00:23,886 --> 00:00:30,321
+The application checks source evidence, existing refunds and the policy that applied when the case opened.
+
+8
+00:00:30,321 --> 00:00:33,941
+The workbench separates the recommendation from what actually persisted.
+
+9
+00:00:33,941 --> 00:00:38,767
+Ordinary outcomes run automatically, while policy exceptions enter a saved review queue.
+
+10
+00:00:39,167 --> 00:00:41,176
+Zetaris supplies a fresh snapshot.
+
+11
+00:00:41,176 --> 00:00:43,990
+The Investigator proposes an outcome through Nightshift.
+
+12
+00:00:43,990 --> 00:00:50,019
+A deterministic critic checks policy and citations before a separate Nightshift Reviewer challenges the evidence.
+
+13
+00:00:50,019 --> 00:00:53,234
+One correction token is shared across both checks.
+
+14
+00:00:53,234 --> 00:01:00,067
+Both must accept the same final proposal before the restricted writer rechecks the source and commits atomically.
+
+15
+00:01:00,467 --> 00:01:04,818
+Here we selected case D P twenty nine in the actual live workbench.
+
+16
+00:01:04,818 --> 00:01:09,840
+The case has a one hundred and thirty Singapore dollar claim under policy version one.
+
+17
+00:01:09,840 --> 00:01:10,844
+We clicked Investigate.
+
+18
+00:01:10,844 --> 00:01:16,200
+The running state reports no effect while the controller obtains source facts and calls the agents.
+
+19
+00:01:16,600 --> 00:01:19,163
+In this real run the Reviewer objected.
+
+20
+00:01:19,163 --> 00:01:23,923
+The Investigator revised once, the critic accepted again, and the Reviewer objected again.
+
+21
+00:01:23,923 --> 00:01:26,485
+Four live calls ended without a write.
+
+22
+00:01:26,485 --> 00:01:31,611
+The objection appears overly conservative because the filing window already selected a terminal outcome.
+
+23
+00:01:31,611 --> 00:01:33,076
+We preserve that refusal.
+
+24
+00:01:33,076 --> 00:01:39,300
+The second agent can block an action, but cannot change policy or invent a review queue entry.
+
+25
+00:01:39,700 --> 00:01:44,173
+For case D P twenty, the Investigator requested missing refund confirmation.
+
+26
+00:01:44,173 --> 00:01:48,647
+The critic accepted, and the independent Reviewer accepted the same proposal.
+
+27
+00:01:48,647 --> 00:01:54,340
+The final gate passed and PostgreSQL committed the evidence request, with zero credit effect.
+
+28
+00:01:54,340 --> 00:01:56,780
+This used two real Nightshift calls.
+
+29
+00:01:56,780 --> 00:02:02,067
+Exact saved request recovery later reused the same decision with no model calls.
+
+30
+00:02:02,467 --> 00:02:05,621
+This separate rehearsal deliberately scripts a Reviewer objection.
+
+31
+00:02:05,621 --> 00:02:13,508
+The Investigator revises with a new proposal identity, the critic checks again, and the Reviewer accepts before the guarded write.
+
+32
+00:02:13,508 --> 00:02:19,424
+These are scripted model responses with real isolated PostgreSQL and the pinned H MEM reference.
+
+33
+00:02:19,424 --> 00:02:25,733
+Two fresh cycles each produced eight decisions, four credits and one review, covering all four outcomes.
+
+34
+00:02:26,133 --> 00:02:32,375
+Two hundred and ninety eight application tests and sixteen reference checks passed with no skips.
+
+35
+00:02:32,375 --> 00:02:36,120
+A fresh clone reproduced the rehearsal without private configuration.
+
+36
+00:02:36,120 --> 00:02:40,280
+Both live roles returned the Nemotron model label shown here.
+
+37
+00:02:40,280 --> 00:02:43,609
+That is response metadata, not independent provider attestation.
+
+38
+00:02:43,609 --> 00:02:47,770
+H MEM remains source verified and advisory, with mock embeddings.
+
+39
+00:02:47,770 --> 00:02:50,267
+These live demonstrations explicitly disabled memory.
+
+40
+00:02:50,667 --> 00:02:57,275
+The implementation still uses synthetic document templates, one PostgreSQL datasource and no universal semantic layer.
+
+41
+00:02:57,275 --> 00:03:03,883
+The deck, video, transcript and dated traces preserve these limits and the earlier fallback package.
+
+42
+00:03:03,883 --> 00:03:09,170
+Distinct live agent roles are demonstrated, but organizer acceptance is not claimed.
+
+43
+00:03:09,170 --> 00:03:17,100
+The team leader still must verify playable hosting, contributor declarations, the portal form and the final submission receipt.

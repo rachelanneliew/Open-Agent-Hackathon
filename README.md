@@ -1,6 +1,6 @@
 # Synthetic Card-Dispute Resolution Agent
 
-An analyst selects a fictional card dispute. The application reads evidence through Zetaris, applies versioned policy, obtains a Nightshift proposal, checks it with a deterministic critic and records a simulated outcome atomically in PostgreSQL. Source-verified H-MEM history supplies advisory context.
+An analyst selects a fictional card dispute. The application reads evidence through Zetaris, applies versioned policy, obtains a Nightshift Investigator proposal, checks it with a deterministic critic and a separate Nightshift Reviewer and records a simulated outcome atomically in PostgreSQL. Source-verified H-MEM history supplies advisory context.
 
 **Track 3: Reasoning Architecture. Team: bob the builder.** All data, policies and financial effects are synthetic. Ordinary eligible credit, evidence requests and declines run autonomously. Policy-required review has no credit effect.
 
@@ -20,7 +20,7 @@ Use macOS/Linux, Python 3.10+, Docker and the pinned Node 24.13.0/npm 11.18.0. T
 .venv/bin/python -m demo.verify --integrations
 ```
 
-The rehearsal uses real disposable PostgreSQL and reference H-MEM with **scripted model responses and direct isolated reads**. It makes no live Zetaris/Nightshift call and resets no shared state. T12 passed **267 main + 16 reference/compatibility tests, zero skips**. Dated live receipts separately establish actual integration behavior.
+The rehearsal uses real disposable PostgreSQL and reference H-MEM with **scripted model responses and direct isolated reads**. It makes no live Zetaris/Nightshift call and resets no shared state. T16 passed **298 main + 16 reference tests, zero skips**. Dated live receipts separately establish actual integration behavior.
 
 For the normal live app, follow [TEAM_SETUP](./TEAM_SETUP.md), then run `.venv/bin/python -m app.ui` from `dispute-demo/` and open `http://127.0.0.1:8931`. It needs private service credentials, the licensed Zetaris/JDBC bundle, restricted action access and pinned reference setup. A clone alone does not provision these services. Malformed model output fails visibly without a sample fallback.
 
@@ -37,6 +37,7 @@ For the normal live app, follow [TEAM_SETUP](./TEAM_SETUP.md), then run `.venv/b
 | [Policy v1](./dispute-demo/policies/synthetic_policy_v1.md) / [Policy v2](./dispute-demo/policies/synthetic_policy_v2.md) | Exact fictional dispute rules that the implementation must follow. |
 | [Pure critic](./dispute-demo/docs/critic.md) | T06 validation, supported rationale/citations, correction limits and retired SQLite writer. |
 | [Nightshift investigator](./dispute-demo/docs/investigator.md) | T07 typed model/read envelopes, bounded transport, correction and real read-only inference evidence. |
+| [Independent Reviewer](./dispute-demo/docs/reviewer.md) | Separate role, strict feedback and bounded correction with no write authority. |
 | [Canonical workflow](./dispute-demo/docs/workflow.md) | T08 CLI, coherent fresh reads, bounded transitions, recovery and real persisted acceptance. |
 | [Reliability and reset](./dispute-demo/docs/reliability.md) | Both test roots, failure coverage, explicit isolated reset/replay and evidence labels. |
 | [Analyst workbench](./dispute-demo/docs/analyst-ui.md) | Local UI, persisted review queue, exact-request recovery and memory-only retry. |
@@ -53,6 +54,8 @@ For the current task and its Jira issue, start with the task board in [ROADMAP.m
 
 ## Delivery status
 
-T00–T13 and A01 are complete against the repository acceptance gates. The [submission package](./docs/submission/README.md) contains the checked deck, 3:46 narrated video, walkthrough and owner checklist. **HackOS submission remains unverified and leader-only.** The authenticated deadline is **27 October 2026 23:45 UTC / 28 October 07:45 SGT**. The [requirements audit](./docs/competition.md) records exact access/interpretation blockers, including the two-agent wording and the new three-datasource/USL scoring gap. This implementation has one model investigator, a deterministic critic and one PostgreSQL datasource.
+T00–T16 and A01 are complete against their repository acceptance gates after the T16 checks recorded in the roadmap. The current [submission package](./docs/submission/README.md) includes a two-agent deck, narrated video and dated real acceptance/refusal traces. Historical one-agent artifacts remain available as fallback evidence.
 
-Coding assistants must follow [AGENTS.md](./AGENTS.md) and use stable Jira mappings in the roadmap. The current user goal authorizes sequential completion with a Jira update and commit/push to `origin/main` after each accepted task.
+**HackOS submission remains unverified and leader-only.** The last authenticated deadline was **27 October 2026 23:45 UTC / 28 October 07:45 SGT**. Two separate live model roles are demonstrated; organizer acceptance is not claimed. The one-PostgreSQL-datasource/no-USL scoring gap remains.
+
+This task uses `codex/t14-t16-two-agent-reviewer`. Main is unchanged pending review. Coding assistants must follow [AGENTS.md](./AGENTS.md) and the stable Jira mappings in the roadmap.

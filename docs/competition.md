@@ -67,12 +67,13 @@ synthetic financial outcome. The owner's approved advisory MVP scope remains.
 
 S7 §4 asks for “At least two agents with clear roles.” S6 also emphasizes
 interacting roles and warns against dressing up a single prompt as a system.
-Our architecture is **one model investigator, one deterministic critic and one
-Python controller**. It has real feedback, bounded correction and shared state;
-the critic is not a second LLM. The inspected guidance does not define whether
-a deterministic critic satisfies its agent-count wording. **B2 below remains
-an interpretation question.** Do not silently add an LLM or claim a multi-model
-system to conceal this uncertainty.
+T16 now demonstrates **two separately invoked Nightshift roles**, Investigator
+and Evidence & Risk Reviewer, with distinct prompts and observable feedback.
+The Python critic remains deterministic. [Actual acceptance](../dispute-demo/docs/evidence/t16-live-accepted.json)
+and [actual correction/refusal](../dispute-demo/docs/evidence/t16-live-refusal.json)
+show separate calls; using the same returned model does not make them distinct
+model providers. The earlier one-model implementation gap is addressed. No
+organizer ruling, waiver or formal compliance approval is claimed.
 
 S4 recommends a programmatic entry point, bounded runs, documented setup,
 observable traces, three example pairs and an offline fallback. The project
@@ -101,7 +102,7 @@ do not relabel the existing bundle view as a USL or claim full sponsor marks.
 | ID | Verified gap | Resolution owner / next evidence |
 |---|---|---|
 | B1 | S9 exposes no editable form to this member. Rachel Anne Liew is shown as team leader for **bob the builder**. Submission is not started. | Platform-designated submission owner: Rachel. Team should confirm she will submit; no Jira reassignment or message was sent. Leader checks actual form fields, upload limits, accepted deck format, hosting and final receipt. |
-| B2 | S7's two-agent wording is not explicit about a deterministic critic. | Submission owner obtains organizer clarification or submits an accurate architecture explanation with this uncertainty disclosed. No rule waiver is claimed. |
+| B2 | T16 closes the one-model implementation gap with distinct live Investigator/Reviewer calls and feedback. | Owner presents the dated evidence; organizer acceptance remains unverified. The deterministic critic is not counted as a language model. |
 | B3 | S6 mentions individual challenge pages. The active event link from authenticated Hackathons redirected to Dashboard; resources offered a Track 3 summary but no separate detailed challenge control. | Leader supplies the exact detailed Track 3 URL if one exists; check extra constraints before submission. Summary access is verified, exhaustive challenge-page access is not. |
 | B4 | No explicit approval names this exact H-MEM reference revision. H-MEM is permitted, source references are endorsed, and storage/retrieval minimum is supported by S5. | Preserve source pin, passing tests and feature evidence; seek clarification only if a stricter version requirement is surfaced. Do not claim formal approval of the commit. |
 

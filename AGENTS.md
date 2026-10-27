@@ -7,7 +7,7 @@ This is the agent entry point for the entire Open Agent Hackathon repository. Ke
 At the start of every task/session, complete these steps **before planning implementation, editing files, running project code or tests, starting services, or making API/database calls**. Read-only tools needed to locate and read these instructions and their referenced files are allowed during this bootstrap.
 
 1. Read [`context.md`](./context.md) in full for the canonical project brief, architecture, and safety boundaries.
-2. Read [`ROADMAP.md`](./ROADMAP.md) in full for the single assigned task ID (T00–T13 or A01), its Jira mapping, dependencies, status, and acceptance gate. Dated progress reports and older ticket numbering are historical evidence, not the active backlog.
+2. Read [`ROADMAP.md`](./ROADMAP.md) in full for the single assigned task ID (T00–T16 or A01), its Jira mapping, dependencies, status, and acceptance gate. Dated progress reports and older ticket numbering are historical evidence, not the active backlog.
 3. Read [`agent.md`](./agent.md) in full for shared operating rules and the task-specific reading map. Complete the applicable reading in that map before executing the task.
 4. Read any more-specific `AGENTS.md` governing the files or tooling involved. In particular, [`getting-started/AGENTS.md`](./getting-started/AGENTS.md) governs the bundled Zetaris onboarding project; preserve its instructions and follow its connection workflow when using its tooling.
 5. Inspect the relevant current source, policies, schemas, and tests. Documentation and roadmap checkboxes are not proof of implementation or live service availability.
