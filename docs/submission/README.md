@@ -39,17 +39,16 @@ approximate sentence timing. Live T16 runs used no-memory mode; real isolated
 reference tests verify combined two-agent memory behavior. Earlier live memory
 acceptance remains separately dated.
 
-Current source and artifacts are on **`codex/t14-t16-two-agent-reviewer`**, pending
-review. Main still contains the historical package. Public download checks are
+Current source and artifacts are published on **`main`**. Public download checks are
 recorded in the package evidence; a GitHub download is not verified portal
 playback or a final submission.
 
-| Field | Current branch URL |
+| Field | Main branch URL |
 |---|---|
 | Repository | [Public source](https://github.com/rachelanneliew/Open-Agent-Hackathon) |
-| Current package | [Two-agent branch package](https://github.com/rachelanneliew/Open-Agent-Hackathon/tree/codex/t14-t16-two-agent-reviewer/docs/submission) |
-| Video download | [Current MP4](https://raw.githubusercontent.com/rachelanneliew/Open-Agent-Hackathon/refs/heads/codex/t14-t16-two-agent-reviewer/docs/submission/dispute-two-agent-demo.mp4) |
-| Deck download | [Current PPTX](https://raw.githubusercontent.com/rachelanneliew/Open-Agent-Hackathon/refs/heads/codex/t14-t16-two-agent-reviewer/docs/submission/dispute-two-agent-deck.pptx) |
+| Current package | [Two-agent package](https://github.com/rachelanneliew/Open-Agent-Hackathon/tree/main/docs/submission) |
+| Video download | [Current MP4](https://raw.githubusercontent.com/rachelanneliew/Open-Agent-Hackathon/refs/heads/main/docs/submission/dispute-two-agent-demo.mp4) |
+| Deck download | [Current PPTX](https://raw.githubusercontent.com/rachelanneliew/Open-Agent-Hackathon/refs/heads/main/docs/submission/dispute-two-agent-deck.pptx) |
 
 ## Historical fallback
 

@@ -2,7 +2,7 @@
 
 > **Canonical work queue.** Read [`context.md`](./context.md) first, then [`agent.md`](./agent.md).
 > **Revision:** A01 authenticated requirements audit accepted, 27 October 2026. Confirmed requirements and precise remaining access/interpretation gaps are in [the competition checklist](./docs/competition.md).
-> **T14–T16 authorization, 27 October 2026:** The user explicitly requested Jira documentation first, then sequential execution through T16. This supersedes the attached brief’s stop-between-task suggestions. Work is on `codex/t14-t16-two-agent-reviewer`; no automatic main merge or final HackOS submission.
+> **T14–T16 authorization, 27 October 2026:** The user explicitly requested Jira documentation first, then sequential execution through T16. This supersedes the attached brief’s stop-between-task suggestions. Work was completed on `codex/t14-t16-two-agent-reviewer`; the subsequent explicit request authorizes publication to main. Final HackOS submission remains leader-owned.
 >
 > **Previous authorized goal:** complete the entire roadmap sequentially, updating Jira and committing/pushing each completed task to `origin/main`. The user explicitly expanded the earlier single-task scope on 27 October. T00–T13 and A01 are DONE. The current user-authorized follow-up hardens Nightshift response contracts and diagnostics; it does not reopen the delivered roadmap or authorize final portal submission.
 > **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
@@ -1589,3 +1589,22 @@ one-source/no-USL limitation and historical fallback package.
 - Jira closure: KAN-24 and KAN-25 Done (comments 10036/10037); KAN-26
   acceptance comment 10038 and transition to Done confirmed. Draft PR #7 is
   attached to this chat. Final package is on the feature branch only.
+
+### 27 October 2026 — Publish T14–T16 to main
+
+- Scope: the user's explicit follow-up to commit and push the completed work to
+  main. No implementation task, Jira change or HackOS submission is included.
+- `git fetch origin` passed; `git rev-list --left-right --count origin/main...HEAD`
+  returned `0 3`. Main at `6b1a5a5` is an ancestor of the completed feature tip
+  `167e491`; PR #7 is mergeable with no reported CI checks.
+- Updated README/package links to main and recorded this publication authorization
+  in context. Historical feature-branch acceptance evidence is preserved.
+- Validation: `git diff --check`, local Markdown target checks across the four
+  edited documents, and `git diff --exit-code 167e491 -- dispute-demo` pass.
+  Application tests and live integrations are **NOT RUN again** for this
+  documentation/publication follow-up. The recorded 298 main + 16 reference
+  integration passes apply to the unchanged application source.
+- Publication uses an explicit four-document commit, a fast-forward of local
+  main and normal `git push origin main`. Remote equality and PR state are
+  verified after execution and reported to the user. No force push or branch
+  deletion. Next work remains the leader's submission checklist, not started.

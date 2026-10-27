@@ -520,4 +520,5 @@ historical one-agent media remains unchanged. Distinct live agent roles address
 the implementation gap behind B2, not formal organizer approval. One PostgreSQL
 datasource/no USL, exact-reference endorsement, contributor declarations and
 leader-only portal submission/receipt remain explicit limitations. This feature
-branch is pending review; main has not been changed by T14–T16.
+branch was pending review at acceptance. The user subsequently authorized
+publication of the completed T14–T16 work to main; see the roadmap publication log.

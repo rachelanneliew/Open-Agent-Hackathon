@@ -58,4 +58,4 @@ T00–T16 and A01 are complete against their repository acceptance gates after t
 
 **HackOS submission remains unverified and leader-only.** The last authenticated deadline was **27 October 2026 23:45 UTC / 28 October 07:45 SGT**. Two separate live model roles are demonstrated; organizer acceptance is not claimed. The one-PostgreSQL-datasource/no-USL scoring gap remains.
 
-This task uses `codex/t14-t16-two-agent-reviewer`. Main is unchanged pending review. Coding assistants must follow [AGENTS.md](./AGENTS.md) and the stable Jira mappings in the roadmap.
+The completed T14–T16 source and package are published on `main`. Coding assistants must follow [AGENTS.md](./AGENTS.md) and the stable Jira mappings in the roadmap.
