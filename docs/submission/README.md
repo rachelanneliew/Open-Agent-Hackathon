@@ -32,20 +32,23 @@ rehearsals. Narration uses the installed macOS Samantha synthetic voice. No
 participant voice or likeness is imitated. Captions use approximate sentence
 timing; the full transcript is authoritative.
 
-Public URLs to use after this task's main publication:
+Published public URLs (anonymous HTTP 200 and exact-byte matches verified):
 
 | Field | URL |
 |---|---|
 | Repository | <https://github.com/rachelanneliew/Open-Agent-Hackathon> |
 | Package and evidence index | <https://github.com/rachelanneliew/Open-Agent-Hackathon/tree/main/docs/submission> |
-| Video download/playback candidate | <https://raw.githubusercontent.com/rachelanneliew/Open-Agent-Hackathon/main/docs/submission/dispute-agent-demo.mp4> |
+| Video download (hosting check still required) | <https://raw.githubusercontent.com/rachelanneliew/Open-Agent-Hackathon/main/docs/submission/dispute-agent-demo.mp4> |
 | Deck download | <https://raw.githubusercontent.com/rachelanneliew/Open-Agent-Hackathon/main/docs/submission/dispute-agent-deck.pptx> |
 
-A public download is not proof of compatibility with the final portal's video
-embed. The leader must test the supplied video URL in the actual form and use
-an unrestricted video host if the portal cannot play a raw MP4. Portal preview,
-accepted deck formats, upload limits and final receipt remain **NOT RUN** under
-B1. No speculative form limits or submission URL are invented here.
+Both binary artifacts return `application/octet-stream`. The MP4 is publicly
+downloadable, but the in-app browser blocked inline playback of its raw GitHub
+URL. Local playback completed successfully. **B1 therefore includes providing
+a verified playable video-host link** for the actual portal. The leader must
+upload the same MP4 to an unrestricted video host accepted by the form and
+check it signed out. Portal preview, accepted deck formats, upload limits and
+final receipt remain **NOT RUN**. No speculative form limits or submission URL
+are invented here.
 
 ## Prepared project text
 
@@ -100,7 +103,7 @@ The source audit and source identifiers are in [competition.md](../competition.m
 | R7 Public repository/setup | Anonymous clone with disabled credential helper succeeded. A separate checkout installed fresh pinned dependencies and passed two replay cycles and offline tests without private configuration. Live licensed-stack bootstrap on a clean machine: **NOT RUN**, prerequisites documented. |
 | R8 Technology/provenance | Architecture and linked evidence distinguish real calls, scripted responses, reference/mock memory and development tools. Owner must confirm pre-event contributions and rights before submitting. |
 | R9 Project/team fields | Name, descriptions, track and sponsor copy are prepared above. **B1:** leader completes private contact fields and confirms roster before creation locks it. No participant email or phone is published. |
-| R10 Video/audio/access | MP4 contains H.264 video and non-silent AAC narration at 1080p within 1–4 minutes; exact checks are in package evidence. **B1:** final portal playback/upload visibility needs leader verification. |
+| R10 Video/audio/access | MP4 contains H.264 video and non-silent AAC narration at 1080p within 1–4 minutes; exact checks are in package evidence. **B1:** raw GitHub MP4 is a verified public download; inline playback was blocked, so a playable video-host link and portal visibility need leader verification. |
 
 The new Zetaris scoring guide asks for three datasources and USL demonstrations.
 This implementation has **one PostgreSQL datasource and no USL**. Tables and

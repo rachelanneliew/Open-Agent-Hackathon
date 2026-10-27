@@ -113,7 +113,21 @@
       "whitespace": "passed",
       "limits": "No claim to detect all unknown secrets; actual PNGs/slide frames and narration were reviewed separately."
     },
-    "anonymous_published_artifacts": "Public source clone PASS. New media URL checks follow main publication and are recorded in the Jira publication receipt. Final portal embed/upload verification remains B1."
+    "anonymous_published_artifacts": {
+      "status": "PASS: six anonymous HTTPS 200 responses exactly match published local files",
+      "source_commit": "c633301758ddec23637d774cfc2d3956fc9013df",
+      "files": [
+        "README.md",
+        "docs/submission/README.md",
+        "docs/submission/dispute-agent-deck.pptx",
+        "docs/submission/dispute-agent-demo.mp4",
+        "docs/submission/VIDEO.md",
+        "docs/submission/dispute-agent-demo.srt"
+      ],
+      "binary_content_type": "application/octet-stream",
+      "public_inline_video": "NOT VERIFIED: in-app browser blocked raw GitHub MP4 with ERR_BLOCKED_BY_CLIENT; B1 requires playable hosting/portal check",
+      "tls": "System curl verification enabled; system Python initial attempt lacked issuer certificate. No TLS bypass."
+    }
   },
   "final_submission": "NOT RUN: member lacks leader submission rights",
   "clean_data_validation": "PASS: 42 transactions, 54 settlements, 40 disputes, 81 evidence items, 16 rules; document hashes and fixture references",
@@ -129,11 +143,20 @@
     "owned_preview": "stopped"
   },
   "blockers": {
-    "B1": "Only leader Rachel Anne Liew can create/manage submission; responsibility, form limits/deck format, final portal playback/upload and receipt unverified",
+    "B1": "Only leader Rachel Anne Liew can create/manage submission; responsibility, form limits/deck format, final portal playback/upload and receipt unverified; public MP4 download verified but inline playback blocked, so leader must supply a verified playable video-host link",
     "B2": "One model investigator plus deterministic critic: organizer interpretation of two-agent wording unresolved",
     "B3": "Separate detailed Track 3 page unavailable; authenticated summary verified",
     "B4": "No formal endorsement of exact reference revision found; engine/reference guidance verified",
     "owner_provenance": "Team must confirm pre-event product contributions and contributor permissions",
     "scoring_gap": "One PostgreSQL datasource, no USL; three-source/USL guidance not satisfied"
+  },
+  "publication_history_scan": {
+    "scan": "all reachable Git blobs, configured local secret-value matches and high-confidence credential patterns",
+    "blobs": 343,
+    "bytes": 13390178,
+    "known_values_compared": 8,
+    "findings": [],
+    "forbidden_tracked_paths": [],
+    "limits": "Pattern/value scan cannot prove absence of every unknown secret. Images and final media need visual/content review; unreachable objects not audited."
   }
 }
