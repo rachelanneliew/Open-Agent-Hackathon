@@ -1,6 +1,9 @@
-"""Investigate a dispute: H-MEM recall, deterministic policy, then critic.
+"""Legacy prototype only: H-MEM recall, deterministic policy, retired critic.
 
 Memory is advisory only. It cannot change policy outcomes or skip critic checks.
+This is not the Nightshift investigator or the canonical controller. The retired
+critic cannot persist actions. T07 model turns live in app.investigator; T08 owns
+replacement of this prototype workflow (including its unconditional recall).
 """
 from __future__ import annotations
 
@@ -16,6 +19,7 @@ VERIFIED_CRITIC_STATUSES = frozenset({"simulated_credit_recorded", "validated_no
 
 
 def _policy_proposal(policy: Mapping[str, Any]) -> dict:
+    """Legacy deterministic prototype helper; never a model inference result."""
     return {
         "dispute_id": policy["dispute_id"],
         "policy_version": policy["policy_version"],

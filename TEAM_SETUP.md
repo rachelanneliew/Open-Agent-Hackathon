@@ -10,7 +10,7 @@ We are building one Nightshift investigator with a Python controller, determinis
 - Added reproducible generation, test fixtures, evidence documents and data-validation tests.
 - Rachel has loaded the project database and registered its tables in Zetaris.
 - Added `get_dispute_context.py`; it expects the Zetaris datasource name **`dispute`**
-- PR #4 supplied prototypes in `dispute-demo/agent/`. T02/T03 now provide typed retrieval/policy, T04 provides isolated-tested PostgreSQL storage, and T06 provides the pure critic and retires SQLite execution. T05 now provides the isolated-tested atomic action service. Shared deployment/coherent reads, a real Nightshift investigator, bounded workflow, verified portable memory setup and UI remain outstanding. See [context.md](./context.md) and [ROADMAP.md](./ROADMAP.md).
+- PR #4 supplied prototypes in `dispute-demo/agent/`. T02/T03 now provide typed retrieval/policy, T04 provides isolated-tested PostgreSQL storage, and T06 provides the pure critic and retires SQLite execution. T05 now provides the isolated-tested atomic action service. T07 now provides a tested real Nightshift investigator. Shared deployment/coherent reads, bounded workflow, verified portable memory setup and UI remain outstanding. See [context.md](./context.md) and [ROADMAP.md](./ROADMAP.md).
 
 **Evidence date:** T02 verified typed retrieval and live JDBC reads on 27 October 2026, with 50 root-suite tests and 6 offline critic tests passing. See [the retrieval reference](./dispute-demo/docs/retrieval.md) and ROADMAP for exact evidence. Nightshift discovery failure remains dated T00 evidence; Nightshift and H-MEM were NOT RUN for T02. Setup/start/load commands below are instructions for a new environment; no service startup, installation or source loading was performed in T02.
 
@@ -327,3 +327,26 @@ This creates/cleans only disposable test containers and volumes. T05 publishes a
 ephemeral loopback-only test port; T04 uses its existing unnetworked fixture.
 Without opt-in, 45 PostgreSQL checks are explicitly skipped. Nightshift, live
 Zetaris and H-MEM were NOT RUN for T05. Next implementation task: T07 / KAN-16.
+
+## T07 investigator acceptance and live read-only check
+
+See [the investigator guide](./dispute-demo/docs/investigator.md). The existing
+Nightshift installation was opened without configuration changes; discovery and
+one real structured proposal now pass. Requested route `meterless/auto`; the
+response reported `nvidia/nemotron-3.5-bolt-e4b`. JDBC preflight passed (REST remains
+unconfigured). This supersedes historical unavailability for this dated check,
+not a guarantee the app is always running. Keep it open for model calls.
+
+From `dispute-demo/`, after JDBC preflight:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m integration.check_investigator DP-0014
+DISPUTE_NIGHTSHIFT_HTTP_TESTS=1 PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -v
+```
+
+The probe is read-only and prints `persisted: false`; the current null revision
+cannot commit. It has no fixture fallback or tool-dispatch loop. The test flag
+enables five ephemeral local HTTP fixture checks, not real model calls. T07's
+full suite passed 121 tests with 45 PostgreSQL opt-in skips; four compatibility
+tests and data validation passed. No package installation or private setting
+changes. T08 owns deployment, coherent reads and the complete bounded workflow.

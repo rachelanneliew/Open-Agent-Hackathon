@@ -1,0 +1,61 @@
+{
+  "mode": "live_read_only",
+  "source_channel": "zetaris",
+  "read_status": "ok",
+  "investigator": {
+    "status": "proposal",
+    "message": "Unapproved model proposal; mandatory critic required.",
+    "requested_route": "meterless/auto",
+    "proposal": {
+      "proposal_id": "3fedfbaf-a24d-4265-ba89-33a50e5dcb8e",
+      "run_id": "f8c907a1-9180-46fc-9643-89410088218d",
+      "reference": {
+        "dispute_id": "DP-0014",
+        "snapshot_id": "fc91d66a-1637-4e13-a227-78f555f2933a",
+        "evaluation_at": "2026-10-14T09:00:00Z",
+        "policy_version": "v2",
+        "source_revision": null
+      },
+      "recommendation": {
+        "outcome": "provisional_credit",
+        "currency": "SGD",
+        "amount_minor": 6000
+      },
+      "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0014: filing age 10 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0014, completed movements ST-0021, ST-0022: remaining balance 6000 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Required synthetic support verified against case and source fields.\nv2-UNSUPPORTED: No complete unambiguous contradiction of the claim.\nv2-REVIEW_THRESHOLD: Eligible primary-transaction amount 6000; review only above 20000 SGD minor units.\nv2-APPROVE: Supported claim; min(claimed, primary completed balance) = 6000 SGD minor units.",
+      "evidence_ids": [
+        "EV-0028",
+        "EV-0027"
+      ],
+      "policy_rule_ids": [
+        "v2-DATA_INTEGRITY",
+        "v2-FILING_WINDOW",
+        "v2-ALREADY_REFUNDED",
+        "v2-CONFLICTING_EVIDENCE",
+        "v2-MISSING_EVIDENCE",
+        "v2-UNSUPPORTED",
+        "v2-REVIEW_THRESHOLD",
+        "v2-APPROVE"
+      ],
+      "missing_evidence": [],
+      "revision": 0
+    },
+    "read_request": null,
+    "uncertainties": [],
+    "response_model": "nvidia/nemotron-3.5-bolt-e4b"
+  },
+  "critic": {
+    "proposal_id": "3fedfbaf-a24d-4265-ba89-33a50e5dcb8e",
+    "reference": {
+      "dispute_id": "DP-0014",
+      "snapshot_id": "fc91d66a-1637-4e13-a227-78f555f2933a",
+      "evaluation_at": "2026-10-14T09:00:00Z",
+      "policy_version": "v2",
+      "source_revision": null
+    },
+    "verdict": "accepted",
+    "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+    "failed_checks": []
+  },
+  "usable_proposal": true,
+  "persisted": false
+}

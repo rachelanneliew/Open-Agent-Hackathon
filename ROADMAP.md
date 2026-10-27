@@ -1,8 +1,8 @@
 # Task Roadmap — Synthetic Card-Dispute Resolution Agent
 
 > **Canonical work queue.** Read [`context.md`](./context.md) first, then [`agent.md`](./agent.md).
-> **Revision:** T05 atomic PostgreSQL action service accepted, 27 October 2026, on `main`: 138 tests pass, including 45 real PostgreSQL tests; 4 compatibility regressions and data validation pass. Shared deployment and coherent Zetaris reads remain pending. Evidence is recorded below.
-> **Next roadmap task:** T07 / KAN-16, only when assigned. T00–T06 are DONE; T07–T13 and A01 remain NOT_STARTED. The user authorized T05 Jira updates and a completion commit directly to `main`.
+> **Revision:** T07 Nightshift investigator accepted, 27 October 2026: 121 passing tests, 45 PostgreSQL opt-in skips, four compatibility tests and data validation; a real Zetaris/Nightshift proposal passed the pure critic. Evidence is recorded below.
+> **Current authorized goal:** complete the entire roadmap sequentially, updating Jira and committing/pushing each completed task to `origin/main`. The user explicitly expanded the earlier single-task scope on 27 October. T00–T07 are DONE; next is T08 / KAN-17. Remaining tasks retain their acceptance gates and explicit scope decisions.
 > **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
 
 ## 1. What changed from the earlier plan
@@ -15,7 +15,7 @@ Keep the dated `Open_Agent_Hackathon_Progress_2026-10-26*.md` reports as histori
 
 ## 2. How to execute this roadmap
 
-Give the coding assistant **one task ID at a time**. It must inspect prerequisites, implement only that task, run relevant tests, update this file and stop. A dependency that is missing is a blocker to report, not permission to implement every prerequisite silently.
+For ordinary handovers, give the coding assistant **one task ID at a time**. The current explicit full-roadmap goal authorizes continuing to the next dependency-ready task after each verified completion and publication; it supersedes the stop-after-one-task directions for this goal only. It must inspect prerequisites, implement only that task, run relevant tests, update this file and stop. A dependency that is missing is a blocker to report, not permission to implement every prerequisite silently.
 
 Use statuses `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED`, `DONE`. DONE requires recorded acceptance evidence; writing code is not enough. Mark unavailable live checks NOT RUN. A local stub test does not prove a live integration or PostgreSQL concurrency guarantee.
 
@@ -23,7 +23,7 @@ Use statuses `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED`, `DONE`. DONE requires reco
 
 Every task includes its own tests. T12 is cross-component testing, not the first time testing begins.
 
-**Post-merge integration order:** T03–T06 are complete; assign T07 next, then T08. T08 must resolve shared deployment and coherent fresh Zetaris reads before live commits. T09 and A01 can progress separately when assigned. After T09, complete T10, then T11, T12 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
+**Post-merge integration order:** T03–T07 are complete; continue with T08 under the current goal. T08 must resolve shared deployment and coherent fresh Zetaris reads before live commits. T09 and A01 can progress separately when assigned. After T09, complete T10, then T11, T12 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
 
 ## Jira tracking (supplied kit dated 2026-10-26)
 
@@ -72,7 +72,7 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 | T04 | Create sandbox decision, action and audit storage | T01 | DONE |
 | T05 | Implement atomic simulated decision recording | T03, T04 | DONE |
 | T06 | Build the mandatory critic and validator | T02, T03 | DONE |
-| T07 | Implement the investigator through Nightshift | T02, T03, T06 | NOT_STARTED |
+| T07 | Implement the investigator through Nightshift | T02, T03, T06 | DONE |
 | T08 | Wire the bounded workflow and command-line runner | T02, T03, T05, T06, T07 | NOT_STARTED |
 | T09 | Verify and wrap the actual H-MEM integration | T00, T01; may run in parallel with T02–T08 | NOT_STARTED |
 | T10 | Integrate verified memory and repeat-history review | T02, T03, T08, T09 | NOT_STARTED |
@@ -339,7 +339,7 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 ### T07 — Implement the investigator through Nightshift
 
 **Phase:** Agent workflow  
-**Status:** NOT_STARTED  
+**Status:** DONE
 **Depends on:** T02, T03, T06  
 **Deliverable:** A reasoning agent that proposes a supported outcome and can request approved evidence.
 
@@ -347,23 +347,25 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **PR #4 integration requirements:**
 
-- [ ] `dispute-demo/agent/resolver.py::_policy_proposal()` is deterministic, not a Nightshift investigator. Reuse only as a labelled test/fallback helper; build genuine typed model proposals/tool requests for all four outcomes and one correction.
-- [ ] Record a separately labelled real structured inference result when available; mocks/probes do not establish the live investigator or actual responder identity. Retain untrusted-text handling and no direct writes/policy overrides.
+- [x] `dispute-demo/agent/resolver.py::_policy_proposal()` is deterministic, not a Nightshift investigator. Reuse only as a labelled test/fallback helper; build genuine typed model proposals/tool requests for all four outcomes and one correction.
+- [x] Record a separately labelled real structured inference result when available; mocks/probes do not establish the live investigator or actual responder identity. Retain untrusted-text handling and no direct writes/policy overrides.
 
 **Work:**
 
-- [ ] Reuse working authentication and connection conventions. Confirm the actual supported structured-response/tool interface; do not assume an API feature from the connectivity probe.
-- [ ] Give the investigator case facts, deterministic policy results and authorized source-linked context. Include a small investigation-plan/checklist in this role rather than adding a separate manager LLM.
-- [ ] Accept either a typed request for an allowlisted read tool or a typed final proposal. If native tool calling is unavailable, use an explicit structured request envelope validated and executed by the orchestrator.
-- [ ] Require outcome, proposed amount when relevant, evidence/rule IDs, uncertainty or missing requirements, and a concise source-grounded rationale. Do not request or expose hidden chain-of-thought.
-- [ ] Handle malformed output, timeouts and unsupported tool requests without side effects. Treat evidence documents and recalled text as untrusted case material, not operational instructions.
-- [ ] Record requested route and actual responding provider/model only when returned or independently evidenced. Do not label meterless/auto as proof of a particular model.
+- [x] Reuse working authentication and connection conventions. Confirm the actual supported structured-response/tool interface; do not assume an API feature from the connectivity probe.
+- [x] Give the investigator case facts, deterministic policy results and authorized source-linked context. Include a small investigation-plan/checklist in this role rather than adding a separate manager LLM.
+- [x] Accept either a typed request for an allowlisted read tool or a typed final proposal. If native tool calling is unavailable, use an explicit structured request envelope validated and executed by the orchestrator.
+- [x] Require outcome, proposed amount when relevant, evidence/rule IDs, uncertainty or missing requirements, and a concise source-grounded rationale. Do not request or expose hidden chain-of-thought.
+- [x] Handle malformed output, timeouts and unsupported tool requests without side effects. Treat evidence documents and recalled text as untrusted case material, not operational instructions.
+- [x] Record requested route and actual responding provider/model only when returned or independently evidenced. Do not label meterless/auto as proof of a particular model.
 
 **Acceptance gate:** Stubbed tests cover schema failures, unauthorized tool requests and correction feedback. A separately labelled live Nightshift test returns a usable proposal when available. Expected-result fixtures never enter prompts.
 
 **Not in this task:** No arbitrary SQL, direct writes, hard-policy overrides, separate planner agent or claimed model identity without evidence.
 
-**Suggested paths/artifacts:** Proposed: dispute-demo/app/investigator.py, dispute-demo/tests/test_investigator.py. Reuse existing equivalents; these paths are not verified as present.
+**Implemented artifacts:** [investigator](./dispute-demo/app/investigator.py), [bounded transport](./dispute-demo/app/nightshift.py), [investigator tests](./dispute-demo/tests/test_investigator.py), [transport tests](./dispute-demo/tests/test_nightshift.py), [read-only live probe](./dispute-demo/integration/check_investigator.py), [interface guide](./dispute-demo/docs/investigator.md) and [live evidence](./dispute-demo/docs/evidence/t07-live-DP-0014.json).
+
+**Acceptance, 27 October 2026:** 16 stubbed investigator tests plus 12 transport tests pass, including five real local HTTP fixture checks. Full suite: 166 collected, 121 passed, 45 PostgreSQL opt-in skips; four compatibility tests/data validation pass. Real Zetaris DP-0014 → Nightshift proposal → pure critic accepted 6,000 SGD minor units; response model label `nvidia/nemotron-3.5-bolt-e4b`, requested route `meterless/auto`. No persistence, fixture fallback or hidden reasoning. Shared deployment/freshness and the bounded write workflow remain T08.
 
 **Stop:** report evidence, update this task's status and the work log, then stop. Do not automatically start the next task.
 
@@ -1110,6 +1112,34 @@ Exact verification from `dispute-demo/`, unless noted:
 - Jira closure: KAN-14 moved through In Progress, received completion comment **10007**, then transition 31 moved it to **Done**. Read-back verified Done, one comment and unchanged summary, description, assignee, parent, labels and issue links. No other issue changed.
 - Publication scope: user-authorized completion commit directly to local `main`, containing exactly the 12 implementation/test/dependency/documentation paths above. Commit identity and clean-tree verification are reported after execution. No remote push was requested or performed.
 - Context updated for the verified writer and its deployment limit. Recommended next task: **T07 / KAN-16**, not started. Stop after the authorized T05 commit.
+
+### 2026-10-27 — T07 / KAN-16: bounded Nightshift investigator
+
+- Status: **DONE** against the T07 repository gate. Owner: Codex. The user expanded the goal to the entire roadmap, sequentially, with Jira updates and a commit/push to `origin/main` per completed task. This explicitly supersedes stop-after-one-task instructions for the current goal; acceptance gates remain unchanged. Baseline: clean `main` at `29eb6ae7460ea704ebd846a11f3171cd04e2e8c6`. First fetched and normally pushed that already-completed T05 commit; local/origin IDs match. KAN-14 publication comment `10008` supersedes its prior local-only note. KAN-16 was read and moved to In Progress; dependencies were inspected in source and exercised by regression tests.
+- Added `app/investigator.py`, `app/nightshift.py`, `tests/test_investigator.py`, `tests/test_nightshift.py`, `integration/check_investigator.py`, `docs/investigator.md` and `docs/evidence/t07-live-DP-0014.json` under `dispute-demo/`. Labelled the existing resolver/helper as a deterministic legacy prototype. Updated README, TEAM_SETUP, agent reading map, context and roadmap. Canonical schemas, policy, critic, tools, action service, migration, source/data/fixtures, private settings, memory and nested repositories are unchanged.
+- Delivered: one real text-completion turn returning a strict typed proposal or unexecuted case-bound read request; exact run/proposal/reference/revision binding; canonical-policy and typed observation checks; one correction with a new proposal ID and freshly corroborated critic feedback. Four outcomes and exact missing categories are supported. Model errors fail without a deterministic substitute. No tool dispatch, database/action/memory write, native tool/schema assumption or expected-answer prompt.
+- Transport: reused private configuration and auth conventions after checking the published [Meterless provider contract](https://meterless.ai/engines.html). Text messages with app/scope headers, no streaming, max 4,096 output tokens. Requests/responses capped at 256 KiB; redirects/proxies disabled. A short-lived child receives secrets through stdin and is killed/waited at the configurable maximum 180-second total request deadline. Error text is sanitized; no automatic retries. Metadata reports requested route and returned model only; no identity inferred from advertised models or assistant prose.
+- Trust/correction boundary: case text and observations remain untrusted; typed history is customer/cutoff scoped and advisory. Unknown JSON fields, duplicate keys, invalid money/IDs, cross-case/SQL/write requests, native tools, refusals, truncation and malformed output are rejected. T06's deterministic rationale vocabulary remains binding; no new policy or generalized semantic approval. Response reasoning is discarded. Model uncertainty is explicitly bounded and must prevent T08 from committing the proposal. T08 still owns total call/tool/duration budgets, dispatch, reevaluation and persistence; this step has no persistent run history.
+
+Exact verification from `dispute-demo/`, existing Python 3.13.7, unless noted:
+
+| Command | Actual result |
+| --- | --- |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -p test_investigator.py -v` | **16 passed**, zero failures/errors/skips; 3.821s. Model stubs, real typed source/policy/critic, all four outcomes, correction, malicious inputs and I/O forbidden during model turns. |
+| `DISPUTE_NIGHTSHIFT_HTTP_TESTS=1 PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -p test_nightshift.py -v` | Initial 12-test run: 11 passed, one test-harness error from case-sensitive HTTP header lookup. Changed fixture assertions to case-insensitive names; final full run below passes all 12, including five real loopback HTTP fixtures. These are not Nightshift/model calls. |
+| `DISPUTE_NIGHTSHIFT_HTTP_TESTS=1 PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -v > /private/tmp/t07-tests.log 2>&1` | **166 collected, 121 passed, 45 explicit PostgreSQL opt-in skips**, zero failures/errors, 18.115s. Includes the final investigator/transport implementation and all unchanged offline regressions. |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s agent/tests -p test_critic.py -v` | **4 passed**, zero failures/errors/skips; retired writer remains inert. |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python scripts/validate_synthetic_data.py` | **PASS**, source counts 42/54/40/81/16, keys/timestamps/documents/manifest hashes/fixture references unchanged. |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -` with imports of `app.investigator`, `app.nightshift`, `integration.check_investigator`, a `sys.path` snapshot, absent JDBC/PG/SQLite/action/memory assertions, then `unittest.TestLoader().discover('agent/tests')` | **PASS**, no path mutation or service initialization; 11 prototype tests collect without errors. Seven external H-MEM checks collected only, **NOT RUN**. |
+| Repository root: `PYTHONDONTWRITEBYTECODE=1 getting-started/.venv/bin/python dispute-demo/integration/check_nightshift.py` | Initial approved-network attempt failed unreachable. After `open -a '/Applications/Nightshift M1-M4.app'`, authenticated discovery **PASS**, 19 advertised IDs. Opened the existing installation only; no install/config/token/provider changes. |
+| From `getting-started/`: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/preflight.py --jdbc` | **JDBC PASS**: port/JAR/Java/Python, SELECT 1, datasource dispute, Lightning databases NY_TAXI/TPCDS_DB. Overall exit 1 is two REST-only missing-key failures; the connection guide permits JDBC to proceed. |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m integration.check_investigator DP-0014 > /private/tmp/t07-live-DP-0014.json` | **Live PASS, exit 0**: actual Zetaris source channel, Nightshift structured proposal for 6,000 SGD minor units, EV-0027/EV-0028 and all evaluated v2 rules, empty uncertainties, pure critic accepted. Requested route `meterless/auto`; response reported `nvidia/nemotron-3.5-bolt-e4b`. No hidden reasoning or fixture labels in evidence. Snapshot revision null; `persisted: false`. Exact public result copied to the tracked evidence file. |
+
+- Local HTTP evidence: the actual child sends the required bearer/app/scope headers; 401 is distinct, redirect is not followed, duplicate/oversized JSON fails, and a delayed response causes parent deadline termination before headers. Stubbed provider errors do not leak exception/stdout/stderr secrets. No automatic retries or fallback action.
+- **NOT RUN:** real PostgreSQL integration (45 explicit skips; storage/action code unchanged), H-MEM reference, HackOS, shared migration/runtime grants/registration, full controller and live correction loop. Prior T05 138-pass/45-real-PG evidence remains dated. No source/shared reset or mutation. No claim of persistence or actual tool dispatch from the read-only probe. Live non-credit/correction cases are stub-tested in T07; T08/T12 retain full integrated gates.
+- Repository checks: `git diff --check` and protected-source comparison against `29eb6ae` passed. `PYTHONDONTWRITEBYTECODE=1 getting-started/.venv/bin/python /private/tmp/validate_t07_docs.py` checks local links, syntax, task status scope, retained history and sanitized live evidence. No packages installed; the existing Nightshift app is left open for subsequent live work.
+- Jira: KAN-16 received completion comment **10009** and transition 31 confirmed **Done**. Its summary, description, assignee, parent, labels and links were checked unchanged before closure. Publication uses an explicit 13-path commit and normal push to `origin/main`; the final commit and remote match are verified after execution.
+- Context updated for verified T07 capabilities, returned model metadata, explicit persistence/budget limits and the authorized sequential full-roadmap scope. Next task: **T08 / KAN-17**, after this task's Jira closure and commit/push.
 
 ## 11. Deferred scope
 
