@@ -41,6 +41,7 @@ For the normal live app, follow [TEAM_SETUP](./TEAM_SETUP.md), then run `.venv/b
 | [Canonical workflow](./dispute-demo/docs/workflow.md) | T08 CLI, coherent fresh reads, bounded transitions, recovery and real persisted acceptance. |
 | [Reliability and reset](./dispute-demo/docs/reliability.md) | Both test roots, failure coverage, explicit isolated reset/replay and evidence labels. |
 | [Analyst workbench](./dispute-demo/docs/analyst-ui.md) | Local UI, persisted review queue, exact-request recovery and memory-only retry. |
+| [Zetaris USL extension](./docs/zetaris-usl/README.md) | U00–U06: three independent sources, genuine semantic model, native DQ and optional read-only preview. |
 | [H-MEM reference](./dispute-demo/docs/memory.md) | T09/T10 pinned engine, source-verified advisory history, post-commit storage and action-free memory retries. |
 | [Atomic actions](./dispute-demo/docs/actions.md) | T05 write interface, protected rereads, recovery, PostgreSQL test setup and deployment limits. |
 | [Decision storage](./dispute-demo/docs/storage.md) | T04 PostgreSQL migration, revision guard, lifecycle/duplicate scope and isolated integration tests; deployment boundary. |
@@ -56,6 +57,6 @@ For the current task and its Jira issue, start with the task board in [ROADMAP.m
 
 T00–T16 and A01 are complete against their repository acceptance gates after the T16 checks recorded in the roadmap. The current [submission package](./docs/submission/README.md) includes a two-agent deck, narrated video and dated real acceptance/refusal traces. Historical one-agent artifacts remain available as fallback evidence.
 
-**HackOS submission remains unverified and leader-only.** The last authenticated deadline was **27 October 2026 23:45 UTC / 28 October 07:45 SGT**. Two separate live model roles are demonstrated; organizer acceptance is not claimed. The one-PostgreSQL-datasource/no-USL scoring gap remains.
+**HackOS submission remains unverified and leader-only.** The last authenticated deadline was **27 October 2026 23:45 UTC / 28 October 07:45 SGT**. Two separate live model roles are demonstrated; organizer acceptance is not claimed. The new [USL addendum](./docs/submission/USL_ADDENDUM.md) supplies separately dated PostgreSQL/CSV/REST federation and native DQ evidence. The original media is unchanged; the USL extension was developed on `codex/zetaris-usl` and is covered by the user's subsequent PR-and-merge authorization.
 
 The completed T14–T16 source and package are published on `main`. Coding assistants must follow [AGENTS.md](./AGENTS.md) and the stable Jira mappings in the roadmap.

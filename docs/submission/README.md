@@ -52,6 +52,12 @@ playback or a final submission.
 
 ## Historical fallback
 
+The separately dated [USL addendum](USL_ADDENDUM.md) adds a real three-source
+Zetaris semantic model and native DQ evidence with an optional read-only panel.
+It was developed on `codex/zetaris-usl` and is covered by the subsequent
+PR-and-merge authorization. It is separate from T16 media and is not a new
+portal submission.
+
 The original [one-agent deck](./dispute-agent-deck.pptx),
 [3:46 video](./dispute-agent-demo.mp4), [transcript](./VIDEO.md),
 [captions](./dispute-agent-demo.srt) and
@@ -102,7 +108,7 @@ See [competition.md](../competition.md) for the dated source audit.
 | Video and deck | Current narrated MP4, captions and eight editable slides; historical fallback preserved. Media checks are in package evidence. Native PowerPoint and human listening review NOT RUN. |
 | Public access | Branch source and downloads checked separately. Leader must provide an accepted unrestricted playable video-host link and inspect portal preview. |
 | Submission | Leader-only form access, accepted formats/limits, roster, terms and final receipt remain owner checks. No submission claimed. |
-| Scoring scope | **One PostgreSQL datasource and no USL.** Multiple tables are not multiple datasources. A second agent does not close this scoring gap. |
+| Scoring scope | The preserved T16 media shows one PostgreSQL source. The separate [U00–U06 addendum](USL_ADDENDUM.md) verifies PostgreSQL + CSV + REST, actual USL and native DQ; it is not depicted in the original media. Sponsor scoring remains unverified. |
 | Track and provenance | Detailed Track 3 page access, exact reference endorsement and contributor declarations retain the dated audit limitations. |
 
 The leader should inspect the [Submission Hub](https://hackathon.genai.works/submissions),

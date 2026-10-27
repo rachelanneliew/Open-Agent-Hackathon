@@ -41,7 +41,7 @@ class LazyReviewer:
 
 
 def handler_for(jobs, *, inventory=runtime_io.read_inventory, snapshot=runtime_io.read_snapshot,
-                memory_enabled=True):
+                memory_enabled=True, usl_enabled=False, usl_preview=None):
     token = secrets.token_urlsafe(32)
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *_):
@@ -83,6 +83,7 @@ def handler_for(jobs, *, inventory=runtime_io.read_inventory, snapshot=runtime_i
                     return self.reply(200, (STATIC / name).read_bytes(), mime)
                 if url.path == '/api/config':
                     return self.reply(200, dict(token=token, mode='live', synthetic=True,
+                        usl_enabled=usl_enabled,
                         memory_mode='verified_advisory' if memory_enabled else 'no_memory'))
                 if url.path == '/api/inventory':
                     return self.reply(200, inventory(timeout_seconds=45))
@@ -90,6 +91,18 @@ def handler_for(jobs, *, inventory=runtime_io.read_inventory, snapshot=runtime_i
                 if set(query) != {'id'} or len(query['id']) != 1:
                     raise ValueError()
                 identifier = query['id'][0]
+                if url.path == '/api/usl':
+                    from integration.usl_reads import preview_case
+                    from integration.get_dispute_context import validate_dispute_id
+                    validate_dispute_id(identifier)
+                    # Disabled means no connector/worker call, including injected readers.
+                    if not usl_enabled:
+                        return self.reply(200, preview_case(identifier))
+                    value = (usl_preview or preview_case)(identifier, enabled=True, timeout_seconds=180)
+                    # A dated execution receipt, explicitly distinct from this read.
+                    receipt = ROOT / 'integration/usl/dq_receipt.json'
+                    value['recorded_native_dq'] = json.loads(receipt.read_text())
+                    return self.reply(200, value)
                 if url.path == '/api/case':
                     value = snapshot(identifier, timeout_seconds=45)
                     return self.reply(200, dict(snapshot=value.to_dict(), recoveries=jobs.recoveries(identifier)))
@@ -128,6 +141,7 @@ def main():
     parser.add_argument('--port', type=int, default=8931)
     parser.add_argument('--no-memory', action='store_true')
     parser.add_argument('--memory-dir', type=Path)
+    parser.add_argument('--usl-preview', action='store_true', help='Enable optional read-only USL inspection')
     args = parser.parse_args()
     if not 1024 <= args.port <= 65535 or (args.no_memory and args.memory_dir):
         parser.error('Use port 1024–65535; --no-memory excludes --memory-dir')
@@ -145,7 +159,8 @@ def main():
             memory_factory=memory_factory, budgets=Budgets())
     jobs = Jobs(ROOT / 'outputs/ui', ROOT / 'outputs/runs', controller_factory=controller, memory_retry=retry)
     try:
-        server = ThreadingHTTPServer(('127.0.0.1', args.port), handler_for(jobs, memory_enabled=not args.no_memory))
+        server = ThreadingHTTPServer(('127.0.0.1', args.port), handler_for(jobs,
+            memory_enabled=not args.no_memory, usl_enabled=args.usl_preview))
         print(f'Analyst console: http://127.0.0.1:{args.port} (live integrations, synthetic actions)', flush=True)
         try:
             server.serve_forever()

@@ -1,0 +1,22 @@
+name: dispute-usl-sources
+services:
+  customer-api:
+    image: python:3.9.16-slim
+    pull_policy: never
+    user: "65534:65534"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 64m
+    pids_limit: 32
+    command: [python, -B, /source/usl_sources/server.py]
+    volumes:
+      - ../usl/fixtures:/source/usl/fixtures:ro
+      - .:/source/usl_sources:ro
+    networks:
+      zetaris:
+        aliases: [dispute-usl-customer-api-v1]
+networks:
+  zetaris:
+    external: true
+    name: zetaris_default

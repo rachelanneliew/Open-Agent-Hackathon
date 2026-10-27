@@ -1,0 +1,5 @@
+evidence_id,dispute_id,customer_id,evidence_type,integrity_status,source_updated_at,source_version
+ME-0001,DP-0020,CUST-013,merchant_contact,received_unverified,2026-10-16T09:00:00Z,merchant-v1
+ME-0002,DP-0020,CUST-013,refund_promise,received_unverified,2026-10-16T09:00:00Z,merchant-v1
+ME-0003,DP-0014,CUST-008,merchant_contact,received_unverified,2026-10-14T09:00:00Z,merchant-v1
+ME-0004,DP-0017,CUST-008,merchant_contact,received_unverified,2026-10-15T09:00:00Z,merchant-v1

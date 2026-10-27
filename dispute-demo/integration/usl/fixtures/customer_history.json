@@ -1,0 +1,9 @@
+{
+  "source_version": "customer-v1",
+  "synthetic": true,
+  "history": [
+    {"history_id":"CH-0001","current_dispute_id":"DP-0020","customer_id":"CUST-013","prior_dispute_id":"DP-0004","prior_outcome":"unknown","observed_at":"2026-10-16T09:00:00Z","source_version":"customer-v1"},
+    {"history_id":"CH-0002","current_dispute_id":"DP-0020","customer_id":"CUST-013","prior_dispute_id":"DP-0032","prior_outcome":"unknown","observed_at":"2026-10-16T09:00:00Z","source_version":"customer-v1"},
+    {"history_id":"CH-0003","current_dispute_id":"DP-0017","customer_id":"CUST-008","prior_dispute_id":"DP-0014","prior_outcome":"unknown","observed_at":"2026-10-15T09:00:00Z","source_version":"customer-v1"}
+  ]
+}

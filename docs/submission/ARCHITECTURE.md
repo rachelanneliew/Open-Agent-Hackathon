@@ -53,7 +53,7 @@ confirmed decision. Retrying memory cannot invoke an action.
 
 | Technology | Working use and evidence | Limit |
 |---|---|---|
-| Zetaris | JDBC retrieval of source facts, current policy, revision-bounded bundle and prior receipts. [T08](../../dispute-demo/docs/evidence/t08-live-workflow.json), [T10](../../dispute-demo/docs/evidence/t10-verified-memory.json). | One PostgreSQL datasource. No three-source federation or USL. REST is unconfigured. |
+| Zetaris | JDBC retrieval of source facts, policy, revision-bounded bundle and prior receipts. Separately, [U00–U06](../zetaris-usl/README.md) adds a live three-source compiled/activated USL with native PK/FK DQ. | The decision path still uses one PostgreSQL datasource. USL is optional read-only inspection, without cross-source atomicity/freshness guarantees. Platform REST-client API key remains unconfigured; the USL REST source connector is verified through JDBC. |
 | Meterless Nightshift | Primary live model transport for separate proposals and independent review. [T16 accepted](../../dispute-demo/docs/evidence/t16-live-accepted.json) and [T16 refusal](../../dispute-demo/docs/evidence/t16-live-refusal.json). [T07](../../dispute-demo/docs/evidence/t07-live-DP-0014.json) and T08/T10/T11. | Malformed output can fail validation. No deterministic replacement in normal runtime. |
 | NVIDIA | Requested `meterless/auto`, observed response model `nvidia/nemotron-3.5-bolt-e4b` in actual model metadata. | Returned label is not independent provider attestation. No claim of award eligibility from model discovery alone. |
 | Meterless H-MEM | Official reference pinned at `1742dec56a66e58eef9dda2d2b865823758ca8cd`, actual persistent storage/retrieval and source verification. [T09](../../dispute-demo/docs/evidence/t09-reference-memory.json), T10, T12. | Deterministic mock embeddings. Dreaming/sleep/conflict workflows are not implemented. No formal approval of exact revision found. |
@@ -64,6 +64,27 @@ Codex, Claude Code and Cursor are development tools, not runtime agents. Current
 official rules make Cursor optional. The product contribution is the complete
 source-to-proposal-to-critic-to-transaction workflow, durable retry boundary and
 independent source-verified memory. No measured business time saving is claimed.
+
+## Optional USL inspection (27 October 2026)
+
+```mermaid
+flowchart LR
+    P[(Existing PostgreSQL)] --> U[Compiled Zetaris USL]
+    F[Independent merchant CSV FileStore] --> U
+    R[Fixed customer-history REST fixture] --> U
+    U --> Q[Native PK and FK quality checks]
+    U --> B[Bounded case-scoped read-only adapter]
+    B --> A[Optional analyst provenance panel]
+    Q --> E[Dated execution receipt]
+    E --> A
+```
+
+This path has no edge into the controller or writer. It does not modify
+FreshSnapshot, ContextRef, PolicyResult or CommitRequest. The panel is disabled
+by default; its usable status is unverified because static fixture timestamps
+and independent connectors cannot establish current, atomic business facts.
+The [separate addendum](USL_ADDENDUM.md) explains the live evidence and limits;
+T16 recordings predate this extension and remain unchanged.
 
 ## Provenance declaration for owner review
 
@@ -91,6 +112,8 @@ confirm contributor permission and any earlier-work declaration.
 The [authenticated audit](../competition.md) records leader-only submission
 access, detailed Track 3 page access, organizer acceptance and exact-reference
 endorsement limits. New Zetaris scoring guidance asks for three datasources and
-USL demonstrations. The present one-datasource workflow does not satisfy that
-scoring example. Future work can add richer evidence interpretation, production
-controls, memory lifecycle features and separately scoped USL federation.
+USL demonstrations. U00–U06 now supplies separately dated three-source USL and
+native DQ evidence; this does not establish an organizer score or approval.
+Future work can add richer evidence interpretation, production controls and
+memory lifecycle features. The accepted action path retains its one-source
+coherence boundary.

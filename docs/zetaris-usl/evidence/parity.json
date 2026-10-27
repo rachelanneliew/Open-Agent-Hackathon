@@ -1,0 +1,643 @@
+{
+  "status": "passed",
+  "evidence_category": "live_zetaris",
+  "captured_at": "2026-10-27T12:53:41.257815+00:00",
+  "model": "lightning.metastore.dispute_usl_v1.dispute_resolution_usl",
+  "definition": {
+    "namespace": [
+      "metastore",
+      "dispute_usl_v1"
+    ],
+    "name": "dispute_resolution_usl",
+    "tables": [
+      {
+        "name": "dispute_case",
+        "columnSpecs": [
+          {
+            "name": "dispute_id",
+            "dataType": "\"varchar(16)\"",
+            "primaryKey": {
+              "columns": []
+            },
+            "notNull": {
+              "columns": []
+            },
+            "dqAnnotations": [],
+            "acAnnotations": []
+          },
+          {
+            "name": "transaction_id",
+            "dataType": "\"varchar(16)\"",
+            "dqAnnotations": [],
+            "acAnnotations": []
+          },
+          {
+            "name": "customer_id",
+            "dataType": "\"varchar(20)\"",
+            "dqAnnotations": [],
+            "acAnnotations": []
+          },
+          {
+            "name": "claimed_amount_minor",
+            "dataType": "\"long\"",
+            "dqAnnotations": [],
+            "acAnnotations": []
+          },
+          {
+            "name": "currency",
+            "dataType": "\"varchar(3)\"",
+            "dqAnnotations": [],
+            "acAnnotations": []
+          },
+          {
+            "name": "opened_at",
+            "dataType": "\"varchar(40)\"",
+            "dqAnnotations": [],
+            "acAnnotations": []
+          }
+        ],
+        "unique": [],
+        "foreignKeys": [],
+        "checks": [],
+        "ifNotExit": false,
+        "namespace": [
+          "lightning",
+          "metastore",
+          "dispute_usl_v1",
+          "dispute_resolution_usl"
+        ],
+        "dqAnnotations": [],
+        "acAnnotations": [],
+        "activateQuery": "SELECT COALESCE(d.dispute_id, '') AS dispute_id, d.transaction_id, t.customer_id,\n  d.claimed_amount_minor, d.currency, d.opened_at\nFROM dispute.disputes d JOIN dispute.transactions t ON t.transaction_id = d.transaction_id"
+      },
+      {
+        "name": "merchant_evidence",
+        "columnSpecs": [
+          {
+            "name": "evidence_id",
+            "dataType": "\"varchar(16)\"",
+            "primaryKey": {
+              "columns": []
+            },
+            "notNull": {
+              "columns": []
+            },
+            "dqAnnotations": [],
+            "acAnnotations": []
+          },
+          {
+            "name": "dispute_id",
+            "dataType": "\"varchar(16)\"",
+            "notNull": {
+              "columns": []
+            },
+            "foreignKey": {
+              "columns": [],
+              "refTable": [
+                "lightning.metastore.dispute_usl_v1.dispute_resolution_usl.dispute_case"
+              ],
+              "refColumns": [
+                "dispute_id"
+              ]
+            },
+            "dqAnnotations": [],
+            "acAnnotations": []
+          },
+          {
+            "name": "customer_id",
+            "dataType": "\"varchar(20)\"",
+            "dqAnnotations": [],
+            "acAnnotations": []
+          },
+          {
+            "name": "evidence_type",
+            "dataType": "\"varchar(64)\"",
+            "dqAnnotations": [],
+            "acAnnotations": []
+          },
+          {
+            "name": "integrity_status",
+            "dataType": "\"varchar(40)\"",
+            "dqAnnotations": [],
+            "acAnnotations": []
+          },
+          {
+            "name": "source_updated_at",
+            "dataType": "\"varchar(40)\"",
+            "dqAnnotations": [],
+            "acAnnotations": []
+          },
+          {
+            "name": "source_version",
+            "dataType": "\"varchar(32)\"",
+            "dqAnnotations": [],
+            "acAnnotations": []
+          }
+        ],
+        "unique": [],
+        "foreignKeys": [],
+        "checks": [],
+        "ifNotExit": false,
+        "namespace": [
+          "lightning",
+          "metastore",
+          "dispute_usl_v1",
+          "dispute_resolution_usl"
+        ],
+        "dqAnnotations": [],
+        "acAnnotations": [],
+        "activateQuery": "SELECT COALESCE(evidence_id, '') AS evidence_id, COALESCE(dispute_id, '') AS dispute_id,\n  customer_id, evidence_type, integrity_status, source_updated_at, source_version\nFROM dispute_merchant_v1.evidence"
+      },
+      {
+        "name": "prior_case",
+        "columnSpecs": [
+          {
+            "name": "history_id",
+            "dataType": "\"varchar(32)\"",
+            "primaryKey": {
+              "columns": []
+            },
+            "notNull": {
+              "columns": []
+            },
+            "dqAnnotations": [],
+            "acAnnotations": []
+          },
+          {
+            "name": "current_dispute_id",
+            "dataType": "\"varchar(16)\"",
+            "notNull": {
+              "columns": []
+            },
+            "foreignKey": {
+              "columns": [],
+              "refTable": [
+                "lightning.metastore.dispute_usl_v1.dispute_resolution_usl.dispute_case"
+              ],
+              "refColumns": [
+                "dispute_id"
+              ]
+            },
+            "dqAnnotations": [],
+            "acAnnotations": []
+          },
+          {
+            "name": "customer_id",
+            "dataType": "\"varchar(20)\"",
+            "dqAnnotations": [],
+            "acAnnotations": []
+          },
+          {
+            "name": "prior_dispute_id",
+            "dataType": "\"varchar(16)\"",
+            "dqAnnotations": [],
+            "acAnnotations": []
+          },
+          {
+            "name": "prior_outcome",
+            "dataType": "\"varchar(40)\"",
+            "dqAnnotations": [],
+            "acAnnotations": []
+          },
+          {
+            "name": "observed_at",
+            "dataType": "\"varchar(40)\"",
+            "dqAnnotations": [],
+            "acAnnotations": []
+          },
+          {
+            "name": "source_version",
+            "dataType": "\"varchar(32)\"",
+            "dqAnnotations": [],
+            "acAnnotations": []
+          }
+        ],
+        "unique": [],
+        "foreignKeys": [],
+        "checks": [],
+        "ifNotExit": false,
+        "namespace": [
+          "lightning",
+          "metastore",
+          "dispute_usl_v1",
+          "dispute_resolution_usl"
+        ],
+        "dqAnnotations": [],
+        "acAnnotations": [],
+        "activateQuery": "SELECT COALESCE(h.history_id, '') AS history_id, COALESCE(h.current_dispute_id, '') AS current_dispute_id,\n  h.customer_id, h.prior_dispute_id, h.prior_outcome, h.observed_at, h.source_version\nFROM dispute_customer_v1.history_raw LATERAL VIEW explode(history) AS h"
+      }
+    ]
+  },
+  "sources": {
+    "dispute_case": {
+      "count": 40,
+      "rows": [
+        {
+          "dispute_id": "DP-0001",
+          "transaction_id": "TX-0001",
+          "customer_id": "CUST-006",
+          "claimed_amount_minor": 6500,
+          "currency": "SGD",
+          "opened_at": "2026-09-30T23:59:59Z"
+        },
+        {
+          "dispute_id": "DP-0002",
+          "transaction_id": "TX-0002",
+          "customer_id": "CUST-004",
+          "claimed_amount_minor": 16300,
+          "currency": "SGD",
+          "opened_at": "2026-10-13T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0003",
+          "transaction_id": "TX-0003",
+          "customer_id": "CUST-010",
+          "claimed_amount_minor": 20000,
+          "currency": "SGD",
+          "opened_at": "2026-10-12T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0004",
+          "transaction_id": "TX-0004",
+          "customer_id": "CUST-013",
+          "claimed_amount_minor": 14600,
+          "currency": "SGD",
+          "opened_at": "2026-10-15T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0005",
+          "transaction_id": "TX-0005",
+          "customer_id": "CUST-001",
+          "claimed_amount_minor": 8000,
+          "currency": "SGD",
+          "opened_at": "2026-10-14T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0006",
+          "transaction_id": "TX-0006",
+          "customer_id": "CUST-005",
+          "claimed_amount_minor": 6400,
+          "currency": "SGD",
+          "opened_at": "2026-10-13T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0007",
+          "transaction_id": "TX-0007",
+          "customer_id": "CUST-001",
+          "claimed_amount_minor": 10700,
+          "currency": "SGD",
+          "opened_at": "2026-10-12T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0008",
+          "transaction_id": "TX-0008",
+          "customer_id": "CUST-006",
+          "claimed_amount_minor": 25000,
+          "currency": "SGD",
+          "opened_at": "2026-10-15T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0009",
+          "transaction_id": "TX-0009",
+          "customer_id": "CUST-005",
+          "claimed_amount_minor": 10000,
+          "currency": "SGD",
+          "opened_at": "2026-10-14T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0010",
+          "transaction_id": "TX-0010",
+          "customer_id": "CUST-015",
+          "claimed_amount_minor": 17500,
+          "currency": "SGD",
+          "opened_at": "2026-10-13T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0011",
+          "transaction_id": "TX-0011",
+          "customer_id": "CUST-007",
+          "claimed_amount_minor": 15300,
+          "currency": "SGD",
+          "opened_at": "2026-10-12T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0012",
+          "transaction_id": "TX-0012",
+          "customer_id": "CUST-006",
+          "claimed_amount_minor": 14200,
+          "currency": "SGD",
+          "opened_at": "2026-10-15T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0013",
+          "transaction_id": "TX-0013",
+          "customer_id": "CUST-009",
+          "claimed_amount_minor": 12100,
+          "currency": "SGD",
+          "opened_at": "2026-10-14T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0014",
+          "transaction_id": "TX-0014",
+          "customer_id": "CUST-008",
+          "claimed_amount_minor": 10000,
+          "currency": "SGD",
+          "opened_at": "2026-10-13T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0015",
+          "transaction_id": "TX-0015",
+          "customer_id": "CUST-011",
+          "claimed_amount_minor": 16200,
+          "currency": "SGD",
+          "opened_at": "2026-10-12T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0016",
+          "transaction_id": "TX-0016",
+          "customer_id": "CUST-014",
+          "claimed_amount_minor": 5300,
+          "currency": "SGD",
+          "opened_at": "2026-10-15T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0017",
+          "transaction_id": "TX-0017",
+          "customer_id": "CUST-008",
+          "claimed_amount_minor": 9600,
+          "currency": "SGD",
+          "opened_at": "2026-10-14T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0018",
+          "transaction_id": "TX-0018",
+          "customer_id": "CUST-007",
+          "claimed_amount_minor": 6100,
+          "currency": "SGD",
+          "opened_at": "2026-10-13T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0019",
+          "transaction_id": "TX-0019",
+          "customer_id": "CUST-002",
+          "claimed_amount_minor": 16100,
+          "currency": "SGD",
+          "opened_at": "2026-10-12T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0020",
+          "transaction_id": "TX-0020",
+          "customer_id": "CUST-013",
+          "claimed_amount_minor": 11400,
+          "currency": "SGD",
+          "opened_at": "2026-10-15T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0021",
+          "transaction_id": "TX-0021",
+          "customer_id": "CUST-015",
+          "claimed_amount_minor": 10000,
+          "currency": "SGD",
+          "opened_at": "2026-10-14T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0022",
+          "transaction_id": "TX-0022",
+          "customer_id": "CUST-007",
+          "claimed_amount_minor": 15800,
+          "currency": "SGD",
+          "opened_at": "2026-10-13T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0023",
+          "transaction_id": "TX-0023",
+          "customer_id": "CUST-009",
+          "claimed_amount_minor": 11500,
+          "currency": "SGD",
+          "opened_at": "2026-10-12T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0024",
+          "transaction_id": "TX-0024",
+          "customer_id": "CUST-004",
+          "claimed_amount_minor": 12300,
+          "currency": "SGD",
+          "opened_at": "2026-10-15T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0025",
+          "transaction_id": "TX-0025",
+          "customer_id": "CUST-001",
+          "claimed_amount_minor": 15400,
+          "currency": "SGD",
+          "opened_at": "2026-10-14T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0026",
+          "transaction_id": "TX-0026",
+          "customer_id": "CUST-010",
+          "claimed_amount_minor": 14100,
+          "currency": "SGD",
+          "opened_at": "2026-10-13T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0027",
+          "transaction_id": "TX-0027",
+          "customer_id": "CUST-003",
+          "claimed_amount_minor": 11000,
+          "currency": "SGD",
+          "opened_at": "2026-10-12T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0028",
+          "transaction_id": "TX-0028",
+          "customer_id": "CUST-004",
+          "claimed_amount_minor": 16300,
+          "currency": "SGD",
+          "opened_at": "2026-10-15T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0029",
+          "transaction_id": "TX-0029",
+          "customer_id": "CUST-012",
+          "claimed_amount_minor": 13000,
+          "currency": "SGD",
+          "opened_at": "2026-09-30T23:59:59Z"
+        },
+        {
+          "dispute_id": "DP-0030",
+          "transaction_id": "TX-0030",
+          "customer_id": "CUST-008",
+          "claimed_amount_minor": 13600,
+          "currency": "SGD",
+          "opened_at": "2026-10-13T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0031",
+          "transaction_id": "TX-0031",
+          "customer_id": "CUST-007",
+          "claimed_amount_minor": 12100,
+          "currency": "SGD",
+          "opened_at": "2026-09-30T23:59:59Z"
+        },
+        {
+          "dispute_id": "DP-0032",
+          "transaction_id": "TX-0032",
+          "customer_id": "CUST-013",
+          "claimed_amount_minor": 12000,
+          "currency": "SGD",
+          "opened_at": "2026-10-15T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0033",
+          "transaction_id": "TX-0033",
+          "customer_id": "CUST-015",
+          "claimed_amount_minor": 10000,
+          "currency": "SGD",
+          "opened_at": "2026-09-30T23:59:59Z"
+        },
+        {
+          "dispute_id": "DP-0034",
+          "transaction_id": "TX-0034",
+          "customer_id": "CUST-004",
+          "claimed_amount_minor": 10000,
+          "currency": "SGD",
+          "opened_at": "2026-10-01T00:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0035",
+          "transaction_id": "TX-0035",
+          "customer_id": "CUST-005",
+          "claimed_amount_minor": 12000,
+          "currency": "SGD",
+          "opened_at": "2026-09-30T23:59:59Z"
+        },
+        {
+          "dispute_id": "DP-0036",
+          "transaction_id": "TX-0036",
+          "customer_id": "CUST-003",
+          "claimed_amount_minor": 12000,
+          "currency": "SGD",
+          "opened_at": "2026-10-01T00:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0037",
+          "transaction_id": "TX-0037",
+          "customer_id": "CUST-009",
+          "claimed_amount_minor": 15200,
+          "currency": "SGD",
+          "opened_at": "2026-10-14T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0038",
+          "transaction_id": "TX-0038",
+          "customer_id": "CUST-015",
+          "claimed_amount_minor": 9600,
+          "currency": "SGD",
+          "opened_at": "2026-10-13T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0039",
+          "transaction_id": "TX-0039",
+          "customer_id": "CUST-012",
+          "claimed_amount_minor": 8300,
+          "currency": "SGD",
+          "opened_at": "2026-10-12T09:00:00Z"
+        },
+        {
+          "dispute_id": "DP-0040",
+          "transaction_id": "TX-0040",
+          "customer_id": "CUST-009",
+          "claimed_amount_minor": 10900,
+          "currency": "SGD",
+          "opened_at": "2026-10-15T09:00:00Z"
+        }
+      ]
+    },
+    "merchant_evidence": {
+      "count": 4,
+      "rows": [
+        {
+          "evidence_id": "ME-0001",
+          "dispute_id": "DP-0020",
+          "customer_id": "CUST-013",
+          "evidence_type": "merchant_contact",
+          "integrity_status": "received_unverified",
+          "source_updated_at": "2026-10-16T09:00:00Z",
+          "source_version": "merchant-v1"
+        },
+        {
+          "evidence_id": "ME-0002",
+          "dispute_id": "DP-0020",
+          "customer_id": "CUST-013",
+          "evidence_type": "refund_promise",
+          "integrity_status": "received_unverified",
+          "source_updated_at": "2026-10-16T09:00:00Z",
+          "source_version": "merchant-v1"
+        },
+        {
+          "evidence_id": "ME-0003",
+          "dispute_id": "DP-0014",
+          "customer_id": "CUST-008",
+          "evidence_type": "merchant_contact",
+          "integrity_status": "received_unverified",
+          "source_updated_at": "2026-10-14T09:00:00Z",
+          "source_version": "merchant-v1"
+        },
+        {
+          "evidence_id": "ME-0004",
+          "dispute_id": "DP-0017",
+          "customer_id": "CUST-008",
+          "evidence_type": "merchant_contact",
+          "integrity_status": "received_unverified",
+          "source_updated_at": "2026-10-15T09:00:00Z",
+          "source_version": "merchant-v1"
+        }
+      ]
+    },
+    "prior_case": {
+      "count": 3,
+      "rows": [
+        {
+          "history_id": "CH-0001",
+          "current_dispute_id": "DP-0020",
+          "customer_id": "CUST-013",
+          "prior_dispute_id": "DP-0004",
+          "prior_outcome": "unknown",
+          "observed_at": "2026-10-16T09:00:00Z",
+          "source_version": "customer-v1"
+        },
+        {
+          "history_id": "CH-0002",
+          "current_dispute_id": "DP-0020",
+          "customer_id": "CUST-013",
+          "prior_dispute_id": "DP-0032",
+          "prior_outcome": "unknown",
+          "observed_at": "2026-10-16T09:00:00Z",
+          "source_version": "customer-v1"
+        },
+        {
+          "history_id": "CH-0003",
+          "current_dispute_id": "DP-0017",
+          "customer_id": "CUST-008",
+          "prior_dispute_id": "DP-0014",
+          "prior_outcome": "unknown",
+          "observed_at": "2026-10-15T09:00:00Z",
+          "source_version": "customer-v1"
+        }
+      ]
+    }
+  },
+  "dp0020_join": [
+    [
+      "DP-0020",
+      11400,
+      2,
+      2
+    ]
+  ],
+  "ownership": "matched_for_all_fixture_rows",
+  "source_to_usl_parity": "exact",
+  "atomic_snapshot": false,
+  "financial_action_called": false
+}

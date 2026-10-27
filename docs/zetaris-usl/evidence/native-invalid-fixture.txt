@@ -1,0 +1,18 @@
+channel=jdbc env=[private local configuration] statements=7
+  1. COMPILE USL quality_fixture DEPLOY NAMESPACE lightning.metastore.dispute_usl_v1 DDL CREATE TABLE ...
+      ['{"namespace":["metastore","dispute_usl_v1"],"name":"quality_fixture","tables":[{"name":"parent_case","columnSpecs":[{"name":"dispute_id","dataType":"\\"varchar(16)\\"","primaryKey":{"columns":[]},"notNull":{"columns":[]},"dqAnnotations":[],"acAnnotations":[]}],"unique":[],"foreignKeys":[],"checks":[],"ifNotExit":false,"namespace":["lightning","metastore","dispute_usl_v1","quality_fixture"],"dqAnnotations":[],"acAnnotations":[]},{"name":"merchant_record","columnSpecs":[{"name":"evidence_id","dataType":"\\"varchar(16)\\"","primaryKey":{"columns":[]},"notNull":{"columns":[]},"dqAnnotations":[],"acAnnotations":[]},{"name":"dispute_id","dataType":"\\"varchar(16)\\"","notNull":{"columns":[]},"foreignKey":{"columns":[],"refTable":["lightning.metastore.dispute_usl_v1.quality_fixture.parent_case"],"refColumns":["dispute_id"]},"dqAnnotations":[],"acAnnotations":[]}],"unique":[],"foreignKeys":[],"checks":[],"ifNotExit":false,"namespace":["lightning","metastore","dispute_usl_v1","quality_fixture"],"dqAnnotations":[],"acAnnotations":[]}]}']
+  2. ACTIVATE USL TABLE lightning.metastore.dispute_usl_v1.quality_fixture.parent_case AS SELECT COALE...
+      ['{"name":"parent_case","query":"SELECT COALESCE(dispute_id, \'\') AS dispute_id FROM dispute.disputes"}']
+  3. ACTIVATE USL TABLE lightning.metastore.dispute_usl_v1.quality_fixture.merchant_record AS SELECT '...
+      ['{"name":"merchant_record","query":"SELECT \'DQ-VALID\' AS evidence_id, \'DP-0020\' AS dispute_id\\nUNION ALL SELECT \'DQ-ORPHAN\', \'DP-9999\'"}']
+  4. RUN DQ dispute_id TABLE lightning.metastore.dispute_usl_v1.quality_fixture.merchant_record
+      ['dispute_id', 'merchant_record', 'Foreign Key Constraint', 2, 1, 1]
+  5. LIST DQ USL lightning.metastore.dispute_usl_v1.quality_fixture
+      ['dispute_id', 'parent_case', 'Primary key constraints', '']
+      ['evidence_id', 'merchant_record', 'Primary key constraints', '']
+      ['dispute_id', 'merchant_record', 'Foreign key constraints', '']
+  6. SHOW DQ INVALID RECORD dispute_id TABLE lightning.metastore.dispute_usl_v1.quality_fixture.mercha...
+      ['DQ-ORPHAN', 'DP-9999']
+  7. SHOW DQ ALL INVALID TABLE lightning.metastore.dispute_usl_v1.quality_fixture.merchant_record
+      ['{"evidence_id":"DQ-ORPHAN","dispute_id":"DP-9999"}']
+done: 7/7 statements ok
