@@ -78,6 +78,16 @@ class NightshiftTests(unittest.TestCase):
                 self.client().complete([{'role': 'user', 'content': 'x' * 262144}])
             run.assert_not_called()
 
+    def test_json_schema_is_forwarded_strictly_without_downgrade_or_retry(self):
+        client = self.client()
+        schema = {'type': 'object', 'properties': {}, 'required': [], 'additionalProperties': False}
+        with patch.object(client, '_request', side_effect=ModelError('structured_output_unsupported')) as request:
+            with self.assertRaisesRegex(ModelError, '^structured_output_unsupported$'):
+                client.complete([], response_schema=schema)
+            request.assert_called_once()
+        self.assertEqual(request.call_args.args[1]['response_format'], {'type': 'json_schema',
+            'json_schema': {'name': 'dispute_investigator', 'strict': True, 'schema': schema}})
+
     def test_duplicate_keys_and_nonfinite_json_rejected(self):
         for text in ('{"a":1,"a":2}', '{"x":NaN}', '{"x":Infinity}'):
             with self.assertRaises(ValueError):
@@ -134,6 +144,18 @@ class LocalHTTPTests(unittest.TestCase):
         with self.server(status=401, body=b'PRIVATE provider details') as (client, _):
             with self.assertRaisesRegex(ModelError, '^unauthorized$'):
                 client.discover()
+
+    def test_provider_schema_error_retains_only_known_code_and_safe_field_path(self):
+        for path, expected in (('$.proposal.recommendation.amount_minor', '$.proposal.recommendation.amount_minor'),
+                               ('$.proposal.PRIVATE_SECRET', '$'), ('$.proposal.secret', '$')):
+            body = json.dumps({'error': {'code': 'schema_validation_failed', 'message': 'PRIVATE_SECRET'},
+                'meterless': {'validation': {'errors': [{'path': path, 'message': 'PRIVATE_SECRET'}]}}}).encode()
+            with self.server(status=422, body=body) as (client, _):
+                with self.assertRaises(ModelError) as raised:
+                    client.complete([])
+            self.assertEqual(raised.exception.code, 'schema_validation_failed')
+            self.assertEqual(raised.exception.path, expected)
+            self.assertNotIn('PRIVATE_SECRET', str(raised.exception))
 
     def test_redirect_cannot_forward_token(self):
         with self.server(status=302, redirect=True) as (client, seen):

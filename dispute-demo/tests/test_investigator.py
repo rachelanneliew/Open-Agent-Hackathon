@@ -17,6 +17,9 @@ import test_tools
 
 
 def completion(obj, **changes):
+    if type(obj) is dict and obj.get('kind') in ('proposal', 'read'):
+        obj = dict(obj)
+        obj.setdefault('request' if obj['kind'] == 'proposal' else 'proposal', None)
     return dict(model='meterless/auto', choices=[{'finish_reason': 'stop', 'message': {
         'role': 'assistant', 'content': json.dumps(obj)}}], **changes)
 
@@ -44,7 +47,9 @@ class InvestigatorTests(unittest.TestCase):
         return AgentProposal(**(values | changes))
 
     def envelope(self, proposal=None):
-        return {'kind': 'proposal', 'proposal': (proposal or self.proposal()).to_dict(), 'uncertainties': []}
+        full = (proposal or self.proposal()).to_dict()
+        draft = {key: full[key] for key in ('recommendation', 'evidence_ids', 'policy_rule_ids', 'missing_evidence')}
+        return {'kind': 'proposal', 'proposal': draft, 'request': None, 'uncertainties': []}
 
     def call(self, context=None, policy=None, **kwargs):
         c = context or self.context
@@ -101,8 +106,9 @@ class InvestigatorTests(unittest.TestCase):
         self.assertEqual(review_proposal(self.context, p, r.proposal).verdict, CriticVerdict.ACCEPTED)
         prompt = json.loads(self.client.complete.call_args.args[0][1]['content'])
         self.assertEqual(prompt['correction']['critique'], critique.to_dict())
-        self.assertEqual(prompt['identity']['revision'], 1)
-        self.assertEqual(prompt['correction']['previous']['proposal_id'], initial.proposal_id)
+        self.assertEqual(r.proposal.revision, 1)
+        self.assertEqual(prompt['correction']['previous']['recommendation'], initial.recommendation.to_dict())
+        self.assertNotIn('identity', prompt)
 
     def test_second_or_forged_or_missing_correction_refused_before_model(self):
         previous = self.proposal()
@@ -115,12 +121,13 @@ class InvestigatorTests(unittest.TestCase):
 
     def test_identity_reference_run_and_revision_are_application_owned(self):
         base = self.proposal()
-        proposals = [replace(base, proposal_id=str(uuid4())), replace(base, run_id=str(uuid4())),
-                     replace(base, reference=replace(base.reference, snapshot_id=str(uuid4()))),
-                     replace(base, reference=replace(base.reference, source_revision=1)), replace(base, revision=1)]
-        for p in proposals:
-            self.client.complete.return_value = completion(self.envelope(p))
+        for field in ('proposal_id', 'run_id', 'reference', 'revision', 'rationale'):
+            obj = self.envelope()
+            obj['proposal'][field] = base.to_dict()[field]
+            self.client.complete.return_value = completion(obj)
             self.assertEqual(self.call().status, 'invalid_output')
+        self.client.complete.return_value = completion(self.envelope())
+        self.assertEqual(self.call().proposal, base)
 
     def test_model_output_not_repaired_or_replaced_with_policy(self):
         p = self.proposal(recommendation=Recommendation(outcome=Outcome.PROVISIONAL_CREDIT,
@@ -168,8 +175,76 @@ class InvestigatorTests(unittest.TestCase):
                 result = self.call(context)
                 self.assertEqual(result.status, 'invalid_output')
                 self.assertIsNone(result.proposal)
+                self.assertEqual(result.validation_failure.path, '$.proposal.recommendation.amount_minor')
+                self.assertEqual(result.validation_failure.code,
+                    'invalid_type' if type(amount) is str else 'noncredit_amount_must_be_null')
             self.client.complete.return_value = completion(valid)
             self.assertEqual(self.call(context).status, 'proposal')
+
+    def test_safe_diagnostics_locate_missing_nested_and_invalid_fields(self):
+        cases = []
+        missing = self.envelope()
+        del missing['proposal']['recommendation']['outcome']
+        cases.append((missing, '$.proposal.recommendation.outcome', 'missing_field'))
+        invalid = self.envelope()
+        invalid['proposal']['evidence_ids'] = ['PRIVATE_INVALID_VALUE']
+        cases.append((invalid, '$.proposal.evidence_ids[0]', 'invalid_value'))
+        unknown = self.envelope()
+        unknown['proposal']['PRIVATE_UNKNOWN_FIELD'] = 'PRIVATE_INVALID_VALUE'
+        cases.append((unknown, '$.proposal', 'unknown_fields'))
+        for obj, path, code in cases:
+            self.client.complete.return_value = completion(obj)
+            result = self.call()
+            self.assertEqual(result.validation_failure.path, path)
+            self.assertEqual(result.validation_failure.code, code)
+            self.assertNotIn('PRIVATE_', json.dumps(result.to_dict()))
+
+    def test_explicit_null_and_inactive_slot_required_even_if_provider_ignores_schema(self):
+        c = self.source.tools.get_dispute_context('DP-0029').data
+        obj = self.envelope(self.proposal(c))
+        del obj['proposal']['recommendation']['amount_minor']
+        self.client.complete.return_value = completion(obj)
+        result = self.call(c)
+        self.assertEqual(result.validation_failure.path, '$.proposal.recommendation.amount_minor')
+        self.assertEqual(result.validation_failure.code, 'missing_field')
+        obj = self.envelope()
+        obj['request'] = {'name': 'get_dispute_context', 'dispute_id': 'DP-0014'}
+        self.client.complete.return_value = completion(obj)
+        self.assertEqual(self.call().validation_failure.stage, 'envelope')
+
+    def test_provider_schema_diagnostic_survives_without_retry(self):
+        self.client.complete.side_effect = ModelError('schema_validation_failed',
+            path='$.proposal.recommendation.amount_minor')
+        result = self.call()
+        self.assertEqual(result.validation_failure.stage, 'response_contract')
+        self.assertEqual(result.validation_failure.path, '$.proposal.recommendation.amount_minor')
+        self.client.complete.assert_called_once()
+
+    def test_decline_citation_requirements_exclude_irrelevant_documents(self):
+        c = self.source.tools.get_dispute_context('DP-0029').data
+        self.client.complete.return_value = completion(self.envelope(self.proposal(c)))
+        self.call(c)
+        payload = json.loads(self.client.complete.call_args.args[0][1]['content'])
+        self.assertEqual(payload['citation_requirements'], {
+            'required_rule_ids': ['v1-DATA_INTEGRITY', 'v1-FILING_WINDOW'], 'supporting_evidence_ids': []})
+        schema = self.client.complete.call_args.kwargs['response_schema']
+        self.assertFalse(schema['additionalProperties'])
+        self.assertEqual(set(schema['required']), {'kind', 'proposal', 'request', 'uncertainties'})
+        properties = schema['properties']['proposal']['anyOf'][0]['properties']
+        self.assertEqual(properties['evidence_ids']['maxItems'], 0)
+        self.assertEqual(properties['policy_rule_ids']['items']['enum'],
+                         ['v1-DATA_INTEGRITY', 'v1-FILING_WINDOW'])
+
+    def test_schema_scope_never_replaces_local_critic(self):
+        c = self.source.tools.get_dispute_context('DP-0029').data
+        obj = self.envelope(self.proposal(c))
+        obj['proposal']['evidence_ids'] = [c.evidence[0].evidence_id]
+        self.client.complete.return_value = completion(obj)
+        result = self.call(c)
+        critic = review_proposal(c, evaluate_policy(c), result.proposal)
+        self.assertIn('unsupported_evidence', critic.failed_checks)
+        self.assertNotEqual(critic.verdict, CriticVerdict.ACCEPTED)
+
     def test_empty_multiple_truncated_refusal_and_native_tools_rejected(self):
         responses = [{}, {'choices': []}, {'choices': [None]}, {'choices': [1, 2]}]
         for reason in ('length', 'tool_calls', 'content_filter', None):

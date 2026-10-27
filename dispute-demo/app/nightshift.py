@@ -17,12 +17,30 @@ import urllib.request
 from integration.check_nightshift import APP_ID, CheckError, NoRedirect, load_settings, normalize_base
 
 MAX_BYTES = 262144
+STRUCTURED_ERRORS = frozenset(('structured_output_unsupported', 'structured_output_schema_rejected',
+    'schema_validation_failed', 'invalid_json_output', 'response_truncated', 'response_refused'))
+PROVIDER_ERRORS = frozenset(('provider_route_failed', 'provider_error', 'provider_rejected_request',
+    'provider_auth_failed', 'rate_limited', 'first_token_timeout', 'engine_timeout',
+    'model_unavailable_for_account', 'endpoint_retired'))
 
 
 class ModelError(Exception):
-    def __init__(self, code):
+    def __init__(self, code, *, path='$'):
         self.code = code
+        self.path = safe_error_path(path)
         super().__init__(code)
+
+
+def safe_error_path(value):
+    """Provider errors may echo arbitrary property names; retain known names only."""
+    fields = {'kind', 'proposal', 'request', 'uncertainties', 'recommendation', 'outcome',
+        'currency', 'amount_minor', 'evidence_ids', 'policy_rule_ids', 'missing_evidence',
+        'category', 'reason', 'policy_rule_id', 'name', 'dispute_id'}
+    if (type(value) is not str or len(value) > 240 or
+            re.fullmatch(r'\$(?:\.[a-z_]+|\[[0-9]{1,6}\])*', value) is None or
+            not set(re.findall(r'\.([a-z_]+)', value)) <= fields):
+        return '$'
+    return value
 
 
 def strict_json(text):
@@ -92,7 +110,20 @@ def _http_request(request):
             return strict_json(raw.decode('utf-8'))
     except urllib.error.HTTPError as exc:
         code = 'unauthorized' if exc.code in (401, 403) else 'provider_unavailable'
-        raise ModelError(code) from None
+        path = '$'
+        if code != 'unauthorized':
+            # Preserve only known machine codes, never provider text/content.
+            try:
+                body = strict_json(exc.read(MAX_BYTES + 1).decode('utf-8'))
+                reported = body.get('error', {}).get('code')
+                if type(reported) is str and reported in (STRUCTURED_ERRORS | PROVIDER_ERRORS):
+                    code = reported
+                    errors = body.get('meterless', {}).get('validation', {}).get('errors', [])
+                    if type(errors) is list and errors and type(errors[0]) is dict:
+                        path = safe_error_path(errors[0].get('path'))
+            except (ValueError, TypeError, AttributeError, OSError, UnicodeError, RecursionError):
+                pass
+        raise ModelError(code, path=path) from None
     except (TimeoutError, urllib.error.URLError, OSError):
         raise ModelError('provider_unavailable') from None
     except (ValueError, UnicodeError, RecursionError):
@@ -121,12 +152,13 @@ class NightshiftClient:
             if completed.returncode:
                 raise ModelError('provider_unavailable')
             result = strict_json(completed.stdout)
-            if type(result) is not dict or set(result) not in ({'response'}, {'error'}):
+            if type(result) is not dict or set(result) not in ({'response'}, {'error'}, {'error', 'path'}):
                 raise ModelError('malformed_response')
             if 'error' in result:
                 code = result['error']
-                raise ModelError(code if code in ('unauthorized', 'provider_unavailable',
-                    'malformed_response') else 'provider_unavailable')
+                raise ModelError(code if type(code) is str and code in (
+                    {'unauthorized', 'provider_unavailable', 'malformed_response'} | STRUCTURED_ERRORS | PROVIDER_ERRORS)
+                    else 'provider_unavailable', path=result.get('path', '$'))
             return result['response']
         except subprocess.TimeoutExpired:
             # subprocess.run kills and waits for this child before raising.
@@ -144,14 +176,17 @@ class NightshiftClient:
             raise ModelError('route_unavailable')
         return ids
 
-    def complete(self, messages, *, timeout_seconds=180):
+    def complete(self, messages, *, timeout_seconds=180, response_schema=None):
         # Installed proxy.js forwards json_object and disables semantic caching
         # for structured requests. tool_choice:none also selects the structured
         # path, skipping Nightshift answer-memory/scaffold injection; no native
         # tools are supplied or authorized. Still validate every result locally.
+        response_format = ({'type': 'json_schema', 'json_schema': {
+            'name': 'dispute_investigator', 'strict': True, 'schema': response_schema}}
+            if response_schema is not None else {'type': 'json_object'})
         return self._request('/chat/completions', {'model': self.config.route,
             'messages': messages, 'max_tokens': 4096, 'stream': False, 'temperature': 0,
-            'tool_choice': 'none', 'response_format': {'type': 'json_object'}}, timeout_seconds)
+            'tool_choice': 'none', 'response_format': response_format}, timeout_seconds)
 
 
 def _main():
@@ -159,7 +194,7 @@ def _main():
         request = strict_json(sys.stdin.read(MAX_BYTES + 1))
         result = {'response': _http_request(request)}
     except ModelError as exc:
-        result = {'error': exc.code}
+        result = {'error': exc.code, 'path': exc.path}
     except Exception:
         result = {'error': 'provider_unavailable'}
     print(json.dumps(result, allow_nan=False))

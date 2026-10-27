@@ -1,0 +1,624 @@
+{
+  "date": "2026-10-27",
+  "baseline_commit": "fd6c2bfda0db4f1f987ea554b1cef790ada0560b",
+  "purpose": "User-authorized Nightshift proposal-schema diagnosis and hardening",
+  "original_t13_cause": "Unknown: original response and field-level error were not retained; old prompt passed the fresh reproduction.",
+  "live_scope": "Fresh Zetaris facts and real Nightshift proposals with pure critic; no action, queue, credit or memory writes. Probe performs one model turn and does not exercise the controller correction loop.",
+  "initial_attempt": {
+    "phase": "fresh_retrieval",
+    "error": "read_timeout",
+    "model_called": false,
+    "persisted": false
+  },
+  "schema_capability": {
+    "mode": "live_read_only_schema_probe",
+    "response_model": "nvidia/nemotron-3.5-bolt-e4b",
+    "matches_schema": true,
+    "finish_reason": "stop",
+    "structured_output": {
+      "kind": "json_schema",
+      "strict": true,
+      "name": "dispute_investigator",
+      "schema_fingerprint": "a27c3ba70d7891ff",
+      "capability": "unverified",
+      "validation": "passed"
+    },
+    "persisted": false
+  },
+  "feature_probes": [
+    {
+      "feature": "array_bounds",
+      "http_status": 200,
+      "valid_empty_array": true
+    },
+    {
+      "feature": "uniqueItems",
+      "http_status": 502,
+      "precise_cause": "Not established; no raw provider error retained. Omitted from final request; uniqueness is mandatory locally."
+    }
+  ],
+  "attempts": [
+    {
+      "variant": "old_prompt_json_object",
+      "result": {
+        "mode": "live_read_only",
+        "source_channel": "zetaris",
+        "fresh_snapshot": true,
+        "reference": {
+          "dispute_id": "DP-0029",
+          "snapshot_id": "b78a2814-b642-4946-b97e-419e75c858f8",
+          "evaluation_at": "2026-10-27T08:45:46.492949Z",
+          "policy_version": "v1",
+          "source_revision": 14
+        },
+        "read_status": "ok",
+        "investigator": {
+          "status": "proposal",
+          "message": "Unapproved model proposal; mandatory critic required.",
+          "requested_route": "meterless/auto",
+          "proposal": {
+            "proposal_id": "0a81d328-3621-4e1b-bf79-10b5c2fdcf5b",
+            "run_id": "2ff798f7-5e7f-4ab1-b2ab-9622621b34e2",
+            "reference": {
+              "dispute_id": "DP-0029",
+              "snapshot_id": "b78a2814-b642-4946-b97e-419e75c858f8",
+              "evaluation_at": "2026-10-27T08:45:46.492949Z",
+              "policy_version": "v1",
+              "source_revision": 14
+            },
+            "recommendation": {
+              "outcome": "decline",
+              "currency": "SGD",
+              "amount_minor": null
+            },
+            "rationale": "v1-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv1-FILING_WINDOW: Primary transaction TX-0029: filing age 30 days, 0:00:01; inclusive limit 30 days.",
+            "evidence_ids": [],
+            "policy_rule_ids": [
+              "v1-DATA_INTEGRITY",
+              "v1-FILING_WINDOW"
+            ],
+            "missing_evidence": [],
+            "revision": 0
+          },
+          "read_request": null,
+          "uncertainties": [],
+          "response_model": "nvidia/nemotron-3.5-bolt-e4b",
+          "validation_failure": null
+        },
+        "critic": {
+          "proposal_id": "0a81d328-3621-4e1b-bf79-10b5c2fdcf5b",
+          "reference": {
+            "dispute_id": "DP-0029",
+            "snapshot_id": "b78a2814-b642-4946-b97e-419e75c858f8",
+            "evaluation_at": "2026-10-27T08:45:46.492949Z",
+            "policy_version": "v1",
+            "source_revision": 14
+          },
+          "verdict": "accepted",
+          "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+          "failed_checks": []
+        },
+        "usable_proposal": true,
+        "persisted": false
+      }
+    },
+    {
+      "variant": "compact_draft_unscoped",
+      "result": {
+        "mode": "live_read_only",
+        "source_channel": "zetaris",
+        "fresh_snapshot": true,
+        "reference": {
+          "dispute_id": "DP-0029",
+          "snapshot_id": "ad451348-e445-4525-8698-21ca24106a0b",
+          "evaluation_at": "2026-10-27T08:50:13.353375Z",
+          "policy_version": "v1",
+          "source_revision": 14
+        },
+        "read_status": "ok",
+        "investigator": {
+          "status": "proposal",
+          "message": "Unapproved model proposal; mandatory critic required.",
+          "requested_route": "meterless/auto",
+          "proposal": {
+            "proposal_id": "e8a6eb36-696b-4948-88c5-2caf8d332b1b",
+            "run_id": "53924dee-9f06-477a-8f5f-62a4f116b985",
+            "reference": {
+              "dispute_id": "DP-0029",
+              "snapshot_id": "ad451348-e445-4525-8698-21ca24106a0b",
+              "evaluation_at": "2026-10-27T08:50:13.353375Z",
+              "policy_version": "v1",
+              "source_revision": 14
+            },
+            "recommendation": {
+              "outcome": "decline",
+              "currency": "SGD",
+              "amount_minor": null
+            },
+            "rationale": "v1-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv1-FILING_WINDOW: Primary transaction TX-0029: filing age 30 days, 0:00:01; inclusive limit 30 days.",
+            "evidence_ids": [
+              "EV-0058",
+              "EV-0059"
+            ],
+            "policy_rule_ids": [
+              "v1-FILING_WINDOW"
+            ],
+            "missing_evidence": [],
+            "revision": 0
+          },
+          "read_request": null,
+          "uncertainties": [],
+          "response_model": "nvidia/nemotron-3.5-bolt-e4b",
+          "validation_failure": null
+        },
+        "critic": {
+          "proposal_id": "e8a6eb36-696b-4948-88c5-2caf8d332b1b",
+          "reference": {
+            "dispute_id": "DP-0029",
+            "snapshot_id": "ad451348-e445-4525-8698-21ca24106a0b",
+            "evaluation_at": "2026-10-27T08:50:13.353375Z",
+            "policy_version": "v1",
+            "source_revision": 14
+          },
+          "verdict": "human_review",
+          "feedback": "Include every evaluated rule ID: v1-DATA_INTEGRITY, v1-FILING_WINDOW. Cited documents do not establish the proposed conclusion; obtain authoritative support or route unresolved material to review. Do not commit this proposal. This verdict does not create a review-queue entry.",
+          "failed_checks": [
+            "missing_rule_citations",
+            "unsupported_evidence"
+          ]
+        },
+        "usable_proposal": false,
+        "persisted": false
+      }
+    },
+    {
+      "variant": "explicit_citations_unscoped",
+      "result": {
+        "mode": "live_read_only",
+        "source_channel": "zetaris",
+        "fresh_snapshot": true,
+        "reference": {
+          "dispute_id": "DP-0029",
+          "snapshot_id": "f35faa76-5087-4b2c-a304-ab4759199003",
+          "evaluation_at": "2026-10-27T08:52:53.062128Z",
+          "policy_version": "v1",
+          "source_revision": 14
+        },
+        "read_status": "ok",
+        "investigator": {
+          "status": "proposal",
+          "message": "Unapproved model proposal; mandatory critic required.",
+          "requested_route": "meterless/auto",
+          "proposal": {
+            "proposal_id": "04378122-2bb4-425c-b675-80fd97713b1a",
+            "run_id": "77f47359-1ca2-4ba0-a044-281dce5a6223",
+            "reference": {
+              "dispute_id": "DP-0029",
+              "snapshot_id": "f35faa76-5087-4b2c-a304-ab4759199003",
+              "evaluation_at": "2026-10-27T08:52:53.062128Z",
+              "policy_version": "v1",
+              "source_revision": 14
+            },
+            "recommendation": {
+              "outcome": "decline",
+              "currency": "SGD",
+              "amount_minor": null
+            },
+            "rationale": "v1-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv1-FILING_WINDOW: Primary transaction TX-0029: filing age 30 days, 0:00:01; inclusive limit 30 days.",
+            "evidence_ids": [
+              "EV-0058",
+              "EV-0059"
+            ],
+            "policy_rule_ids": [
+              "v1-DATA_INTEGRITY",
+              "v1-FILING_WINDOW"
+            ],
+            "missing_evidence": [],
+            "revision": 0
+          },
+          "read_request": null,
+          "uncertainties": [],
+          "response_model": "nvidia/nemotron-3.5-bolt-e4b",
+          "validation_failure": null
+        },
+        "critic": {
+          "proposal_id": "04378122-2bb4-425c-b675-80fd97713b1a",
+          "reference": {
+            "dispute_id": "DP-0029",
+            "snapshot_id": "f35faa76-5087-4b2c-a304-ab4759199003",
+            "evaluation_at": "2026-10-27T08:52:53.062128Z",
+            "policy_version": "v1",
+            "source_revision": 14
+          },
+          "verdict": "human_review",
+          "feedback": "Cited documents do not establish the proposed conclusion; obtain authoritative support or route unresolved material to review. Do not commit this proposal. This verdict does not create a review-queue entry.",
+          "failed_checks": [
+            "unsupported_evidence"
+          ]
+        },
+        "usable_proposal": false,
+        "persisted": false
+      }
+    },
+    {
+      "variant": "intermediate_credit",
+      "result": {
+        "mode": "live_read_only",
+        "source_channel": "zetaris",
+        "fresh_snapshot": true,
+        "reference": {
+          "dispute_id": "DP-0014",
+          "snapshot_id": "799d2b5b-2767-482e-9648-f42494600be5",
+          "evaluation_at": "2026-10-27T08:54:08.652173Z",
+          "policy_version": "v2",
+          "source_revision": 14
+        },
+        "read_status": "ok",
+        "investigator": {
+          "status": "proposal",
+          "message": "Unapproved model proposal; mandatory critic required.",
+          "requested_route": "meterless/auto",
+          "proposal": {
+            "proposal_id": "72405285-3140-425a-ac80-f81bb91ee7f6",
+            "run_id": "1f99f750-7343-450a-a512-56bfa24ad016",
+            "reference": {
+              "dispute_id": "DP-0014",
+              "snapshot_id": "799d2b5b-2767-482e-9648-f42494600be5",
+              "evaluation_at": "2026-10-27T08:54:08.652173Z",
+              "policy_version": "v2",
+              "source_revision": 14
+            },
+            "recommendation": {
+              "outcome": "provisional_credit",
+              "currency": "SGD",
+              "amount_minor": 6000
+            },
+            "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0014: filing age 10 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0014, completed movements ST-0021, ST-0022: remaining balance 6000 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Required synthetic support verified against case and source fields.\nv2-UNSUPPORTED: No complete unambiguous contradiction of the claim.\nv2-REVIEW_THRESHOLD: Eligible primary-transaction amount 6000; review only above 20000 SGD minor units.\nv2-APPROVE: Supported claim; min(claimed, primary completed balance) = 6000 SGD minor units.",
+            "evidence_ids": [
+              "EV-0027",
+              "EV-0028"
+            ],
+            "policy_rule_ids": [
+              "v2-DATA_INTEGRITY",
+              "v2-FILING_WINDOW",
+              "v2-ALREADY_REFUNDED",
+              "v2-CONFLICTING_EVIDENCE",
+              "v2-MISSING_EVIDENCE",
+              "v2-UNSUPPORTED",
+              "v2-REVIEW_THRESHOLD",
+              "v2-APPROVE"
+            ],
+            "missing_evidence": [],
+            "revision": 0
+          },
+          "read_request": null,
+          "uncertainties": [],
+          "response_model": "nvidia/nemotron-3.5-bolt-e4b",
+          "validation_failure": null
+        },
+        "critic": {
+          "proposal_id": "72405285-3140-425a-ac80-f81bb91ee7f6",
+          "reference": {
+            "dispute_id": "DP-0014",
+            "snapshot_id": "799d2b5b-2767-482e-9648-f42494600be5",
+            "evaluation_at": "2026-10-27T08:54:08.652173Z",
+            "policy_version": "v2",
+            "source_revision": 14
+          },
+          "verdict": "accepted",
+          "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+          "failed_checks": []
+        },
+        "usable_proposal": true,
+        "persisted": false
+      }
+    },
+    {
+      "variant": "intermediate_evidence",
+      "result": {
+        "mode": "live_read_only",
+        "source_channel": "zetaris",
+        "fresh_snapshot": true,
+        "reference": {
+          "dispute_id": "DP-0019",
+          "snapshot_id": "0b7f9f5b-254f-4bef-af16-a6f430adc80e",
+          "evaluation_at": "2026-10-27T08:54:15.452503Z",
+          "policy_version": "v2",
+          "source_revision": 14
+        },
+        "read_status": "ok",
+        "investigator": {
+          "status": "proposal",
+          "message": "Unapproved model proposal; mandatory critic required.",
+          "requested_route": "meterless/auto",
+          "proposal": {
+            "proposal_id": "2d2704e8-0a38-4fb9-8e58-6ab7861f7124",
+            "run_id": "6574b46c-ba68-401b-8bf4-94a50cd58a02",
+            "reference": {
+              "dispute_id": "DP-0019",
+              "snapshot_id": "0b7f9f5b-254f-4bef-af16-a6f430adc80e",
+              "evaluation_at": "2026-10-27T08:54:15.452503Z",
+              "policy_version": "v2",
+              "source_revision": 14
+            },
+            "recommendation": {
+              "outcome": "provisional_credit",
+              "currency": "SGD",
+              "amount_minor": 16100
+            },
+            "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0019: filing age 10 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0019, completed movements ST-0031: remaining balance 16100 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Required synthetic support verified against case and source fields.\nv2-UNSUPPORTED: No complete unambiguous contradiction of the claim.\nv2-REVIEW_THRESHOLD: Eligible primary-transaction amount 16100; review only above 20000 SGD minor units.\nv2-APPROVE: Supported claim; min(claimed, primary completed balance) = 16100 SGD minor units.",
+            "evidence_ids": [
+              "EV-0037",
+              "EV-0038"
+            ],
+            "policy_rule_ids": [
+              "v2-DATA_INTEGRITY",
+              "v2-FILING_WINDOW",
+              "v2-ALREADY_REFUNDED",
+              "v2-CONFLICTING_EVIDENCE",
+              "v2-MISSING_EVIDENCE",
+              "v2-UNSUPPORTED",
+              "v2-REVIEW_THRESHOLD",
+              "v2-APPROVE"
+            ],
+            "missing_evidence": [],
+            "revision": 0
+          },
+          "read_request": null,
+          "uncertainties": [],
+          "response_model": "nvidia/nemotron-3.5-bolt-e4b",
+          "validation_failure": null
+        },
+        "critic": {
+          "proposal_id": "2d2704e8-0a38-4fb9-8e58-6ab7861f7124",
+          "reference": {
+            "dispute_id": "DP-0019",
+            "snapshot_id": "0b7f9f5b-254f-4bef-af16-a6f430adc80e",
+            "evaluation_at": "2026-10-27T08:54:15.452503Z",
+            "policy_version": "v2",
+            "source_revision": 14
+          },
+          "verdict": "accepted",
+          "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+          "failed_checks": []
+        },
+        "usable_proposal": true,
+        "persisted": false
+      }
+    },
+    {
+      "variant": "intermediate_review",
+      "result": {
+        "mode": "live_read_only",
+        "source_channel": "zetaris",
+        "fresh_snapshot": true,
+        "reference": {
+          "dispute_id": "DP-0008",
+          "snapshot_id": "a2f8079c-e3b7-4761-9a63-8b408fe1e908",
+          "evaluation_at": "2026-10-27T08:54:23.938353Z",
+          "policy_version": "v2",
+          "source_revision": 14
+        },
+        "read_status": "ok",
+        "investigator": {
+          "status": "proposal",
+          "message": "Unapproved model proposal; mandatory critic required.",
+          "requested_route": "meterless/auto",
+          "proposal": {
+            "proposal_id": "4ffe5e93-4409-4f69-8725-0216ef32c4ba",
+            "run_id": "41294ab9-580e-42a0-b6e2-495875329a52",
+            "reference": {
+              "dispute_id": "DP-0008",
+              "snapshot_id": "a2f8079c-e3b7-4761-9a63-8b408fe1e908",
+              "evaluation_at": "2026-10-27T08:54:23.938353Z",
+              "policy_version": "v2",
+              "source_revision": 14
+            },
+            "recommendation": {
+              "outcome": "human_review",
+              "currency": "SGD",
+              "amount_minor": null
+            },
+            "rationale": "v2-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv2-FILING_WINDOW: Primary transaction TX-0008: filing age 10 days, 0:00:00; inclusive limit 45 days.\nv2-ALREADY_REFUNDED: Primary transaction TX-0008, completed movements ST-0010: remaining balance 25000 minor units.\nv2-CONFLICTING_EVIDENCE: No recognized material contradiction; refund promises do not prove settlement.\nv2-MISSING_EVIDENCE: Required synthetic support verified against case and source fields.\nv2-UNSUPPORTED: No complete unambiguous contradiction of the claim.\nv2-REVIEW_THRESHOLD: Eligible primary-transaction amount 25000; review only above 20000 SGD minor units.",
+            "evidence_ids": [
+              "EV-0015",
+              "EV-0016"
+            ],
+            "policy_rule_ids": [
+              "v2-DATA_INTEGRITY",
+              "v2-FILING_WINDOW",
+              "v2-ALREADY_REFUNDED",
+              "v2-CONFLICTING_EVIDENCE",
+              "v2-MISSING_EVIDENCE",
+              "v2-UNSUPPORTED",
+              "v2-REVIEW_THRESHOLD"
+            ],
+            "missing_evidence": [
+              {
+                "category": "receipt",
+                "reason": "not_yet_available",
+                "policy_rule_id": "v2-MISSING_EVIDENCE"
+              },
+              {
+                "category": "delivery_record",
+                "reason": "not_yet_available",
+                "policy_rule_id": "v2-MISSING_EVIDENCE"
+              }
+            ],
+            "revision": 0
+          },
+          "read_request": null,
+          "uncertainties": [],
+          "response_model": "nvidia/nemotron-3.5-bolt-e4b",
+          "validation_failure": null
+        },
+        "critic": {
+          "proposal_id": "4ffe5e93-4409-4f69-8725-0216ef32c4ba",
+          "reference": {
+            "dispute_id": "DP-0008",
+            "snapshot_id": "a2f8079c-e3b7-4761-9a63-8b408fe1e908",
+            "evaluation_at": "2026-10-27T08:54:23.938353Z",
+            "policy_version": "v2",
+            "source_revision": 14
+          },
+          "verdict": "revise",
+          "feedback": "Use exactly these missing requirements: none. One correction is permitted with revision 1 and a new proposal ID.",
+          "failed_checks": [
+            "missing_requirements_mismatch"
+          ]
+        },
+        "usable_proposal": false,
+        "persisted": false
+      }
+    },
+    {
+      "variant": "scoped_with_uniqueItems",
+      "result": {
+        "mode": "live_read_only",
+        "source_channel": "zetaris",
+        "fresh_snapshot": true,
+        "reference": {
+          "dispute_id": "DP-0029",
+          "snapshot_id": "12b2dbe0-9272-4af3-9cd1-cdbd99c5a4cb",
+          "evaluation_at": "2026-10-27T08:55:33.085137Z",
+          "policy_version": "v1",
+          "source_revision": 14
+        },
+        "read_status": "ok",
+        "investigator": {
+          "status": "unavailable",
+          "message": "Nightshift did not return a usable completion; no action executed.",
+          "requested_route": "meterless/auto",
+          "proposal": null,
+          "read_request": null,
+          "uncertainties": [],
+          "response_model": null,
+          "validation_failure": null
+        },
+        "critic": null,
+        "usable_proposal": false,
+        "persisted": false
+      }
+    },
+    {
+      "variant": "final_scoped_schema",
+      "result": {
+        "mode": "live_read_only",
+        "source_channel": "zetaris",
+        "fresh_snapshot": true,
+        "reference": {
+          "dispute_id": "DP-0029",
+          "snapshot_id": "3423f382-8b6d-404d-8df5-03a0fe5d0bb0",
+          "evaluation_at": "2026-10-27T08:58:41.338312Z",
+          "policy_version": "v1",
+          "source_revision": 14
+        },
+        "read_status": "ok",
+        "investigator": {
+          "status": "proposal",
+          "message": "Unapproved model proposal; mandatory critic required.",
+          "requested_route": "meterless/auto",
+          "proposal": {
+            "proposal_id": "efadf4d5-cb31-4c93-bb86-c6ec48418546",
+            "run_id": "2712451b-1bdd-410e-a9b1-d4f1af9add02",
+            "reference": {
+              "dispute_id": "DP-0029",
+              "snapshot_id": "3423f382-8b6d-404d-8df5-03a0fe5d0bb0",
+              "evaluation_at": "2026-10-27T08:58:41.338312Z",
+              "policy_version": "v1",
+              "source_revision": 14
+            },
+            "recommendation": {
+              "outcome": "decline",
+              "currency": "SGD",
+              "amount_minor": null
+            },
+            "rationale": "v1-DATA_INTEGRITY: Linked captures and completed balances are consistent; failed movements excluded.\nv1-FILING_WINDOW: Primary transaction TX-0029: filing age 30 days, 0:00:01; inclusive limit 30 days.",
+            "evidence_ids": [],
+            "policy_rule_ids": [
+              "v1-DATA_INTEGRITY",
+              "v1-FILING_WINDOW"
+            ],
+            "missing_evidence": [],
+            "revision": 0
+          },
+          "read_request": null,
+          "uncertainties": [],
+          "response_model": "nvidia/nemotron-3.5-bolt-e4b",
+          "validation_failure": null,
+          "provider_error": null
+        },
+        "critic": {
+          "proposal_id": "efadf4d5-cb31-4c93-bb86-c6ec48418546",
+          "reference": {
+            "dispute_id": "DP-0029",
+            "snapshot_id": "3423f382-8b6d-404d-8df5-03a0fe5d0bb0",
+            "evaluation_at": "2026-10-27T08:58:41.338312Z",
+            "policy_version": "v1",
+            "source_revision": 14
+          },
+          "verdict": "accepted",
+          "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+          "failed_checks": []
+        },
+        "usable_proposal": true,
+        "persisted": false
+      }
+    }
+  ],
+  "installed_nightshift_sources": {
+    "structured-output.js": "1c0bc7b64ec35cead19d789cce23cb7c0a156a7f98e56de457b92e57b3c09ea9",
+    "proxy.js": "2656a9ae27269780c73126dca9473741c23709c9e8bc77f01173bbea8cbea1a2",
+    "orchestrator.js": "ca53fdeb144b9806eb9892d45bb5a5bc52a8d4f3eb25bc936b7354e9700deb07",
+    "providers.js": "eaa2724619f7b21a3389ea86ccb78db5236907242102d1d2f81bbd79aa3f8091"
+  },
+  "limitations": [
+    "Response model labels are returned metadata, not independent provider attestation.",
+    "Nightshift reports provider schema enforcement as unverified; runtime validation and all local checks remain required.",
+    "Intermediate success is not represented as final-version success.",
+    "No guarantee of universal live-model correctness or a deterministic success rate.",
+    "The original T13 recording remains unchanged historical evidence."
+  ],
+  "final_regression": {
+    "status": "passed",
+    "python": "3.13.7",
+    "mode": "isolated_integrations",
+    "live_zetaris": "NOT RUN",
+    "live_nightshift": "NOT RUN",
+    "suites": [
+      {
+        "root": "tests",
+        "collected": 274,
+        "run": 274,
+        "passed": 274,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "expected_failures": 0,
+        "unexpected_successes": 0,
+        "collection_errors": 0
+      },
+      {
+        "root": "agent/tests",
+        "collected": 16,
+        "run": 16,
+        "passed": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "expected_failures": 0,
+        "unexpected_successes": 0,
+        "collection_errors": 0
+      }
+    ]
+  },
+  "shared_state_verification": {
+    "six_source_fingerprints_unchanged": true,
+    "decisions": 3,
+    "credits": 2,
+    "audits": 3,
+    "queued_reviews": 1,
+    "source_revision": 14,
+    "restricted_action_login_unchanged": true
+  }
+}

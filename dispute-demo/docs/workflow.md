@@ -21,8 +21,11 @@ PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m app.main DP-0014 --no-memory
 ```
 
 Nightshift uses the existing private `METERLESS_*` settings, with actual provider
-keys retained in Nightshift. JSON-object output, native-tool refusal and disabled
-tier splitting use the installed 0.92.7 contract verified live. The response
+keys retained in Nightshift. Strict JSON Schema draft output, native-tool refusal and disabled
+tier splitting use the installed 0.92.7 contract verified live. Application code
+attaches identities and the canonical explanation; the model supplies the
+recommendation, citations and missing requirements. See the
+[investigator guide](./investigator.md) for the verified schema subset and diagnostics. The response
 still undergoes local strict parsing and validation; this request path disables
 semantic response caching and skips runtime answer-memory/scaffold injection.
 The worker reads private `DISPUTE_ACTION_DSN` from the process or

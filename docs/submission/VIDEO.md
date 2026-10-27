@@ -4,6 +4,13 @@ The [MP4](./dispute-agent-demo.mp4) is an edited walkthrough of actual UI captur
 
 The recording shows the real DP-0029 schema failure, the earlier DP-0014 live receipt recovered during T13, and separately labelled scripted rehearsal evidence. All records and effects are synthetic. See the [source/evidence index](./README.md) and [captions](./dispute-agent-demo.srt). Captions have approximate sentence timing.
 
+**Later engineering update (27 October 2026; not part of the narration):**
+The investigator now uses a compact draft, a full JSON Schema and safe validation
+diagnostics. A fresh read-only DP-0029 proposal passed the critic after those
+changes. The original malformed field remains unknown; this video accurately
+preserves the earlier run. See the [follow-up evidence](../../dispute-demo/docs/evidence/nightshift-schema-followup.json)
+and [current investigator contract](../../dispute-demo/docs/investigator.md).
+
 ## 00:00 — Synthetic card-dispute resolution
 
 This is the synthetic card dispute workbench from team bob the builder, for Track Three, Reasoning Architecture. It connects source evidence to policy, a model proposal, independent validation, and an auditable simulated decision. This edited walkthrough uses real application captures and dated test evidence. All records and financial effects are fictional.

@@ -13,6 +13,10 @@ database migration, workflow runner or action service. Python 3.10+; standard
 library only. Constructors accept typed values; `from_dict` accepts JSON-shaped
 objects and `to_dict` returns JSON-serializable values. Unknown fields, missing
 required fields and implicit numeric/string/bool coercions are rejected.
+`ContractError` now carries declared field/index paths and fixed error codes;
+these add diagnostics without relaxing accepted canonical payloads. The
+[investigator draft](./investigator.md) is a separate model wire format, assembled
+into the same full `AgentProposal` by trusted application code.
 
 The authority for business rules is [policy v1](../policies/synthetic_policy_v1.md)
 and [policy v2](../policies/synthetic_policy_v2.md), with source representations in

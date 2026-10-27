@@ -327,6 +327,29 @@ Counts agree between local validation and the live Zetaris verification queries.
 - The current live DP-0029 run used Zetaris and Nightshift but failed proposal-schema validation without persistence. DP-0014 exact-request recovery reused its original decision/credit and memory summary. The final read-only database check retained six source fingerprints, restricted action login, 3 decisions/2 credits/3 audits/1 review and revision 14. The owned preview server was stopped; no shared service was restarted or reset.
 - [Package evidence](./dispute-demo/docs/evidence/t13-package-checks.json) records security, clean setup, media and access checks. B1 leader-only form/upload/final receipt, B2 two-agent interpretation, B3 detailed challenge access, B4 exact-reference endorsement and owner provenance confirmation remain explicit. One datasource/no USL is disclosed. Completing the repository gate does not claim organizer acceptance, an upload or a submitted entry.
 
+### Nightshift response-contract follow-up — 27 October 2026
+
+The user authorized diagnosis and hardening after the recorded T13 schema failure.
+The investigator now sends a compact draft with full JSON Schema; application
+code supplies identities/reference/revision and the canonical policy explanation.
+Recommendations, citations, missing requirements and uncertainty remain model
+outputs subject to the unchanged critic and transaction checks. Citation schema
+bounds come from current evaluated policy checks, not fixtures. Safe field/code
+and known provider-error diagnostics survive in traces without raw responses,
+unknown property names or private reasoning. No schema downgrade or extra retry.
+
+The old prompt passed a fresh DP-0029 reproduction, so the original recording's
+exact field error remains unknown. Intermediate drafts exposed unrelated-document
+citations; the final case-bound schema yielded a critic-accepted decline at source
+revision 14 without persistence. Final verification passed 274 main and 16
+reference/compatibility tests with zero skips; shared source hashes, restricted
+role and 3 decisions/2 credits/3 audits/1 review remained unchanged.
+Actual Nightshift JSON Schema validation passed;
+provider-side enforcement remains labelled unverified. A uniqueItems capability
+probe failed with HTTP 502, so uniqueness remains local. See the
+[investigator guide](./dispute-demo/docs/investigator.md) and
+[attempt evidence](./dispute-demo/docs/evidence/nightshift-schema-followup.json).
+
 ## 5. Repository paths and reading entry points
 
 The paths below were checked for existence in the current checkout on 2026-10-26. This verifies their presence, not their behavior or live integrations. Inspect source before relying on APIs or fields. All paths are relative to the repository root.

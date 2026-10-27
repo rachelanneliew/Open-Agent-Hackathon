@@ -21,9 +21,10 @@ revision-0 proposal and its exact, freshly recomputed `revise` critique. The new
 proposal ID must differ; references and run ID must agree. Forged policy/feedback,
 reused identities, a second revision and invalid budgets fail before a model call.
 
-The system message supplies a short evidence checklist and an exact JSON envelope.
-The user message contains case facts, evaluated policy, the supported rationale,
-allowed reads and optional typed observations. Statements/documents/observations
+The system message supplies an evidence checklist and a compact proposal draft.
+The user message contains case facts, evaluated policy, explicit citation
+requirements derived from its evaluated checks, allowed reads and optional typed
+observations. A full JSON Schema accompanies every investigator request. Statements/documents/observations
 and prior model text are explicitly untrusted. Customer history is scoped to the
 case, customer and cutoff and remains advisory. A changed context must be supplied
 with reevaluated policy; observations cannot silently replace it. Runtime code
@@ -32,11 +33,17 @@ never reads source CSVs or expected-result fixtures.
 Two responses are permitted:
 
 ```json
-{"kind":"read","request":{"name":"get_dispute_context","dispute_id":"DP-0014"},"uncertainties":[]}
+{"kind":"read","proposal":null,"request":{"name":"get_dispute_context","dispute_id":"DP-0014"},"uncertainties":[]}
 ```
 
-or `{"kind":"proposal","proposal":{...complete AgentProposal...},"uncertainties":[]}`.
-The model must echo the supplied identities/reference/revision. Four read names
+or a proposal envelope with `request: null`. Its `proposal` has exactly four
+fields: `recommendation`, `evidence_ids`, `policy_rule_ids`, `missing_evidence`.
+The application attaches trusted run/proposal IDs, current source reference,
+revision and `policy_rationale(policy)` to form the unchanged canonical
+`AgentProposal`. These fields are no longer copied by the model. Model attempts
+to supply them are rejected, not overwritten. Outcome, amount, currency,
+citations, missing requirements and uncertainty remain model-provided and
+subject to the existing critic. Four read names
 come from the [existing registry](../app/tools.py); its controller must dispatch
 `request.name` with `request.arguments()`. No SQL, write, customer, connection,
 cutoff or arbitrary arguments are permitted. There is no native tool invocation.
@@ -46,9 +53,9 @@ markdown wrappers, missing/invalid proposal fields, out-of-scope reads, mismatch
 references, refusals, multiple choices, native tool calls and truncated responses.
 It does not extract a convenient JSON substring, repair answers, or replace a
 model recommendation with the evaluator's answer. The pure critic still checks
-amounts, evidence, rules and rationale. `policy_rationale(policy)` is supplied to
-meet T06's deliberately bounded explanation vocabulary; broader model prose has
-not gained approval. Private response reasoning fields are discarded.
+amounts, evidence, rules and the application-rendered canonical rationale.
+Broader model prose has not gained approval. No invalid recommendation is
+repaired or substituted with a policy answer. Private response reasoning fields are discarded.
 
 `uncertainties` contains at most eight source-linked statements of 240 characters
 each. These are untrusted model assertions, not fraud findings or verified facts.
@@ -69,13 +76,25 @@ The [published Meterless provider contract](https://meterless.ai/engines.html)
 completions with the app/scope headers. T08 additionally inspected installed
 Nightshift 0.92.7 (`proxy.js`, `orchestrator.js`, `providers.js`,
 `structured-output.js`) and verified its JSON-object request path live. Calls
-now send `response_format={"type":"json_object"}`, `tool_choice="none"`,
+now send `response_format={"type":"json_schema", "json_schema": ...}` with
+`strict: true`, `tool_choice="none"`,
 `temperature=0`, `stream=false`, `max_tokens=4096`, and
 `meterless-tier-split: off`. No native tools are supplied. This path disables
 runtime semantic response caching and skips its answer-memory and reasoning
 scaffold injection. Unsupported providers fail rather than dropping the
-contract. Provider-enforced JSON/schema support is still not assumed: local
-strict JSON/schema/binding checks remain mandatory. Runtime review requirements
+contract. The 27 October follow-up verified JSON Schema on the actual auto
+route. Nightshift reports its NVIDIA adapter capability as `unverified` even
+when runtime schema validation passes; provider-side enforcement is not claimed.
+The schema uses the verified subset, including nullable objects, enums and array
+bounds. A separate `uniqueItems` probe returned HTTP 502; its precise cause was
+not established, so uniqueness stays in mandatory local contract checks.
+
+The [draft schema](../app/investigator_contract.py) restricts citation IDs/counts
+to the current evaluated policy checks and scopes read requests to the case.
+For a filing-window decline with no document support, evidence must be empty.
+This prevents the observed live model tendency to cite all present documents.
+The schema does not select the outcome or credit amount. Local strict
+JSON/schema/binding checks and the pure critic remain mandatory. Runtime review requirements
 or reported native-tool execution also fail validation. `discover()` checks
 advertised availability during setup; a listing alone does not prove inference.
 
@@ -116,16 +135,39 @@ headers, authentication errors, no-redirect behavior, size/JSON limits and the
 hard deadline. They are **not live Nightshift**; without opt-in those five checks
 are skipped. No application dependency or existing environment is modified.
 
+Failures now retain `validation_failure` with a stage, declared field path and
+fixed code, for example `$.proposal.recommendation.amount_minor` /
+`noncredit_amount_must_be_null`. Known provider refusals also retain a bounded
+`provider_error` code. Unknown property names, submitted values, raw response
+content, exception prose and private reasoning are never copied into diagnostics.
+The controller includes these fields in its existing investigator trace event.
+There is no new automatic retry or schema downgrade.
+
 After the documented JDBC preflight and Nightshift setup, this separate probe
 uses real Zetaris facts, deterministic policy, a real model call and the critic:
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m integration.check_investigator DP-0014
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m integration.check_investigator DP-0029 --fresh
 ```
 
 The [probe](../integration/check_investigator.py) has no fallback, tool-dispatch
 loop or writer. It succeeds only for a critic-accepted proposal without unresolved
 uncertainties and always prints `persisted: false`. A read request is reported
-honestly but does not satisfy this usable-proposal probe. Current T02 revisions
-remain null, so this is read-only evidence. Exact dated results, test counts and
+honestly but does not satisfy this usable-proposal probe. `--fresh` uses the same coherent snapshot adapter as the UI, with a 45-second
+read deadline. Omitting it retains the historical null-revision T02 probe.
+Both modes are read-only and cannot commit. A read failure is reported as a
+sanitized error before any model call. Exact dated results, test counts and
 remaining deployment limits are recorded in [ROADMAP.md](../../ROADMAP.md).
+
+
+## 27 October diagnostic follow-up
+
+[Evidence and attempt history](./evidence/nightshift-schema-followup.json) retain
+both successes and failures. The old prompt produced an accepted DP-0029 decline
+on the fresh reproduction, so the original T13 field error remains unknown.
+The first compact drafts exposed missing/unsupported citations; explicit text
+alone did not resolve the extra evidence IDs. Case-bound schema constraints did:
+the final DP-0029 proposal passed the unchanged critic without persistence.
+Intermediate credit/evidence probes passed; a review probe requested correction
+for invented missing requirements. This is not a claim of universal live-model
+reliability. The original recording and its transcript remain historical evidence.

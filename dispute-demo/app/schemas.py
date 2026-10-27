@@ -5,7 +5,7 @@ See ../docs/contracts.md for source semantics and the future commit protocol.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, fields
+from dataclasses import MISSING, dataclass, fields
 from datetime import datetime, timedelta
 from enum import Enum
 import re
@@ -17,10 +17,26 @@ from uuid import UUID
 class ContractError(ValueError):
     """A payload does not satisfy the structural contract."""
 
+    def __init__(self, message, *, path=(), code='invalid_value'):
+        super().__init__(message)
+        self.path, self.code = tuple(path), code
 
-def require(condition, message):
+    def at(self, field):
+        # Only application-declared fields/array indices may reach this method.
+        return ContractError(str(self), path=(field, *self.path), code=self.code)
+
+
+def require(condition, message, *, path=(), code='invalid_value'):
     if not condition:
-        raise ContractError(message)
+        raise ContractError(message, path=path, code=code)
+
+
+def checked(field, validator, *args, **kwargs):
+    """Attach a declared field to a validator failure without echoing its value."""
+    try:
+        return validator(*args, **kwargs)
+    except ContractError as exc:
+        raise exc.at(field) from None
 
 
 def _typed(value, annotation, path, *, decode=False):
@@ -32,10 +48,10 @@ def _typed(value, annotation, path, *, decode=False):
                 return _typed(value, alternative, path, decode=decode)
             except ContractError:
                 pass
-        raise ContractError(f'{path}: unexpected type or value')
+        raise ContractError(f'{path}: unexpected type or value', code='invalid_type')
     if origin is tuple:
-        require(type(value) is tuple or (decode and type(value) is list), f'{path}: expected array')
-        return tuple(_typed(item, args[0], f'{path}[{i}]', decode=decode)
+        require(type(value) is tuple or (decode and type(value) is list), f'{path}: expected array', code='invalid_type')
+        return tuple(checked(i, _typed, item, args[0], f'{path}[{i}]', decode=decode)
                      for i, item in enumerate(value))
     if annotation is datetime:
         if decode and type(value) is str:
@@ -60,7 +76,7 @@ def _typed(value, annotation, path, *, decode=False):
             value = annotation.from_dict(value)
         require(type(value) is annotation, f'{path}: expected {annotation.__name__}')
         return value
-    require(type(value) is annotation, f'{path}: expected {annotation.__name__}')
+    require(type(value) is annotation, f'{path}: expected {annotation.__name__}', code='invalid_type')
     if annotation is str:
         require(bool(value.strip()), f'{path}: must not be blank')
     return value
@@ -70,7 +86,7 @@ class Contract:
     def __post_init__(self):
         hints = get_type_hints(type(self))
         for field in fields(self):
-            _typed(getattr(self, field.name), hints[field.name], field.name)
+            checked(field.name, _typed, getattr(self, field.name), hints[field.name], field.name)
         self._check()
 
     def _check(self):
@@ -78,10 +94,13 @@ class Contract:
 
     @classmethod
     def from_dict(cls, payload):
-        require(type(payload) is dict, f'{cls.__name__}: expected object')
+        require(type(payload) is dict, f'{cls.__name__}: expected object', code='invalid_type')
         hints = get_type_hints(cls)
-        require(not (payload.keys() - hints.keys()), f'{cls.__name__}: unknown fields')
-        decoded = {key: _typed(value, hints[key], key, decode=True) for key, value in payload.items()}
+        require(not (payload.keys() - hints.keys()), f'{cls.__name__}: unknown fields', code='unknown_fields')
+        for field in fields(cls):
+            require(field.name in payload or field.default is not MISSING or field.default_factory is not MISSING,
+                    f'{cls.__name__}: missing required fields', path=(field.name,), code='missing_field')
+        decoded = {key: checked(key, _typed, value, hints[key], key, decode=True) for key, value in payload.items()}
         try:
             return cls(**decoded)
         except TypeError as exc:
@@ -131,12 +150,12 @@ def unique(values):
 
 
 def citations(evidence_ids, policy_rule_ids, version):
-    unique(evidence_ids)
-    unique(policy_rule_ids)
-    for value in evidence_ids:
-        source_id(value, 'EV')
-    for value in policy_rule_ids:
-        rule_id(value, version)
+    checked('evidence_ids', unique, evidence_ids)
+    checked('policy_rule_ids', unique, policy_rule_ids)
+    for i, value in enumerate(evidence_ids):
+        checked('evidence_ids', checked, i, source_id, value, 'EV')
+    for i, value in enumerate(policy_rule_ids):
+        checked('policy_rule_ids', checked, i, rule_id, value, version)
 
 
 class Outcome(str, Enum):
@@ -191,11 +210,11 @@ class ContextRef(Contract):
     source_revision: int | None = None
 
     def _check(self):
-        source_id(self.dispute_id, 'DP')
-        uuid_id(self.snapshot_id)
-        require(re.fullmatch(r'v[1-9][0-9]*', self.policy_version), 'Invalid policy version')
+        checked('dispute_id', source_id, self.dispute_id, 'DP')
+        checked('snapshot_id', uuid_id, self.snapshot_id)
+        require(re.fullmatch(r'v[1-9][0-9]*', self.policy_version), 'Invalid policy version', path=('policy_version',))
         if self.source_revision is not None:
-            money(self.source_revision)
+            checked('source_revision', money, self.source_revision)
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -205,11 +224,12 @@ class Recommendation(Contract):
     amount_minor: int | None = None
 
     def _check(self):
-        currency_code(self.currency)
+        checked('currency', currency_code, self.currency)
         if self.outcome is Outcome.PROVISIONAL_CREDIT:
-            money(self.amount_minor, minimum=1)
+            checked('amount_minor', money, self.amount_minor, minimum=1)
         else:
-            require(self.amount_minor is None, 'Non-credit outcomes must have no amount')
+            require(self.amount_minor is None, 'Non-credit outcomes must have no amount',
+                    path=('amount_minor',), code='noncredit_amount_must_be_null')
 
 
 def from_legacy_recommendation(outcome: str, recommended_refund_minor: int, currency: str) -> Recommendation:
@@ -326,9 +346,9 @@ class EvidenceRequirement(Contract):
 
     def _check(self):
         require(self.category in ('receipt', 'delivery_record', 'refund_confirmation', 'two_completed_captures_same_order'),
-                'Unknown evidence requirement')
-        require(self.reason in ('absent', 'unusable', 'not_yet_available'), 'Invalid missing-evidence reason')
-        rule_id(self.policy_rule_id)
+                'Unknown evidence requirement', path=('category',))
+        require(self.reason in ('absent', 'unusable', 'not_yet_available'), 'Invalid missing-evidence reason', path=('reason',))
+        checked('policy_rule_id', rule_id, self.policy_rule_id)
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -451,14 +471,14 @@ class AgentProposal(Contract):
     revision: int = 0
 
     def _check(self):
-        uuid_id(self.proposal_id)
-        uuid_id(self.run_id)
-        require(self.revision in (0, 1), 'Only the initial proposal and one correction are supported')
+        checked('proposal_id', uuid_id, self.proposal_id)
+        checked('run_id', uuid_id, self.run_id)
+        require(self.revision in (0, 1), 'Only the initial proposal and one correction are supported', path=('revision',))
         citations(self.evidence_ids, self.policy_rule_ids, self.reference.policy_version)
         for item in self.missing_evidence:
             rule_id(item.policy_rule_id, self.reference.policy_version)
         if self.recommendation.outcome is Outcome.REQUEST_EVIDENCE:
-            require(bool(self.missing_evidence), 'Evidence request needs requirement categories')
+            require(bool(self.missing_evidence), 'Evidence request needs requirement categories', path=('missing_evidence',))
         # Valid syntax is not factual support or approval; that is the T06 critic.
 
 

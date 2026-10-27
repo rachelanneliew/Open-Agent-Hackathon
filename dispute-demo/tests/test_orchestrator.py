@@ -30,13 +30,12 @@ class ScriptedClient:
         value = json.loads(messages[1]['content'])
         self.calls.append(value)
         policy = value['policy']
-        proposal = dict(value['identity'], recommendation=dict(outcome=policy['allowed_outcomes'][0],
+        proposal = dict(recommendation=dict(outcome=policy['allowed_outcomes'][0],
             currency=policy['currency'], amount_minor=policy['credit_limit_minor']),
-            rationale=value['supported_rationale'],
             evidence_ids=sorted({e for c in policy['rule_checks'] for e in c['evidence_ids']}),
             policy_rule_ids=[c['policy_rule_id'] for c in policy['rule_checks'] if c['status'] != 'not_evaluated'],
             missing_evidence=policy['missing_evidence'])
-        obj = dict(kind='proposal', proposal=proposal, uncertainties=[])
+        obj = dict(kind='proposal', proposal=proposal, request=None, uncertainties=[])
         if self.scripts:
             step = self.scripts.pop(0)
             if isinstance(step, Exception):
@@ -53,7 +52,7 @@ def faulty(obj, _):
 
 def read_request(name='get_customer_history'):
     return lambda obj, v: dict(kind='read', request=dict(name=name,
-        dispute_id=v['identity']['reference']['dispute_id']), uncertainties=[])
+        dispute_id=v['policy']['reference']['dispute_id']), proposal=None, uncertainties=[])
 
 
 class ControllerTests(unittest.TestCase):
@@ -109,7 +108,8 @@ class ControllerTests(unittest.TestCase):
         self.assertEqual((r.state.model_calls, r.state.proposal_revision), (2, 1))
         self.assertEqual(self.writer.call_count, 1)
         self.assertIsNotNone(self.client.calls[1]['correction'])
-        self.assertNotEqual(self.client.calls[0]['identity']['proposal_id'], self.client.calls[1]['identity']['proposal_id'])
+        proposals = [e['result']['proposal'] for e in r.events if e['kind'] == 'investigator']
+        self.assertNotEqual(proposals[0]['proposal_id'], proposals[1]['proposal_id'])
 
     def test_second_fault_terminal_no_credit_or_fabricated_review(self):
         self.client.scripts = [faulty, faulty]
@@ -127,7 +127,7 @@ class ControllerTests(unittest.TestCase):
         self.client.scripts = [read_request('get_dispute_context')]
         r = self.controller.run('DP-0014')
         self.assertTrue(r.persisted)
-        self.assertNotEqual(self.client.calls[0]['identity']['reference'], self.client.calls[1]['identity']['reference'])
+        self.assertNotEqual(self.client.calls[0]['policy']['reference'], self.client.calls[1]['policy']['reference'])
         self.assertEqual(r.state.commit_result.recommendation.amount_minor, 5000)
 
     def test_every_read_projection_uses_current_binding(self):
