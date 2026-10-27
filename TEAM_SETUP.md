@@ -10,9 +10,17 @@ We are building one Nightshift investigator with a Python controller, determinis
 - Added reproducible generation, test fixtures, evidence documents and data-validation tests.
 - Rachel has loaded the project database and registered its tables in Zetaris.
 - Added `get_dispute_context.py`; it expects the Zetaris datasource name **`dispute`**
-- PR #4 adds prototypes in `dispute-demo/agent/`: policy evaluator, SQLite-writing critic, deterministic resolver, memory service and H-MEM client/bridge. These are not a completed agent: typed retrieval is now implemented under T02, while policy integration, pure critic separation, PostgreSQL action storage, a real Nightshift investigator, bounded workflow, verified portable memory setup and UI remain outstanding. See [context.md](./context.md) and [ROADMAP.md](./ROADMAP.md).
+- PR #4 adds prototypes in `dispute-demo/agent/`: policy evaluator, SQLite-writing critic, deterministic resolver, memory service and H-MEM client/bridge. These are not a completed agent: typed retrieval and policy evaluation are now implemented under T02/T03, while pure critic separation, PostgreSQL action storage, a real Nightshift investigator, bounded workflow, verified portable memory setup and UI remain outstanding. See [context.md](./context.md) and [ROADMAP.md](./ROADMAP.md).
 
 **Evidence date:** T02 verified typed retrieval and live JDBC reads on 27 October 2026, with 50 root-suite tests and 6 offline critic tests passing. See [the retrieval reference](./dispute-demo/docs/retrieval.md) and ROADMAP for exact evidence. Nightshift discovery failure remains dated T00 evidence; Nightshift and H-MEM were NOT RUN for T02. Setup/start/load commands below are instructions for a new environment; no service startup, installation or source loading was performed in T02.
+
+**T03 follow-up, 27 October:** the canonical [policy evaluator](./dispute-demo/docs/policy.md)
+is accepted with 70 main tests, 6 offline critic regressions and eight live JDBC
+case evaluations passing. The prototype policy entry point delegates to it.
+The initial connection-refused blocker was resolved by user-authorized launch of
+the existing Docker Desktop and start of the existing dispute database container.
+All persistent services are healthy and left running. No install, configuration
+change, source reload or reset was needed. REST has no API key; JDBC passed.
 
 GitHub shares code and generated files. It does **not** share running containers, database contents or passwords. These instructions create your own local setup on macOS/Linux using Bash. Windows users should use WSL2 with Docker integration and adapt their local paths.
 

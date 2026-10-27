@@ -253,3 +253,13 @@ null and decision reads explicitly unsupported until T04 storage/registration.
 The original handover/gap table above is T01's historical baseline; T02 supersedes
 its absent typed-read and missing-text implementation items, without resolving
 policy, lifecycle, synchronization or commit-time guarantees.
+
+## T03 implementation follow-up — 27 October 2026
+
+The [policy reference](./policy.md) documents the typed evaluator and delegating
+legacy adapter, with 70 main tests and 6 prototype critic regressions passing.
+T01 transport contracts remain unchanged. Known T02 unavailable-text issues are
+classified by evidence rules; unresolved issues still require review. Unknown
+policy versions/semantics and unsupported ledger patterns fail closed. Eight actual
+live JDBC contexts now pass after authorized existing-stack startup; T03 is DONE.
+No source revision, action persistence or commit freshness is established by T03.
