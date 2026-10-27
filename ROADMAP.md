@@ -1801,3 +1801,43 @@ implementation or submission task started automatically.
   Commit identity, push success and remote equality are verified after execution
   and reported in the chat. No force push, history rewrite or portal upload.
   Next action remains owner review and leader submission, not started here.
+
+### 27 October 2026 — Root README submission-readiness refresh
+
+- Documentation-only request following the supplied README improvement brief;
+  clean reviewed baseline `8dc01fc9187673b033631f9bb2dd24b2cd552c8e` matches its source.
+  Changed only `README.md` and this required work-log entry; no task statuses changed.
+- Added current media and user-provided YouTube link, recorded screenshot,
+  two-agent diagram/source map, full isolated CLI setup, live/USL boundaries,
+  external Git-link acquisition guidance, case evidence and dated 328 + 16 totals.
+  Corrected the draft memory edge to policy evaluation. Video access/playback,
+  roster, rights and no earlier team project work are user confirmations from
+  this chat, not new independent service checks or a submission receipt.
+- `python3 /private/tmp/check-readme-refresh.py`: PASS — 63 local links/images,
+  8 anchors, 40 tracked tree entries, 7 balanced fences; `bash -n` checked all
+  5 shell blocks and AST inspection verified 8 module invocations/flags without
+  executing application code. Recorded regression and live acceptance/refusal
+  claims match their receipts. Existing screenshot visually inspected.
+- `git diff --check -- README.md ROADMAP.md` and
+  `git diff --cached --check -- README.md ROADMAP.md`: PASS.
+  `git diff -- README.md` and `git diff -- ROADMAP.md` reviewed;
+  `git status --short` confirms only these two files changed, nothing staged.
+- Markdown/Mermaid visual preview, application tests, fresh live integrations,
+  public streaming-host and HackOS preview checks: NOT RUN in this edit.
+  Jira, deployment, database and submission changes: NONE. No commit or push.
+  `context.md` unchanged: no architecture or runtime capability changed.
+  Next owner check: native PowerPoint formatting review; not started here.
+
+### 27 October 2026 — Publish README improvements
+
+- User explicitly approved committing and pushing the reviewed README and work log.
+  Presentation and demo format were also accepted by the user in this chat;
+  no new native PowerPoint or media check is claimed.
+- `python3 /private/tmp/check-readme-refresh.py` and `git diff --check`: PASS.
+  `git fetch origin`: PASS after sandbox retry; remote/local comparison with
+  `git rev-list --left-right --count origin/main...HEAD` returned `0 0` at
+  `8dc01fc9187673b033631f9bb2dd24b2cd552c8e` before publication.
+- Publish only `README.md` and `ROADMAP.md` with a normal push to `origin/main`;
+  verify the resulting commit and remote equality in the chat. Application tests
+  and live integrations: NOT RUN for this documentation publication.
+  No Jira, database or HackOS submission changes. Next: leader submission and receipt.
