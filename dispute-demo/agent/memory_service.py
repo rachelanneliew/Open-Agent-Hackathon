@@ -1,170 +1,149 @@
-"""Customer-scoped dispute memories on top of the official H-MEM engine.
+"""Source-linked H-MEM summaries. Recall is untrusted until T10 source verification.
 
-Repeated prior claims can recommend human review. They are never treated as
-proof of fraud, and they never replace policy evaluation.
+Committed inputs come only from the trusted action caller. A persisted memory
+is not a ledger or proof that a decision exists. No history threshold is defined.
 """
 from __future__ import annotations
-
+from dataclasses import dataclass
+from datetime import datetime
+import json
 import re
-import time
-from typing import Any, Mapping
 
-from hmem_client import HmemClient
-
-CUSTOMER_RE = re.compile(r"^CUST-\d{3,}$")
-DISPUTE_RE = re.compile(r"^DP-\d{4}$")
-KIND_PROCESSED = "kind:processed-dispute"
-TAG_VERIFIED = "verified"
-DEFAULT_REPEATED_CLAIM_THRESHOLD = 3
-NOT_FRAUD_NOTE = (
-    "Repeated prior claims recommend human review only; they are not proof of fraud "
-    "and do not change deterministic policy or critic results."
-)
+from app.schemas import (CommitResult, ContextRef, Contract, ContractError,
+    DisputeContext, ExecutionStatus, Outcome, Recommendation, require, source_id, uuid_id)
+from agent.hmem_client import HmemClient, MemoryError, customer_scope, strict_json
 
 
-def customer_scope(customer_id: str) -> str:
-    if not isinstance(customer_id, str) or not CUSTOMER_RE.fullmatch(customer_id):
-        raise ValueError("A canonical customer_id such as CUST-006 is required for memory isolation")
-    return f"customer:{customer_id}"
+def source_reference(decision_id):
+    uuid_id(decision_id)
+    return f'postgresql:dispute_demo/dispute_actions.decisions/{decision_id}'
 
 
-def customer_id_from_context(context: Mapping[str, Any]) -> str:
-    dispute = context.get("dispute") or {}
-    direct = dispute.get("customer_id")
-    if isinstance(direct, str) and direct:
-        return _require_customer(direct)
-    ids = {
-        tx.get("customer_id")
-        for tx in context.get("transactions", [])
-        if isinstance(tx, Mapping) and tx.get("customer_id")
-    }
-    if len(ids) != 1:
-        raise ValueError("Cannot associate memory without a unique customer_id")
-    return _require_customer(next(iter(ids)))
+@dataclass(frozen=True, kw_only=True)
+class CommittedSummary(Contract):
+    customer_id: str
+    decision_id: str
+    run_id: str
+    proposal_id: str
+    reference: ContextRef
+    recommendation: Recommendation
+    committed_at: datetime
+    simulated_credit_id: str | None
+    reason_code: str
+    source_reference: str
+
+    def _check(self):
+        customer_scope(self.customer_id)
+        for value in (self.decision_id, self.run_id, self.proposal_id):
+            uuid_id(value)
+        require(self.reference.source_revision is not None, 'Committed summary needs a source revision')
+        require(self.committed_at >= self.reference.evaluation_at, 'Commit precedes source evaluation')
+        require(self.source_reference == source_reference(self.decision_id), 'Invalid decision source reference')
+        require(self.reason_code in ('refund_missing', 'not_received', 'duplicate_charge'), 'Invalid reason')
+        if self.recommendation.outcome is Outcome.PROVISIONAL_CREDIT:
+            uuid_id(self.simulated_credit_id)
+        else:
+            require(self.simulated_credit_id is None, 'Noncredit summary cannot have a credit effect')
+
+    @classmethod
+    def from_commit(cls, context: DisputeContext, result: CommitResult):
+        require(type(context) is DisputeContext and type(result) is CommitResult, 'Typed commit and context required')
+        require(result.status in (ExecutionStatus.COMMITTED, ExecutionStatus.REUSED), 'Confirmed commit required')
+        require(result.reference == context.reference, 'Commit/context mismatch')
+        anchor = next(t for t in context.transactions if t.transaction_id == context.dispute.transaction_id)
+        return cls(customer_id=anchor.customer_id, decision_id=result.decision_id,
+            run_id=result.run_id, proposal_id=result.proposal_id, reference=result.reference,
+            recommendation=result.recommendation, committed_at=result.committed_at,
+            simulated_credit_id=result.simulated_credit_id, reason_code=context.dispute.reason_code,
+            source_reference=source_reference(result.decision_id))
 
 
-def _require_customer(customer_id: str) -> str:
-    if not CUSTOMER_RE.fullmatch(customer_id):
-        raise ValueError("A canonical customer_id such as CUST-006 is required for memory isolation")
-    return customer_id
+@dataclass(frozen=True, kw_only=True)
+class UnverifiedNote(Contract):
+    note_id: str
+    customer_id: str
+    dispute_id: str
+    policy_version: str
+    noted_at: datetime
+    text: str
+    correction_to_decision_id: str | None = None
+
+    def _check(self):
+        uuid_id(self.note_id)
+        customer_scope(self.customer_id)
+        source_id(self.dispute_id, 'DP')
+        require(re.fullmatch(r'v[1-9][0-9]*', self.policy_version), 'Invalid policy version')
+        require(len(self.text) <= 2000, 'Note too long')
+        if self.correction_to_decision_id:
+            uuid_id(self.correction_to_decision_id)
 
 
-def _customer_owned(memory: Mapping[str, Any], customer_id: str) -> bool:
-    scope = customer_scope(customer_id)
-    tags = memory.get("tags") or []
-    return memory.get("chatId") == scope and scope in tags and f"customer:{customer_id}" in tags
+@dataclass(frozen=True)
+class MemorySaveResult:
+    status: str
+    source_id: str
+    memory_id: str | None = None
+    error: str | None = None
 
 
-def _dispute_id_from_tags(tags: list[str]) -> str | None:
-    for tag in tags:
-        if tag.startswith("dispute:"):
-            value = tag.split(":", 1)[1]
-            if DISPUTE_RE.fullmatch(value):
-                return value
-    return None
+def record_input(item):
+    require(type(item) in (CommittedSummary, UnverifiedNote), 'Unsupported memory input')
+    committed = type(item) is CommittedSummary
+    kind = 'committed_summary' if committed else 'unverified_note'
+    ident = item.decision_id if committed else item.note_id
+    source = ('decision:' if committed else 'unverified-note:') + ident
+    did = item.reference.dispute_id if committed else item.dispute_id
+    version = item.reference.policy_version if committed else item.policy_version
+    timestamp = item.committed_at if committed else item.noted_at
+    scope = customer_scope(item.customer_id)
+    refs = [did, item.customer_id, source_reference(ident) if committed else source]
+    return dict(content=json.dumps(dict(kind=kind, data=item.to_dict()), sort_keys=True, separators=(',', ':')),
+        type='factual', layer='working', confidence=1, source=source, chatId=scope,
+        tags=[scope, 'dispute:' + did, 'kind:' + kind, 'policy:' + version],
+        provenance=dict(origin='plan_completion' if committed else 'manual',
+            learnedAt=int(timestamp.timestamp() * 1000), label=kind, refs=refs))
+
+
+def parse_record(record):
+    """Decode claimed provenance, NOT authoritative verification."""
+    body = strict_json(record['content'])
+    require(type(body) is dict and set(body) == {'kind', 'data'}, 'Invalid memory envelope')
+    require(body['kind'] in ('committed_summary', 'unverified_note'), 'Invalid memory kind')
+    cls = CommittedSummary if body['kind'] == 'committed_summary' else UnverifiedNote
+    item = cls.from_dict(body['data'])
+    expected = record_input(item)
+    for key in ('content', 'source', 'chatId', 'tags', 'provenance'):
+        require(record[key] == expected[key], 'Memory provenance mismatch')
+    return item
 
 
 class DisputeMemory:
-    def __init__(self, client: HmemClient, *, repeated_claim_threshold: int = DEFAULT_REPEATED_CLAIM_THRESHOLD):
-        if type(repeated_claim_threshold) is not int or repeated_claim_threshold < 1:
-            raise ValueError("repeated_claim_threshold must be a positive integer")
+    def __init__(self, client: HmemClient):
         self.client = client
-        self.repeated_claim_threshold = repeated_claim_threshold
 
-    def remember_processed_dispute(
-        self,
-        context: Mapping[str, Any],
-        policy: Mapping[str, Any],
-        critic: Mapping[str, Any],
-        *,
-        verified: bool,
-    ) -> dict:
-        customer_id = customer_id_from_context(context)
-        dispute = context["dispute"]
-        dispute_id = str(dispute["dispute_id"])
-        if not DISPUTE_RE.fullmatch(dispute_id):
-            raise ValueError("Expected a dispute ID such as DP-0014")
-        reason = str(dispute.get("reason_code") or "unknown")
-        outcome = str(policy.get("outcome") or critic.get("policy_outcome") or "unknown")
-        amount = policy.get("recommended_refund_minor", 0)
-        scope = customer_scope(customer_id)
-        content = (
-            f"Processed dispute {dispute_id} for {customer_id}. "
-            f"Claim reason {reason}. Policy outcome {outcome}. "
-            f"Recommended refund minor units {amount}."
-        )
-        tags = [
-            scope,
-            f"dispute:{dispute_id}",
-            KIND_PROCESSED,
-            f"reason:{reason}",
-            f"outcome:{outcome}",
-        ]
-        if verified:
-            tags.append(TAG_VERIFIED)
-        return self.client.add({
-            "content": content,
-            "type": "factual",
-            "layer": "working",
-            "tags": tags,
-            "confidence": 1.0,
-            "source": f"dispute-agent:{dispute_id}",
-            "chatId": scope,
-            "provenance": {
-                "origin": "plan_completion",
-                "learnedAt": int(time.time() * 1000),
-                "label": f"processed dispute {dispute_id} after policy and critic",
-                "refs": [dispute_id, customer_id],
-            },
-        })
+    def save(self, item: CommittedSummary | UnverifiedNote):
+        """Retry this same source ID only. Never invoke a financial action."""
+        record = record_input(item)
+        try:
+            result = self.client.add(record)
+            require(parse_record(result['memory']) == item, 'Memory response differs from input')
+            return MemorySaveResult(result['storage_status'], record['source'], result['memory']['id'])
+        except MemoryError as exc:
+            return MemorySaveResult('failed', record['source'], error=str(exc))
+        except (ValueError, TypeError, KeyError):
+            return MemorySaveResult('failed', record['source'], error='memory_response_invalid')
 
-    def verified_previous_dispute_ids(self, customer_id: str, *, exclude_dispute_id: str | None = None) -> list[str]:
-        found: list[str] = []
-        seen: set[str] = set()
-        for memory in self.client.list():
-            if not _customer_owned(memory, customer_id):
-                continue
-            tags = [str(t) for t in (memory.get("tags") or [])]
-            if KIND_PROCESSED not in tags or TAG_VERIFIED not in tags:
-                continue
-            dispute_id = _dispute_id_from_tags(tags)
-            if not dispute_id or dispute_id == exclude_dispute_id or dispute_id in seen:
-                continue
-            seen.add(dispute_id)
-            found.append(dispute_id)
-        found.sort()
-        return found
+    def remember_commit(self, context: DisputeContext, result: CommitResult):
+        return self.save(CommittedSummary.from_commit(context, result))
 
-    def retrieve_for_investigation(self, context: Mapping[str, Any]) -> dict:
-        customer_id = customer_id_from_context(context)
-        dispute = context["dispute"]
-        dispute_id = str(dispute["dispute_id"])
-        reason = str(dispute.get("reason_code") or "")
-        statement = str(dispute.get("customer_statement") or "")
-        query = f"Processed dispute for {customer_id}. Claim reason {reason}. {statement}".strip()
-        raw = self.client.query(query, chat_id=customer_scope(customer_id))
-        owned = []
-        leaked = []
-        for item in raw.get("memories") or []:
-            memory = item.get("memory") or {}
-            if _customer_owned(memory, customer_id):
-                owned.append(item)
-            else:
-                leaked.append(memory.get("id"))
-        if leaked:
-            raise RuntimeError("H-MEM query returned memories outside the requesting customer scope")
-        previous_ids = self.verified_previous_dispute_ids(customer_id, exclude_dispute_id=dispute_id)
-        count = len(previous_ids)
-        human_review = count >= self.repeated_claim_threshold
-        return {
-            "customer_id": customer_id,
-            "retrieved": owned,
-            "reinjection": raw.get("context") or "",
-            "trace": raw.get("trace") or {},
-            "verified_previous_dispute_ids": previous_ids,
-            "verified_previous_count": count,
-            "repeated_claim_threshold": self.repeated_claim_threshold,
-            "human_review_recommended": human_review,
-            "fraud_inferred": False,
-            "note": NOT_FRAUD_NOTE if human_review else "No repeated-claim human review recommended.",
-        }
+    def recall(self, customer_id, *, query='committed dispute decision', top_n=5):
+        result = self.client.query(query, chat_id=customer_scope(customer_id), top_n=top_n)
+        candidates = []
+        for record in result['memories']:
+            try:
+                item = parse_record(record)
+                require(item.customer_id == customer_id, 'Memory customer mismatch')
+            except (ValueError, TypeError, KeyError):
+                raise MemoryError('memory_provenance_invalid') from None
+            candidates.append(item)
+        return tuple(candidates)

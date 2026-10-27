@@ -1,0 +1,100 @@
+{
+  "task": "T09",
+  "date": "2026-10-27",
+  "implementation": "official_reference",
+  "embeddings": "deterministic_mock",
+  "reference_revision": "1742dec56a66e58eef9dda2d2b865823758ca8cd",
+  "archive_sha256": "9d4fa94858375064efc1bdd1a57393cfb98cea4f37c6587efd67b45bde468b48",
+  "node": "24.13.0",
+  "npm": "11.18.0",
+  "tsx": "4.23.15",
+  "vitest": "5.0.5",
+  "upstream_conformance": {
+    "passed": 13,
+    "total": 13
+  },
+  "upstream_smoke": {
+    "passed": 10,
+    "total": 10
+  },
+  "project_reference": {
+    "passed": 12,
+    "total": 12
+  },
+  "compatibility_passed": 4,
+  "main_suite": {
+    "collected": 218,
+    "passed": 161,
+    "skipped": 57
+  },
+  "receipt_save": {
+    "mode": "reference_hmem_saved_receipt",
+    "source_freshly_verified": false,
+    "action_called": false,
+    "summary": {
+      "customer_id": "CUST-008",
+      "decision_id": "b2d7a3ef-b7a7-4546-ac93-183a672ef41d",
+      "run_id": "7238450e-5c65-4829-a1a6-fcd3657fddf0",
+      "proposal_id": "ff956920-5681-4604-a225-cfb9bc54a2f8",
+      "reference": {
+        "dispute_id": "DP-0014",
+        "snapshot_id": "3b5079c7-0e42-449f-bb48-1eb93e9a9c96",
+        "evaluation_at": "2026-10-27T05:06:43.544935Z",
+        "policy_version": "v2",
+        "source_revision": 0
+      },
+      "recommendation": {
+        "outcome": "provisional_credit",
+        "currency": "SGD",
+        "amount_minor": 6000
+      },
+      "committed_at": "2026-10-27T05:06:57.770758Z",
+      "simulated_credit_id": "4ca53387-7b50-422c-9c40-d507685394a3",
+      "reason_code": "refund_missing",
+      "source_reference": "postgresql:dispute_demo/dispute_actions.decisions/b2d7a3ef-b7a7-4546-ac93-183a672ef41d"
+    },
+    "save": {
+      "status": "stored",
+      "source_id": "decision:b2d7a3ef-b7a7-4546-ac93-183a672ef41d",
+      "memory_id": "mem-1",
+      "error": null
+    },
+    "recalled_after_new_node_process": true
+  },
+  "new_python_process_recall": {
+    "mode": "reference_hmem_saved_receipt",
+    "source_freshly_verified": false,
+    "action_called": false,
+    "summary": {
+      "customer_id": "CUST-008",
+      "decision_id": "b2d7a3ef-b7a7-4546-ac93-183a672ef41d",
+      "run_id": "7238450e-5c65-4829-a1a6-fcd3657fddf0",
+      "proposal_id": "ff956920-5681-4604-a225-cfb9bc54a2f8",
+      "reference": {
+        "dispute_id": "DP-0014",
+        "snapshot_id": "3b5079c7-0e42-449f-bb48-1eb93e9a9c96",
+        "evaluation_at": "2026-10-27T05:06:43.544935Z",
+        "policy_version": "v2",
+        "source_revision": 0
+      },
+      "recommendation": {
+        "outcome": "provisional_credit",
+        "currency": "SGD",
+        "amount_minor": 6000
+      },
+      "committed_at": "2026-10-27T05:06:57.770758Z",
+      "simulated_credit_id": "4ca53387-7b50-422c-9c40-d507685394a3",
+      "reason_code": "refund_missing",
+      "source_reference": "postgresql:dispute_demo/dispute_actions.decisions/b2d7a3ef-b7a7-4546-ac93-183a672ef41d"
+    },
+    "save": null,
+    "recalled_after_new_node_process": true
+  },
+  "not_run": [
+    "live_postgresql",
+    "live_zetaris",
+    "live_nightshift",
+    "authenticated_hackos",
+    "T10_source_verification"
+  ]
+}

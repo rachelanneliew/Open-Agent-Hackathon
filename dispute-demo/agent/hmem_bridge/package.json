@@ -2,5 +2,9 @@
   "name": "dispute-hmem-bridge",
   "private": true,
   "type": "module",
-  "description": "Thin stdin/stdout adapter that reuses the official Meterless H-MEM reference engine."
+  "description": "Pinned adapter for the deterministic official H-MEM reference, not a production engine.",
+  "engines": { "node": "24.13.0" },
+  "packageManager": "npm@11.18.0",
+  "dependencies": { "tsx": "4.23.15" },
+  "devDependencies": { "vitest": "5.0.5" }
 }

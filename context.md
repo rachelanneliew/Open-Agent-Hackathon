@@ -251,9 +251,33 @@ T04 now supplies canonical PostgreSQL storage and a source-revision guard, teste
 - All 198 tests pass (52 real isolated PostgreSQL tests, five local HTTP fixtures, 141 other tests), plus four compatibility tests, import/AST/link checks and data validation. No application H-MEM recall/save, fixture fallback, SQLite action path or hidden reasoning. Exact requests are fsynced privately before action dispatch; uncertain commits recover only with the same request/key. Confirmed action results survive optional post-commit/trace-save failures. See the [workflow guide](./dispute-demo/docs/workflow.md).
 - **NOT RUN:** actual H-MEM reference/save-restart-recall and authenticated HackOS requirements. Next: T09 / KAN-18; T10 still requires an explicit advisory-history scope decision or an approved exact versioned rule.
 
-### Located H-MEM reference and current adapter limits
+### T09 verified reference adapter — 27 October 2026
 
-The handbook's [Meterless Engines](https://meterless.ai/engines.html) link resolved to the official H-MEM specification and reference under [Meterless/Meterless/engines/hmem](https://github.com/Meterless/Meterless/tree/1742dec56a66e58eef9dda2d2b865823758ca8cd/engines/hmem), inspected on 2026-10-26. That reference uses deterministic mock embeddings and optional JSON persistence; it is not a production runtime library. The historical pinned links are in the T00 work log. PR #4 now supplies the project bridge/client above, but does not pin the external installation. No installation, reference execution or save/restart/recall was performed in this alignment; reproducibility and persistence acceptance remain T09 work. Competition approval is still subject to A01.
+The [memory guide](./dispute-demo/docs/memory.md) documents the actual official
+reference at `1742dec56a66e58eef9dda2d2b865823758ca8cd`, pinned Node/tsx dependencies,
+and unchanged upstream source hashes. This is a deterministic reference with
+mock embeddings, not a production engine. Competition approval remains A01.
+
+The existing Python/TypeScript bridge now bounds subprocess output/time, hides
+raw errors, partitions customers before retrieval/graph linking, and serializes
+atomic state-plus-ledger publication under an OS lock. Typed committed summaries
+retain decision/customer/dispute/source references, policy/revision and times;
+analyst notes remain separate and unverified. Identical decision-ID retries reuse
+memory; failures cannot invoke financial actions. The former resolver and its
+three-claim default are retired; legacy state is preserved without migration.
+
+Thirteen upstream conformance checks, ten smoke tests and the supplied add
+example pass. Twelve real-reference adapter tests plus four compatibility checks
+pass, including new Python/Node process recall, concurrent saves, lost-ack retry,
+corrupt-state preservation and customer isolation. Main suite: 218 collected,
+161 passed, 57 separately opt-in checks skipped; 20 new offline memory checks.
+The saved T08 DP-0014/CUST-008 receipt was stored and recalled in a new Python
+invocation with its original decision ID. This is saved-receipt evidence, not a
+fresh source verification or another credit. See [evidence](./dispute-demo/docs/evidence/t09-reference-memory.json).
+
+Live PostgreSQL/Zetaris/Nightshift and HackOS were NOT RUN for T09. T08's canonical
+workflow remains explicitly `no_memory`; T10 owns fresh source verification and
+integration and still needs its explicit advisory-scope acceptance decision.
 
 ### Verified dataset snapshot
 
@@ -327,7 +351,7 @@ Choose actual dispute IDs only after inspecting fixture and policy files; do not
 - What does the authenticated HackOS Track 3 challenge explicitly require, and what is the actual submission cutoff?
 - Is a named NVIDIA/Nemotron responder mandatory, and how can its identity be recorded during the demo?
 - What are the exact policy predicates, precedence, effective-date rules, allowed transitions, and amount semantics in the repo files?
-- How should the located official H-MEM specification/reference be adapted to this Python project, and can the actual adapter prove save/restart/recall in T09? Competition approval remains unverified.
+- How will T10 source-verify the now-tested H-MEM reference adapter in the workflow? The advisory acceptance decision and A01 competition approval remain open.
 - Which fixture IDs best demonstrate supported credit, duplicate prevention, critic correction, and version boundaries?
 - T10: confirm advisory history acceptance scope or approve an exact versioned binding rule. T04 has documented/tested minimum lifecycle, duplicate scope and the fresh-cutoff storage backstop; T05 has completed protected policy/critic validation and retries in isolated PostgreSQL; shared deployment/live read freshness remain prerequisites for T08. No new history policy is approved.
 - PR #4 source is inspected at `76db772`; recheck source and live services when later tasks begin. The integration checklist is in `ROADMAP.md`.
@@ -384,3 +408,5 @@ The supplied kit reports that the work queue is tracked in Jira project `KAN` (`
 **T07 closure, 27 October 2026:** KAN-16 is Done with completion comment `10009`, covering 121 passing tests, four compatibility tests/data validation and the actual critic-accepted Nightshift proposal. T05 commit `29eb6ae` is now pushed to `origin/main` (KAN-14 follow-up `10008`). The expanded full-roadmap goal authorizes a direct completion commit/push per task; next is T08.
 
 **T08 closure, 27 October 2026:** KAN-17 is Done with acceptance comment `10011`. The gate includes 198 passing tests, actual persisted/reused live processing, ordinary duplicate refusal and a labelled fault that fails safely after one correction attempt. Next under the authorized full-roadmap goal is T09 / KAN-18 after the completion commit/push.
+
+**T09 closure, 27 October 2026:** KAN-18 is Done with acceptance comment `10013`. Actual pinned-reference persistence, restart/isolation/concurrency and source-linked summaries are accepted. T10 remains the next task under the full-roadmap goal, after this completion commit/push.

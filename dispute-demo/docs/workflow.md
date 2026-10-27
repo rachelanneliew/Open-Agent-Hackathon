@@ -4,8 +4,7 @@ The normal runtime is `python -m app.main` from `dispute-demo/`. It runs one
 Nightshift investigator, the canonical policy evaluator and pure critic, then
 the restricted PostgreSQL action service. All outcomes use the same boundary.
 This milestone is explicitly `no_memory`: no H-MEM imports, recall or saves.
-The old `agent/resolver.py` remains a deprecated prototype for T09/T10 migration;
-its `remember=False` option is not a no-memory implementation.
+The old `agent/resolver.py` is inert after T09 and cannot recall, save or act.
 
 ## Setup and invocation
 

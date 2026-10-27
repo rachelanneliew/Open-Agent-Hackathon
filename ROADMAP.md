@@ -2,7 +2,7 @@
 
 > **Canonical work queue.** Read [`context.md`](./context.md) first, then [`agent.md`](./agent.md).
 > **Revision:** T07 Nightshift investigator accepted, 27 October 2026: 121 passing tests, 45 PostgreSQL opt-in skips, four compatibility tests and data validation; a real Zetaris/Nightshift proposal passed the pure critic. Evidence is recorded below.
-> **Current authorized goal:** complete the entire roadmap sequentially, updating Jira and committing/pushing each completed task to `origin/main`. The user explicitly expanded the earlier single-task scope on 27 October. T00–T08 are DONE; next is T09 / KAN-18. Remaining tasks retain their acceptance gates and explicit scope decisions.
+> **Current authorized goal:** complete the entire roadmap sequentially, updating Jira and committing/pushing each completed task to `origin/main`. The user explicitly expanded the earlier single-task scope on 27 October. T00–T09 are DONE; next is T10 / KAN-19. Remaining tasks retain their acceptance gates and explicit scope decisions.
 > **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
 
 ## 1. What changed from the earlier plan
@@ -23,7 +23,7 @@ Use statuses `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED`, `DONE`. DONE requires reco
 
 Every task includes its own tests. T12 is cross-component testing, not the first time testing begins.
 
-**Post-merge integration order:** T03–T08 are complete, including shared guarded deployment and live fresh-read/model/commit acceptance. Continue with T09 under the current goal. T09 and A01 can progress separately when assigned. After T09, complete T10, then T11, T12 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
+**Post-merge integration order:** T03–T08 are complete, including shared guarded deployment and live fresh-read/model/commit acceptance. T09 is also complete; continue with T10 under the current goal. A01 verification remains independently available. Complete T10, then T11, T12 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
 
 ## Jira tracking (supplied kit dated 2026-10-26)
 
@@ -74,7 +74,7 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 | T06 | Build the mandatory critic and validator | T02, T03 | DONE |
 | T07 | Implement the investigator through Nightshift | T02, T03, T06 | DONE |
 | T08 | Wire the bounded workflow and command-line runner | T02, T03, T05, T06, T07 | DONE |
-| T09 | Verify and wrap the actual H-MEM integration | T00, T01; may run in parallel with T02–T08 | NOT_STARTED |
+| T09 | Verify and wrap the actual H-MEM integration | T00, T01; may run in parallel with T02–T08 | DONE |
 | T10 | Integrate verified memory and repeat-history review | T02, T03, T08, T09 | NOT_STARTED |
 | T11 | Build the thin analyst view and review queue | T08; memory display depends on T10 | NOT_STARTED |
 | T12 | Run cross-component failure tests and repeatable reset | T08, T10, T11 for the intended complete demo; feature-specific tests run earlier | NOT_STARTED |
@@ -91,8 +91,8 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 | `dispute-demo/agent/policy_engine.py` | Reuse dictionary evaluator; adapt to strict schemas and harden against actual policies/fixtures. | T03 |
 | `dispute-demo/agent/critic.py` | Reuse validation/duplicate-test ideas; separate pure critic from canonical PostgreSQL all-outcome storage/writes. SQLite has no authoritative source freshness protocol and non-credit results are not persisted. | T04, T05, T06 |
 | `dispute-demo/agent/resolver.py` | Deterministic proposal helper plus memory and SQLite critic call; no Nightshift investigator, canonical bounded controller or genuine no-memory mode. | T07, T08, T10 |
-| `dispute-demo/agent/hmem_client.py`, `dispute-demo/agent/hmem_bridge/server.ts`, `dispute-demo/agent/hmem_bridge/package.json` | Existing adapter/bridge; external prerequisites, pinning, timeouts, restart/isolation and persistence concurrency remain unverified. | T09 |
-| `dispute-demo/agent/memory_service.py` | Customer tags and advisory count exist; authoritative source verification, temporal filtering and decision-ID persistence remain. Three prior claims is not binding policy. | T09, T10 |
+| `dispute-demo/agent/hmem_client.py`, `dispute-demo/agent/hmem_bridge/server.ts`, `dispute-demo/agent/hmem_bridge/package.json` | T09 accepted: pinned official reference and Node/tsx, bounded processes, isolated atomic persistence, restart and concurrency tests. | T09 |
+| `dispute-demo/agent/memory_service.py` | T09 typed committed summaries/notes and decision-ID retries accepted. T10 must verify recalled sources and integrate workflow; the unapproved count is retired. | T09, T10 |
 | `dispute-demo/agent/tests/test_critic.py`, `dispute-demo/agent/tests/test_hmem_integration.py` | Separate test root; test-only path injection, mocked policy/SQLite and external-reference tests require deliberate collection, import checks and scope labels. | T03–T10 as affected, T12 |
 
 Target architecture remains one investigator, a pure deterministic critic and one PostgreSQL action service for `provisional_credit`, `request_evidence`, `decline`, `human_review`. The first three run autonomously when permitted; mandatory policy review prevents credit. Advisory verified history is not a hold, raw memory is not authority, and failed persistence is not a queued review. T10 retains its explicit advisory-scope versus versioned binding-rule acceptance decision.
@@ -407,7 +407,7 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 ### T09 — Verify and wrap the actual H-MEM integration
 
 **Phase:** Memory and presentation  
-**Status:** NOT_STARTED  
+**Status:** DONE
 **Depends on:** T00, T01; may run in parallel with T02–T08  
 **Deliverable:** A tested adapter to the selected real H-MEM implementation, with source-linked persistence.
 
@@ -415,20 +415,22 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **PR #4 integration requirements:**
 
-- [ ] Reuse `hmem_client.py`, `hmem_bridge/server.ts` and relevant tests under `dispute-demo/agent/`. Verify/pin the selected reference source, Node/tsx runner and dependency setup; document configurable paths and sanitized examples rather than assuming a sibling install.
-- [ ] Bound subprocess time; validate JSON/output and sanitize errors. Report missing dependencies explicitly, without exposing private paths/credentials or raw stderr to analysts.
-- [ ] Prove actual save → new process/restart → recall and customer isolation. Test/document serialized or otherwise safe access to the file-backed reference against concurrent lost updates; subprocess-per-operation alone is insufficient.
-- [ ] Retain decision/dispute/customer IDs, source reference, policy version and timestamps; distinguish committed summaries from unverified notes. Offline mocks and reference-dependent integration tests must be separately selectable and labelled.
+- [x] Reuse `hmem_client.py`, `hmem_bridge/server.ts` and relevant tests under `dispute-demo/agent/`. Verify/pin the selected reference source, Node/tsx runner and dependency setup; document configurable paths and sanitized examples rather than assuming a sibling install.
+- [x] Bound subprocess time; validate JSON/output and sanitize errors. Report missing dependencies explicitly, without exposing private paths/credentials or raw stderr to analysts.
+- [x] Prove actual save → new process/restart → recall and customer isolation. Test/document serialized or otherwise safe access to the file-backed reference against concurrent lost updates; subprocess-per-operation alone is insufficient.
+- [x] Retain decision/dispute/customer IDs, source reference, policy version and timestamps; distinguish committed summaries from unverified notes. Offline mocks and reference-dependent integration tests must be separately selectable and labelled.
 
 **Work:**
 
-- [ ] Run the supplied reference example and applicable tests. Record the actual supported save/recall/persistence interface; do not guess method names or substitute a similarly named package.
-- [ ] Expose a project adapter for allowed summary storage and relevant recall. Include source case/decision IDs, timestamps, policy version and provenance.
-- [ ] Keep final committed summaries separate from unverified model text. Do not store credentials, unnecessary personal data or fabricated facts.
-- [ ] Test save -> process restart -> recall against the real implementation. Mark dictionary/mocked tests as mocks, not H-MEM integration.
-- [ ] Define retries keyed to a committed decision ID and visible storage status. A memory write failure must never cause the financial-action service to run again.
+- [x] Run the supplied reference example and applicable tests. Record the actual supported save/recall/persistence interface; do not guess method names or substitute a similarly named package.
+- [x] Expose a project adapter for allowed summary storage and relevant recall. Include source case/decision IDs, timestamps, policy version and provenance.
+- [x] Keep final committed summaries separate from unverified model text. Do not store credentials, unnecessary personal data or fabricated facts.
+- [x] Test save -> process restart -> recall against the real implementation. Mark dictionary/mocked tests as mocks, not H-MEM integration.
+- [x] Define retries keyed to a committed decision ID and visible storage status. A memory write failure must never cause the financial-action service to run again.
 
 **Acceptance gate:** Actual H-MEM save/recall is demonstrated after restart with source references, or the task remains BLOCKED with exact missing dependency/access evidence.
+
+**Verified 2026-10-27:** 13 upstream conformance checks, 10 smoke tests, supplied example; 12 real-reference adapter checks and 4 compatibility checks pass. Actual saved T08 receipt survives a new Python/Node process without any action call. Main suite: 218 collected, 161 passed, 57 opt-in skips. See [memory guide](./dispute-demo/docs/memory.md) and the completion log. T10 source verification/integration and A01 approval remain open.
 
 **Not in this task:** No H-MEM-as-ledger, invented API or completed memory claim from in-process storage.
 
@@ -1192,3 +1194,65 @@ An independent manager/planner LLM, a second semantic-review LLM, a fraud-risk m
 - Update this roadmap's task board, detailed status, and completion record together when acceptance evidence or dependencies change. Use stable T00–T13/A01 IDs; retain earlier records as history.
 - Update `agent.md` when shared operating rules change, and keep the root `AGENTS.md` and `CLAUDE.md` entry points aligned with the same pre-execution reading order.
 - Verify repository links after documentation edits. Proposed implementation paths are not claims that those files exist; imported Jira links are not proof of live access or issue completion.
+
+### 2026-10-27 — T09 / KAN-18: pinned actual H-MEM reference
+
+- **DONE gate satisfied.** Reused and hardened the existing Python client,
+  TypeScript bridge and memory service. Official source revision
+  `1742dec56a66e58eef9dda2d2b865823758ca8cd`; archive/runtime SHA-256 pins checked.
+  Node 24.13.0, npm 11.18.0, tsx 4.23.15, Vitest 5.0.5 and transitive lockfile.
+  This is actual reference execution with deterministic mock embeddings, not a
+  production engine or claimed HackOS approval.
+- Customer partitions prevent cross-scope graph/retrieval leakage. OS locks
+  serialize load/operate/publish; a private staging process uses unchanged
+  upstream files, then an fsynced atomic snapshot publishes state and ledger
+  together. Fixed error codes, time/pipe/size/depth limits, strict JSON and source
+  pin checks fail closed. Old state is preserved, never migrated implicitly.
+- Typed committed summaries retain receipt/source IDs, policy/revision, outcome
+  and timestamps. Notes remain unverified. Identical decision-ID saves reuse;
+  changed payloads fail. No memory path calls financial actions. The deprecated
+  resolver is inert and its unapproved three-claim default is removed. T08's
+  no-memory controller is unchanged.
+
+Commands below ran from `dispute-demo/` unless noted. `HMEM_NODE` selected the
+existing, verified Node 24.13.0 executable; private machine paths are omitted.
+
+| Command | Observed result |
+|---|---|
+| `python3 scripts/setup_hmem.py --archive outputs/dependencies/meterless-1742dec.tar.gz` | PASS; exact public archive hash, selected source extracted to ignored project outputs. |
+| Pinned Node/npm `npm ci --ignore-scripts --no-audit --no-fund` from `agent/hmem_bridge/` | PASS; 39 packages from lockfile, no install scripts. |
+| `$HMEM_NODE --import ./agent/hmem_bridge/node_modules/tsx/dist/loader.mjs outputs/dependencies/hmem/conformance/runner.ts` | PASS, 13/13 upstream checks. |
+| `$HMEM_NODE agent/hmem_bridge/node_modules/vitest/vitest.mjs run --root outputs/dependencies/hmem/reference` | PASS, 10/10 upstream smoke tests; reference links to bridge dependencies. |
+| `$HMEM_NODE --import ./agent/hmem_bridge/node_modules/tsx/dist/loader.mjs outputs/dependencies/hmem/examples/01-add-memory/index.ts` | PASS, supplied add/ledger/source-refusal example. |
+| `DISPUTE_HMEM_TESTS=1 PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s agent/tests -v` | PASS, 16/16: 12 real-reference checks and 4 compatibility checks, no skips. |
+| `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s tests -v` | PASS, 218 collected, 161 passed, 57 explicit opt-in skips (52 PostgreSQL, 5 HTTP); 20 offline memory checks included. |
+| `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/validate_synthetic_data.py` | PASS, 42 transactions/54 settlements/40 disputes/81 evidence/16 rules, hashes and fixture references. |
+| Memory-module import check with `sys.path` snapshot and absent SQLite/JDBC/Psycopg/action/model imports | PASS; no path mutation, service initialization or state creation. |
+
+- `python -m integration.check_memory` with the original T08 run
+  `7238450e-5c65-4829-a1a6-fcd3657fddf0` request/trace and isolated
+  `outputs/t09-receipt-memory`, followed by a separate invocation with
+  `--recall-only`: PASS. Decision `b2d7a3ef-b7a7-4546-ac93-183a672ef41d`, DP-0014,
+  CUST-008, original revision/time/policy/source retained. No action called or
+  source freshly verified. [Sanitized evidence](./dispute-demo/docs/evidence/t09-reference-memory.json)
+  preserves this distinction.
+- Tests prove eight distinct concurrent saves survive, six simultaneous retries
+  create one record, pre-publication failure preserves old state, lost-ack retry
+  reuses published state, corruption is preserved/fails closed, notes cannot be
+  promoted by a tag, and query audit/touch state survives restart.
+- Initial diagnostics: sandbox DNS blocked public archive download; authorized
+  network download succeeded. First dependency install selected Node 22 and
+  warned; explicit pinned-Node clean install succeeded. First reference tests
+  failed closed on Node mismatch. An offline test's assumed customer was corrected
+  to source-backed CUST-008. Python 3.13 accepted deeply nested JSON without a
+  recursion error; explicit depth validation fixed the discovered gap. Two
+  wrong-working-directory diagnostic invocations failed before execution and
+  were rerun from the documented directory. Final checks above passed.
+- **NOT RUN:** live PostgreSQL/Zetaris/Nightshift, production embeddings, actual
+  authenticated HackOS approval, or T10 second-investigation source verification.
+  No source/policy/fixture/shared database changes. T10's scope decision remains
+  explicit; it was requested while finalizing T09. Jira closure and publication
+  receipts follow acceptance verification.
+
+- Final artifact checks: eight Python ASTs, seven changed Markdown files and 197 local links validated; `git diff --check` passed after removing a new trailing-space line. Canonical app, data, policies, fixtures, migrations and platform paths remain unchanged from T08.
+- Jira KAN-18 received acceptance comment **10013**; transition 31 and a fresh read confirm status/resolution **Done**. Summary, description, assignee, parent, labels and links were checked unchanged. Direct-main commit/push will be verified after publication.

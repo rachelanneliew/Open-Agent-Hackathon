@@ -243,19 +243,26 @@ python3 dispute-demo/integration/check_nightshift.py --chat
 
 **Ready when:** authenticated model discovery passes and the script receives a non-empty text reply through Nightshift. A running app or healthy endpoint alone does not prove a model can answer. This verifies only the connection; the structured investigator and prototype integration still need implementation and acceptance tests. The check follows the [Meterless provider contract](https://meterless.ai/engines.html).
 
-## 8. H-MEM prototype prerequisites — setup not yet reproduced
+## 8. Pinned H-MEM reference — T09 verified
 
-The existing [Python client](./dispute-demo/agent/hmem_client.py) invokes the [TypeScript bridge](./dispute-demo/agent/hmem_bridge/server.ts) in a subprocess for each operation. It needs Node.js, a `tsx` runner and the selected official H-MEM reference source with its dependencies installed externally. The [bridge manifest](./dispute-demo/agent/hmem_bridge/package.json) declares none of those dependencies and pins no reference revision; installing that manifest alone is not a complete setup.
+Follow the [memory guide](./dispute-demo/docs/memory.md) for the tested setup,
+configurable paths, record contract, limits and exact verification commands.
+The selected source is official revision `1742dec56a66e58eef9dda2d2b865823758ca8cd`,
+with Node 24.13.0, npm 11.18.0, tsx 4.23.15 and Vitest 5.0.5 pinned. The reference
+has deterministic mock embeddings and JSON files; competition approval is A01.
 
-| Existing configuration/fallback | Source-visible behavior; not a verified setup |
-|---|---|
-| `HMEM_TSX` | Explicit path to the `tsx` executable; otherwise the client checks `../hmem-reference/reference/node_modules/.bin/tsx` relative to the repository root, then `tsx` on PATH. |
-| `HMEM_REFERENCE_SRC` | Explicit path to the reference TypeScript entry point; otherwise the bridge resolves `../hmem-reference/reference/src/index.ts` relative to the repository root. |
-| `persist_dir` / legacy `ledger_path` parameters | Memory defaults beneath the user's `.local/state/dispute-demo`; use isolated temporary test directories. Since T06, the critic ignores `ledger_path`, defaults it to None and never opens/creates SQLite state. Existing local ledgers are preserved. |
+The setup script fetches a hash-verified archive into ignored project outputs;
+`npm ci` uses the bridge lockfile. Select the pinned Node and set `HMEM_NODE`
+explicitly if the application directory selects a different version. Existing
+external installations and old home-directory memory are never replaced/migrated.
 
-The sibling `hmem-reference` tree is an external prerequisite, not supplied by this repository or guaranteed to exist on another machine. T00 located upstream revision `1742dec56a66e58eef9dda2d2b865823758ca8cd`; this is a historical reference anchor, not proof that PR #4's external installation matches it. T09 must verify/pin the chosen source, runner/dependencies and portable setup, add bounded subprocess/error handling, and demonstrate real save → new process/restart → recall with customer isolation and safe serialized/concurrent persistence access. No install command or successful reference run is claimed here. A01 must still verify competition approval.
-
-The [prototype H-MEM tests](./dispute-demo/agent/tests/test_hmem_integration.py) use the external reference even though their docstring says offline. They were NOT RUN in this alignment. The [compatibility critic tests](./dispute-demo/agent/tests/test_critic.py) now prove the retired writer cannot touch state; [canonical critic tests](./dispute-demo/tests/test_proposal_critic.py) use real policy outputs with I/O forbidden. These do not prove PostgreSQL action safety or a complete agent. Both test roots require explicit collection during implementation. Do not start services, reinstall teammates' environments, or use the resolver as a setup probe: it can write local state. Further tested setup instructions belong to T09.
+T09 passed 13 upstream conformance checks, 10 smoke tests and the supplied add
+example; 12 actual-reference adapter tests plus 4 compatibility tests pass.
+Customer-isolated, file-locked atomic snapshots survive new processes and safe
+concurrent writes. Committed summaries retain decision/source IDs and timestamps;
+notes remain unverified. Memory errors are independent of action success.
+The canonical workflow still runs with no memory until T10. Do not use the
+retired resolver as a probe; use the receipt-only memory check in the guide.
 
 ## Working together
 
