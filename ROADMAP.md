@@ -86,7 +86,7 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 | T13 | Package the evidence-backed demo and submission | T12, A01; documentation can be drafted alongside earlier tasks | DONE |
 | T14 | Build independent Nightshift reviewer | T06, T07, T08 | DONE |
 | T15 | Wire bounded two-agent feedback and routing | T14 | DONE |
-| T16 | Verify two-agent demo and refresh submission | T15 | IN_PROGRESS |
+| T16 | Verify two-agent demo and refresh submission | T15 | DONE |
 | A01 | Confirm authenticated HackOS requirements | None; run alongside development | DONE |
 
 ### PR #4 implementation evidence, separate from task status
@@ -1473,7 +1473,7 @@ and memory regression matrix, including real isolated PostgreSQL.
 
 ### T16 — Observable evidence and submission refresh / KAN-26
 
-Status: **IN_PROGRESS**. Depends on T15. Distinct UI stages, real separate
+Status: **DONE**. Depends on T15. Distinct UI stages, real separate
 Investigator/Reviewer evidence, labelled scripted feedback loop, updated docs,
 deck and 1–4 minute narrated video. Verify reproduction, links, secrets, media
 and receipt status. Gate: truthful independently observable collaboration,
@@ -1563,3 +1563,29 @@ one-source/no-USL limitation and historical fallback package.
   combined memory is proven by the isolated reference suite. B2 implementation
   gap addressed, organizer approval unclaimed. One datasource/no USL unchanged.
 - Public-access/media playback final checks and Jira closure follow below.
+
+### T16 final acceptance and handoff
+
+- Package security/link review: `python3 /private/tmp/t16-review.py` PASS,
+  314 local Markdown targets, 8 JSON files and 109 file/archive parts checked
+  at publication preparation. Eight configured secret values and credential
+  patterns scanned across reachable Git history plus changed content; no findings.
+  No claim to detect every possible unknown secret. Protected source/policy/
+  critic/writer/contracts/migrations unchanged.
+- `python3 /private/tmp/t16-public-check.py`: PASS six anonymous HTTPS 200
+  downloads exactly match local README, index, deck, video, transcript and captions.
+  `git -c credential.helper= clone --depth 1 --branch codex/t14-t16-two-agent-reviewer https://github.com/rachelanneliew/Open-Agent-Hackathon.git /private/tmp/t16-public-read`: PASS at `2aab296`.
+- Browser playback progressed and completed at 197.521029 seconds, ended=true.
+  Mean narration -16.0 dB, peak -1.6 dB. Portal playback/public video-host
+  acceptance and human listening remain NOT RUN; downloadable media is not a receipt.
+- GitHub connector PR creation returned 403 (integration permission). Existing
+  `gh` keyring access succeeded with approved network access; created and attached
+  [draft PR #7](https://github.com/rachelanneliew/Open-Agent-Hackathon/pull/7).
+  No main merge. Only original five shared services remain healthy.
+- T14, T15 and T16 acceptance gates satisfied. Next action is owner review of
+  PR #7 and the leader's submission checklist, not another implementation task.
+  Stop here as authorized; no new scope or automatic final submission.
+
+- Jira closure: KAN-24 and KAN-25 Done (comments 10036/10037); KAN-26
+  acceptance comment 10038 and transition to Done confirmed. Draft PR #7 is
+  attached to this chat. Final package is on the feature branch only.

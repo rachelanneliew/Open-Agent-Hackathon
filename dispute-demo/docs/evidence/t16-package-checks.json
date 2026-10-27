@@ -105,7 +105,8 @@
     "pending_reviews": 1,
     "revision": 17,
     "restricted_role": "unchanged",
-    "delta": "one evidence-request decision and audit; zero additional credits or queue entries"
+    "delta": "one evidence-request decision and audit; zero additional credits or queue entries",
+    "services": "original five healthy; no owned test containers remain"
   },
   "artifacts": {
     "dispute-two-agent-deck.pptx": {
@@ -144,8 +145,61 @@
       "caption_timing": "Approximate sentence timing"
     }
   },
-  "public_access": "Pending publication checks",
-  "browser_playback": "Pending completion",
+  "public_access": {
+    "mode": "anonymous HTTPS using system curl with TLS verification and no curlrc/Authorization/cookies",
+    "artifacts": [
+      {
+        "path": "README.md",
+        "status": 200,
+        "content_type": "text/plain; charset=utf-8",
+        "bytes": 6594,
+        "sha256": "25949084ee36b2a6a435efe1d2e5b87a6e633bdf8527c3f3afc9654f05788f0f",
+        "local_match": true
+      },
+      {
+        "path": "docs/submission/README.md",
+        "status": 200,
+        "content_type": "text/plain; charset=utf-8",
+        "bytes": 7637,
+        "sha256": "26bc6ba591489d71f6fd56b930afa9f89e1f9584a0cc1cbba9c79dcfcf976e2f",
+        "local_match": true
+      },
+      {
+        "path": "docs/submission/dispute-two-agent-deck.pptx",
+        "status": 200,
+        "content_type": "application/octet-stream",
+        "bytes": 119797,
+        "sha256": "221f0f8314db612676a87c610f7deed80d91d0afaa04da60e1002ed824ba812f",
+        "local_match": true
+      },
+      {
+        "path": "docs/submission/dispute-two-agent-demo.mp4",
+        "status": 200,
+        "content_type": "application/octet-stream",
+        "bytes": 6132344,
+        "sha256": "6e7f084ffb9a3cd536ce72d418f0e7e22f9b1bdd73122efcd64a1bfadd167938",
+        "local_match": true
+      },
+      {
+        "path": "docs/submission/VIDEO_TWO_AGENT.md",
+        "status": 200,
+        "content_type": "text/plain; charset=utf-8",
+        "bytes": 5080,
+        "sha256": "375e34e386d005733998047cd58d64281cfb4a18d6dcaa750f6f787058899276",
+        "local_match": true
+      },
+      {
+        "path": "docs/submission/dispute-two-agent-demo.srt",
+        "status": 200,
+        "content_type": "text/plain; charset=utf-8",
+        "bytes": 4785,
+        "sha256": "7f2888d5eb30eb7967f2687c4768254f72b4a91089063af3533cf1d9b19cba0f",
+        "local_match": true
+      }
+    ],
+    "source_branch": "codex/t14-t16-two-agent-reviewer"
+  },
+  "browser_playback": "PASS: local browser progressed through 64.5 seconds to ended true at 197.521029 seconds, no reported playback error",
   "final_submission": "NOT RUN: no leader-supplied receipt; no portal action in T16",
   "limits": [
     "One PostgreSQL datasource, no USL",
@@ -171,11 +225,20 @@
   },
   "history_security": {
     "scan": "all reachable Git blobs, configured local secret-value matches and high-confidence credential patterns",
-    "blobs": 381,
-    "bytes": 14550205,
+    "blobs": 412,
+    "bytes": 21880631,
     "known_values_compared": 8,
     "findings": [],
     "forbidden_tracked_paths": [],
     "limits": "Pattern/value scan cannot prove absence of every unknown secret. Images and final media need visual/content review; unreachable objects not audited."
+  },
+  "anonymous_clone": "PASS: credential.helper disabled, public HTTPS shallow clone, exact commit 2aab296b68475300fde60acc92c592458432ed3f",
+  "pull_request": "https://github.com/rachelanneliew/Open-Agent-Hackathon/pull/7",
+  "public_video_host": "NOT RUN: GitHub raw download verified; leader must verify accepted playable host and actual portal preview",
+  "jira": {
+    "T14": "KAN-24 Done",
+    "T15": "KAN-25 Done",
+    "T16": "KAN-26 Done",
+    "t16_comment_id": "10038"
   }
 }
