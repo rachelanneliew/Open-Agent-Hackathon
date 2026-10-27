@@ -280,3 +280,15 @@ The shared database is not migrated and Zetaris registration/cache coherence is
 not verified by T04. Existing T02 tools retain null revisions and unsupported
 decision reads. Read-only public views and the exact T02/T05 handoff are documented
 in the storage reference; no successful runtime commit is enabled here.
+
+## T06 implementation follow-up — 27 October 2026
+
+The [pure critic](./critic.md) now enforces reference/policy/proposal binding,
+source corroboration, citations, exact recommendation and missing requirements.
+It uses unchanged T01 types, returns bounded feedback and never executes actions.
+Rationale is limited to deterministic policy explanations because T01 has no
+structured claim representation. Arbitrary prose routes to review. Malformed
+transport raises ContractError without fabricated identity. The old SQLite
+writer is retired without opening/migrating/deleting local state. T05 retains
+commit freshness/durability and exact run/proposal binding; T08 retains run/call
+budgets. Critic acceptance with a null source revision is read-only.

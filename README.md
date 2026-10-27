@@ -13,6 +13,7 @@ Open Agent Hackathon project for investigating fictional card disputes and recom
 | [CLAUDE.md](./CLAUDE.md) | Directs Claude Code to the same shared instructions. |
 | [TEAM_SETUP.md](./TEAM_SETUP.md) | Environment setup: Docker, PostgreSQL, Zetaris/JDBC and Nightshift. |
 | [Policy v1](./dispute-demo/policies/synthetic_policy_v1.md) / [Policy v2](./dispute-demo/policies/synthetic_policy_v2.md) | Exact fictional dispute rules that the implementation must follow. |
+| [Pure critic](./dispute-demo/docs/critic.md) | T06 validation, supported rationale/citations, correction limits and retired SQLite writer. |
 | [Decision storage](./dispute-demo/docs/storage.md) | T04 PostgreSQL migration, revision guard, lifecycle/duplicate scope and isolated integration tests; deployment boundary. |
 | [Policy evaluation](./dispute-demo/docs/policy.md) | T03 typed evaluator, supported synthetic evidence/ledger semantics, offline and live acceptance results. |
 | [Typed retrieval](./dispute-demo/docs/retrieval.md) | T02 read interfaces, case/customer scope, error statuses, live/offline checks and unsupported freshness/decision storage. |
@@ -26,15 +27,13 @@ For the current task and its Jira issue, start with the task board in [ROADMAP.m
 
 **Use [ROADMAP.md](./ROADMAP.md) as the source of truth for the next task.** It records each task's Jira issue, dependencies, required reading, work checklist, deliverable and acceptance gate. Its completion log records what was tested and any remaining blockers. Check the current task board and actual source before starting; older work-log entries describe historical states.
 
-**Current handover, 27 October 2026:** T00–T04 are complete against repository acceptance gates. T03 and T04 are merged to `main` through [PR #5](https://github.com/rachelanneliew/Open-Agent-Hackathon/pull/5) and [PR #6](https://github.com/rachelanneliew/Open-Agent-Hackathon/pull/6); KAN-12 and KAN-13 are verified Done with completion evidence. T04 acceptance: **20 isolated PostgreSQL tests, 70 offline tests, 6 prototype regressions and data validation pass**. Storage includes all four outcomes, a revision guard, durable reviews and duplicate safeguards. The shared demo database remains unmigrated. Next: **[T06 / KAN-15 — Build the mandatory pure critic](https://luijoel24.atlassian.net/browse/KAN-15)**, only when assigned.
+**Current handover, 27 October 2026:** T00–T04 and T06 are complete against repository gates. T06 delivers the [pure critic](./dispute-demo/docs/critic.md) with exact context/policy/proposal binding, corroborated citations and bounded feedback. **92 offline tests, 4 compatibility tests and data validation pass**; 20 PostgreSQL tests are explicitly skipped in this run. All 40 authored scenarios pass. No live service or deployment check was run for T06. [KAN-15](https://luijoel24.atlassian.net/browse/KAN-15) is verified Done with completion evidence.
 
-[Typed retrieval](./dispute-demo/docs/retrieval.md) supplies source context and history. The [canonical policy evaluator](./dispute-demo/docs/policy.md) now evaluates that context; the old prototype policy module delegates. The [T04 migration](./dispute-demo/docs/storage.md) implements storage, but shared deployment/coherent reads and the T05 action service remain pending; runtime source revisions still return null. The SQLite-writing critic, deterministic resolver and H-MEM adapters remain unintegrated prototypes.
+[Typed retrieval](./dispute-demo/docs/retrieval.md) and the [canonical evaluator](./dispute-demo/docs/policy.md) provide the critic's inputs. The old SQLite write entry point now returns unavailable without touching local state. Rationale validation is deliberately limited to deterministic policy explanations; arbitrary prose routes to review. The [T04 migration](./dispute-demo/docs/storage.md) exists, but shared deployment/coherent reads and the T05 action service remain pending; runtime source revisions still return null.
 
-The target uses one Nightshift investigator, a pure deterministic critic and one PostgreSQL action service. Policy-permitted `provisional_credit`, `request_evidence` and `decline` run autonomously; `human_review` is exceptional and creates no credit. Only confirmed persistence creates a queued review item. Verified history is advisory by default; the prototype's three-claim count is not binding policy. T10 still needs an explicit advisory-scope acceptance decision or an approved versioned history rule.
+The target uses one Nightshift investigator, a pure deterministic critic and one PostgreSQL action service. Policy-permitted `provisional_credit`, `request_evidence` and `decline` run autonomously; `human_review` is exceptional and creates no credit. Only confirmed persistence creates a queued review item. Verified history remains advisory; no numeric history policy has been introduced. T10 still needs an explicit advisory-scope acceptance decision or an approved versioned history rule.
 
-For T06, adapt [the existing critic](./dispute-demo/agent/critic.py) into a pure function over `DisputeContext`, `PolicyResult` and `AgentProposal`, returning a bound `CriticResult`. Use the real [T03 evaluator](./dispute-demo/app/policy_engine.py), preserve mandatory-review exclusion of credit, and check source/rule citations, identity/cutoff/version, amounts and factual support. No critic path may write a credit or call the action service. Keep action persistence and duplicate prevention in their T04/T05 scope.
-
-Acceptance requires valid typed proposals passing and crafted invalid proposals failing, with purity checks across all branches. Follow T06's full roadmap checklist. T03's read-only CLI remains documented in [policy.md](./dispute-demo/docs/policy.md); it evaluates eligibility without persisting decisions.
+Next: **[T05 / KAN-14 — Implement atomic simulated decision recording](https://luijoel24.atlassian.net/browse/KAN-14)**, only when assigned. Use the T04 guard/storage and real T03/T06 evaluator/critic. Recheck fresh authoritative state in one protected PostgreSQL transaction, bind the exact proposal/critic, record all four outcomes, reconcile identical retries and block duplicate credits. Follow T05's full roadmap gate, including real independent-connection tests; no T05 implementation has started.
 
 ### Steps for the next teammate
 
@@ -48,23 +47,22 @@ Acceptance requires valid typed proposals passing and crafted invalid proposals 
 ### Copyable task handover
 
 ```text
-Work on T06 / KAN-15 only:
-https://luijoel24.atlassian.net/browse/KAN-15
+Work on T05 / KAN-14 only:
+https://luijoel24.atlassian.net/browse/KAN-14
 
-Follow AGENTS.md and read context.md, ROADMAP.md, agent.md and the
-applicable sources. Verify T02/T03 prerequisites; preserve existing changes.
-Reuse the prototype critic's checks, canonical schemas and actual typed
-policy outputs. Return a pure CriticResult with reference/proposal binding,
-source/rule citations, amount and policy checks, and structured feedback.
-Mandatory review blocks credit. No critic branch may write an action.
+Follow AGENTS.md and read context.md, ROADMAP.md, agent.md and applicable
+sources. Verify T03/T04 prerequisites and the completed T06 critic.
+Implement one canonical PostgreSQL simulated-decision service, with
+protected current-state policy/critic rechecks, all four outcomes,
+identical-payload retry reuse and changed-payload/duplicate rejection.
+Unknown source revisions cannot commit. A failed write is not queued review.
 
-Replace critic-write expectations with purity tests; do not implement the
-PostgreSQL action service in this task. Report exact checks and update the
+Run real PostgreSQL independent-connection, rollback and retry tests;
+preserve shared data and existing state. Record exact checks and update
 roadmap/context. Jira edits and publication require authorized scope.
-Stop after T06 and recommend the next dependency-ready task.
+Stop after T05 and recommend the next dependency-ready task.
 
 ```
 
-Next recommended task: **T06 / KAN-15: build the mandatory pure critic**.
-T04 is complete; T09 and A01 may be assigned separately when prerequisites are satisfied.
-T05–T13 and A01 remain NOT_STARTED; no next task was begun.
+Next recommended task: **T05 / KAN-14: atomic simulated decision recording**.
+T09 and A01 may be assigned separately. T05, T07–T13 and A01 remain NOT_STARTED.

@@ -120,6 +120,9 @@ action or memory calls occurred; source data was preserved. See
 [ROADMAP.md](../../ROADMAP.md) for commands and the initial failed attempt.
 
 T03 is DONE; source revisions remain null and no commit freshness is established.
-Pure critic integration remains T06; the unchanged SQLite-writing critic/resolver
-remain unintegrated prototypes. Services are left running; no source reset,
-configuration change or dependency installation was required.
+At T03 completion, pure critic integration was pending. T06 now supplies the
+[pure critic](./critic.md), reuses this evaluator and disables the SQLite write
+entry point. Its accepted rationales are deterministic evaluated-rule explanations.
+The resolver remains unintegrated; T05/T08 still own canonical action execution.
+T06 did not recheck or alter services. The 70/6 counts above are dated T03 evidence;
+current T06 counts and commands are in the critic guide and roadmap.

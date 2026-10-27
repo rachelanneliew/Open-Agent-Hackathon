@@ -10,7 +10,7 @@ We are building one Nightshift investigator with a Python controller, determinis
 - Added reproducible generation, test fixtures, evidence documents and data-validation tests.
 - Rachel has loaded the project database and registered its tables in Zetaris.
 - Added `get_dispute_context.py`; it expects the Zetaris datasource name **`dispute`**
-- PR #4 adds prototypes in `dispute-demo/agent/`: policy evaluator, SQLite-writing critic, deterministic resolver, memory service and H-MEM client/bridge. These are not a completed agent: typed retrieval and policy evaluation are now implemented under T02/T03, while pure critic separation, PostgreSQL action storage, a real Nightshift investigator, bounded workflow, verified portable memory setup and UI remain outstanding. See [context.md](./context.md) and [ROADMAP.md](./ROADMAP.md).
+- PR #4 supplied prototypes in `dispute-demo/agent/`. T02/T03 now provide typed retrieval/policy, T04 provides isolated-tested PostgreSQL storage, and T06 provides the pure critic and retires SQLite execution. Canonical action integration, a real Nightshift investigator, bounded workflow, verified portable memory setup and UI remain outstanding. See [context.md](./context.md) and [ROADMAP.md](./ROADMAP.md).
 
 **Evidence date:** T02 verified typed retrieval and live JDBC reads on 27 October 2026, with 50 root-suite tests and 6 offline critic tests passing. See [the retrieval reference](./dispute-demo/docs/retrieval.md) and ROADMAP for exact evidence. Nightshift discovery failure remains dated T00 evidence; Nightshift and H-MEM were NOT RUN for T02. Setup/start/load commands below are instructions for a new environment; no service startup, installation or source loading was performed in T02.
 
@@ -251,11 +251,11 @@ The existing [Python client](./dispute-demo/agent/hmem_client.py) invokes the [T
 |---|---|
 | `HMEM_TSX` | Explicit path to the `tsx` executable; otherwise the client checks `../hmem-reference/reference/node_modules/.bin/tsx` relative to the repository root, then `tsx` on PATH. |
 | `HMEM_REFERENCE_SRC` | Explicit path to the reference TypeScript entry point; otherwise the bridge resolves `../hmem-reference/reference/src/index.ts` relative to the repository root. |
-| `persist_dir` / `ledger_path` parameters | Memory and SQLite state default beneath the user's `.local/state/dispute-demo`; tests must use isolated temporary directories. These stores are not the canonical PostgreSQL ledger. |
+| `persist_dir` / legacy `ledger_path` parameters | Memory defaults beneath the user's `.local/state/dispute-demo`; use isolated temporary test directories. Since T06, the critic ignores `ledger_path`, defaults it to None and never opens/creates SQLite state. Existing local ledgers are preserved. |
 
 The sibling `hmem-reference` tree is an external prerequisite, not supplied by this repository or guaranteed to exist on another machine. T00 located upstream revision `1742dec56a66e58eef9dda2d2b865823758ca8cd`; this is a historical reference anchor, not proof that PR #4's external installation matches it. T09 must verify/pin the chosen source, runner/dependencies and portable setup, add bounded subprocess/error handling, and demonstrate real save → new process/restart → recall with customer isolation and safe serialized/concurrent persistence access. No install command or successful reference run is claimed here. A01 must still verify competition approval.
 
-The [prototype H-MEM tests](./dispute-demo/agent/tests/test_hmem_integration.py) use the external reference even though their docstring says offline. They were NOT RUN in this alignment. The [critic tests](./dispute-demo/agent/tests/test_critic.py) mock policy evaluation and use SQLite; neither these nor the historical 23-test root suite proves PostgreSQL safety or a complete agent. Both test roots require explicit collection during implementation. Do not start services, reinstall teammates' environments, or use the resolver as a setup probe: it can write local state. Further tested setup instructions belong to T09.
+The [prototype H-MEM tests](./dispute-demo/agent/tests/test_hmem_integration.py) use the external reference even though their docstring says offline. They were NOT RUN in this alignment. The [compatibility critic tests](./dispute-demo/agent/tests/test_critic.py) now prove the retired writer cannot touch state; [canonical critic tests](./dispute-demo/tests/test_proposal_critic.py) use real policy outputs with I/O forbidden. These do not prove PostgreSQL action safety or a complete agent. Both test roots require explicit collection during implementation. Do not start services, reinstall teammates' environments, or use the resolver as a setup probe: it can write local state. Further tested setup instructions belong to T09.
 
 ## Working together
 
@@ -290,3 +290,13 @@ database was **not migrated**; T02 revisions stay null and decision reads stay
 unsupported. Deploy/register and verify fresh reads as part of action integration.
 Do not use `dispute_loader` superuser credentials for runtime writes. No model,
 canonical action service or H-MEM integration is established by these tests.
+
+## T06 pure critic acceptance
+
+See [the critic guide](./dispute-demo/docs/critic.md) for the typed interface,
+citation/rationale vocabulary and correction semantics. Fresh T06 evidence:
+92 offline tests, 4 compatibility tests and data validation pass; 20 PostgreSQL
+tests skipped and 7 external H-MEM tests collected only. No live services were
+checked or changed. The old SQLite action entry point is disabled. The next
+assigned implementation should be T05, which must provide protected fresh reads
+and the canonical PostgreSQL action service before any persisted runtime claim.

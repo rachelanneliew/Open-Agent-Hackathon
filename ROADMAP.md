@@ -1,8 +1,8 @@
 # Task Roadmap — Synthetic Card-Dispute Resolution Agent
 
 > **Canonical work queue.** Read [`context.md`](./context.md) first, then [`agent.md`](./agent.md).
-> **Revision:** T03/T04 implementation and Jira completion verified, 27 October 2026. PR #5 and PR #6 are merged to `main`; KAN-12 and KAN-13 are Done. Twenty isolated PostgreSQL tests pass for T04; the shared source database is preserved and unmigrated. Evidence is recorded below.
-> **Next roadmap task:** T06 / KAN-15, only when assigned, following the post-merge integration order. T00–T04 are DONE; T05–T13 and A01 remain NOT_STARTED. Jira closure was separately authorized after implementation.
+> **Revision:** T06 pure critic accepted, 27 October 2026, on `main`: 92 offline tests and 4 compatibility regressions pass; data validation passes. SQLite execution is retired. T04 shared deployment and coherent reads remain pending. Evidence is recorded below.
+> **Next roadmap task:** T05 / KAN-14, only when assigned. T00–T04 and T06 are DONE; T05, T07–T13 and A01 remain NOT_STARTED. The user authorized T06 Jira updates, commit and push directly to `origin/main`.
 > **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
 
 ## 1. What changed from the earlier plan
@@ -23,7 +23,7 @@ Use statuses `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED`, `DONE`. DONE requires reco
 
 Every task includes its own tests. T12 is cross-component testing, not the first time testing begins.
 
-**Post-merge integration order:** T03 is now complete; assign T06 next; T05 follows T03/T04 and benefits from the actual critic, then T07/T08. T04, T09 and A01 can progress separately when assigned. After T09, complete T10, then T11, T12 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
+**Post-merge integration order:** T03/T04/T06 are complete; assign T05 next using the actual pure critic, then T07/T08. T09 and A01 can progress separately when assigned. After T09, complete T10, then T11, T12 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
 
 ## Jira tracking (supplied kit dated 2026-10-26)
 
@@ -71,7 +71,7 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 | T03 | Implement deterministic policy evaluation | T01, T02 | DONE |
 | T04 | Create sandbox decision, action and audit storage | T01 | DONE |
 | T05 | Implement atomic simulated decision recording | T03, T04 | NOT_STARTED |
-| T06 | Build the mandatory critic and validator | T02, T03 | NOT_STARTED |
+| T06 | Build the mandatory critic and validator | T02, T03 | DONE |
 | T07 | Implement the investigator through Nightshift | T02, T03, T06 | NOT_STARTED |
 | T08 | Wire the bounded workflow and command-line runner | T02, T03, T05, T06, T07 | NOT_STARTED |
 | T09 | Verify and wrap the actual H-MEM integration | T00, T01; may run in parallel with T02–T08 | NOT_STARTED |
@@ -304,7 +304,7 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 ### T06 — Build the mandatory critic and validator
 
 **Phase:** Agent workflow  
-**Status:** NOT_STARTED  
+**Status:** DONE
 **Depends on:** T02, T03  
 **Deliverable:** A code-first review gate that accepts, requests correction or routes an unsupported proposal to review.
 
@@ -312,23 +312,25 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **PR #4 integration requirements:**
 
-- [ ] Reuse checks from `dispute-demo/agent/critic.py` as a pure function accepting `DisputeContext`, `PolicyResult`, `AgentProposal` and returning bound `CriticResult`; no ledger creation, database writes or action-service calls.
-- [ ] Enforce identity/snapshot/revision, policy version, outcome, amount/currency and required citations/support; requesting missing evidence must not require invented evidence IDs. Mandatory policy review blocks credit; advisory memory is not policy.
-- [ ] Replace prototype tests that expect critic-created credit with purity checks across every branch; move write/duplicate assertions into action-service tests. Test real typed policy outputs as well as crafted invalid proposals.
+- [x] Reuse checks from `dispute-demo/agent/critic.py` as a pure function accepting `DisputeContext`, `PolicyResult`, `AgentProposal` and returning bound `CriticResult`; no ledger creation, database writes or action-service calls.
+- [x] Enforce identity/snapshot/revision, policy version, outcome, amount/currency and required citations/support; requesting missing evidence must not require invented evidence IDs. Mandatory policy review blocks credit; advisory memory is not policy.
+- [x] Replace prototype tests that expect critic-created credit with purity checks across every branch. Write/duplicate storage assertions are already covered by T04 PostgreSQL tests; full action-service assertions remain explicitly assigned to T05, whose service does not yet exist. Test real typed policy outputs as well as crafted invalid proposals.
 
 **Work:**
 
-- [ ] Validate structure, supported outcome, amount/currency, policy version, context revision, cited rule IDs and time-visible evidence IDs.
-- [ ] Check binding policy constraints, human-review requirements and source scope. A real evidence ID alone does not prove the evidence supports a claim; use structured corroboration where available and route unresolved substantive contradictions to review.
-- [ ] Return structured feedback with failed checks, required evidence or corrections, and whether a bounded revision is permitted. The critic does not execute actions.
-- [ ] Test crafted invalid proposals: invented/cross-case evidence, future evidence, excessive credit, ignored policy blocks, stale snapshots and unsupported conclusions.
-- [ ] Keep any future LLM semantic reviewer separate. It may add concerns but cannot override a deterministic rejection or approve an action independently.
+- [x] Validate structure, supported outcome, amount/currency, policy version, context revision, cited rule IDs and time-visible evidence IDs.
+- [x] Check binding policy constraints, human-review requirements and source scope. A real evidence ID alone does not prove the evidence supports a claim; use structured corroboration where available and route unresolved substantive contradictions to review.
+- [x] Return structured feedback with failed checks, required evidence or corrections, and whether a bounded revision is permitted. The critic does not execute actions.
+- [x] Test crafted invalid proposals: invented/cross-case evidence, future evidence, excessive credit, ignored policy blocks, stale snapshots and unsupported conclusions.
+- [x] Keep any future LLM semantic reviewer separate. It may add concerns but cannot override a deterministic rejection or approve an action independently.
 
 **Acceptance gate:** Invalid proposals are rejected in deterministic tests, valid source-backed proposals pass, and no critic path writes a credit. These tests do not need Nightshift.
 
 **Not in this task:** No requirement for a second LLM, independent critic service deployment or action execution.
 
-**Suggested paths/artifacts:** Proposed: dispute-demo/app/critic.py, dispute-demo/tests/test_critic.py. Reuse existing equivalents; these paths are not verified as present.
+**Implemented artifacts:** [pure critic](./dispute-demo/app/critic.py), [canonical tests](./dispute-demo/tests/test_proposal_critic.py), [retired writer shim](./dispute-demo/agent/critic.py), [compatibility tests](./dispute-demo/agent/tests/test_critic.py), and [critic reference](./dispute-demo/docs/critic.md).
+
+**Acceptance, 27 October 2026:** 22 new critic tests cover all 40 authored scenarios and adversarial proposals using real typed policy outputs; every result branch runs with I/O blocked. Full main suite: 112 collected, 92 passed, 20 PostgreSQL opt-in skips. Four compatibility tests and data validation pass. No critic action writes; existing SQLite state is preserved. Rationale support is deliberately limited to deterministic policy explanations. No live service or action integration is claimed.
 
 **Stop:** report evidence, update this task's status and the work log, then stop. Do not automatically start the next task.
 
@@ -1050,6 +1052,32 @@ Exact verification from `dispute-demo/`, existing Python 3.13.7:
 - The user authorized committing and pushing the README, roadmap and context closure updates directly to `origin/main`. Fetched origin at `7e7faaaf81877448c63f9778dc36d194c4a88529`; its tree matches the tested T04 head. Local main had no unpushed commits, and the three documentation edits were carried onto that baseline.
 - Scope remains documentation only: record merged PRs and verified Jira completion. T05 is pending; the existing recommended integration order remains T06 then T05. No new implementation, Jira edit or service operation.
 - Validation: `PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/validate_t04_docs.py` and `git diff --check`. Application/live checks are NOT RUN for this documentation-only publication. Commit and remote push results are verified after execution and reported to the user. Next recommended task: T06 / KAN-15, not started.
+
+### 2026-10-27 — T06 / KAN-15: pure critic and retired SQLite action path
+
+- Status: **DONE** against the T06 acceptance gate. Owner: Codex, user-assigned T06 only, with explicit Jira/commit/push authorization to `origin/main`. Baseline clean `main` at `32b38a9`; fetched origin and verified `git rev-list --left-right --count origin/main...HEAD` = `0 0`. No branch/worktree was created. T02/T03 source/contracts and prerequisite tests were inspected before implementation.
+- Runtime: added `dispute-demo/app/critic.py`; replaced `agent/critic.py` with a canonical import and fail-closed legacy shim. Added `tests/test_proposal_critic.py`; replaced the six SQLite-writing prototype tests with four no-I/O compatibility tests in `agent/tests/test_critic.py`. Added `docs/critic.md`; updated README, TEAM_SETUP, agent reading map, context, roadmap and policy/contract handoffs. Source policies/data/fixtures, schemas, evaluator, retrieval, migrations, resolver/memory code, private configuration and local ledger files are preserved.
+- Delivered: exact proposal/context/policy reference binding, full canonical reevaluation to detect forged/stale policy outputs, permitted outcomes, exact integer credit amount/currency, evaluated rule and corroborated evidence citations, exact missing categories/reasons/rules, stable failed-check codes and bounded-correction feedback. Mandatory review blocks credit; missing-evidence/filing precedence and ordinary autonomous outcomes remain intact. A rejected proposal is never persisted or described as a queued review.
+- Semantic boundary: T01 has no structured claim representation. Accepted rationale is `policy_rationale(policy)` (ordered deterministic rule explanations, surrounding whitespace ignored); arbitrary prose, false conclusions or memory allegations route to review. Evidence support reuses T03's whole-template/metadata interpretation. This is conservative synthetic validation, not general semantic understanding or a new business policy. No schema weakening, invented history rule or second evaluator/LLM.
+- Pure state boundary: no files, databases, network, subprocesses, clock, action calls or memory writes. Every typed result binds the submitted proposal/reference; malformed transport raises `ContractError` without inventing identity. Revision 1 failures cannot request another correction; T08 still must enforce run identity and budgets across calls. Null source revisions permit read-only validation, never commit freshness. T05 must reread/recheck under the guard and persist all four outcomes.
+- Prototype retirement: `review_and_simulate` now always returns `unavailable` / `LEGACY_ACTION_PATH_RETIRED`, never validated/recorded. `ledger_path` is ignored without touching it; `DEFAULT_LEDGER=None`. Existing SQLite files are neither opened, migrated nor deleted. Duplicate/write assertions already exist in T04's real PostgreSQL suite; T05 owns service retry/concurrency assertions. No placeholder action service or mocked concurrency acceptance was introduced.
+
+Exact verification from `dispute-demo/`, Python 3.13.7, unless stated otherwise:
+
+| Command | Actual result |
+| --- | --- |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -v` | Baseline: 90 collected, 70 passed, 20 explicit PostgreSQL opt-in skips. Final: **112 collected, 92 passed, 20 explicit skips**, zero failures/errors. Includes 22 critic tests, all 40 authored cases, reference/policy/amount/citation failures, false rationale, missing requirements, malformed/future/cross-case inputs and one correction. |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s agent/tests -p test_critic.py -v` | **4 passed**, zero failures/errors/skips. Legacy calls for all outcomes/malformed input, repeat calls, absent state and existing-state preservation; all calls forbid I/O. |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python scripts/validate_synthetic_data.py` | **PASS**, counts 42/54/40/81/16, document/manifest hashes and fixture integrity unchanged. |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -` with `sys.path` snapshot, `import app.critic; import agent.critic`, canonical function identity and absent SQLite/JDBC/PG/action/H-MEM module assertions, then `unittest.TestLoader().discover('agent/tests')` | **PASS**, imports preserve path and initialize no services; 11 prototype tests collect without errors. Four compatibility tests ran above; seven external H-MEM tests were collected only, **NOT RUN**. |
+| Repository root: `PYTHONDONTWRITEBYTECODE=1 getting-started/.venv/bin/python /private/tmp/validate_t06_docs.py`; `git diff --check` | **PASS**: 8 documents, 167 local links, Python syntax, only T06 status/section changed, historical log preserved; whitespace clean. |
+
+- Purity evidence: each canonical result test repeats the call under forbidden file open/create, SQLite connection, socket, subprocess and service-import hooks; checks input immutability, exact proposal/reference binding and JSON round-trip. Exception paths are also guarded. No critic imports action storage; canonical and legacy test module names differ, avoiding discovery collisions.
+- Initial test invocation from the repository root failed with `ModuleNotFoundError: app` before collecting the new suite; corrected to the documented `dispute-demo/` working directory. Final results above supersede that invocation. No application dependency was installed.
+- **NOT RUN:** PostgreSQL integration (20 explicit skips; storage unchanged), live Zetaris/JDBC, Nightshift, H-MEM reference execution, HackOS, shared migration/registration or T05 action/concurrency tests. T06 needs no live services. No service startup/restart/reset or source mutation occurred. Existing dated T02–T04 integration evidence was not refreshed.
+- `context.md` updated for verified T06 capability and rationale/legacy-path limits. Recommended next task: **T05 / KAN-14**, not started. Stop after T06 publication.
+- Jira closure: live KAN-15 matched the assigned acceptance criteria, moved through In Progress, received completion comment `10006`, then transition `31` moved it to **Done**. Read-back verified Done, exactly one comment and unchanged summary, description, assignee, parent, labels and issue links. No other Jira issue was changed.
+- Publication: user-authorized direct `main` commit with the 12 explicit T06 implementation/test/documentation paths, followed by normal `git push origin main`. Final commit/remote identity and clean-tree results are reported after execution; no force push or next task.
 
 ## 11. Deferred scope
 

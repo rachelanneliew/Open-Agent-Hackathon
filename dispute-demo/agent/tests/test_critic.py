@@ -1,81 +1,51 @@
-"""Offline unit tests for the critic; no database server, model, or Zetaris needed."""
-import copy
+"""Offline regression for the retired SQLite writer; no external reference."""
+from contextlib import ExitStack
 import tempfile
-import unittest
 from pathlib import Path
+import unittest
 from unittest.mock import patch
-import sys
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-import critic
-
-DECISION = {
-    "dispute_id": "DP-0014",
-    "policy_version": "v2",
-    "currency": "SGD",
-    "outcome": "recommend_refund",
-    "recommended_refund_minor": 6000,
-    "matched_policy_rule_id": "v2-APPROVE",
-    "evidence_ids": ["EV-0027", "EV-0028"],
-}
-CONTEXT = {
-    "dispute": {"dispute_id": "DP-0014", "transaction_id": "TX-0014"},
-    "transactions": [{"transaction_id": "TX-0014"}],
-}
+from agent import critic
+from app.critic import policy_rationale, review_proposal
 
 
-class CriticTests(unittest.TestCase):
-    def setUp(self):
-        self.temp = tempfile.TemporaryDirectory()
-        self.ledger = Path(self.temp.name) / "test.sqlite3"
-        self.patch = patch.object(critic, "evaluate_dispute", return_value=copy.deepcopy(DECISION))
-        self.patch.start()
+class CriticCompatibilityTests(unittest.TestCase):
+    def call_without_io(self, context, proposal, path=None):
+        with ExitStack() as stack:
+            for target in ('builtins.open', 'io.open', 'os.open', 'os.mkdir', 'sqlite3.connect',
+                           'socket.socket', 'subprocess.Popen'):
+                stack.enter_context(patch(target, side_effect=AssertionError('Legacy critic I/O')))
+            result = critic.review_and_simulate(context, proposal, ledger_path=path)
+        self.assertEqual(result['status'], 'unavailable')
+        self.assertEqual(result['reason_code'], 'LEGACY_ACTION_PATH_RETIRED')
+        self.assertFalse(result['simulated_credit_created'])
+        return result
 
-    def tearDown(self):
-        self.patch.stop()
-        self.temp.cleanup()
+    def test_legacy_calls_cannot_write_any_outcome_or_malformed_input(self):
+        for outcome in ('recommend_refund', 'reject', 'request_evidence', 'escalate', 'invalid'):
+            self.call_without_io({}, {'outcome': outcome})
+        self.call_without_io(None, None)
 
-    def test_first_credit_succeeds_second_blocked(self):
-        one = critic.review_and_simulate(CONTEXT, DECISION, ledger_path=self.ledger)
-        two = critic.review_and_simulate(CONTEXT, DECISION, ledger_path=self.ledger)
-        self.assertEqual(one["status"], "simulated_credit_recorded")
-        self.assertTrue(one["simulated_credit_created"])
-        self.assertEqual(two["reason_code"], "DUPLICATE_CREDIT")
-        self.assertFalse(two["simulated_credit_created"])
+    def test_existing_local_state_is_preserved(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = Path(directory) / 'existing.sqlite3'
+            ledger.write_bytes(b'Existing user state: do not open or migrate.')
+            before = ledger.read_bytes()
+            self.call_without_io({}, {}, ledger)
+            self.assertEqual(ledger.read_bytes(), before)
 
-    def test_overcredit_blocked(self):
-        forged = {**DECISION, "recommended_refund_minor": 10000}
-        result = critic.review_and_simulate(CONTEXT, forged, ledger_path=self.ledger)
-        self.assertEqual(result["reason_code"], "POLICY_MISMATCH")
-        self.assertFalse(self.ledger.exists())
+    def test_absent_state_stays_absent_and_retries_do_not_create_it(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = Path(directory) / 'new' / 'credits.sqlite3'
+            one = self.call_without_io({}, {}, ledger)
+            self.assertEqual(one, self.call_without_io({}, {}, ledger))
+            self.assertFalse(ledger.parent.exists())
 
-    def test_wrong_action_blocked(self):
-        forged = {**DECISION, "outcome": "reject", "recommended_refund_minor": 0}
-        result = critic.review_and_simulate(CONTEXT, forged, ledger_path=self.ledger)
-        self.assertEqual(result["reason_code"], "POLICY_MISMATCH")
-
-    def test_fabricated_evidence_blocked(self):
-        forged = {**DECISION, "evidence_ids": ["EV-FAKE"]}
-        result = critic.review_and_simulate(CONTEXT, forged, ledger_path=self.ledger)
-        self.assertEqual(result["reason_code"], "UNVERIFIED_EVIDENCE")
-
-    def test_non_credit_proposal_is_advisory(self):
-        other = {**DECISION, "outcome": "escalate", "recommended_refund_minor": 0}
-        critic.evaluate_dispute.return_value = other
-        result = critic.review_and_simulate(CONTEXT, other, ledger_path=self.ledger)
-        self.assertEqual(result["status"], "validated_non_credit_action")
-        self.assertFalse(result["simulated_credit_created"])
-        self.assertFalse(self.ledger.exists())
-
-    def test_other_dispute_same_transaction_blocked(self):
-        critic.review_and_simulate(CONTEXT, DECISION, ledger_path=self.ledger)
-        new_case = {"dispute": {"dispute_id": "DP-0041", "transaction_id": "TX-0014"},
-                    "transactions": [{"transaction_id": "TX-0014"}]}
-        next_decision = {**DECISION, "dispute_id": "DP-0041"}
-        critic.evaluate_dispute.return_value = next_decision
-        result = critic.review_and_simulate(new_case, next_decision, ledger_path=self.ledger)
-        self.assertEqual(result["reason_code"], "DUPLICATE_CREDIT")
+    def test_old_module_delegates_only_to_canonical_pure_validator(self):
+        self.assertIs(critic.review_proposal, review_proposal)
+        self.assertIs(critic.policy_rationale, policy_rationale)
+        self.assertIsNone(critic.DEFAULT_LEDGER)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
