@@ -15,6 +15,7 @@ from .schemas import (AgentProposal, Contract, ContractError, CriticResult,
 from .tools import CustomerHistory, DecisionHistory, DisputeState, ReadResult, TOOL_NAMES
 from .history import validate_history
 from .investigator_contract import ProposalDraft, response_schema
+from .reviewer_contract import validate_review
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -138,7 +139,7 @@ class Investigator:
 
     def step(self, context, policy, *, run_id, proposal_id, revision=0,
              previous=None, critique=None, observations=(), timeout_seconds=180,
-             advisory_history=None):
+             advisory_history=None, reviewer_feedback=None):
         route = self.client.config.route
         response_model = None
         def failed(status, message, validation_failure=None, provider_error=None):
@@ -157,17 +158,26 @@ class Investigator:
             require(type(timeout_seconds) in (int, float) and 0 < timeout_seconds <= 180, 'Invalid timeout')
             correction = None
             if revision == 0:
-                require(previous is None and critique is None, 'Unexpected correction')
+                require(previous is None and critique is None and reviewer_feedback is None, 'Unexpected correction')
             else:
                 require(type(previous) is AgentProposal and type(critique) is CriticResult, 'Missing correction')
                 require(previous.run_id == run_id and previous.revision == 0 and
                         previous.proposal_id != proposal_id and previous.reference == context.reference,
                         'Correction identity mismatch')
-                require(critique.verdict is CriticVerdict.REVISE and
-                        critique == review_proposal(context, policy, previous), 'Correction not permitted')
+                require(critique == review_proposal(context, policy, previous), 'Correction not authentic')
+                if reviewer_feedback is None:
+                    require(critique.verdict is CriticVerdict.REVISE, 'Critic correction not permitted')
+                    correction_source = 'python_critic'
+                else:
+                    validate_review(reviewer_feedback, context, policy, previous, attempt=0)
+                    require(critique.verdict is CriticVerdict.ACCEPTED and
+                            reviewer_feedback.status == 'reviewed' and
+                            reviewer_feedback.feedback.verdict == 'revise', 'Reviewer correction not permitted')
+                    correction_source = 'independent_reviewer'
                 correction = {'previous': {key: previous.to_dict()[key] for key in
                     ('recommendation', 'evidence_ids', 'policy_rule_ids', 'missing_evidence')},
-                    'critique': critique.to_dict()}
+                    'critique': critique.to_dict(), 'source': correction_source,
+                    'reviewer_feedback_untrusted': reviewer_feedback.to_dict() if reviewer_feedback else None}
             evaluated = [check for check in policy.rule_checks if check.status != 'not_evaluated']
             payload = {'policy': policy.to_dict(),
                 'citation_requirements': {

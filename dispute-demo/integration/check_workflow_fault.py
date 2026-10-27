@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 
 from app.investigator import Investigator
+from app.reviewer import Reviewer
 from app.journal import FileJournal
 from app.nightshift import NightshiftClient, NightshiftConfig
 from app.orchestrator import Controller
@@ -41,7 +42,7 @@ def main():
     args = parser.parse_args()
     validate_dispute_id(args.dispute_id)
     model = OverstatedCredit(Investigator(NightshiftClient(NightshiftConfig.from_environment())))
-    controller = Controller(investigator=model, read_snapshot=read_snapshot, commit=commit,
+    controller = Controller(investigator=model, reviewer=Reviewer(NightshiftClient(NightshiftConfig.from_environment())), read_snapshot=read_snapshot, commit=commit,
         journal=FileJournal(Path(__file__).resolve().parents[1] / 'outputs/runs'), mode='fault_injection')
     result = controller.run(args.dispute_id)
     print(json.dumps(result.to_dict(), indent=2))

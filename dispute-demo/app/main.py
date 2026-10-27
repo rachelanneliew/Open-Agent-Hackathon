@@ -10,6 +10,7 @@ from pathlib import Path
 
 from integration.get_dispute_context import validate_dispute_id
 from .investigator import Investigator
+from .reviewer import Reviewer
 from .journal import FileJournal, load_request
 from .nightshift import ModelError, NightshiftClient, NightshiftConfig
 from .orchestrator import Budgets, Controller
@@ -23,7 +24,7 @@ def main():
     parser.add_argument('--retry-memory', type=Path, help='Reverify a saved trace receipt and retry memory only')
     parser.add_argument('--no-memory', action='store_true', help='Disable advisory recall and summary storage')
     parser.add_argument('--memory-dir', type=Path, help='Private H-MEM directory (default: outputs/hmem-v1)')
-    parser.add_argument('--model-calls', type=int, default=4)
+    parser.add_argument('--model-calls', type=int, default=6)
     parser.add_argument('--tool-calls', type=int, default=3)
     parser.add_argument('--total-seconds', type=float, default=300)
     parser.add_argument('--model-seconds', type=float, default=120)
@@ -51,7 +52,8 @@ def main():
             print(json.dumps(result, indent=2))
             return 0 if result['memory_save']['status'] in ('stored', 'reused') else 1
         investigator = None if args.retry_request else Investigator(NightshiftClient(NightshiftConfig.from_environment()))
-        controller = Controller(investigator=investigator, read_snapshot=read_snapshot, commit=commit,
+        reviewer = None if args.retry_request else Reviewer(NightshiftClient(NightshiftConfig.from_environment()))
+        controller = Controller(investigator=investigator, reviewer=reviewer, read_snapshot=read_snapshot, commit=commit,
             journal=FileJournal(Path(__file__).resolve().parents[1] / 'outputs/runs'), budgets=budgets,
             memory_factory=memory_factory)
         result = controller.retry(load_request(args.retry_request), str(args.retry_request.resolve())) if args.retry_request else controller.run(args.dispute_id)

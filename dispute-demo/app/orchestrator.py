@@ -10,6 +10,7 @@ from .critic import review_proposal
 from .fresh_tools import FreshReadTools, FreshSnapshot
 from .investigator import InvestigatorResult, ReadObservation
 from .policy_engine import evaluate_policy
+from .reviewer_contract import validate_review
 from .runtime_io import BoundaryError
 from .schemas import (CommitResult, CriticVerdict, ExecutionStatus, RunPhase, RunState, require)
 from .tools import ReadStatus, ReadToolRegistry
@@ -17,7 +18,7 @@ from .tools import ReadStatus, ReadToolRegistry
 
 @dataclass(frozen=True)
 class Budgets:
-    model_calls: int = 4
+    model_calls: int = 6
     tool_calls: int = 3  # includes initial required snapshot and every attempted read
     total_seconds: float = 300
     model_seconds: float = 120
@@ -61,12 +62,13 @@ class Controller:
     """
     def __init__(self, *, investigator, read_snapshot, commit, journal,
                  budgets=None, mode='live', clock=time.monotonic, post_commit=None,
-                 memory_factory=None):
+                 memory_factory=None, reviewer=None):
         require(mode in ('live', 'offline_test', 'fault_injection'), 'Invalid execution mode')
         self.investigator, self.read_snapshot, self.commit = investigator, read_snapshot, commit
         self.journal, self.budgets, self.mode = journal, budgets or Budgets(), mode
         self.clock, self.post_commit = clock, post_commit
         self.memory_factory = memory_factory
+        self.reviewer = reviewer
 
     def run(self, dispute_id):
         validate_dispute_id(dispute_id)
@@ -108,8 +110,11 @@ class Controller:
             remaining(b.total_seconds)
             return value
         try:
+            if self.reviewer is None:
+                return finish('reviewer_required_no_action')
             snapshot = read()
             observations, previous, critique = (), None, None
+            reviewer_feedback, review_attempt = None, 0
             history = None
             while True:
                 context = snapshot.context
@@ -142,10 +147,12 @@ class Controller:
                 response = self.investigator.step(context, policy, run_id=state.run_id,
                     proposal_id=proposal_id, revision=state.proposal_revision, previous=previous,
                     critique=critique, observations=observations, timeout_seconds=timeout,
-                    advisory_history=history)
+                    advisory_history=history, reviewer_feedback=reviewer_feedback)
                 require(type(response) is InvestigatorResult, 'Invalid investigator result')
                 response = InvestigatorResult.from_dict(response.to_dict())
-                event('investigator', result=response.to_dict())
+                event('investigator', result=response.to_dict(), run_id=state.run_id,
+                    proposal_id=proposal_id, reference=context.reference.to_dict(),
+                    revision=state.proposal_revision, model_call=state.model_calls)
                 remaining(b.total_seconds)
                 if response.status not in ('read', 'proposal'):
                     return finish('investigator_' + response.status)
@@ -173,15 +180,50 @@ class Controller:
                         proposal.revision == state.proposal_revision, 'Proposal binding mismatch')
                 state = replace(state, phase=RunPhase.PROPOSED)
                 critique = review_proposal(context, policy, proposal)
-                event('critic', result=critique.to_dict())
+                event('critic', result=critique.to_dict(), run_id=state.run_id,
+                    proposal_id=proposal.proposal_id, revision=proposal.revision)
                 if critique.verdict is CriticVerdict.REVISE and state.proposal_revision == 0:
                     state = replace(state, proposal_revision=1)
                     previous = proposal
+                    reviewer_feedback = None
+                    event('correction', source='python_critic', proposal_id=proposal.proposal_id, revision=1)
                     continue
                 if critique.verdict is not CriticVerdict.ACCEPTED:
                     # Honest no-credit failure; never recast a rejected credit
                     # as a persisted human-review decision.
                     return finish('critic_unresolved_no_action')
+                if state.model_calls >= b.model_calls:
+                    return finish('model_budget_exhausted')
+                timeout = remaining(b.model_seconds)
+                state = replace(state, model_calls=state.model_calls + 1)
+                try:
+                    reviewed = self.reviewer.review(context, policy, proposal, critique,
+                        attempt=review_attempt, timeout_seconds=timeout, advisory_history=history)
+                    validate_review(reviewed, context, policy, proposal, attempt=review_attempt)
+                except Exception:
+                    event('reviewer', status='invalid_or_unavailable', run_id=state.run_id,
+                        proposal_id=proposal.proposal_id, reference=context.reference.to_dict(),
+                        attempt=review_attempt, model_call=state.model_calls)
+                    return finish('reviewer_invalid_or_unavailable_no_action')
+                event('reviewer', result=reviewed.to_dict(), model_call=state.model_calls)
+                remaining(b.total_seconds)
+                if reviewed.status != 'reviewed':
+                    return finish('reviewer_' + reviewed.status)
+                if reviewed.feedback.verdict == 'revise' and state.proposal_revision == 0:
+                    previous, reviewer_feedback = proposal, reviewed
+                    review_attempt += 1
+                    state = replace(state, proposal_revision=1)
+                    event('correction', source='independent_reviewer', proposal_id=proposal.proposal_id, revision=1)
+                    continue
+                if reviewed.feedback.verdict != 'accept':
+                    return finish('reviewer_unresolved_no_action')
+                # Recompute the pure gate on the exact final reviewed proposal.
+                final_critic = review_proposal(context, policy, proposal)
+                if final_critic != critique or final_critic.verdict is not CriticVerdict.ACCEPTED:
+                    return finish('final_critic_rejected_no_action')
+                validate_review(reviewed, context, policy, proposal, attempt=review_attempt)
+                event('final_gate', run_id=state.run_id, proposal_id=proposal.proposal_id,
+                    reference=context.reference.to_dict(), critic='accepted', reviewer='accept')
                 state = replace(state, phase=RunPhase.VALIDATED)
                 request = CommitRequest(run_id=state.run_id, idempotency_key=str(uuid4()), context=context,
                     policy=policy, proposal=proposal, critic=critique)

@@ -12,11 +12,12 @@ import unittest
 from app.action_service import commit_simulated_decision
 from app.fresh_tools import snapshot_from_bundle
 from app.investigator import Investigator
+from app.reviewer import Reviewer
 from app.journal import FileJournal, load_request
 from app.orchestrator import Controller
 from app.schemas import ExecutionStatus, Outcome
 import test_action_service as fixture
-from test_orchestrator import ScriptedClient, faulty
+from test_orchestrator import ScriptedClient, ScriptedReviewerClient, faulty
 
 
 @unittest.skipUnless(os.environ.get('DISPUTE_ACTION_TESTS') == '1',
@@ -41,7 +42,8 @@ class FreshDatabaseTests(unittest.TestCase):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         self.client = ScriptedClient()
-        self.controller = Controller(investigator=Investigator(self.client),
+        self.reviewer_client = ScriptedReviewerClient()
+        self.controller = Controller(investigator=Investigator(self.client), reviewer=Reviewer(self.reviewer_client),
             read_snapshot=self.snapshot, commit=lambda request, **_: commit_simulated_decision(request, connect=self.connect),
             journal=FileJournal(temporary.name), mode='fault_injection')
 
@@ -111,6 +113,27 @@ class FreshDatabaseTests(unittest.TestCase):
         retry = self.controller.retry(load_request(result.recovery_request), result.recovery_request)
         self.assertEqual(retry.state.commit_result.status, ExecutionStatus.REUSED)
         self.assertEqual(self.value('SELECT count(*) FROM dispute_actions.simulated_credits'), 1)
+
+    def test_reviewer_objection_revision_and_recheck_before_real_commit(self):
+        from test_orchestrator import reviewer_objection
+        self.reviewer_client.scripts = [reviewer_objection]
+        result = self.controller.run('DP-0014')
+        self.assertTrue(result.persisted, result.to_dict())
+        self.assertEqual(result.state.model_calls, 4)
+        self.assertEqual(len(self.client.calls), 2)
+        self.assertEqual(len(self.reviewer_client.calls), 2)
+        self.assertEqual(self.value('SELECT count(*) FROM dispute_actions.decisions'), 1)
+        self.assertEqual(self.value('SELECT count(*) FROM dispute_actions.simulated_credits'), 1)
+
+    def test_source_change_during_reviewer_invalidates_commit(self):
+        def change(obj, _):
+            self.source_write("UPDATE public.disputes SET dispute_status=dispute_status WHERE dispute_id='DP-0014'")
+            return obj
+        self.reviewer_client.scripts = [change]
+        result = self.controller.run('DP-0014')
+        self.assertFalse(result.persisted)
+        self.assertEqual(result.state.commit_result.message, 'source_revision_stale')
+        self.assertEqual(self.value('SELECT count(*) FROM dispute_actions.decisions'), 0)
 
     def test_additive_view_preserves_sources_and_exposes_only_scoped_decisions(self):
         self.assertEqual(self.value('SELECT count(*) FROM public.transactions'), 42)

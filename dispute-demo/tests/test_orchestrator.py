@@ -11,6 +11,7 @@ from uuid import uuid4
 
 from app.fresh_tools import FreshSnapshot
 from app.investigator import Investigator
+from app.reviewer import Reviewer
 from app.journal import FileJournal, load_request
 from app.orchestrator import Budgets, Controller
 from app.runtime_io import BoundaryError
@@ -45,6 +46,32 @@ class ScriptedClient:
             'message': {'role': 'assistant', 'content': json.dumps(obj)}}]}
 
 
+class ScriptedReviewerClient:
+    """Separate scripted Agent 2 completion, explicitly test-only."""
+    config = SimpleNamespace(route='test/scripted-reviewer')
+
+    def __init__(self, scripts=()):
+        self.scripts, self.calls = list(scripts), []
+
+    def complete(self, messages, **kwargs):
+        value = json.loads(messages[1]['content'])
+        self.calls.append(value)
+        obj = dict(verdict='accept', issue_codes=[], evidence_ids=[], policy_rule_ids=[],
+                   feedback='SCRIPTED reviewer acceptance for isolated testing.', uncertainties=[])
+        if self.scripts:
+            step = self.scripts.pop(0)
+            if isinstance(step, Exception):
+                raise step
+            obj = step(obj, value)
+        return {'model': 'test/scripted-reviewer', 'choices': [{'finish_reason': 'stop',
+            'message': {'role': 'assistant', 'content': json.dumps(obj)}}]}
+
+
+def reviewer_objection(obj, _):
+    return dict(obj, verdict='revise', issue_codes=['material_omission'],
+                feedback='SCRIPTED challenge: recheck supporting evidence and policy precedence.')
+
+
 def faulty(obj, _):
     obj['proposal']['recommendation']['amount_minor'] += 1
     return obj
@@ -64,9 +91,10 @@ class ControllerTests(unittest.TestCase):
         self.addCleanup(temporary.cleanup)
         self.journal = FileJournal(temporary.name)
         self.client = ScriptedClient()
+        self.reviewer_client = ScriptedReviewerClient()
         self.reads = Mock(side_effect=lambda did, **_: self.snapshot(did))
         self.writer = Mock(side_effect=self.committed)
-        self.controller = Controller(investigator=Investigator(self.client), read_snapshot=self.reads,
+        self.controller = Controller(investigator=Investigator(self.client), reviewer=Reviewer(self.reviewer_client), read_snapshot=self.reads,
             commit=self.writer, journal=self.journal, mode='offline_test')
 
     def snapshot(self, did='DP-0014'):
@@ -105,7 +133,7 @@ class ControllerTests(unittest.TestCase):
         self.client.scripts = [faulty]
         r = self.controller.run('DP-0014')
         self.assertTrue(r.persisted)
-        self.assertEqual((r.state.model_calls, r.state.proposal_revision), (2, 1))
+        self.assertEqual((r.state.model_calls, r.state.proposal_revision), (3, 1))
         self.assertEqual(self.writer.call_count, 1)
         self.assertIsNotNone(self.client.calls[1]['correction'])
         proposals = [e['result']['proposal'] for e in r.events if e['kind'] == 'investigator']

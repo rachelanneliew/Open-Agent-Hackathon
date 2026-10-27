@@ -20,7 +20,7 @@ from app.runtime_io import BoundaryError
 from app.ui_jobs import Jobs
 import test_action_service as actions
 import test_end_to_end as workflow
-from test_orchestrator import faulty
+from test_orchestrator import faulty, reviewer_objection
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -32,7 +32,7 @@ import importlib, socket, subprocess, sys
 from unittest.mock import patch
 before = list(sys.path)
 modules = ('app.main', 'app.ui', 'app.orchestrator', 'app.action_service',
- 'app.investigator', 'app.nightshift', 'app.history', 'app.memory_workflow',
+ 'app.investigator', 'app.reviewer', 'app.reviewer_contract', 'app.nightshift', 'app.history', 'app.memory_workflow',
  'app.fresh_tools', 'app.runtime_io', 'integration.fresh_reads',
  'integration.analyst_reads', 'agent.hmem_client', 'agent.memory_service',
  'agent.critic', 'agent.policy_engine', 'agent.resolver', 'demo.replay', 'demo.verify')
@@ -47,7 +47,7 @@ print(len(modules))
         result = subprocess.run([sys.executable, '-c', code], cwd=ROOT,
                                 text=True, capture_output=True, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(result.stdout.strip(), '19')
+        self.assertEqual(result.stdout.strip(), '21')
 
     def test_replay_default_is_read_only_preview_and_rejects_arbitrary_targets(self):
         from demo import replay
@@ -217,6 +217,8 @@ class ReliabilityDatabaseTests(unittest.TestCase):
                                  ('DP-0029', 'decline'), ('DP-0008', 'human_review'),
                                  ('DP-0017', 'provisional_credit'), ('DP-0033', 'decline'),
                                  ('DP-0034', 'provisional_credit'), ('DP-0003', 'provisional_credit')]:
+                if did == 'DP-0020':
+                    self.reviewer_client.scripts = [reviewer_objection]
                 if did == 'DP-0003':
                     self.client.scripts = [faulty]  # Explicit +1 fault, corrected once.
                 result = self.controller.run(did)
@@ -234,8 +236,12 @@ class ReliabilityDatabaseTests(unittest.TestCase):
                 if did in ('DP-0033', 'DP-0034'):
                     self.assertEqual(receipt.reference.policy_version, 'v1' if did == 'DP-0033' else 'v2')
                 if did == 'DP-0003':
-                    self.assertEqual((result.state.model_calls, result.state.proposal_revision), (2, 1))
+                    self.assertEqual((result.state.model_calls, result.state.proposal_revision), (3, 1))
+                if did == 'DP-0020':
+                    self.assertEqual((result.state.model_calls, result.state.proposal_revision), (4, 1))
+                    self.assertEqual([e['result']['feedback']['verdict'] for e in result.events if e['kind'] == 'reviewer'], ['revise', 'accept'])
                 records.append(dict(dispute_id=did, receipt=receipt.to_dict(),
+                    collaboration=[e for e in result.events if e['kind'] in ('investigator', 'critic', 'reviewer', 'correction', 'final_gate')],
                     critic=[e['result']['verdict'] for e in result.events if e['kind'] == 'critic'][-1],
                     model_calls=result.state.model_calls, correction=result.state.proposal_revision,
                     memory=[e for e in result.events if e['kind'] in ('memory_verified', 'memory_save')]))

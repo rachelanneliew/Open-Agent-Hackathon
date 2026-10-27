@@ -33,6 +33,13 @@ class LazyInvestigator:
         return Investigator(NightshiftClient(NightshiftConfig.from_environment())).step(*args, **kwargs)
 
 
+class LazyReviewer:
+    def review(self, *args, **kwargs):
+        from .reviewer import Reviewer
+        from .nightshift import NightshiftClient, NightshiftConfig
+        return Reviewer(NightshiftClient(NightshiftConfig.from_environment())).review(*args, **kwargs)
+
+
 def handler_for(jobs, *, inventory=runtime_io.read_inventory, snapshot=runtime_io.read_snapshot,
                 memory_enabled=True):
     token = secrets.token_urlsafe(32)
@@ -130,7 +137,7 @@ def main():
         from agent.memory_service import DisputeMemory
         memory_factory = lambda seconds: DisputeMemory(HmemClient(args.memory_dir or DEFAULT_PERSIST, timeout=seconds))
     def controller(journal):
-        return Controller(investigator=LazyInvestigator(), read_snapshot=runtime_io.read_snapshot,
+        return Controller(investigator=LazyInvestigator(), reviewer=LazyReviewer(), read_snapshot=runtime_io.read_snapshot,
             commit=runtime_io.commit, journal=journal, memory_factory=memory_factory)
     def retry(path):
         from .memory_workflow import retry_memory

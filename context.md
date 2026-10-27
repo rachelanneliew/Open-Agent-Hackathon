@@ -470,3 +470,26 @@ The supplied kit reports that the work queue is tracked in Jira project `KAN` (`
 **T09 closure, 27 October 2026:** KAN-18 is Done with acceptance comment `10013`. Actual pinned-reference persistence, restart/isolation/concurrency and source-linked summaries are accepted. T10 remains the next task under the full-roadmap goal, after this completion commit/push.
 
 **T10 closure, 27 October 2026:** KAN-19 is Done with owner advisory approval `10016` and acceptance `10017`. Source-verified later-case processing, actual reference restart/retry and independent memory failure handling passed. Next under the authorized full-roadmap goal: T11 / KAN-20 after completion publication.
+
+### T14 additive reviewer module — 27 October 2026
+
+The user authorized T14–T16 sequentially, with Jira tracking first. T14 adds a
+separately invoked Nightshift Evidence & Risk Reviewer with strict bounded
+feedback and application-owned run/proposal/ContextRef binding. It has no tools,
+writes or policy authority. Ten new offline tests pass; the full offline matrix
+is 210 main + 4 compatibility passed, with 74 + 12 integration/reference skips.
+Live Reviewer inference is NOT RUN at this milestone. The normal controller
+remains unchanged until T15; source policies, critic and writer are preserved.
+See [Reviewer guide](./dispute-demo/docs/reviewer.md) and ROADMAP T14–T16 entries.
+
+## T15 two-agent controller (27 October 2026)
+
+Normal CLI/UI now require separate Investigator and Reviewer Nightshift calls.
+Every proposal passes the pure critic before review. One shared correction token
+can respond to either role; the revised proposal must pass both again. Reviewer
+escalation, malformed feedback, mismatched identity or missing service prevents
+writing. Six shared model calls by default; source and atomic action protection
+remain unchanged. Exact-request recovery calls neither agent. The full isolated
+regression passed 298 application and 16 reference tests, zero skips. Live
+two-agent verification is still pending T16; this supersedes earlier one-model
+runtime descriptions without retroactively relabelling historical evidence.

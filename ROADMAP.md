@@ -2,7 +2,9 @@
 
 > **Canonical work queue.** Read [`context.md`](./context.md) first, then [`agent.md`](./agent.md).
 > **Revision:** A01 authenticated requirements audit accepted, 27 October 2026. Confirmed requirements and precise remaining access/interpretation gaps are in [the competition checklist](./docs/competition.md).
-> **Current authorized goal:** complete the entire roadmap sequentially, updating Jira and committing/pushing each completed task to `origin/main`. The user explicitly expanded the earlier single-task scope on 27 October. T00–T13 and A01 are DONE. The current user-authorized follow-up hardens Nightshift response contracts and diagnostics; it does not reopen the delivered roadmap or authorize final portal submission.
+> **T14–T16 authorization, 27 October 2026:** The user explicitly requested Jira documentation first, then sequential execution through T16. This supersedes the attached brief’s stop-between-task suggestions. Work is on `codex/t14-t16-two-agent-reviewer`; no automatic main merge or final HackOS submission.
+>
+> **Previous authorized goal:** complete the entire roadmap sequentially, updating Jira and committing/pushing each completed task to `origin/main`. The user explicitly expanded the earlier single-task scope on 27 October. T00–T13 and A01 are DONE. The current user-authorized follow-up hardens Nightshift response contracts and diagnostics; it does not reopen the delivered roadmap or authorize final portal submission.
 > **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
 
 ## 1. What changed from the earlier plan
@@ -53,6 +55,9 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 | T11 | [KAN-20](https://luijoel24.atlassian.net/browse/KAN-20) |
 | T12 | [KAN-21](https://luijoel24.atlassian.net/browse/KAN-21) |
 | T13 | [KAN-22](https://luijoel24.atlassian.net/browse/KAN-22) |
+| T14 | [KAN-24](https://luijoel24.atlassian.net/browse/KAN-24) |
+| T15 | [KAN-25](https://luijoel24.atlassian.net/browse/KAN-25) |
+| T16 | [KAN-26](https://luijoel24.atlassian.net/browse/KAN-26) |
 | A01 | [KAN-23](https://luijoel24.atlassian.net/browse/KAN-23) |
 
 **Working convention:** Assign one dependency-ready roadmap task and provide its Jira link. When Jira tracking actions are authorized, mark that assigned issue In Progress; after implementation, require exact test commands/results and changed paths, update the repo documents, then move the issue to Done only after acceptance verification. Do not transition issues merely because this kit was imported. Jira links are not secret credentials. Keep team members unassigned until ownership is agreed.
@@ -79,6 +84,9 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 | T11 | Build the thin analyst view and review queue | T08; memory display depends on T10 | DONE |
 | T12 | Run cross-component failure tests and repeatable reset | T08, T10, T11 for the intended complete demo; feature-specific tests run earlier | DONE |
 | T13 | Package the evidence-backed demo and submission | T12, A01; documentation can be drafted alongside earlier tasks | DONE |
+| T14 | Build independent Nightshift reviewer | T06, T07, T08 | DONE |
+| T15 | Wire bounded two-agent feedback and routing | T14 | DONE |
+| T16 | Verify two-agent demo and refresh submission | T15 | IN_PROGRESS |
 | A01 | Confirm authenticated HackOS requirements | None; run alongside development | DONE |
 
 ### PR #4 implementation evidence, separate from task status
@@ -1442,3 +1450,70 @@ Exact verification from `dispute-demo/`, except where stated:
 
 - Limits: original T13 root cause cannot be recovered from the old generic log. Live model correctness remains variable; semantic errors still require the existing bounded critic correction or refusal. No final-version live all-four-outcome persistence, live memory verification, UI/browser rerun, new recording, HackOS upload or submission was performed. These are **NOT RUN** and outside this read-only diagnostic scope.
 - Completion publication is one authorized commit/push to main, followed by a KAN-16 completion comment with its hash and verification evidence. Recommended next work, not started: the existing leader-owned submission/access blockers; no next implementation task is automatically begun.
+
+
+## T14–T16 additive two-agent scope (27 October 2026)
+
+### T14 — Independent Nightshift Reviewer / KAN-24
+
+Status: **DONE**. Separate invocation/prompt and strict frozen model feedback,
+application-bound run/proposal/reference/attempt/metadata. No tool or writer
+authority; fail closed on malformed, uncertain, unscoped or unavailable output.
+Gate: separate stubbed completion plus adversarial contract/binding/purity tests.
+Live inference remains NOT RUN until T16. See [Reviewer guide](./dispute-demo/docs/reviewer.md).
+
+### T15 — Bounded two-agent controller / KAN-25
+
+Status: **DONE**. Depends on T14. Require reviewer for new investigations;
+critic first, one shared correction token, typed correction provenance and final
+re-review. Count both agents; final same-proposal acceptance before existing
+writer. Preserve exact recovery, four outcomes, memory and freshness safeguards.
+Gate: acceptance/refusal/correction/budget/binding/staleness/four-outcome/recovery
+and memory regression matrix, including real isolated PostgreSQL.
+
+### T16 — Observable evidence and submission refresh / KAN-26
+
+Status: **IN_PROGRESS**. Depends on T15. Distinct UI stages, real separate
+Investigator/Reviewer evidence, labelled scripted feedback loop, updated docs,
+deck and 1–4 minute narrated video. Verify reproduction, links, secrets, media
+and receipt status. Gate: truthful independently observable collaboration,
+current artifacts and unchanged safety tests. Live unavailability blocks a
+verified two-agent claim; portal submission remains leader-owned. Preserve the
+one-source/no-USL limitation and historical fallback package.
+
+### 27 October 2026 — T14 completion and T14–T16 Jira creation
+
+- User explicitly authorized all three tasks sequentially and Jira writes. Created
+  KAN-24/KAN-25 under KAN-6 and KAN-26 under KAN-8, Highest/unassigned with
+  acceptance/dependencies. Epic scope comments 10034/10035; old tasks remain Done.
+- Clean main baseline; created feature branch `codex/t14-t16-two-agent-reviewer`.
+  Added reviewer.py, reviewer_contract.py, test_reviewer.py and reviewer guide.
+  Controller, critic, writer, policy, source data and credentials unchanged.
+- From dispute-demo: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s tests -p test_investigator.py -v` PASS, 23 tests.
+- `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s tests -p 'test_reviewer*.py' -v` PASS, 10 tests. Covers separate invocation, source scope, identity, injection containment, malformed/refusal/native tools, timeout, metadata and no I/O authority.
+- `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m demo.verify` PASS: main 284 collected, 210 passed/74 explicit integration skips; agent 16 collected, 4 passed/12 reference skips; zero failures/errors. Python 3.13.7.
+- Two initial file-write commands used a duplicated relative directory and wrote
+  nothing; one associated test invocation collected zero tests. Corrected paths
+  before the passing runs above. No acceptance claim from the zero-test run.
+- Live Zetaris/Nightshift, PostgreSQL/reference integration and portal checks
+  NOT RUN for T14. Context records the additive module, not live compliance.
+- Next authorized task is T15 after recording T14 acceptance.
+
+### 27 October 2026 — T15 completion
+
+- Separate Reviewer is now mandatory in CLI/UI new investigations. Critic first,
+  one shared correction allowance, re-critique/re-review of the revised proposal,
+  exact identity/reference/attempt binding and final acceptance gate. Both roles
+  consume the six-call default budget. Recovery preserves the original request
+  without agent calls. Restricted writer, policy and source fixtures unchanged.
+- Added twelve two-agent routing/failure tests and two real PostgreSQL tests for
+  reviewer correction and a source mutation during review. Existing fixtures now
+  explicitly inject a separate scripted Reviewer rather than a silent fallback.
+- From dispute-demo: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s tests -p test_orchestrator.py -v`: **17 passed**.
+- `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s tests -p test_two_agent.py -v`: **12 passed**.
+- `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m demo.verify`: **222 passed/74 explicit skips** main, **4 passed/12 skips** reference, no failures/errors (before adding the two PG tests).
+- `HMEM_NODE=/Users/joellui/.nvm/versions/node/v24.13.0/bin/node PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m demo.verify --integrations`: **298 main + 16 reference tests passed**, zero skips/failures/errors. Disposable PostgreSQL, isolated H-MEM and loopback HTTP; all model responses scripted. Evidence: `/private/tmp/t15-integrations.json`.
+- A read-only search used a nonexistent runtime-test filename; corrected by
+  locating the runtime import check in the verifier. No acceptance from that search.
+- Live Nightshift/Zetaris and portal checks **NOT RUN** for T15; next authorized
+  task T16 supplies live evidence and refreshed public artifacts.

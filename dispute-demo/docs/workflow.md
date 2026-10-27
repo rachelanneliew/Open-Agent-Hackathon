@@ -1,7 +1,7 @@
 # Bounded workflow and recovery (T08)
 
-The normal runtime is `python -m app.main` from `dispute-demo/`. It runs one
-Nightshift investigator, the canonical policy evaluator and pure critic, then
+The normal runtime is `python -m app.main` from `dispute-demo/`. It runs separate Nightshift Investigator and Reviewer calls, the canonical
+policy evaluator and pure critic, then
 the restricted PostgreSQL action service. All outcomes use the same boundary.
 T08 was explicitly `no_memory`. T10 now enables verified advisory memory by
 default; `--no-memory` preserves that mode. See the [memory guide](./memory.md)
@@ -78,22 +78,26 @@ inside the action service's protected commit transaction.
 ## Transitions and budgets
 
 [Controller](../app/orchestrator.py) owns retrieve → evaluate → investigate →
-validate → commit → display. Model requests are limited to the four case-bound
+validate → independent review → final validation → commit → display. Model requests are limited to the four case-bound
 read projections. Each requested read gets a new coherent snapshot; old
 observations are discarded and policy is reevaluated before another proposal.
 The model cannot supply SQL, a customer, a cutoff, a revision or write arguments.
 Stored decisions are observations, not new effects attributed to this run.
 
-Defaults: four model calls, three read calls including initial retrieval,
+Defaults: six shared model calls, three read calls including initial retrieval,
 300 seconds total, 120 seconds per model call, 45 per read, 25 per commit.
 The CLI exposes `--model-calls`, `--tool-calls`, `--total-seconds`,
 `--model-seconds`, `--read-seconds`, `--commit-seconds`, with hard upper bounds.
 Attempts consume budgets before dispatch. Runtime JDBC/Psycopg workers and
 Nightshift transport run in separate processes terminated at their deadlines.
 
-Only one critic correction is allowed. Revision 1 carries the original proposal
-and actual deterministic critique, with a new proposal ID and the same run and
-reference. A request for new facts during correction ends that run safely; it
+Only one correction is allowed across critic and Reviewer objections. Revision 1
+carries the original proposal and verified critic or reviewer feedback, with a
+new proposal ID and the same run and reference. The critic checks every proposal;
+the independent Reviewer sees only critic-accepted proposals. Both must accept
+the exact final proposal before writing. Missing, invalid, unavailable, escalated
+or unresolved reviewer feedback stops without an action. See the [Reviewer
+contract](./reviewer.md). A request for new facts during correction ends that run safely; it
 cannot reset the correction budget. Unresolved critique, malformed output,
 uncertainty or unavailable required facts produces an honest no-credit failure.
 A rejected credit is never relabelled as a saved review. Policy-required review
@@ -118,8 +122,8 @@ produce an extra credit. A timeout, broken response or lost acknowledgement is
 **unconfirmed**, never proof of rollback: retain and retry the original request.
 Do not generate a new key to recover an uncertain commit.
 
-CLI JSON includes facts, source/rule IDs, versions, typed proposals, critic
-feedback, explicit commit status, new-credit flag and recovery path. It never
+CLI JSON includes facts, source/rule IDs, versions, typed proposals, critic and reviewer
+feedback with correction provenance, explicit commit status, new-credit flag and recovery path. It never
 prints private model reasoning or credentials. Exit 0 means confirmed persisted
 result (`committed` or `reused`); exit 1 is a workflow refusal/failure; exit 2 is
 invalid input/configuration. Public traces are saved under ignored `outputs/`.

@@ -24,6 +24,7 @@ function renderContext(c,label='Current source snapshot'){
   c.evidence.forEach(e=>{const detail=make('details',undefined,'evidence-item');detail.id='evidence-'+e.evidence_id;detail.append(make('summary',`${e.evidence_id} · ${human(e.evidence_type)} · ${human(e.integrity_status)}`),make('p',`${e.source_type} · Available ${e.available_at}`,'muted'),make('pre',e.content??'Evidence text unavailable'));evidence.append(detail);});
 }
 function resetResult(){
+  $('reviewer-verdict').textContent='Not reviewed';clear('collaboration').append(make('p','No role calls in this view.','empty'));
   $('outcome').textContent='Not investigated';$('amount').textContent='No new effect reported';$('verdict').textContent='Not evaluated';$('feedback').textContent='A proposal requires independent validation.';$('persistence').textContent='Not attempted';$('persist-detail').textContent='Queue membership is read from saved records.';$('policy-version').textContent='Not evaluated';clear('policy').append(make('p','Investigate to see the applied rules and investigator proposal.','empty'));clear('memory').append(make('p',config?.memory_mode==='no_memory'?'No-memory mode. Recall and summary storage are disabled.':'Not recalled for this view.','muted'));
 }
 function renderPolicy(p,proposal){
@@ -43,6 +44,24 @@ function renderMemory(result){
   const ignored=events.filter(x=>x.kind==='memory_ignored');if(ignored.length)box.append(make('p',`Ignored candidates: ${ignored.map(e=>human(e.code)).join('; ')}.`,'muted'));
   box.append(make('p',saved?`Summary storage: ${saved.status}. Decision persistence is unchanged.`:'No summary save reported.','muted'));
 }
+function renderCollaboration(result){
+  const box=clear('collaboration'), events=result.events??[];
+  const labels={investigator:'Investigator',critic:'Deterministic critic',reviewer:'Independent Reviewer',correction:'Correction handoff',final_gate:'Final acceptance gate',commit:'Restricted writer'};
+  const rows=events.filter(e=>labels[e.kind]).map(e=>{
+    const r=e.result??{}, proposal=r.proposal, feedback=r.feedback;
+    let status=e.kind==='correction'?`Requested by ${human(e.source)}`:e.kind==='final_gate'?`Critic ${e.critic}; Reviewer ${e.reviewer}`:r.verdict??feedback?.verdict??r.status??e.status??'Recorded';
+    const detail=e.kind==='reviewer'?feedback?.feedback??r.error??e.error??'No valid feedback':e.kind==='critic'?r.feedback:e.kind==='investigator'?proposal?names[proposal.recommendation.outcome]:r.message:e.kind==='correction'?'One shared correction token consumed':e.kind==='final_gate'?'Both accept this exact proposal before dispatch':r.message;
+    const id=proposal?.proposal_id??r.proposal_id??e.proposal_id??'—';
+    const info=make('div');info.append(make('strong',human(status)),make('p',detail??'','muted'));
+    if(e.kind==='reviewer'&&feedback){info.append(make('p',`Issues: ${feedback.issue_codes.join(', ')||'None'} · Evidence: ${feedback.evidence_ids.join(', ')||'None'} · Rules: ${feedback.policy_rule_ids.join(', ')||'None'}`,'muted'));}
+    if(r.requested_route)info.append(make('p',`Route: ${r.requested_route} · Returned model: ${r.response_model??'Unavailable'}`,'muted'));
+    return [labels[e.kind],info,id];
+  });
+  if(rows.length)table(box,null,['Stage','Result / feedback','Proposal identity'],rows);
+  else box.append(make('p','No model review in this operation. Exact saved-request recovery does not call either agent.','muted'));
+  const reviewer=events.filter(e=>e.kind==='reviewer').at(-1)?.result;
+  $('reviewer-verdict').textContent=reviewer?`Reviewer: ${human(reviewer.feedback?.verdict??reviewer.status)}`:'Not reviewed';
+}
 function renderJob(job){
   if(job.input.dispute_id!==selected)return;
   setBusy(job.status==='running');
@@ -53,7 +72,7 @@ function renderJob(job){
   const last=kind=>(r.events??[]).filter(e=>e.kind===kind).at(-1), display=r.display??{};
   if(display.context)renderContext(display.context,'Investigation snapshot');
   const proposal=last('investigator')?.result.proposal??display.proposal,policy=last('policy')?.result??display.policy,critic=last('critic')?.result??display.critic,commit=r.state.commit_result;
-  renderPolicy(policy,proposal);renderMemory(r);
+  renderPolicy(policy,proposal);renderMemory(r);renderCollaboration(r);
   $('outcome').textContent=commit?.recommendation?names[commit.recommendation.outcome]:proposal?names[proposal.recommendation.outcome]+' (proposed)':'No outcome committed';
   $('amount').textContent=commit?.recommendation?money(commit.recommendation.amount_minor,commit.recommendation.currency):'No confirmed new effect';
   $('verdict').textContent=critic?human(critic.verdict):'Not evaluated';$('feedback').textContent=critic?'At validation: '+critic.feedback+(critic.failed_checks.length?' Checks: '+critic.failed_checks.map(human).join('; '):''):'No critic result returned.';

@@ -10,11 +10,12 @@ from uuid import uuid4
 from agent.hmem_client import HmemClient
 from agent.memory_service import DisputeMemory, CommittedSummary, source_reference
 from app.investigator import Investigator
+from app.reviewer import Reviewer
 from app.journal import FileJournal
 from app.memory_workflow import retry_memory
 from app.orchestrator import Budgets, Controller
 import test_end_to_end as fixture
-from test_orchestrator import ScriptedClient
+from test_orchestrator import ScriptedClient, ScriptedReviewerClient
 
 
 @unittest.skipUnless(os.environ.get('DISPUTE_ACTION_TESTS') == '1' and os.environ.get('DISPUTE_HMEM_TESTS') == '1',
@@ -42,7 +43,7 @@ class MemoryDatabaseTests(unittest.TestCase):
         self.assertTrue(first.persisted, first.to_dict())
         self.assertEqual(first.events[-1]['status'], 'stored')
         new_client = ScriptedClient()
-        second_controller = Controller(investigator=Investigator(new_client), read_snapshot=self.snapshot,
+        second_controller = Controller(investigator=Investigator(new_client), reviewer=Reviewer(ScriptedReviewerClient()), read_snapshot=self.snapshot,
             commit=self.controller.commit, journal=FileJournal(self.root / 'new-runs'), mode='fault_injection',
             memory_factory=lambda seconds: DisputeMemory(HmemClient(self.root, timeout=seconds)))
         second = second_controller.run('DP-0017')
