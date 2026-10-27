@@ -1,8 +1,8 @@
 # Task Roadmap — Synthetic Card-Dispute Resolution Agent
 
 > **Canonical work queue.** Read [`context.md`](./context.md) first, then [`agent.md`](./agent.md).
-> **Revision:** T04 PostgreSQL storage completed locally on `codex/t04-decision-storage` from `b64c21d`, 27 October 2026. Twenty isolated PostgreSQL tests pass; the shared source database is preserved and unmigrated. Evidence is recorded below.
-> **Next roadmap task:** T06 / KAN-15, only when assigned, following the post-merge integration order. T00–T04 are DONE; T05–T13 and A01 remain NOT_STARTED. No Jira change is included in T04.
+> **Revision:** T03/T04 implementation and Jira completion verified, 27 October 2026. PR #5 and PR #6 are merged to `main`; KAN-12 and KAN-13 are Done. Twenty isolated PostgreSQL tests pass for T04; the shared source database is preserved and unmigrated. Evidence is recorded below.
+> **Next roadmap task:** T06 / KAN-15, only when assigned, following the post-merge integration order. T00–T04 are DONE; T05–T13 and A01 remain NOT_STARTED. Jira closure was separately authorized after implementation.
 > **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
 
 ## 1. What changed from the earlier plan
@@ -1036,6 +1036,20 @@ Exact verification from `dispute-demo/`, existing Python 3.13.7:
 - The ten T04 paths are the publication scope. The detailed commit/PR describes all-outcome storage, revision guards, conservative duplicate/re-review rules, isolated PostgreSQL tests and pending T05/T06/deployment boundaries. Existing source/policy/data/configuration and prototype runtime/state are preserved.
 - Checks: `PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/validate_t04_docs.py` passed (seven documents, 103 local links, syntax and preserved task/history checks); `git diff --check` and the protected-source comparison recorded above passed. The preceding 20 PostgreSQL, 70 offline and 6 prototype passing tests plus data validation apply to the unchanged implementation. Application/live tests were NOT RUN again for this publication-only follow-up; only this work-log entry is added.
 - Publication uses an explicit ten-file commit and `git push --set-upstream origin codex/t04-decision-storage`, then a PR targeting `main`. Commit/PR identifiers and remote state are verified and reported after execution. T04 remains DONE; T06 is recommended and not started.
+
+### 2026-10-27 — Authorized Jira closure for T03 and T04
+
+- Scope: the user explicitly requested marking the completed T03/T04 Jira tickets. Read current KAN-12/KAN-13 descriptions, statuses, comments and available transitions; both were To Do with no comments. Their acceptance criteria match the source and recorded T03/T04 verification above.
+- Added completion comment `10004` to [KAN-12](https://luijoel24.atlassian.net/browse/KAN-12) and `10005` to [KAN-13](https://luijoel24.atlassian.net/browse/KAN-13), recording implementation, exact test commands/results, PRs and remaining integration limits. Transition `31` moved each to Done. Read-back verified both statuses, one comment each, and unchanged descriptions, summaries, assignees, parents, labels and issue links. No other issue was edited.
+- GitHub verified [PR #5](https://github.com/rachelanneliew/Open-Agent-Hackathon/pull/5) merged (implementation `beb8a42aadee9282e6af0a52a490a6de139f3f30`, merge `b64c21d18df1ccd8cc93e507eeb937ea5fb7e7c1`). [PR #6](https://github.com/rachelanneliew/Open-Agent-Hackathon/pull/6) is now also merged to `main`, with head `8ad7230214f33376a66b2e9948d6d8e07431d8c2` and merge `7e7faaaf81877448c63f9778dc36d194c4a88529`. This follow-up observed the T04 merge; it did not perform it.
+- Updated current README/roadmap handover and context tracking note. Repository task statuses remain unchanged. Application/live checks were NOT RUN again for this administrative follow-up; previously recorded acceptance applies to unchanged runtime source. Shared deployment and T05/T06 integration remain pending. No commits, pushes, branch deletion or service changes in this follow-up; documentation remains local.
+- Documentation checks: `PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/validate_t04_docs.py` — PASS, seven documents, 103 local links, balanced fences/newlines, syntax and preserved task/history checks. `git diff --check` — PASS. Only README, roadmap and context changed. Recommended next task: T06 / KAN-15, not started.
+
+### 2026-10-27 — Publish completion documentation to main
+
+- The user authorized committing and pushing the README, roadmap and context closure updates directly to `origin/main`. Fetched origin at `7e7faaaf81877448c63f9778dc36d194c4a88529`; its tree matches the tested T04 head. Local main had no unpushed commits, and the three documentation edits were carried onto that baseline.
+- Scope remains documentation only: record merged PRs and verified Jira completion. T05 is pending; the existing recommended integration order remains T06 then T05. No new implementation, Jira edit or service operation.
+- Validation: `PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/validate_t04_docs.py` and `git diff --check`. Application/live checks are NOT RUN for this documentation-only publication. Commit and remote push results are verified after execution and reported to the user. Next recommended task: T06 / KAN-15, not started.
 
 ## 11. Deferred scope
 
