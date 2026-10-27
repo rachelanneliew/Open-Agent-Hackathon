@@ -1,8 +1,8 @@
 # Task Roadmap — Synthetic Card-Dispute Resolution Agent
 
 > **Canonical work queue.** Read [`context.md`](./context.md) first, then [`agent.md`](./agent.md).
-> **Revision:** T10 verified advisory memory accepted, 27 October 2026: owner-approved advisory MVP scope, 238 passing main tests, 16 reference/compatibility checks, live source-verified later-case processing and memory-only restart/retry.
-> **Current authorized goal:** complete the entire roadmap sequentially, updating Jira and committing/pushing each completed task to `origin/main`. The user explicitly expanded the earlier single-task scope on 27 October. T00–T11 are DONE; next is T12 / KAN-21. Remaining tasks retain their acceptance gates and explicit scope decisions.
+> **Revision:** T12 reliability accepted, 27 October 2026: 267 main tests and 16 reference/compatibility tests pass, with explicit two-cycle isolated reset/replay.
+> **Current authorized goal:** complete the entire roadmap sequentially, updating Jira and committing/pushing each completed task to `origin/main`. The user explicitly expanded the earlier single-task scope on 27 October. T00–T12 are DONE; next is A01 / KAN-23, then T13 / KAN-22. Remaining tasks retain their acceptance gates and explicit scope decisions.
 > **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
 
 ## 1. What changed from the earlier plan
@@ -23,7 +23,7 @@ Use statuses `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED`, `DONE`. DONE requires reco
 
 Every task includes its own tests. T12 is cross-component testing, not the first time testing begins.
 
-**Post-merge integration order:** T03–T08 are complete, including shared guarded deployment and live fresh-read/model/commit acceptance. T09–T11 are also complete; continue with T12 under the current goal. A01 verification remains independently available. Complete T12, A01 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
+**Post-merge integration order:** T03–T08 are complete, including shared guarded deployment and live fresh-read/model/commit acceptance. T09–T12 are also complete; continue with A01 and T13 under the current goal. A01 verification remains independently available. Complete A01 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
 
 ## Jira tracking (supplied kit dated 2026-10-26)
 
@@ -77,7 +77,7 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 | T09 | Verify and wrap the actual H-MEM integration | T00, T01; may run in parallel with T02–T08 | DONE |
 | T10 | Integrate verified memory and repeat-history review | T02, T03, T08, T09 | DONE |
 | T11 | Build the thin analyst view and review queue | T08; memory display depends on T10 | DONE |
-| T12 | Run cross-component failure tests and repeatable reset | T08, T10, T11 for the intended complete demo; feature-specific tests run earlier | NOT_STARTED |
+| T12 | Run cross-component failure tests and repeatable reset | T08, T10, T11 for the intended complete demo; feature-specific tests run earlier | DONE |
 | T13 | Package the evidence-backed demo and submission | T12, A01; documentation can be drafted alongside earlier tasks | NOT_STARTED |
 | A01 | Confirm authenticated HackOS requirements | None; run alongside development | NOT_STARTED |
 
@@ -506,7 +506,7 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 ### T12 — Run cross-component failure tests and repeatable reset
 
 **Phase:** Delivery  
-**Status:** NOT_STARTED  
+**Status:** DONE
 **Depends on:** T08, T10, T11 for the intended complete demo; feature-specific tests run earlier  
 **Deliverable:** A reproducible, isolated demonstration with tested failure behavior and no silent shortcuts.
 
@@ -514,19 +514,21 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **PR #4 integration requirements:**
 
-- [ ] Explicitly collect `dispute-demo/tests/` and `dispute-demo/agent/tests/` during migration and smoke-test runtime package imports without test-only path injection. Consolidate deliberately; a green root suite must not hide uncollected prototype tests. Establish offline collection in earlier affected tasks too.
-- [ ] Include four-outcome serialization/persistence, missing/unusable evidence, mandatory-review no-credit behavior, source-verified history, false/cross-customer/future recall, non-credit re-review, changed-payload retries, source-writer concurrency, lost acknowledgement and post-commit memory failure/retry.
-- [ ] Keep reference-dependent H-MEM and live PostgreSQL/Zetaris/Nightshift checks separate from offline mocks; record exact interpreter, collection/pass/fail/error/skip counts and NOT RUN blockers. Reset only intentional isolated demo state, never source/shared data.
+- [x] Explicitly collect `dispute-demo/tests/` and `dispute-demo/agent/tests/` during migration and smoke-test runtime package imports without test-only path injection. Consolidate deliberately; a green root suite must not hide uncollected prototype tests. Establish offline collection in earlier affected tasks too.
+- [x] Include four-outcome serialization/persistence, missing/unusable evidence, mandatory-review no-credit behavior, source-verified history, false/cross-customer/future recall, non-credit re-review, changed-payload retries, source-writer concurrency, lost acknowledgement and post-commit memory failure/retry.
+- [x] Keep reference-dependent H-MEM and live PostgreSQL/Zetaris/Nightshift checks separate from offline mocks; record exact interpreter, collection/pass/fail/error/skip counts and NOT RUN blockers. Reset only intentional isolated demo state, never source/shared data.
 
 **Work:**
 
-- [ ] Run the integrated matrix: policy boundaries/versions, partial refunds, absent/conflicting evidence, rejected proposals, duplicate retries, independent concurrent attempts and proposal-to-commit changes.
-- [ ] Exercise actual database failure/rollback and simulated provider/data timeouts. Assert zero unintended effects and honest persisted/not-persisted statuses.
-- [ ] Test H-MEM failure/restart and a bad recalled source. Distinguish model rationale variability from stable safety outcomes; do not require identical wording on repeated LLM calls.
-- [ ] Create an explicit sandbox reset/replay operation that targets only demo state, including its memory namespace. Require an intentional reset flag and verify the target; do not reset source/shared data by default.
-- [ ] If sample mode is implemented, isolate its state and label canned model responses. Report the live/demo/test modes and exact checks that were skipped.
+- [x] Run the integrated matrix: policy boundaries/versions, partial refunds, absent/conflicting evidence, rejected proposals, duplicate retries, independent concurrent attempts and proposal-to-commit changes.
+- [x] Exercise actual database failure/rollback and simulated provider/data timeouts. Assert zero unintended effects and honest persisted/not-persisted statuses.
+- [x] Test H-MEM failure/restart and a bad recalled source. Distinguish model rationale variability from stable safety outcomes; do not require identical wording on repeated LLM calls.
+- [x] Create an explicit sandbox reset/replay operation that targets only demo state, including its memory namespace. Require an intentional reset flag and verify the target; do not reset source/shared data by default.
+- [x] If sample mode is implemented, isolate its state and label canned model responses. Report the live/demo/test modes and exact checks that were skipped.
 
 **Acceptance gate:** Repeated runs and documented reset work without manual database repair. Full test results include commands, environment, pass/fail/skips and live-versus-mocked labels.
+
+**Verified 2026-10-27:** Both roots collect; 267 main and 16 reference/compatibility tests pass with zero skips. Explicit isolated reset/replay passes twice with fresh DB/memory state and unchanged shared source/actions. See [reliability guide](./dispute-demo/docs/reliability.md), [verification](./dispute-demo/docs/evidence/t12-verification.json) and completion log.
 
 **Not in this task:** No destructive global reset, relabelled sample calls, or postponed unit tests that should already exist per task.
 
@@ -1326,3 +1328,34 @@ Commands from `dispute-demo/` unless noted; `HMEM_NODE=/Users/joellui/.nvm/versi
 - README, context, task reading map, setup and analyst guide updated. Next task after Jira closure and main publication: T12 / KAN-21. A01 remains open; no competition approval is claimed.
 
 - Final review PASS: 8 Python ASTs, 6 Markdown files/211 local links, JSON, private-secret-value scan, protected paths unchanged and `git diff --check`. KAN-20 is Done (acceptance comment `10020`); fresh read confirms protected fields unchanged. Main publication receipt follows.
+
+### 27 October 2026 — T12 started (KAN-21)
+
+- T11 published to `origin/main` as `477ee8b`; KAN-20 Done with acceptance `10020` and publication `10021`. Initial working tree clean. Required reading and relevant source/tests inspected; T08/T10/T11 prerequisites implemented.
+- KAN-21 In Progress. Reusing isolated PostgreSQL and real pinned-reference fixtures for explicit reset/replay, integrated fault evidence and complete two-root collection. Shared state remains outside reset scope.
+
+### 27 October 2026 — T12 / KAN-21 completed
+
+- Baseline `477ee8b`; added `demo.verify`, explicit `demo.replay --reset-isolated-demo`, seven reliability/import/scope tests, [coverage/reset guide](./dispute-demo/docs/reliability.md) and sanitized evidence. Reused the existing disposable PostgreSQL fixture, canonical controller/policy/critic/action service and pinned H-MEM. Normal application modules, source data, policies, schemas, migrations and private configuration are unchanged.
+- `demo.verify` deliberately collects both test roots in independent Python processes, reports exact counts/interpreter and keeps offline versus isolated integration modes explicit. Fresh-process imports of 19 packages leave `sys.path` unchanged and create no connections/processes or JDBC/Psycopg/SQLite initialization. Retired writer compatibility tests remain collected.
+- New composed failures: injected provider/data timeouts leave every action/queue table empty through UI jobs; an actual PostgreSQL audit-trigger error rolls back all sidecars/revision and never saves memory; a lost review COMMIT acknowledgement stays unconfirmed, then the identical request recovers the actual queued review with no model or monetary effect.
+- Explicit reset/replay accepts no shared target. Default is a read-only preview. Opt-in owns one unique disposable PostgreSQL container and two fresh cloned databases/private memory+journal namespaces. Cleanup verifies the exact created container ID, image, name, label and no host bind mounts. Target-mismatch tests refuse removal. Shared source/actions, normal memory, requests and UI state are never reset.
+- Both replay cycles start with zero decisions/revision and empty memory. Each commits all four outcomes, verifies DP-0014 history in later DP-0017 processing with actual H-MEM, contrasts v1 DP-0033/v2 DP-0034, corrects one labelled +1 proposal fault on DP-0003, reuses DP-0014's exact request and blocks its new-key rerun. Each ends at eight decisions/four credits/one review; decision IDs are disjoint. Six DB source hashes and repository source/policy/fixture bytes remain unchanged. [Replay evidence](./dispute-demo/docs/evidence/t12-isolated-replay.json).
+- Models are explicitly scripted; isolated reads use the real PostgreSQL bundle with `offline_test` provenance, not live Zetaris. Runtime memory is the pinned reference with deterministic mock embeddings. No normal-runtime sample fallback was added. Stable safety outcomes are asserted independently of real model wording/format variability.
+
+Commands from `dispute-demo/`, Python 3.13.7; reference commands use `HMEM_NODE=/Users/joellui/.nvm/versions/node/v24.13.0/bin/node`. PostgreSQL uses the existing `postgres:16-alpine` image and Psycopg 3.2.10.
+
+| Exact command | Observed result |
+|---|---|
+| `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m demo.verify` | PASS: main 267 collected/run, 194 passed, 73 explicit integration skips, 38.672s; agent 16 collected/run, 4 passed, 12 explicit reference skips, .034s. Zero failures/errors/collection errors. |
+| `HMEM_NODE=... PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m demo.verify --integrations` | PASS: main 267/267, 232.160s; agent 16/16, 10.414s; zero failures/errors/skips/collection errors. Covers the full mapped policy/schema/critic/concurrency/freshness/rollback/memory/UI matrix. |
+| `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m demo.replay` | PASS: preview only, no Docker/state operations. |
+| `HMEM_NODE=... PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m demo.replay --reset-isolated-demo` | Final sequential run PASS, two full cycles; owned resources cleaned without manual database repair. |
+| `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/validate_synthetic_data.py` | PASS: 42 transactions/54 settlements/40 disputes/81 evidence/16 rules, documents/hashes/fixtures. |
+| `.venv/bin/python /private/tmp/t11-final-db-check.py` | Read-only PASS: shared totals remain 3 decisions/2 credits/3 audits/1 queued review, revision 14; six source fingerprints and restricted action login unchanged. |
+
+- Initial targeted six-test run: five passed; one assertion expected `investigator_invalid_output` for provider outage, while the existing contract correctly returned `investigator_unavailable`. Corrected the test. First standalone replay attempt exceeded the fixture's 20-second disposable-database readiness deadline while checks overlapped; it failed explicitly and cleaned its container. Full matrix and final sequential standalone replay passed; no fixture deadline or runtime contract was weakened.
+- Fresh live Zetaris/Nightshift, browser interactions and authenticated HackOS: **NOT RUN** in T12. T08/T10/T11 dated live evidence remains explicitly separate. No shared service restart, new dependencies, image pull, credential change, source reload or migration.
+- README/context/setup/reading map now point to reproducible verification and reset. Next after Jira closure and main publication: A01/KAN-23 to establish portal requirements or explicit blockers, then T13/KAN-22 packaging.
+
+- Final review: 4 Python ASTs, 6 Markdown files/228 local links, JSON and private-secret-value scan PASS; `git diff --check` and complete protected runtime/source comparison against `477ee8b` PASS. No owned T04/T05 test containers remain; original five services healthy. KAN-21 Done with acceptance comment `10023`; fresh read confirms protected fields unchanged. Main publication receipt follows.

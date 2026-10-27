@@ -1,0 +1,109 @@
+{
+  "task": "T12 / KAN-21",
+  "date": "2026-10-27",
+  "baseline": "477ee8bc5db323fdca86d078209258ac5d16a2c4",
+  "environment": {
+    "python": "3.13.7",
+    "psycopg": "3.2.10",
+    "postgresql": "16-alpine (existing Docker image)",
+    "node": "24.13.0",
+    "hmem_revision": "1742dec56a66e58eef9dda2d2b865823758ca8cd",
+    "embeddings": "deterministic mock"
+  },
+  "full": {
+    "status": "passed",
+    "python": "3.13.7",
+    "mode": "isolated_integrations",
+    "live_zetaris": "NOT RUN",
+    "live_nightshift": "NOT RUN",
+    "suites": [
+      {
+        "root": "tests",
+        "collected": 267,
+        "run": 267,
+        "passed": 267,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "expected_failures": 0,
+        "unexpected_successes": 0,
+        "collection_errors": 0
+      },
+      {
+        "root": "agent/tests",
+        "collected": 16,
+        "run": 16,
+        "passed": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "expected_failures": 0,
+        "unexpected_successes": 0,
+        "collection_errors": 0
+      }
+    ]
+  },
+  "offline": {
+    "status": "passed",
+    "python": "3.13.7",
+    "mode": "offline",
+    "live_zetaris": "NOT RUN",
+    "live_nightshift": "NOT RUN",
+    "suites": [
+      {
+        "root": "tests",
+        "collected": 267,
+        "run": 267,
+        "passed": 194,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 73,
+        "expected_failures": 0,
+        "unexpected_successes": 0,
+        "collection_errors": 0
+      },
+      {
+        "root": "agent/tests",
+        "collected": 16,
+        "run": 16,
+        "passed": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 12,
+        "expected_failures": 0,
+        "unexpected_successes": 0,
+        "collection_errors": 0
+      }
+    ]
+  },
+  "durations_seconds": {
+    "full_main": 232.16,
+    "full_agent": 10.414,
+    "offline_main": 38.672,
+    "offline_agent": 0.034
+  },
+  "shared_state": {
+    "decisions": 3,
+    "credits": 2,
+    "audits": 3,
+    "pending_reviews": 1,
+    "revision": 14,
+    "six_source_fingerprints_unchanged": true,
+    "restricted_role_unchanged": true
+  },
+  "limits": [
+    "No fresh live Zetaris/Nightshift or authenticated HackOS checks in T12.",
+    "Real PostgreSQL/reference tests use scripted models and isolated direct PostgreSQL reads; no live-model claim.",
+    "Initial targeted run: one assertion expected invalid_output instead of actual unavailable; corrected to existing contract.",
+    "First standalone replay: disposable database readiness exceeded 20-second fixture deadline while checks overlapped; no acceptance claimed for that attempt."
+  ],
+  "standalone_replay": {
+    "status": "passed",
+    "cycles": 2,
+    "decisions_per_cycle": 8,
+    "credits_per_cycle": 4,
+    "pending_reviews_per_cycle": 1,
+    "shared_reset": false,
+    "evidence": "t12-isolated-replay.json"
+  }
+}

@@ -418,3 +418,23 @@ review queue and exact saved-request recovery. `--memory-dir` selects the same
 private H-MEM store as the CLI. The UI adds no dependencies or database migration.
 All effects are synthetic even when integrations are live. The server is local
 only; no manual approval/adjudication or shared-data reset is provided.
+
+## T12 verification and isolated rehearsal
+
+The [reliability guide](./dispute-demo/docs/reliability.md) maps the failure
+matrix and exact modes. From the existing `dispute-demo/` Python environment:
+
+```sh
+.venv/bin/python -m demo.verify
+# With Docker, existing PostgreSQL image and pinned H-MEM/Node ready:
+.venv/bin/python -m demo.verify --integrations
+.venv/bin/python -m demo.replay
+.venv/bin/python -m demo.replay --reset-isolated-demo
+```
+
+The first command collects both roots offline with explicit integration skips.
+The second enables disposable PostgreSQL, actual reference memory and local HTTP
+fixtures. The replay command previews by default; its explicit flag creates two
+fresh database/memory namespaces, runs scripted cases and cleans only owned test
+resources. It never resets normal CLI/UI/shared state or calls live providers.
+T12 passes 267 main and 16 reference/compatibility tests with zero skips.

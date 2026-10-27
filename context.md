@@ -3,7 +3,7 @@
 > **Canonical project brief for all coding agents and collaborators.**
 > Read this file **at the start of every task**, then consult [`ROADMAP.md`](./ROADMAP.md) for the active priorities. Read the actual code, policies, schemas, tests, and HackOS instructions before making implementation claims.
 >
-> **Context last reviewed:** 2026-10-27, T11 analyst UI. T00–T11 are complete against repository gates; owner-approved advisory history remains nonbinding. All 260 main tests and 16 reference/compatibility checks pass. Live UI verified review persistence, credit reuse and honest model failures. The user authorized the full roadmap sequentially with Jira updates and a commit/push to `origin/main` per completed task.
+> **Context last reviewed:** 2026-10-27, T12 reliability. T00–T12 are complete against repository gates. All 267 main tests and 16 reference/compatibility checks pass, plus a two-cycle isolated reset/replay. Live evidence remains separately dated; shared state is preserved. The user authorized the full roadmap sequentially with Jira updates and a commit/push to `origin/main` per completed task.
 
 ## 1. Project identity
 
@@ -307,6 +307,12 @@ Counts agree between local validation and the live Zetaris verification queries.
 - Durable private UI operation IDs, an OS lock, exact journal association and saved-request recovery preserve retry safety across double-clicks, refresh and restart. Memory-only retry cannot call an action. Display inventory uses bounded direct Zetaris reads and a revision guard; its queue/history join is checked one-to-one against independently read queue membership.
 - Live DP-0008 committed one review with no credit; DP-0014 recovery reused its original credit. DP-0020 schema/rationale failures and DP-0030's verified history followed by schema refusal were visibly not persisted. Prompt clarifications do not repair invalid output or weaken safety checks. Shared totals: 3 decisions, 2 credits, 3 audits, 1 queued review, revision 14; source fingerprints unchanged.
 - 260 main tests and 16 reference/compatibility tests pass with no skips; 18 investigator tests pass after the final prompt clarification. UI PostgreSQL tests cover all four outcomes with a scripted model. [Sanitized evidence](./dispute-demo/docs/evidence/t11-analyst.json) and [screenshot](./dispute-demo/docs/evidence/t11-analyst.png) distinguish actual browser checks from scripted tests. Desktop-width visual inspection and authenticated HackOS NOT RUN. T12 owns isolated reset/replay; the UI has no shared reset.
+
+### Verified in T12 — complete failure matrix and isolated reset, 2026-10-27
+
+- [Reliability guide](./dispute-demo/docs/reliability.md) maps acceptance risks to existing and new tests. `python -m demo.verify` collects both roots in separate processes; `--integrations` enables real disposable PostgreSQL, pinned H-MEM and local HTTP fixtures. All 267 main/16 reference-compatibility checks pass without skips. Offline collection explicitly reports 73/12 integration skips; 19 runtime packages import without path changes or service initialization.
+- `python -m demo.replay --reset-isolated-demo` deliberately rehearses twice in fresh disposable database/memory/journal namespaces. Default is preview only, no user-supplied target accepted. Exact container ownership is verified before cleanup. Shared source/actions/memory remain outside reset scope. Both cycles produce eight decisions/four credits/one pending review, verify real reference history, correct one injected amount fault and reject duplicates. Source hashes/bytes are preserved.
+- [Evidence](./dispute-demo/docs/evidence/t12-verification.json) separates scripted model/direct isolated PostgreSQL reads from real reference and database behavior. New UI-composed tests prove provider/data failure, actual trigger rollback and lost-review-ack recovery. Shared state stays 3 decisions/2 credits/3 audits/1 review at revision 14; restricted login unchanged. Fresh live Zetaris/Nightshift/browser/HackOS checks NOT RUN. No normal application logic, source policies or contracts changed. Next: A01, then T13.
 
 ## 5. Repository paths and reading entry points
 
