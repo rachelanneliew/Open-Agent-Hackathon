@@ -1,7 +1,7 @@
 # Submission package
 
 **Synthetic Card-Dispute Resolution Agent** — team **bob the builder**, Track 3:
-**Reasoning Architecture**. T16 refresh, 27 October 2026. All cases, policies and
+**Reasoning Architecture**. Final presentation refresh, 27 October 2026. All cases, policies and
 financial effects are fictional.
 
 **HackOS submission has not been created or verified by this task.** The last
@@ -9,11 +9,35 @@ authenticated check showed leader-only access. Rachel Anne Liew is the designate
 leader. The recorded deadline is **27 October 2026 23:45 UTC / 28 October 07:45
 SGT**; this task did not recheck the portal or obtain a receipt.
 
-## Current two-agent package
+## Current presentation package
 
-- [Eight-slide editable deck](./dispute-two-agent-deck.pptx).
-- [Narrated demo](./dispute-two-agent-demo.mp4), [transcript](./VIDEO_TWO_AGENT.md)
-  and [captions](./dispute-two-agent-demo.srt).
+The new ten-slide edition explains the live DP-0020 evidence request, the
+isolated credit/retry and one-cent fault tests, verified memory, and the
+three-source Zetaris USL preview with its controlled native DQ fixture.
+
+- [Editable ten-slide PowerPoint](./final-presentation/hackathon-presentation.pptx).
+- [3:50 narrated presentation video](./final-presentation/hackathon-presentation.mp4).
+- [Separate Samantha voiceover](./final-presentation/voiceover.m4a).
+- [Slide-by-slide transcript and evidence sources](./final-presentation/TRANSCRIPT.md).
+- [Captions timed from measured sentence audio](./final-presentation/captions.srt).
+- [Production verification and final file hashes](../../dispute-demo/docs/evidence/final-presentation-checks.json).
+
+This is an edited slide presentation using actual recorded application captures,
+not a new live investigation or continuous screen recording. Each example
+identifies recorded live evidence, scripted-model rehearsal or injected fault.
+The recorded 328 application plus 16 reference passes are dated evidence, not
+tests rerun during media production. The dedicated 30 USL tests are not added
+again. Source freshness and cross-source atomicity remain unverified, and the
+USL preview has no action authority.
+
+Use this directory's final presentation package for the current edition.
+Repository publication does not establish video-host or portal playback acceptance.
+The two superseded presentation editions were removed from this checkout at
+the owner's request. Their PowerPoints, videos, transcripts and captions remain
+recoverable from Git history. Recorded implementation evidence is retained.
+
+## Recorded implementation evidence
+
 - [Reproduction guide](./DEMO.md) and [architecture](./ARCHITECTURE.md).
 - [Real accepted workflow](../../dispute-demo/docs/evidence/t16-live-accepted.json):
   DP-0020, two independent Nightshift calls, accepted missing-evidence request,
@@ -31,26 +55,19 @@ SGT**; this task did not recheck the portal or obtain a receipt.
   [fresh-clone replay](../../dispute-demo/docs/evidence/t16-clean-replay.json) and
   [package checks](../../dispute-demo/docs/evidence/t16-package-checks.json).
 
-The video uses actual UI captures and evidence slides, with wait time removed.
-It is not continuous screen recording. The successful scripted correction is
-explicitly separate from both real runs. Narration uses the installed macOS
-Samantha synthetic voice, without imitating a participant. Captions use
-approximate sentence timing. Live T16 runs used no-memory mode; real isolated
+Live T16 runs used no-memory mode; real isolated
 reference tests verify combined two-agent memory behavior. Earlier live memory
 acceptance remains separately dated.
 
-Current source and artifacts are published on **`main`**. Public download checks are
-recorded in the package evidence; a GitHub download is not verified portal
-playback or a final submission.
+Historical public download checks remain recorded in the package evidence;
+they do not verify publication or portal playback of the new final presentation.
 
 | Field | Main branch URL |
 |---|---|
 | Repository | [Public source](https://github.com/rachelanneliew/Open-Agent-Hackathon) |
-| Current package | [Two-agent package](https://github.com/rachelanneliew/Open-Agent-Hackathon/tree/main/docs/submission) |
-| Video download | [Current MP4](https://raw.githubusercontent.com/rachelanneliew/Open-Agent-Hackathon/refs/heads/main/docs/submission/dispute-two-agent-demo.mp4) |
-| Deck download | [Current PPTX](https://raw.githubusercontent.com/rachelanneliew/Open-Agent-Hackathon/refs/heads/main/docs/submission/dispute-two-agent-deck.pptx) |
+| Published package | [Submission directory](https://github.com/rachelanneliew/Open-Agent-Hackathon/tree/main/docs/submission) |
 
-## Historical fallback
+## Additional evidence
 
 The separately dated [USL addendum](USL_ADDENDUM.md) adds a real three-source
 Zetaris semantic model and native DQ evidence with an optional read-only panel.
@@ -58,11 +75,8 @@ It was developed on `codex/zetaris-usl` and is covered by the subsequent
 PR-and-merge authorization. It is separate from T16 media and is not a new
 portal submission.
 
-The original [one-agent deck](./dispute-agent-deck.pptx),
-[3:46 video](./dispute-agent-demo.mp4), [transcript](./VIDEO.md),
-[captions](./dispute-agent-demo.srt) and
-[T13 checks](../../dispute-demo/docs/evidence/t13-package-checks.json) are preserved
-unchanged. They do not depict the new Reviewer runtime.
+The [T13 checks](../../dispute-demo/docs/evidence/t13-package-checks.json)
+remain as dated verification of the retired one-agent presentation.
 
 ## Prepared project text
 
@@ -105,10 +119,10 @@ See [competition.md](../competition.md) for the dated source audit.
 | Distinct collaborating agents | Real separate Investigator/Reviewer calls, correction trace and acceptance. The deterministic critic remains code. Organizer acceptance is unverified. |
 | Working integrations | Dated live Zetaris/Nightshift plus prior live H-MEM evidence; current combined reference tests. Exact reference endorsement remains unverified. |
 | Reproducibility | Fresh clone of runtime commit, independent dependencies, no private config, two replay cycles and both offline test roots passed. Clean-machine licensed live bootstrap NOT RUN. |
-| Video and deck | Current narrated MP4, captions and eight editable slides; historical fallback preserved. Media checks are in package evidence. Native PowerPoint and human listening review NOT RUN. |
+| Video and deck | New 3:50 narrated MP4, measured captions and ten editable slides, including USL and concrete test examples. Native PowerPoint and human listening review NOT RUN. |
 | Public access | Branch source and downloads checked separately. Leader must provide an accepted unrestricted playable video-host link and inspect portal preview. |
 | Submission | Leader-only form access, accepted formats/limits, roster, terms and final receipt remain owner checks. No submission claimed. |
-| Scoring scope | The preserved T16 media shows one PostgreSQL source. The separate [U00–U06 addendum](USL_ADDENDUM.md) verifies PostgreSQL + CSV + REST, actual USL and native DQ; it is not depicted in the original media. Sponsor scoring remains unverified. |
+| Scoring scope | The new presentation includes PostgreSQL + CSV + REST, actual USL preview and native DQ from the [U00–U06 addendum](USL_ADDENDUM.md). Sponsor scoring remains unverified. |
 | Track and provenance | Detailed Track 3 page access, exact reference endorsement and contributor declarations retain the dated audit limitations. |
 
 The leader should inspect the [Submission Hub](https://hackathon.genai.works/submissions),

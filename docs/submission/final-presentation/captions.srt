@@ -1,0 +1,207 @@
+1
+00:00:00,180 --> 00:00:05,637
+We are team bob the builder, presenting synthetic card dispute
+resolution for Track Three.
+
+2
+00:00:05,757 --> 00:00:10,665
+The workbench helps analysts investigate disputes and record
+auditable outcomes.
+
+3
+00:00:10,785 --> 00:00:13,549
+All records and financial effects are fictional.
+
+4
+00:00:14,947 --> 00:00:17,019
+Zetaris retrieves source facts.
+
+5
+00:00:17,139 --> 00:00:20,328
+The Investigator proposes an outcome through Nightshift.
+
+6
+00:00:20,448 --> 00:00:24,507
+A code based critic checks policy, amounts and citations.
+
+7
+00:00:24,627 --> 00:00:27,268
+A separate Reviewer challenges the evidence.
+
+8
+00:00:27,388 --> 00:00:33,450
+Both checks must accept the same proposal before the database
+writer rechecks current facts and commits.
+
+9
+00:00:34,747 --> 00:00:40,291
+Case D P twenty has a captured transaction of one hundred and
+fourteen Singapore dollars.
+
+10
+00:00:40,411 --> 00:00:45,224
+A merchant promise is present, but the required refund
+confirmation is missing.
+
+11
+00:00:45,344 --> 00:00:51,319
+In this recorded live run, the Investigator requested evidence
+and the critic and Reviewer accepted.
+
+12
+00:00:51,439 --> 00:00:56,056
+Two Nightshift calls produced a saved evidence request with no
+credit effect.
+
+13
+00:00:56,176 --> 00:00:59,817
+Recovery reused the same decision with zero model calls.
+
+14
+00:00:59,937 --> 00:01:02,064
+Memory was disabled for this run.
+
+15
+00:01:08,113 --> 00:01:11,058
+Case D P fourteen makes the arithmetic clear.
+
+16
+00:01:11,178 --> 00:01:16,344
+One hundred Singapore dollars was captured, and the merchant
+already refunded forty.
+
+17
+00:01:16,464 --> 00:01:21,407
+The remaining amount is sixty dollars, recorded as a separate
+simulated credit.
+
+18
+00:01:21,527 --> 00:01:25,691
+This rehearsal uses scripted models and a real isolated
+database.
+
+19
+00:01:25,811 --> 00:01:29,196
+An identical request reuses the original decision.
+
+20
+00:01:29,316 --> 00:01:35,510
+A fresh attempt is rejected, so processing the case again cannot
+create a second effective credit.
+
+21
+00:01:37,680 --> 00:01:42,009
+For D P three, the allowed credit is two hundred Singapore
+dollars.
+
+22
+00:01:42,129 --> 00:01:46,062
+The test deliberately proposes two hundred dollars and one cent.
+
+23
+00:01:46,182 --> 00:01:49,674
+The critic rejects the extra cent and allows one correction.
+
+24
+00:01:49,794 --> 00:01:53,762
+The corrected proposal passes the critic and Reviewer before the
+write.
+
+25
+00:01:53,882 --> 00:01:58,568
+This is an injected test fault, not a spontaneous live model
+mistake.
+
+26
+00:02:01,947 --> 00:02:08,943
+A later investigation, D P seventeen, recalls the earlier D P
+fourteen decision through H mem.
+
+27
+00:02:09,063 --> 00:02:14,226
+The workflow verifies the committed receipt and customer
+ownership against source records.
+
+28
+00:02:14,346 --> 00:02:18,911
+Memory supplies context, while policy determines eligibility.
+
+29
+00:02:19,031 --> 00:02:23,892
+This rehearsal uses the real reference engine with mock
+embeddings and scripted models.
+
+30
+00:02:24,012 --> 00:02:27,722
+Retrying memory storage never repeats the financial action.
+
+31
+00:02:28,147 --> 00:02:40,775
+The new Unified Semantic Layer joins three independent
+connectors: PostgreSQL with forty cases, a CSV file with four
+merchant records, and a REST source with three history records.
+
+32
+00:02:40,895 --> 00:02:46,049
+For D P twenty, the join returns two merchant records and two
+history records.
+
+33
+00:02:46,169 --> 00:02:49,625
+This optional preview cannot authorize financial actions.
+
+34
+00:02:49,745 --> 00:02:54,030
+Source freshness and a shared cross-source snapshot remain
+unverified.
+
+35
+00:02:57,413 --> 00:03:00,463
+This separate quality test contains two records.
+
+36
+00:03:00,583 --> 00:03:02,777
+One references an existing case.
+
+37
+00:03:02,897 --> 00:03:05,541
+The orphan references a nonexistent case.
+
+38
+00:03:05,661 --> 00:03:08,848
+Zetaris detects exactly one invalid record.
+
+39
+00:03:08,968 --> 00:03:13,202
+The result proves that the foreign key check catches broken
+relationships.
+
+40
+00:03:13,322 --> 00:03:16,418
+It does not prove document truth or source freshness.
+
+41
+00:03:17,313 --> 00:03:25,449
+The latest recorded suite passed three hundred and twenty eight
+application tests and sixteen reference checks, with no failures
+or skips.
+
+42
+00:03:25,569 --> 00:03:28,304
+Rehearsals cover all four outcomes shown here.
+
+43
+00:03:28,424 --> 00:03:35,174
+Real models still vary: the Reviewer appeared overly
+conservative on D P twenty nine and stopped without writing.
+
+44
+00:03:36,980 --> 00:03:45,383
+The contribution combines observable agent collaboration,
+duplicate prevention, verified memory and inspectable source
+quality.
+
+45
+00:03:45,503 --> 00:03:49,768
+Next steps are broader document support and source freshness
+metadata.

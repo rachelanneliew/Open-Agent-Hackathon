@@ -1,0 +1,185 @@
+{
+  "date": "2026-10-27",
+  "scope": "New presentation and narrated video using recorded evidence only",
+  "slides": 10,
+  "native_tables": 7,
+  "actual_capture_images": 3,
+  "script_words": 490,
+  "voice": "macOS Samantha, 145 words per minute",
+  "duration_seconds": 230,
+  "dimensions": [
+    1920,
+    1080
+  ],
+  "video": "H.264, 30 fps, 6900 decoded frames",
+  "audio": "AAC 48kHz mono, non-silent",
+  "mean_volume_db": -15.8,
+  "peak_volume_db": -1.5,
+  "caption_sentences": 45,
+  "caption_timing": "Measured individual sentence audio, no word-count approximation",
+  "source_checks": "PASS: amounts, recorded live/recovery outcomes, isolated cases, regression totals and native DQ",
+  "deck_validation": "PASS: structural, geometry, fonts, first-party import; all ten final renders match inspected source renders",
+  "historical_media": "All original deck/video/caption hashes were unchanged at production validation; the owner subsequently requested removal of both superseded editions, recorded in ROADMAP.md",
+  "local_markdown_targets": 75,
+  "application_changes": "None; protected tracked runtime/data/policy paths unchanged",
+  "application_tests": "NOT RUN: media-only task; 328+16 remains dated evidence",
+  "native_powerpoint": "NOT RUN",
+  "human_listening": "NOT RUN",
+  "fresh_live_integrations": "NOT RUN",
+  "portal_submission": "NOT RUN",
+  "browser_playback": "PASS: full uninterrupted playback from start to ended=true in Codex in-app browser, no media error; English captions visibly rendered",
+  "files": {
+    "hackathon-presentation.mp4": {
+      "bytes": 7768549,
+      "sha256": "17aaea985f94e5bb6d3edd01ef1c8d0e332f7e76e3a41d7ce2050822718525a5"
+    },
+    "captions.srt": {
+      "bytes": 4822,
+      "sha256": "cd030c97986293608bc669dde176239b562abe4ef3f572f7866dceab45453644"
+    },
+    "voiceover.m4a": {
+      "bytes": 4550407,
+      "sha256": "0165f5f05f6bc60a10cf7e90fc44924a1537e8b3c08a03c0a4e62b3229477612"
+    },
+    "hackathon-presentation.pptx": {
+      "bytes": 163576,
+      "sha256": "5dddde5407864bc1d67103ede2db49da59bfdf66348bdc271a462b1fb0aa426c"
+    },
+    "TRANSCRIPT.md": {
+      "bytes": 8417,
+      "sha256": "a305e832011105263130a0cd9ba5bfb79cda6946b3c13fd32b85a01e9cdda9a0"
+    }
+  },
+  "usl_source_checks": "PASS: PostgreSQL 40, CSV 4, REST 3; DP-0020 joined counts 2/2; read-only authority",
+  "visual_review": "PASS: all ten slide renders inspected; no clipped text; actual evidence crops legible",
+  "captions_browser": "PASS: English WebVTT preview converted from delivered SRT; loaded and visibly rendered during playback",
+  "timeline": [
+    {
+      "slide": 1,
+      "title": "Synthetic card-dispute resolution",
+      "start_seconds": 0,
+      "duration_seconds": 14.766666666666667,
+      "mode": "All records and financial effects are synthetic",
+      "sources": [
+        "docs/submission/ARCHITECTURE.md",
+        "docs/competition.md"
+      ]
+    },
+    {
+      "slide": 2,
+      "title": "How a decision reaches the database",
+      "start_seconds": 14.766667,
+      "duration_seconds": 19.8,
+      "mode": "Two separate Nightshift roles; deterministic code controls persistence",
+      "sources": [
+        "dispute-demo/docs/workflow.md",
+        "dispute-demo/docs/reviewer.md"
+      ]
+    },
+    {
+      "slide": 3,
+      "title": "DP-0020: missing refund confirmation",
+      "start_seconds": 34.566667,
+      "duration_seconds": 33.36666666666667,
+      "mode": "Recorded live run, 27 Oct 2026. Memory disabled",
+      "sources": [
+        "dispute-demo/docs/evidence/t16-live-accepted.json",
+        "dispute-demo/docs/evidence/t16-recovery.json",
+        "docs/submission/assets/t16/live-accepted-trace.png"
+      ]
+    },
+    {
+      "slide": 4,
+      "title": "DP-0014: calculate the remaining amount",
+      "start_seconds": 67.933333,
+      "duration_seconds": 29.566666666666666,
+      "mode": "Scripted models, real isolated PostgreSQL. Recorded rehearsal, 27 Oct 2026",
+      "sources": [
+        "dispute-demo/docs/evidence/t16-isolated-replay.json",
+        "dispute-demo/tests/test_reliability.py",
+        "dispute-demo/data/synthetic/settlements.csv"
+      ]
+    },
+    {
+      "slide": 5,
+      "title": "DP-0003: reject one extra cent",
+      "start_seconds": 97.5,
+      "duration_seconds": 24.266666666666666,
+      "mode": "Injected fault in an isolated test. Scripted model responses",
+      "sources": [
+        "dispute-demo/docs/evidence/t16-isolated-replay.json",
+        "dispute-demo/tests/test_reliability.py",
+        "dispute-demo/tests/test_orchestrator.py"
+      ]
+    },
+    {
+      "slide": 6,
+      "title": "DP-0017: verify remembered history",
+      "start_seconds": 121.766667,
+      "duration_seconds": 26.2,
+      "mode": "Scripted-model rehearsal; real H-MEM reference with mock embeddings",
+      "sources": [
+        "dispute-demo/docs/evidence/t16-isolated-replay.json",
+        "dispute-demo/tests/test_reliability.py",
+        "dispute-demo/docs/memory.md"
+      ]
+    },
+    {
+      "slide": 7,
+      "title": "Zetaris joins three independent sources",
+      "start_seconds": 147.966667,
+      "duration_seconds": 29.266666666666666,
+      "mode": "Recorded live Zetaris preview, 27 Oct 2026. Read-only enrichment",
+      "sources": [
+        "docs/zetaris-usl/evidence/parity.json",
+        "docs/zetaris-usl/evidence/preview-DP-0020.json",
+        "docs/zetaris-usl/sources.md",
+        "docs/zetaris-usl/evidence/dashboard-preview.png"
+      ]
+    },
+    {
+      "slide": 8,
+      "title": "A quality check catches a broken reference",
+      "start_seconds": 177.233333,
+      "duration_seconds": 19.9,
+      "mode": "Recorded native Zetaris DQ execution on a separate controlled fixture",
+      "sources": [
+        "docs/zetaris-usl/evidence/native-invalid-fixture.txt",
+        "docs/zetaris-usl/data-quality.md",
+        "docs/zetaris-usl/evidence/dashboard-dq.png"
+      ]
+    },
+    {
+      "slide": 9,
+      "title": "Test coverage and the current limit",
+      "start_seconds": 197.133333,
+      "duration_seconds": 19.666666666666668,
+      "mode": "Recorded 27 Oct 2026. Isolated suite uses scripted model responses",
+      "sources": [
+        "docs/zetaris-usl/evidence/regression.json",
+        "dispute-demo/docs/evidence/t16-isolated-replay.json",
+        "dispute-demo/docs/evidence/t16-live-refusal.json"
+      ]
+    },
+    {
+      "slide": 10,
+      "title": "Evidence-backed decisions, controlled actions",
+      "start_seconds": 216.8,
+      "duration_seconds": 13.2,
+      "mode": "bob the builder / Track 3: Reasoning Architecture",
+      "sources": [
+        "docs/submission/ARCHITECTURE.md",
+        "docs/submission/USL_ADDENDUM.md"
+      ]
+    }
+  ],
+  "browser_media_duration_seconds": 230.021029,
+  "browser_end_state": {
+    "currentTime": 230.021029,
+    "duration": 230.021029,
+    "paused": true,
+    "ended": true,
+    "readyState": 4,
+    "error": null
+  }
+}

@@ -1702,3 +1702,102 @@ implementation or submission task started automatically.
   push, bypass of required checks or branch deletion. Confirm remote merge state
   and fast-forward local main after execution; the chat reports the actual PR
   URL and merge commit.
+
+### 27 October 2026 — Remove stale demo handover statements
+
+- User requested deletion of the outdated statements in `docs/submission/DEMO.md`.
+  Removed the pending-merge branch instruction and USL from the unimplemented
+  capabilities list; retained dated live-memory evidence and remaining limits.
+- Validation: `git diff --check` and a standard-library local Markdown target
+  check for `docs/submission/DEMO.md` passed. Application tests and live
+  integrations **NOT RUN** for this documentation-only deletion.
+- No task status or architecture changed; `context.md` unchanged. Next action
+  remains the leader-owned submission checklist, not started here.
+
+### 27 October 2026 — Final presentation and narrated video
+
+- Implemented the user's approved media-production plan without changing any
+  application API, policy, data, controller or service. Created a new ten-slide
+  [package](docs/submission/final-presentation/TRANSCRIPT.md) with editable
+  PowerPoint, narrated MP4, separate M4A, transcript and sentence-level SRT.
+  Earlier documentation edits and historical presentation/video files remain
+  intact; historical media hashes were checked against the starting files.
+- The cream/dark-green deck contains native editable text, amounts and seven
+  tables, three readable crops of actual recorded captures, and source references
+  in all ten speaker notes. The storyboard was completed before slides; the
+  490-word script follows the approved example sequence. Samantha narration was
+  generated at 145 words per minute. Measured sentence segments determine the
+  45 caption cues and slide timings. The video uses simple cuts and holds, with
+  no music, and is explicitly identified as an edited presentation.
+- Evidence checks cover DP-0020's SGD 114 transaction, two-call live acceptance,
+  zero-credit effect and zero-call recovery; DP-0014's 100 − 40 = 60 arithmetic
+  and duplicate protection; injected DP-0003 correction; source-verified memory;
+  the 40/4/3 USL sources and 2/2 joined DP-0020 records; native DQ's 2/1/1 result;
+  and the recorded 328 + 16 tests. The 30 USL tests are not counted twice. Live,
+  scripted and injected examples carry visible labels. The live DP-0029 refusal
+  and source-freshness limits are disclosed.
+- Production commands (from repository root):
+  `RUNTIME_NODE_MODULES=/Users/joellui/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules /Users/joellui/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node dispute-demo/outputs/final-presentation-build/build.mjs`,
+  `python3 dispute-demo/outputs/final-presentation-build/synthesize.py`, and
+  `python3 dispute-demo/outputs/final-presentation-build/assemble.py`: **PASS**.
+  Build intermediates remain in the ignored outputs directory.
+- Verification commands:
+  `RUNTIME_NODE_MODULES=/Users/joellui/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules /Users/joellui/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node dispute-demo/outputs/final-presentation-build/check-deck.mjs`
+  and `python3 dispute-demo/outputs/final-presentation-build/verify.py`: **PASS**.
+  Structural/font/geometry checks reported zero findings. All ten exported
+  slides reimport and render identically to the visually inspected draft.
+  Full video decoding passed: 6,900 frames, 1920×1080, 30 fps, H.264/AAC,
+  230 seconds; audio is nonempty with −1.5 dB peak and −15.8 dB mean level.
+  Captions remain within their measured audio/slide intervals. The separate
+  M4A decodes successfully. Source checks and 74 initial local Markdown targets
+  passed; `git diff --check` and the protected runtime-path comparison passed.
+- Final browser playback: **PASS**, continuously from start to `ended=true`,
+  with no media error and English captions visibly rendered. Browser container
+  duration is 230.021 seconds (AAC padding); video-frame duration is 230 seconds.
+  Final local-link check passed for 75 targets after adding the receipt link;
+  all five deliverable hashes match. High-confidence credential-pattern scan
+  of the new text and PowerPoint XML found no matches.
+- [Verification receipt](dispute-demo/docs/evidence/final-presentation-checks.json)
+  records final file hashes and the scope of checks. Native PowerPoint execution,
+  human listening, new application tests, live integrations and HackOS submission
+  are **NOT RUN**. The 344 checks shown in the deck remain dated recorded evidence.
+  Submission index updated; no architecture change, so `context.md` is unchanged.
+  This media task is complete. Owner review and leader submission remain separate
+  next actions and were not started.
+
+### 27 October 2026 — Remove superseded presentation editions
+
+- User requested deleting the old presentation PowerPoint, transcript and video.
+  Removed both retired editions from `docs/submission/`: the `dispute-agent-*`
+  and `dispute-two-agent-*` PowerPoints, MP4s and matching SRTs, plus `VIDEO.md`
+  and `VIDEO_TWO_AGENT.md` (eight files). Verified their bytes matched HEAD
+  before deletion; they remain recoverable from Git history.
+- Kept all five files in `docs/submission/final-presentation/` byte-for-byte,
+  plus screenshots and dated implementation/test evidence. Updated the submission
+  index to remove obsolete media links and added a dated context note. This
+  explicit deletion request supersedes the earlier media-preservation direction;
+  historical acceptance records above remain factual records of those checks.
+- `python3 /private/tmp/check-presentation-cleanup.py`: **PASS** — eight old files
+  absent, five final-package SHA-256 hashes unchanged, 200 local Markdown targets
+  valid, `git diff --check` clean, and runtime/evidence-image paths unchanged.
+  Application tests and live integrations **NOT RUN** for this file cleanup.
+- No commit, push, portal submission or task-status change. Recommended next
+  action remains owner review of the final presentation; not started here.
+
+### 27 October 2026 — Publish final presentation and cleanup to main
+
+- User explicitly authorized committing and pushing the completed presentation
+  and cleanup to `main`. Scope includes the five final deliverables, verification
+  receipt, eight superseded-file deletions, submission/context updates and the
+  previously requested stale handover deletion. No runtime or service changes.
+- `git fetch origin`: **PASS**. `git rev-list --left-right --count origin/main...HEAD`
+  returned `0 0` at `3b7d57549642983b81d3ca2092539337316f025b` before publication.
+- `python3 /private/tmp/check-presentation-cleanup.py`: **PASS** — eight old files
+  absent, five final deliverable hashes unchanged, 200 local links valid, runtime
+  and evidence screenshots unchanged. `git diff --check`: **PASS**. The prior
+  render, full decode, audio and browser playback checks apply to unchanged media.
+  Application tests, live integrations and HackOS submission are **NOT RUN**.
+- Publication uses an explicit file list and a normal `git push origin main`.
+  Commit identity, push success and remote equality are verified after execution
+  and reported in the chat. No force push, history rewrite or portal upload.
+  Next action remains owner review and leader submission, not started here.

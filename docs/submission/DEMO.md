@@ -141,7 +141,7 @@ Memory status is separate from action success.
 - [Isolated replay](../../dispute-demo/docs/evidence/t16-isolated-replay.json): DP-0020 uses an explicitly scripted Reviewer objection, revised proposal, critic and Reviewer recheck, then real isolated commit. DP-0003 retains the separate critic fault. Both cycles keep all four outcomes and memory verification.
 - [Full matrix](../../dispute-demo/docs/evidence/t16-verification.json): 298 application + 16 reference tests.
 
-Current runtime is on feature branch `codex/t14-t16-two-agent-reviewer`; check out that branch for this revision until it is reviewed and merged. Live T16 used `--no-memory`; combined two-agent memory behavior is verified by isolated reference tests. Earlier live memory evidence remains dated separately.
+Live T16 used `--no-memory`; combined two-agent memory behavior is verified by isolated reference tests. Earlier live memory evidence remains dated separately.
 
 ## Historical evidence to inspect
 
@@ -154,5 +154,5 @@ Current runtime is on feature branch `codex/t14-t16-two-agent-reviewer`; check o
 The source-verified H-MEM history is advisory and partial. No claim count implies
 fraud or a mandatory hold. Rationale validation currently requires canonical
 policy explanations and bounded synthetic document templates. General documents,
-production authentication, real financial rails, advanced memory lifecycle and
-three-source/USL federation remain outside the implementation.
+production authentication, real financial rails and advanced memory lifecycle
+remain outside the implementation.

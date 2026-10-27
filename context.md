@@ -22,6 +22,13 @@
 
 ## 1. Project identity
 
+**Submission media update, 27 October 2026:** the current package is the
+[ten-slide final presentation](docs/submission/final-presentation/TRANSCRIPT.md)
+with a 3:50 narrated video. At the owner's request, both earlier editions'
+PowerPoints, videos, transcripts and captions were removed from the working
+checkout after the new package passed verification. Historical delivery records
+below describe their original acceptance; the old files remain in Git history.
+
 | Field | Context |
 |---|---|
 | Project | Open Agent Hackathon 2026 — synthetic card-dispute resolution agent |
