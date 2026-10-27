@@ -1,0 +1,193 @@
+{
+  "task": "T10 / KAN-19",
+  "synthetic_only": true,
+  "advisory_scope_approved": true,
+  "owner_decision": "Approve advisory history for the MVP",
+  "binding_history_rule": null,
+  "live_run": {
+    "mode": "live",
+    "memory_mode": "verified_advisory",
+    "persisted": true,
+    "state": {
+      "run_id": "c520271d-eecc-4a25-80cc-42d13b5045ee",
+      "phase": "finished",
+      "model_calls": 1,
+      "tool_calls": 2,
+      "proposal_revision": 0,
+      "reference": {
+        "dispute_id": "DP-0017",
+        "snapshot_id": "def13be3-3a5b-4f8e-b7bd-b6cf03527c5c",
+        "evaluation_at": "2026-10-27T05:52:03.979355Z",
+        "policy_version": "v2",
+        "source_revision": 5
+      },
+      "commit_result": {
+        "run_id": "c520271d-eecc-4a25-80cc-42d13b5045ee",
+        "proposal_id": "07334fcd-c91f-4647-99f1-7fae9c8d61b2",
+        "idempotency_key": "819b34af-80f7-402b-a6d6-5c33f5e22504",
+        "reference": {
+          "dispute_id": "DP-0017",
+          "snapshot_id": "def13be3-3a5b-4f8e-b7bd-b6cf03527c5c",
+          "evaluation_at": "2026-10-27T05:52:03.979355Z",
+          "policy_version": "v2",
+          "source_revision": 5
+        },
+        "status": "committed",
+        "message": "Synthetic decision committed.",
+        "decision_id": "ef52d39c-6771-44db-841c-7d17e87cd6a6",
+        "recommendation": {
+          "outcome": "provisional_credit",
+          "currency": "SGD",
+          "amount_minor": 5760
+        },
+        "committed_at": "2026-10-27T05:52:18.107296Z",
+        "simulated_credit_id": "7fbcb0f0-5eab-44e9-b694-80017b0d1dc7"
+      },
+      "error": null
+    }
+  },
+  "memory_events": [
+    {
+      "kind": "memory_recall",
+      "status": "available",
+      "candidates": 1,
+      "advisory": true,
+      "complete_history": false
+    },
+    {
+      "kind": "memory_verified",
+      "history": {
+        "reference": {
+          "dispute_id": "DP-0017",
+          "snapshot_id": "def13be3-3a5b-4f8e-b7bd-b6cf03527c5c",
+          "evaluation_at": "2026-10-27T05:52:03.979355Z",
+          "policy_version": "v2",
+          "source_revision": 5
+        },
+        "customer_id": "CUST-008",
+        "records": [
+          {
+            "decision_id": "b2d7a3ef-b7a7-4546-ac93-183a672ef41d",
+            "original_reference": {
+              "dispute_id": "DP-0014",
+              "snapshot_id": "3b5079c7-0e42-449f-bb48-1eb93e9a9c96",
+              "evaluation_at": "2026-10-27T05:06:43.544935Z",
+              "policy_version": "v2",
+              "source_revision": 0
+            },
+            "recommendation": {
+              "outcome": "provisional_credit",
+              "currency": "SGD",
+              "amount_minor": 6000
+            },
+            "committed_at": "2026-10-27T05:06:57.770758Z",
+            "reason_code": "refund_missing",
+            "source_reference": "postgresql:dispute_demo/dispute_actions.decisions/b2d7a3ef-b7a7-4546-ac93-183a672ef41d",
+            "verified_reference": {
+              "dispute_id": "DP-0014",
+              "snapshot_id": "dffa1a51-fb11-4f34-8a5f-274b7eb517b3",
+              "evaluation_at": "2026-10-27T05:52:06.032178Z",
+              "policy_version": "v2",
+              "source_revision": 5
+            }
+          }
+        ],
+        "scope": "advisory_no_binding_history_rule"
+      },
+      "distinct_cases": 1,
+      "complete_history": false,
+      "binding_rule": null
+    },
+    {
+      "kind": "memory_save",
+      "status": "pending",
+      "decision_id": "ef52d39c-6771-44db-841c-7d17e87cd6a6"
+    },
+    {
+      "kind": "memory_save",
+      "status": "stored",
+      "source_id": "decision:ef52d39c-6771-44db-841c-7d17e87cd6a6",
+      "memory_id": "mem-2",
+      "error": null,
+      "decision_id": "ef52d39c-6771-44db-841c-7d17e87cd6a6",
+      "committed_result_preserved": true
+    }
+  ],
+  "critic": [
+    {
+      "proposal_id": "07334fcd-c91f-4647-99f1-7fae9c8d61b2",
+      "reference": {
+        "dispute_id": "DP-0017",
+        "snapshot_id": "def13be3-3a5b-4f8e-b7bd-b6cf03527c5c",
+        "evaluation_at": "2026-10-27T05:52:03.979355Z",
+        "policy_version": "v2",
+        "source_revision": 5
+      },
+      "verdict": "accepted",
+      "feedback": "Proposal matches the supplied context and deterministic policy. No action was executed; commit-time freshness and persistence remain required.",
+      "failed_checks": []
+    }
+  ],
+  "model": [
+    {
+      "status": "proposal",
+      "requested_route": "meterless/auto",
+      "response_model": "nvidia/nemotron-3.5-bolt-e4b"
+    }
+  ],
+  "prior_receipt_memory_retry": {
+    "mode": "memory_retry",
+    "source_channel": "zetaris",
+    "source_freshly_verified": true,
+    "action_called": false,
+    "persisted": true,
+    "decision_id": "b2d7a3ef-b7a7-4546-ac93-183a672ef41d",
+    "memory_save": {
+      "kind": "memory_save",
+      "status": "stored",
+      "source_id": "decision:b2d7a3ef-b7a7-4546-ac93-183a672ef41d",
+      "memory_id": "mem-1",
+      "error": null,
+      "decision_id": "b2d7a3ef-b7a7-4546-ac93-183a672ef41d",
+      "committed_result_preserved": true
+    }
+  },
+  "new_receipt_memory_retry": {
+    "mode": "memory_retry",
+    "source_channel": "zetaris",
+    "source_freshly_verified": true,
+    "action_called": false,
+    "persisted": true,
+    "decision_id": "ef52d39c-6771-44db-841c-7d17e87cd6a6",
+    "memory_save": {
+      "kind": "memory_save",
+      "status": "reused",
+      "source_id": "decision:ef52d39c-6771-44db-841c-7d17e87cd6a6",
+      "memory_id": "mem-2",
+      "error": null,
+      "decision_id": "ef52d39c-6771-44db-841c-7d17e87cd6a6",
+      "committed_result_preserved": true
+    }
+  },
+  "shared_database_after_checks": {
+    "decisions": 2,
+    "simulated_credits": 2,
+    "audit_events": 2,
+    "review_queue": 0,
+    "source_revision": 10,
+    "sources_unchanged": true,
+    "restricted_action_role_unchanged": true
+  },
+  "verification": {
+    "main_tests": 238,
+    "main_skipped": 0,
+    "reference_and_compatibility_tests": 16,
+    "offline_memory_workflow_tests": 16,
+    "isolated_postgres_and_reference_memory_tests": 4,
+    "model_for_isolated_tests": "explicit scripted stub",
+    "jdbc_preflight": "PASS",
+    "rest": "NOT CONFIGURED: missing API key",
+    "hackos": "NOT RUN",
+    "data_validation": "PASS"
+  }
+}

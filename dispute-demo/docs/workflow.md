@@ -3,7 +3,9 @@
 The normal runtime is `python -m app.main` from `dispute-demo/`. It runs one
 Nightshift investigator, the canonical policy evaluator and pure critic, then
 the restricted PostgreSQL action service. All outcomes use the same boundary.
-This milestone is explicitly `no_memory`: no H-MEM imports, recall or saves.
+T08 was explicitly `no_memory`. T10 now enables verified advisory memory by
+default; `--no-memory` preserves that mode. See the [memory guide](./memory.md)
+for source verification, partial-history bounds and memory-only recovery.
 The old `agent/resolver.py` is inert after T09 and cannot recall, save or act.
 
 ## Setup and invocation
@@ -119,8 +121,10 @@ prints private model reasoning or credentials. Exit 0 means confirmed persisted
 result (`committed` or `reused`); exit 1 is a workflow refusal/failure; exit 2 is
 invalid input/configuration. Public traces are saved under ignored `outputs/`.
 Trace-save or optional post-commit callback errors preserve confirmed action
-results and never repeat the action. Production has no optional memory callback
-in T08; future integrations must supply their own bounded I/O.
+results and never repeat the action. T10 adds bounded advisory recall and
+confirmed-receipt storage; memory status is separate from decision success.
+`--retry-memory <trace.json>` verifies the receipt and retries only its memory
+save. It never calls the action service; see the memory guide for exit codes.
 
 ## Verification
 

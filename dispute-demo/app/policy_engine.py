@@ -8,6 +8,7 @@ import json
 
 from .schemas import (DisputeContext, EvidenceRequirement, MovementType, Outcome,
                       PolicyResult, RuleCheck, SettlementStatus, require)
+from .history import validate_history
 
 # Supported executable semantics, grounded in policies/synthetic_policy_v*.md.
 # Retrieved rules must match this vocabulary; unknown revisions fail closed.
@@ -157,7 +158,7 @@ def _result(context, outcome, checks=(), *, limit=None, missing=(), issues=()):
         data_issues=tuple(dict.fromkeys(issues)))
 
 
-def evaluate_policy(context: DisputeContext, evaluation_time=None) -> PolicyResult:
+def evaluate_policy(context: DisputeContext, evaluation_time=None, *, advisory_history=None) -> PolicyResult:
     """Evaluate the immutable cutoff; a different time requires a fresh context.
 
     Malformed transport values raise ContractError at the typed boundary. Valid
@@ -166,6 +167,9 @@ def evaluate_policy(context: DisputeContext, evaluation_time=None) -> PolicyResu
     unresolved and force review. No history threshold exists in these policies.
     """
     require(type(context) is DisputeContext, 'Expected DisputeContext')
+    # v1/v2 have no binding history rule. Validate the supplied source-verified
+    # scope, then evaluate exactly the same current-case rules as critic/commit.
+    validate_history(context, advisory_history)
     if evaluation_time is not None:
         require(type(evaluation_time) is datetime and evaluation_time.utcoffset() == timedelta(0),
                 'Expected UTC evaluation time')

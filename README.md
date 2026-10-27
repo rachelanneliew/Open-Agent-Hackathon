@@ -16,7 +16,7 @@ Open Agent Hackathon project for investigating fictional card disputes and recom
 | [Pure critic](./dispute-demo/docs/critic.md) | T06 validation, supported rationale/citations, correction limits and retired SQLite writer. |
 | [Nightshift investigator](./dispute-demo/docs/investigator.md) | T07 typed model/read envelopes, bounded transport, correction and real read-only inference evidence. |
 | [Canonical workflow](./dispute-demo/docs/workflow.md) | T08 CLI, coherent fresh reads, bounded transitions, recovery and real persisted acceptance. |
-| [H-MEM reference](./dispute-demo/docs/memory.md) | T09 pinned engine, isolated persistence, committed-summary/notes contract, restart and failure checks. |
+| [H-MEM reference](./dispute-demo/docs/memory.md) | T09/T10 pinned engine, source-verified advisory history, post-commit storage and action-free memory retries. |
 | [Atomic actions](./dispute-demo/docs/actions.md) | T05 write interface, protected rereads, recovery, PostgreSQL test setup and deployment limits. |
 | [Decision storage](./dispute-demo/docs/storage.md) | T04 PostgreSQL migration, revision guard, lifecycle/duplicate scope and isolated integration tests; deployment boundary. |
 | [Policy evaluation](./dispute-demo/docs/policy.md) | T03 typed evaluator, supported synthetic evidence/ledger semantics, offline and live acceptance results. |
@@ -31,15 +31,15 @@ For the current task and its Jira issue, start with the task board in [ROADMAP.m
 
 **Use [ROADMAP.md](./ROADMAP.md) as the source of truth for the next task.** It records each task's Jira issue, dependencies, required reading, work checklist, deliverable and acceptance gate. Its completion log records what was tested and any remaining blockers. Check the current task board and actual source before starting; older work-log entries describe historical states.
 
-**Current handover, 27 October 2026:** T00–T09 are complete against repository gates. The [canonical no-memory workflow](./dispute-demo/docs/workflow.md) now runs fresh Zetaris reads, a Nightshift proposal, pure critic and restricted PostgreSQL commit. **T08: 198 tests passed with no skips**, plus four compatibility tests and data validation. [Live evidence](./dispute-demo/docs/evidence/t08-live-workflow.json) records a 6,000-minor-unit DP-0014 credit, exact-request reuse, ordinary rerun refusal and safe handling of an explicitly faulty proposal. T08 shared sandbox totals were one decision and one credit; T09 performed no database writes.
+**Current handover, 27 October 2026:** T00–T10 are complete against repository gates. The owner approved **advisory history for the MVP**. The canonical workflow now verifies prior decision memory through Zetaris before policy/proposal evaluation, then stores only confirmed action receipts. Source policies, critic checks and commit-time safeguards remain unchanged; no claim-count threshold is introduced.
 
-T09 now wraps the pinned official H-MEM reference with customer partitions, bounded subprocesses, atomic snapshots and decision-ID retries. The reference uses mock embeddings. All 12 real-reference adapter tests, 4 compatibility tests, 13 upstream conformance checks and 10 smoke tests pass. Current main suite: 161 passed, 57 opt-in skips. The saved T08 receipt survived memory process restart; live workflow integration remains T10.
+**238 main tests pass with no skips**, plus 16 reference/compatibility tests and data validation. [T10 live evidence](./dispute-demo/docs/evidence/t10-verified-memory.json) shows DP-0017 verifying the earlier DP-0014 decision, committing one synthetic SGD 57.60 credit, saving its summary and reusing that summary after process restart. Shared totals: two decisions, two credits, two audits, no reviews, revision 10. All six source fingerprints are unchanged.
 
-Migrations 001/002, restricted runtime login and four read-only Zetaris views are deployed. All source fingerprints are unchanged. Fresh runs use one source snapshot, a verified direct scan, source clock and revision checks. Historical `app.tools` diagnostics retain their null revisions. Nightshift 0.92.7's verified JSON-object path disables tier splitting and native tools; strict local validation remains mandatory. Early prose responses failed before any action; the final live route was `meterless/auto`, reporting `nvidia/nemotron-3.5-bolt-e4b`.
+Normal CLI runs enable verified advisory memory; `--no-memory` disables it. `--retry-memory <trace.json>` freshly verifies the receipt and retries storage without calling the action service. See the [memory guide](./dispute-demo/docs/memory.md) for pinned Node setup, bounded partial recall, failure traces and exact commands. The pinned H-MEM reference uses mock embeddings; competition approval remains A01.
 
-The target uses one Nightshift investigator, a pure deterministic critic and one PostgreSQL action service. Policy-permitted `provisional_credit`, `request_evidence` and `decline` run autonomously; `human_review` is exceptional and creates no credit. Only confirmed persistence creates a queued review item. Verified history remains advisory; no numeric history policy has been introduced. T10 still needs an explicit advisory-scope acceptance decision or an approved versioned history rule.
+Migrations 001/002, restricted runtime login and four read-only Zetaris views are deployed. The model remains bound to the selected case's read tools; prior-case verification is trusted application work scoped by authoritative customer history. The target uses one Nightshift investigator, a pure critic and one action service for all four outcomes. Policy-permitted credit, evidence requests and declines are autonomous; policy-required review creates no credit.
 
-Next: **[T10 / KAN-19 — Verified advisory memory](https://luijoel24.atlassian.net/browse/KAN-19)**. The current user goal explicitly authorizes proceeding through the full roadmap sequentially, with Jira completion evidence and a commit/push to `origin/main` after every accepted task. Individual handovers below remain single-task templates.
+Next: **[T11 / KAN-20 — Thin analyst view and review queue](https://luijoel24.atlassian.net/browse/KAN-20)**. The current goal authorizes the full roadmap sequentially, with Jira evidence and a commit/push to `origin/main` after every accepted task.
 
 ### Steps for the next teammate
 
@@ -53,18 +53,17 @@ Next: **[T10 / KAN-19 — Verified advisory memory](https://luijoel24.atlassian.
 ### Copyable task handover
 
 ```text
-Work on T10 / KAN-19 only:
-https://luijoel24.atlassian.net/browse/KAN-19
+Work on T11 / KAN-20 only:
+https://luijoel24.atlassian.net/browse/KAN-20
 
 Follow AGENTS.md and read context.md, ROADMAP.md, agent.md and applicable
-sources. Integrate T09 memory into the bounded workflow, verify recalled
-references through authoritative reads, and save only confirmed receipts.
-Confirm the explicit advisory-scope acceptance decision before closure;
-do not invent a numeric repeat-history rule. Prove recall/save failure
-cannot bypass policy or repeat actions, record evidence, update Jira,
-then commit and push after the T10 gate passes.
+sources. Build the thin analyst view over the tested canonical workflow.
+Show facts, policy, proposal, critique, confirmed action status, advisory
+history and actually persisted review items. Preserve the sole action path
+and duplicate safeguards. Verify the acceptance gate, update Jira, then
+commit and push to origin/main after completion.
 
 ```
 
-Next task: **T10 / KAN-19: verified memory integration**.
-T10–T13 and A01 remain NOT_STARTED. A01 requirements verification remains open.
+Next task: **T11 / KAN-20: thin analyst view and review queue**.
+T11–T13 and A01 remain NOT_STARTED. A01 requirements verification remains open.

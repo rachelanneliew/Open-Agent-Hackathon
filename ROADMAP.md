@@ -1,8 +1,8 @@
 # Task Roadmap — Synthetic Card-Dispute Resolution Agent
 
 > **Canonical work queue.** Read [`context.md`](./context.md) first, then [`agent.md`](./agent.md).
-> **Revision:** T07 Nightshift investigator accepted, 27 October 2026: 121 passing tests, 45 PostgreSQL opt-in skips, four compatibility tests and data validation; a real Zetaris/Nightshift proposal passed the pure critic. Evidence is recorded below.
-> **Current authorized goal:** complete the entire roadmap sequentially, updating Jira and committing/pushing each completed task to `origin/main`. The user explicitly expanded the earlier single-task scope on 27 October. T00–T09 are DONE; next is T10 / KAN-19. Remaining tasks retain their acceptance gates and explicit scope decisions.
+> **Revision:** T10 verified advisory memory accepted, 27 October 2026: owner-approved advisory MVP scope, 238 passing main tests, 16 reference/compatibility checks, live source-verified later-case processing and memory-only restart/retry.
+> **Current authorized goal:** complete the entire roadmap sequentially, updating Jira and committing/pushing each completed task to `origin/main`. The user explicitly expanded the earlier single-task scope on 27 October. T00–T10 are DONE; next is T11 / KAN-20. Remaining tasks retain their acceptance gates and explicit scope decisions.
 > **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
 
 ## 1. What changed from the earlier plan
@@ -23,7 +23,7 @@ Use statuses `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED`, `DONE`. DONE requires reco
 
 Every task includes its own tests. T12 is cross-component testing, not the first time testing begins.
 
-**Post-merge integration order:** T03–T08 are complete, including shared guarded deployment and live fresh-read/model/commit acceptance. T09 is also complete; continue with T10 under the current goal. A01 verification remains independently available. Complete T10, then T11, T12 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
+**Post-merge integration order:** T03–T08 are complete, including shared guarded deployment and live fresh-read/model/commit acceptance. T09/T10 are also complete; continue with T11 under the current goal. A01 verification remains independently available. Complete T11, T12 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
 
 ## Jira tracking (supplied kit dated 2026-10-26)
 
@@ -75,7 +75,7 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 | T07 | Implement the investigator through Nightshift | T02, T03, T06 | DONE |
 | T08 | Wire the bounded workflow and command-line runner | T02, T03, T05, T06, T07 | DONE |
 | T09 | Verify and wrap the actual H-MEM integration | T00, T01; may run in parallel with T02–T08 | DONE |
-| T10 | Integrate verified memory and repeat-history review | T02, T03, T08, T09 | NOT_STARTED |
+| T10 | Integrate verified memory and repeat-history review | T02, T03, T08, T09 | DONE |
 | T11 | Build the thin analyst view and review queue | T08; memory display depends on T10 | NOT_STARTED |
 | T12 | Run cross-component failure tests and repeatable reset | T08, T10, T11 for the intended complete demo; feature-specific tests run earlier | NOT_STARTED |
 | T13 | Package the evidence-backed demo and submission | T12, A01; documentation can be drafted alongside earlier tasks | NOT_STARTED |
@@ -441,27 +441,29 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 ### T10 — Integrate verified memory and repeat-history review
 
 **Phase:** Memory and presentation  
-**Status:** NOT_STARTED  
+**Status:** DONE
 **Depends on:** T02, T03, T08, T09  
 **Deliverable:** A later case uses source-verified memory under the advisory default; binding history-rule behavior and the final acceptance scope require the explicit decision below.
 
 **Read first:** H-MEM adapter, authoritative customer-history tools, both existing policies (no numeric history rule), the explicit scope decision below and orchestrator.
 
-**PR #4 integration requirements and pending scope decision:**
+**PR #4 integration requirements and approved scope decision:**
 
-- [ ] Reuse `memory_service.py` but verify remembered IDs, ownership, cutoff and committed outcomes through T02 tools. Ignore/reject false, stale, future or cross-customer references with a visible trace. A stored `verified` tag is insufficient.
-- [ ] Keep verified history advisory; do not adopt the three-claim default. Before closing T10, confirm an advisory MVP acceptance revision or obtain an explicit binding rule specifying distinct-case count, lookback, anchor, reason categories, qualifying outcomes, exclusions and precedence. A new rule needs separate approval, versioned policy and tests; existing v1/v2 fixtures retain their meaning.
-- [ ] Save final summaries only from confirmed `committed`/`reused` decisions, idempotently by decision ID. Critic acceptance alone cannot authorize a final memory. Repeated runs must not inflate distinct counts; memory retry never calls the action service.
+- [x] Reuse `memory_service.py` but verify remembered IDs, ownership, cutoff and committed outcomes through T02 tools. Ignore/reject false, stale, future or cross-customer references with a visible trace. A stored `verified` tag is insufficient.
+- [x] Keep verified history advisory; do not adopt the three-claim default. Before closing T10, confirm an advisory MVP acceptance revision or obtain an explicit binding rule specifying distinct-case count, lookback, anchor, reason categories, qualifying outcomes, exclusions and precedence. A new rule needs separate approval, versioned policy and tests; existing v1/v2 fixtures retain their meaning.
+- [x] Save final summaries only from confirmed `committed`/`reused` decisions, idempotently by decision ID. Critic acceptance alone cannot authorize a final memory. Repeated runs must not inflate distinct counts; memory retry never calls the action service.
 
 **Work:**
 
-- [ ] Recall permitted context before the final policy/proposal stage, then resolve its source references through approved authoritative retrieval. Raw memory must not alter eligibility by itself.
-- [ ] Pass verified history into policy evaluation. If no repeated-claims threshold is defined in the policy, record the gap and obtain an explicit synthetic-policy design decision rather than guessing a count.
-- [ ] Demonstrate verified history as advisory context, or enforce a separately approved binding rule across policy, critic and commit-time checks. Repeated claims alone do not establish fraud.
-- [ ] After a successful decision commit, save its permitted source-linked summary. Report pending/failed memory persistence separately from decision success; retries reuse the decision ID.
-- [ ] Test stale/incorrect memory and missing source references. When memory is unavailable, continue only if required authoritative facts and policy gates are still satisfied; otherwise fail safely without credit.
+- [x] Recall permitted context before the final policy/proposal stage, then resolve its source references through approved authoritative retrieval. Raw memory must not alter eligibility by itself.
+- [x] Pass verified history into policy evaluation. If no repeated-claims threshold is defined in the policy, record the gap and obtain an explicit synthetic-policy design decision rather than guessing a count.
+- [x] Demonstrate verified history as advisory context, or enforce a separately approved binding rule across policy, critic and commit-time checks. Repeated claims alone do not establish fraud.
+- [x] After a successful decision commit, save its permitted source-linked summary. Report pending/failed memory persistence separately from decision success; retries reuse the decision ID.
+- [x] Test stale/incorrect memory and missing source references. When memory is unavailable, continue only if required authoritative facts and policy gates are still satisfied; otherwise fail safely without credit.
 
 **Acceptance gate:** A second investigation visibly recalls/verifies prior records, remains safe with false/stale/missing memory, and survives restart. Memory-save failure leaves the confirmed decision result intact and never reruns the action; recall failure permits automation only when all required authoritative policy facts remain available. The original source-defined history-rule requirement is unresolved until a binding rule is explicitly approved or an advisory-scope acceptance revision is approved. This alignment adopts an advisory working default but does not close that gate.
+
+**Owner decision, 27 October 2026:** “Approve advisory history for the MVP (recommended).” This approves the advisory-scope acceptance revision above; v1/v2 outcomes remain unchanged and no count threshold is added. All 238 main tests and 16 reference/compatibility tests pass. Live DP-0017 verified DP-0014 history before one synthetic credit, saved its summary and reused it after restart without an action call. See the [memory guide](./dispute-demo/docs/memory.md), [evidence](./dispute-demo/docs/evidence/t10-verified-memory.json) and completion log.
 
 **Not in this task:** No automatic fraud finding, memory-defined policy, duplicate action during memory retries or unsupported rule threshold.
 
@@ -1256,3 +1258,37 @@ existing, verified Node 24.13.0 executable; private machine paths are omitted.
 
 - Final artifact checks: eight Python ASTs, seven changed Markdown files and 197 local links validated; `git diff --check` passed after removing a new trailing-space line. Canonical app, data, policies, fixtures, migrations and platform paths remain unchanged from T08.
 - Jira KAN-18 received acceptance comment **10013**; transition 31 and a fresh read confirm status/resolution **Done**. Summary, description, assignee, parent, labels and links were checked unchanged. Direct-main commit/push will be verified after publication.
+
+### 27 October 2026 — T10 started (KAN-19)
+
+- Required bootstrap and current source inspection completed. T02/T03/T08/T09 prerequisites are implemented; T09 was published as `bc50ee8` on `origin/main`.
+- Jira KAN-19 is In Progress. Implementing source-verified advisory recall and independent post-commit memory persistence/retry.
+- Owner approval of the advisory MVP acceptance revision has been requested and remains pending. No binding history rule or numeric threshold is authorized. No T10 acceptance is claimed yet.
+
+### 27 October 2026 — T10 / KAN-19 completed
+
+- Explicit owner decision: **“Approve advisory history for the MVP (recommended).”** This resolves the acceptance gate requiring an advisory revision or binding rule. No binding rule, numeric threshold, fraud inference or mandatory history hold was added. Existing source policies/fixtures retain their meaning.
+- Added strict `app/history.py` and `app/memory_workflow.py`; reused T09 memory and the authoritative T08 Zetaris snapshot path. Only source customer-history membership authorizes a prior-case read. Every recalled summary is checked against an actual committed receipt, ownership, original reference/IDs/outcome, current revision and cutoff. False/missing/stale/future/cross-customer references and notes are rejected visibly. Distinct counts are deduplicated and explicitly partial.
+- Verified history reaches the existing policy/proposal stage as advisory data. Known source-revision changes stop for a fresh run; model-requested source refresh discards old history. All verification reads share existing budgets. The unchanged critic/action boundary still decides eligibility and persistence.
+- The CLI defaults to advisory memory, with `--no-memory` retained. Post-commit save reports pending/stored/reused/failed independently. `--retry-memory <trace.json>` checks its sibling request plus a fresh authoritative receipt and saves by decision ID, with no action callback. Exact action recovery may save only after confirmation; memory work obeys its remaining total budget.
+- Initial real-reference tests exposed missed structured recall at threshold .35. The application now asks H-MEM for at most five ranked scoped candidates at threshold 0, then verifies each authoritatively; no relevance score confers trust. Final real-reference/database tests pass.
+- Live T10: JDBC preflight PASS after approved local-network retry (initial sandbox denied socket access); REST remains unconfigured due to missing API key. Saved the existing T08 receipt using the new memory-only path, then a separate Python process ran DP-0017/CUST-008. It source-verified DP-0014, received a real Nightshift proposal, passed the critic and committed exactly one synthetic 5,760 SGD-minor-unit credit. Decision `ef52d39c-6771-44db-841c-7d17e87cd6a6`, credit `7fbcb0f0-5eab-44e9-b694-80017b0d1dc7`, run `c520271d-eecc-4a25-80cc-42d13b5045ee`. A fresh Python memory-only retry returned `reused` and `action_called: false`. [Evidence](./dispute-demo/docs/evidence/t10-verified-memory.json).
+- Shared sandbox after verification: 2 decisions, 2 credits, 2 audits, 0 reviews, revision 10. All six source fingerprints match T08; restricted action login unchanged. No source reload, migration, credential change, reference modification or existing-container restart/reset. Test containers/volumes were disposable and cleaned up.
+
+Commands below ran from `dispute-demo/` unless stated otherwise. `HMEM_NODE` was set to the existing `/Users/joellui/.nvm/versions/node/v24.13.0/bin/node` where needed.
+
+| Command | Result |
+|---|---|
+| `HMEM_NODE=... DISPUTE_ACTION_TESTS=1 DISPUTE_STORAGE_TESTS=1 DISPUTE_HMEM_TESTS=1 DISPUTE_NIGHTSHIFT_HTTP_TESTS=1 PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s tests -v` | PASS: 238 tests, zero skips. Includes 16 new offline memory workflow tests and 4 actual PostgreSQL/H-MEM integration tests; the latter use a labelled scripted model. |
+| `HMEM_NODE=... DISPUTE_HMEM_TESTS=1 PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s agent/tests -v` | PASS: 16 tests (12 pinned-reference, 4 compatibility), zero skips. |
+| `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/validate_synthetic_data.py` | PASS: 42 transactions, 54 movements, 40 disputes, 81 evidence items, 16 rules; hashes and fixtures validated. |
+| `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/preflight.py --jdbc` (from `getting-started/`) | JDBC PASS including SELECT 1 and instance inventory; exit 1 solely for the two missing-REST-key checks. Initial sandbox socket denial resolved by approved network execution. |
+| `HMEM_NODE=... PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m app.main --retry-memory outputs/runs/7238450e-5c65-4829-a1a6-fcd3657fddf0.trace.json --memory-dir outputs/t10-live-memory` | PASS: existing DP-0014 receipt freshly verified through Zetaris, memory stored, action_called false. |
+| `HMEM_NODE=... PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m app.main DP-0017 --memory-dir outputs/t10-live-memory` | PASS: 1 real model call, 2 authoritative reads, verified prior history, critic accepted, one new synthetic credit and memory saved. |
+| `HMEM_NODE=... PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m app.main --retry-memory outputs/runs/c520271d-eecc-4a25-80cc-42d13b5045ee.trace.json --memory-dir outputs/t10-live-memory` | PASS: fresh-process source verification and memory reuse; no action call. |
+| `.venv/bin/python /private/tmp/t10-final-db-check.py` | PASS: original fingerprint algorithm matches all six T08 source tables; 2 decisions/credits/audits, no reviews, revision 10; restricted role unchanged. |
+
+Authenticated HackOS and final UI checks: **NOT RUN** for T10 (A01/T11). Model response metadata reported `nvidia/nemotron-3.5-bolt-e4b` for `meterless/auto`. The reference still uses mock embeddings; no competition approval claim. Next task after Jira closure and commit/push: T11 / KAN-20.
+
+- Final review: `python3 /private/tmp/t10-review.py` PASS (9 Python ASTs, 7 Markdown files, 210 local links, JSON, private-secret-value scan, protected sources/contracts/critic/action/read adapters unchanged). `git diff --check` PASS. Final 238-test run completed in 168.980 seconds; separate 16-test reference/compatibility run in 6.924 seconds.
+- Jira KAN-19 is Done; owner approval comment `10016`, acceptance comment `10017`. Read-back verifies status and protected summary/description/assignee/parent/labels/links unchanged.

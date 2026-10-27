@@ -1,11 +1,13 @@
-# Pinned H-MEM reference adapter (T09)
+# Verified advisory memory (T09–T10)
 
 The existing Python client, memory service and TypeScript bridge now wrap the
 [official reference at `1742dec56a66e58eef9dda2d2b865823758ca8cd`](https://github.com/Meterless/Meterless/tree/1742dec56a66e58eef9dda2d2b865823758ca8cd/engines/hmem).
 This is actual reference-engine execution with deterministic **mock embeddings**
 and JSON persistence. It is not a production memory database or proof of
-competition approval. T09 does not connect memory to `app.main`; T10 owns fresh
-source verification and workflow integration. The old resolver is inert.
+competition approval. T10 connects it to `app.main` with fresh source verification
+and independent post-commit storage. The old resolver is inert. The owner approved
+advisory history as the MVP acceptance scope on 27 October 2026; no binding
+history rule or count threshold has been added.
 
 ## Reproduce setup
 
@@ -55,7 +57,7 @@ reason, outcome/amount/currency, commit time and simulated-credit ID. Its source
 reference names `dispute_actions.decisions/<decision_id>` in `dispute_demo`.
 It omits model rationale, customer statements, evidence bodies and credentials.
 Only the trusted application caller may supply a receipt; types do not prove
-that a database row exists. T10 must verify recalled references through Zetaris.
+that a database row exists. T10 verifies recalled references through Zetaris.
 
 `UnverifiedNote` is a separate typed record for an analyst note/correction, with
 a stable note ID, customer/dispute IDs, policy version, UTC time and optional
@@ -69,7 +71,8 @@ and notes use `unverified-note:<UUID>`. A changed payload under the same source
 ID is rejected. No method imports/calls a financial action service. A failed or
 uncertain memory acknowledgement is recovered by the same memory save only.
 `recall(customer_id, query=...)` returns typed **unverified candidates**, not an
-instruction string or proof of history. All source references require T10 checks.
+instruction string or proof of history. The workflow verifies these candidates
+before exposing them to the policy/proposal stage.
 
 ## Persistence and bounds
 
@@ -143,6 +146,113 @@ It never calls a model, reads a live source or retries the financial action:
 # Run again in a fresh process with the same arguments plus --recall-only.
 ```
 
-See [sanitized evidence](evidence/t09-reference-memory.json). The live workflow
-still reports `no_memory`. Live PostgreSQL/Zetaris/Nightshift and authenticated
-HackOS checks were **NOT RUN** for T09; T08's integration evidence stays dated.
+See [T09 evidence](evidence/t09-reference-memory.json). Live
+PostgreSQL/Zetaris/Nightshift and authenticated HackOS checks were **NOT RUN**
+for T09; the subsequent T10 verification below supersedes its workflow limit.
+
+
+## T10 workflow and source verification
+
+The normal CLI enables `verified_advisory` memory. `--no-memory` disables recall
+and saving; `--memory-dir` selects a private application directory. Select the
+pinned Node before running these commands from `dispute-demo/`:
+
+```sh
+export HMEM_NODE="$(command -v node)"
+.venv/bin/python -m app.main DP-0017 --memory-dir outputs/demo-memory
+.venv/bin/python -m app.main DP-0017 --no-memory
+```
+
+The [controller](../app/orchestrator.py) first obtains a coherent authoritative
+snapshot. [memory_workflow.py](../app/memory_workflow.py) recalls at most five
+customer-partitioned candidates before policy/proposal evaluation. The mock
+embedder missed structured summaries at its default relevance cutoff, so this
+workflow requests ranked candidates with threshold zero. Ranking only selects
+candidates; it never establishes truth or eligibility. Results are partial and
+explicitly marked `complete_history: false`, including when recall is empty.
+
+A candidate cannot grant permission to read another customer's case. Its dispute
+must already appear in the selected snapshot's source customer history. Only
+then can the trusted controller read that prior case through the same bounded
+Zetaris snapshot adapter. The model's four read tools remain bound to its
+selected case. Verification checks customer, case/primary identity, reason,
+source channel, matching global source revision and cutoff visibility. It
+compares every remembered summary field with the actual committed receipt,
+including original snapshot, policy, outcome/amount, decision/run/proposal IDs,
+commit timestamp and credit ID. Missing, false, future, cross-customer,
+superseded or ambiguous receipts are ignored with fixed trace reasons. Notes
+and their text never enter the prompt. Duplicate records count as one case.
+
+Each prior-case read consumes the existing read/time budgets. With three default
+read calls including initial retrieval, at most two distinct prior cases can be
+verified without another model-requested read. Unverified candidates are skipped;
+missing optional memory cannot authorize credit when required source facts fail.
+A discovered revision change stops the run before model/action and requires a
+fresh investigation. A model-requested refresh discards the earlier verified
+history and verifies again. Critic correction on the same snapshot reuses the
+already verified context without resetting budgets.
+
+[VerifiedHistory](../app/history.py) binds a bounded structured projection to the
+current customer/reference. Policy receives it but v1/v2 have no binding history
+rule, so allowed outcomes and amounts remain identical to ordinary evaluation.
+The investigator receives only this source-verified projection as untrusted,
+advisory material. Critic and commit independently recompute unchanged rules;
+history cannot create a fraud finding, review hold, or credit exception.
+
+## Post-commit memory and recovery
+
+Only a confirmed `committed`/`reused` receipt is saved. The trace reports memory
+`pending`, then `stored`, `reused` or `failed` separately from the action result.
+Each memory operation is capped at 15 seconds and the remaining run budget.
+Failure or deadline exhaustion preserves the confirmed decision. Rejected and
+unconfirmed actions produce no final memory. Normal exact-request action recovery
+may save the recovered receipt after confirmation.
+
+For an already confirmed action with missing/failed memory, use the separate path:
+
+```sh
+.venv/bin/python -m app.main --retry-memory "outputs/runs/<run_id>.trace.json" --memory-dir outputs/demo-memory
+```
+
+It loads the sibling `<run_id>.request.json`, validates the saved receipt binding,
+and rereads the case through Zetaris. The original committed receipt must exist
+and exactly match before saving. It has no action callback, never invokes the
+writer, and reports `action_called: false`. A fresh process returns `reused` for
+the same decision ID. Exit 0 means memory stored/reused; exit 1 means the confirmed
+decision remains persisted but memory failed; exit 2 means input/source verification
+failed and this invocation makes no new persistence claim. The output does not
+rewrite the original investigation trace. Preserve both request and trace for
+recovery. A lost action acknowledgement still requires `--retry-request` first;
+never fabricate a confirmed receipt to retry memory.
+
+## T10 verification — 27 October 2026
+
+The owner explicitly approved **advisory history for the MVP**. Source policies,
+fixtures, schema/migrations and the action service are unchanged.
+
+- 16 adversarial offline memory-workflow tests cover incorrect/future/stale/cross-
+  customer recall, notes, duplicate counts, source and model refresh, budgets,
+  missing required facts, unconfirmed actions and action-free memory retry.
+- Four tests use real disposable PostgreSQL and the pinned H-MEM reference with
+  a labelled scripted model. They prove later-case recall after a new controller
+  and new Node processes, false-memory refusal, actual-commit preservation after
+  memory failure, idempotent memory retry, and stale-source refusal during outage.
+- The complete main suite passes 238 tests with all opt-in flags enabled; the
+  separate reference/compatibility suite passes 16. Generated-data validation passes.
+- Live JDBC/Nightshift/guarded PostgreSQL/H-MEM: DP-0017 recalled and verified the
+  T08 DP-0014 decision for CUST-008, then passed the critic and committed one
+  synthetic SGD 57.60 credit. Its summary was stored and a separate Python
+  invocation's memory retry reused it without an action call. Shared totals:
+  two decisions, two credits, two audits, no reviews, source revision 10. All
+  six source fingerprints match the T08 baseline; restricted login unchanged.
+
+```sh
+DISPUTE_ACTION_TESTS=1 DISPUTE_STORAGE_TESTS=1 DISPUTE_HMEM_TESTS=1 DISPUTE_NIGHTSHIFT_HTTP_TESTS=1 PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s tests -v
+DISPUTE_HMEM_TESTS=1 PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest discover -s agent/tests -v
+```
+
+See [sanitized T10 evidence](evidence/t10-verified-memory.json). REST remains
+unconfigured; JDBC preflight passes. Authenticated HackOS approval is **NOT RUN**
+for T10 and remains A01. The real model response reported
+`nvidia/nemotron-3.5-bolt-e4b` on requested route `meterless/auto`; this is observed
+metadata, not independent model identity certification.

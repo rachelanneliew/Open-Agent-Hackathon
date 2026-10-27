@@ -3,7 +3,7 @@
 > **Canonical project brief for all coding agents and collaborators.**
 > Read this file **at the start of every task**, then consult [`ROADMAP.md`](./ROADMAP.md) for the active priorities. Read the actual code, policies, schemas, tests, and HackOS instructions before making implementation claims.
 >
-> **Context last reviewed:** 2026-10-27, T08 workflow from `87267ed`. T00–T08 are complete against repository gates. 198 tests pass with no skips, plus four compatibility tests/data validation. Shared guarded storage and fresh Zetaris views are deployed; live Nightshift processing committed one synthetic credit, exact recovery reused it, and reprocessing/fault checks added none. The canonical CLI is explicitly no-memory. The user authorized the full roadmap sequentially with Jira updates and a commit/push to `origin/main` per completed task.
+> **Context last reviewed:** 2026-10-27, T10 verified advisory memory. T00–T10 are complete against repository gates; the owner explicitly approved advisory MVP history. All 238 main tests and 16 reference/compatibility checks pass. Live DP-0017 verified DP-0014 history before its synthetic credit; memory-only retry reused the stored summary. The user authorized the full roadmap sequentially with Jira updates and a commit/push to `origin/main` per completed task.
 
 ## 1. Project identity
 
@@ -52,7 +52,7 @@ Written policy-required review excludes credit in policy evaluation, the pure cr
 
 Verified repeat-claim history is advisory by default. Neither source policy defines a numeric history rule; the prototype's default of three prior disputes is not approved binding policy. Raw memory tags cannot prove fraud, require review or establish credit eligibility. Verify recalled ownership, source IDs, timestamps and relevant committed outcomes through approved reads. Unavailable required authoritative facts still mean no automatic credit.
 
-T10 retains an explicit acceptance decision: confirm advisory MVP scope or approve a separately versioned binding rule with count, lookback, anchor, reasons, qualifying outcomes, exclusions and precedence. This does not block T02 or this documentation pass; it does not mark the original history-rule acceptance requirement complete.
+On 27 October 2026, the owner explicitly approved advisory history as the MVP acceptance scope for T10. No binding history rule or claim-count threshold is introduced. Any future binding rule needs separate approval specifying count, lookback, anchor, reasons, qualifying outcomes, exclusions and precedence.
 
 ### Distinctions that must not be blurred
 
@@ -279,6 +279,15 @@ Live PostgreSQL/Zetaris/Nightshift and HackOS were NOT RUN for T09. T08's canoni
 workflow remains explicitly `no_memory`; T10 owns fresh source verification and
 integration and still needs its explicit advisory-scope acceptance decision.
 
+### T10 verified advisory workflow — 27 October 2026
+
+- The owner approved advisory history for the MVP, resolving T10's explicit scope gate. The [memory workflow](./dispute-demo/app/memory_workflow.py) reuses T09 and the current authoritative Zetaris snapshot adapter. Only cases already in source customer history can be read for verification; the model remains limited to its selected case.
+- Up to five ranked candidates are checked against actual committed receipts, customer ownership, original IDs/reference/outcome, current global revision and selected-case cutoff. False/missing/future/cross-customer/superseded references and notes are ignored visibly. Repeated memories count as one case; recall is partial, never a complete claim count. A known source revision change stops the run for fresh investigation.
+- Strict [advisory history](./dispute-demo/app/history.py) reaches policy and the proposal prompt without changing v1/v2 outcomes. Required source failures still block credit; no memory-only fraud finding or review hold is introduced. New model-requested reads invalidate prior verified history. Verification shares existing read/time budgets.
+- Confirmed receipts alone produce final summaries. Memory pending/failed status is independent of decision persistence. `--retry-memory <trace.json>` rechecks the sibling request and actual Zetaris receipt, then saves by decision ID without an action callback. The CLI enables advisory memory by default; `--no-memory` disables it.
+- Live DP-0017/CUST-008 recalled and source-verified the prior DP-0014 receipt, passed the critic and committed one synthetic 5,760-minor-unit credit. Its memory was stored and reused by a fresh Python invocation. Shared totals are now 2 decisions, 2 credits, 2 audits, 0 reviews, revision 10. All six source fingerprints and restricted login rights are unchanged. [Sanitized evidence](./dispute-demo/docs/evidence/t10-verified-memory.json).
+- All 238 main tests pass, including 16 new offline memory workflow tests and 4 real PostgreSQL/pinned-reference tests with a scripted model. The separate 16 reference/compatibility tests and generated-data validation pass. JDBC passes; REST remains unconfigured. Authenticated HackOS is **NOT RUN** for T10. Next: T11 / KAN-20, the analyst view.
+
 ### Verified dataset snapshot
 
 | Synthetic dataset | Records |
@@ -351,9 +360,9 @@ Choose actual dispute IDs only after inspecting fixture and policy files; do not
 - What does the authenticated HackOS Track 3 challenge explicitly require, and what is the actual submission cutoff?
 - Is a named NVIDIA/Nemotron responder mandatory, and how can its identity be recorded during the demo?
 - What are the exact policy predicates, precedence, effective-date rules, allowed transitions, and amount semantics in the repo files?
-- How will T10 source-verify the now-tested H-MEM reference adapter in the workflow? The advisory acceptance decision and A01 competition approval remain open.
+- A01 competition approval of the pinned H-MEM reference remains open; T10 source verification and advisory acceptance are complete.
 - Which fixture IDs best demonstrate supported credit, duplicate prevention, critic correction, and version boundaries?
-- T10: confirm advisory history acceptance scope or approve an exact versioned binding rule. T04 has documented/tested minimum lifecycle, duplicate scope and the fresh-cutoff storage backstop; T05 has completed protected policy/critic validation and retries in isolated PostgreSQL; shared deployment/live read freshness remain prerequisites for T08. No new history policy is approved.
+- The owner approved T10 advisory history. A future binding history policy requires a new explicit versioned decision. T04/T05 lifecycle, protected validation and retries and T08 shared deployment/live freshness have passed their gates.
 - PR #4 source is inspected at `76db772`; recheck source and live services when later tasks begin. The integration checklist is in `ROADMAP.md`.
 
 ## 9. Source-of-truth and maintenance rules
@@ -410,3 +419,5 @@ The supplied kit reports that the work queue is tracked in Jira project `KAN` (`
 **T08 closure, 27 October 2026:** KAN-17 is Done with acceptance comment `10011`. The gate includes 198 passing tests, actual persisted/reused live processing, ordinary duplicate refusal and a labelled fault that fails safely after one correction attempt. Next under the authorized full-roadmap goal is T09 / KAN-18 after the completion commit/push.
 
 **T09 closure, 27 October 2026:** KAN-18 is Done with acceptance comment `10013`. Actual pinned-reference persistence, restart/isolation/concurrency and source-linked summaries are accepted. T10 remains the next task under the full-roadmap goal, after this completion commit/push.
+
+**T10 closure, 27 October 2026:** KAN-19 is Done with owner advisory approval `10016` and acceptance `10017`. Source-verified later-case processing, actual reference restart/retry and independent memory failure handling passed. Next under the authorized full-roadmap goal: T11 / KAN-20 after completion publication.

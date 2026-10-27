@@ -1,4 +1,4 @@
-"""Run a synthetic case: python -m app.main DP-0014 --no-memory.
+"""Run a synthetic case with optional verified advisory memory.
 
 Use --retry-request outputs/runs/<run>.request.json for identical recovery.
 Ordinary reprocessing obtains new facts and may reject an existing credit;
@@ -13,14 +13,16 @@ from .investigator import Investigator
 from .journal import FileJournal, load_request
 from .nightshift import ModelError, NightshiftClient, NightshiftConfig
 from .orchestrator import Budgets, Controller
-from .runtime_io import commit, read_snapshot
+from .runtime_io import BoundaryError, commit, read_snapshot
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('dispute_id', nargs='?')
     parser.add_argument('--retry-request', type=Path)
-    parser.add_argument('--no-memory', action='store_true', help='Explicit no-memory milestone (default)')
+    parser.add_argument('--retry-memory', type=Path, help='Reverify a saved trace receipt and retry memory only')
+    parser.add_argument('--no-memory', action='store_true', help='Disable advisory recall and summary storage')
+    parser.add_argument('--memory-dir', type=Path, help='Private H-MEM directory (default: outputs/hmem-v1)')
     parser.add_argument('--model-calls', type=int, default=4)
     parser.add_argument('--tool-calls', type=int, default=3)
     parser.add_argument('--total-seconds', type=float, default=300)
@@ -28,19 +30,34 @@ def main():
     parser.add_argument('--read-seconds', type=float, default=45)
     parser.add_argument('--commit-seconds', type=float, default=25)
     args = parser.parse_args()
-    if bool(args.dispute_id) == bool(args.retry_request):
-        parser.error('Provide one dispute ID or --retry-request')
+    if sum(bool(x) for x in (args.dispute_id, args.retry_request, args.retry_memory)) != 1:
+        parser.error('Provide one dispute ID, --retry-request, or --retry-memory')
+    if args.no_memory and (args.retry_memory or args.memory_dir):
+        parser.error('--no-memory cannot be combined with memory options')
     try:
         budgets = Budgets(**{key: getattr(args, key) for key in (
             'model_calls', 'tool_calls', 'total_seconds', 'model_seconds', 'read_seconds', 'commit_seconds')})
         if args.dispute_id:
             validate_dispute_id(args.dispute_id)
+        memory_factory = None
+        if not args.no_memory:
+            from agent.hmem_client import HmemClient, DEFAULT_PERSIST
+            from agent.memory_service import DisputeMemory
+            memory_factory = lambda seconds: DisputeMemory(HmemClient(args.memory_dir or DEFAULT_PERSIST, timeout=seconds))
+        if args.retry_memory:
+            from .memory_workflow import retry_memory
+            result = retry_memory(args.retry_memory, read_snapshot=read_snapshot,
+                memory_factory=memory_factory, budgets=budgets)
+            print(json.dumps(result, indent=2))
+            return 0 if result['memory_save']['status'] in ('stored', 'reused') else 1
         investigator = None if args.retry_request else Investigator(NightshiftClient(NightshiftConfig.from_environment()))
         controller = Controller(investigator=investigator, read_snapshot=read_snapshot, commit=commit,
-            journal=FileJournal(Path(__file__).resolve().parents[1] / 'outputs/runs'), budgets=budgets)
+            journal=FileJournal(Path(__file__).resolve().parents[1] / 'outputs/runs'), budgets=budgets,
+            memory_factory=memory_factory)
         result = controller.retry(load_request(args.retry_request), str(args.retry_request.resolve())) if args.retry_request else controller.run(args.dispute_id)
-    except (ValueError, ModelError, OSError):
-        print(json.dumps({'persisted': False, 'memory_mode': 'no_memory', 'error': 'invalid_input_or_configuration'}))
+    except (ValueError, ModelError, OSError, KeyError, TypeError, BoundaryError):
+        print(json.dumps({'persisted': False, 'memory_mode': 'no_memory' if args.no_memory else 'verified_advisory',
+                          'error': 'invalid_input_or_configuration', 'action_called': False}))
         return 2
     print(json.dumps(result.to_dict(), indent=2))
     return 0 if result.persisted else 1

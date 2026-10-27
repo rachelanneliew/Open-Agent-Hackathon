@@ -1,4 +1,4 @@
-"""Canonical no-memory workflow. Only the controller may reach the writer."""
+"""Canonical bounded workflow. Only the controller may reach the writer."""
 from dataclasses import dataclass, replace
 import math
 import time
@@ -60,11 +60,13 @@ class Controller:
     label their mode and explicitly supply mocks; no runtime fallback is present.
     """
     def __init__(self, *, investigator, read_snapshot, commit, journal,
-                 budgets=None, mode='live', clock=time.monotonic, post_commit=None):
+                 budgets=None, mode='live', clock=time.monotonic, post_commit=None,
+                 memory_factory=None):
         require(mode in ('live', 'offline_test', 'fault_injection'), 'Invalid execution mode')
         self.investigator, self.read_snapshot, self.commit = investigator, read_snapshot, commit
         self.journal, self.budgets, self.mode = journal, budgets or Budgets(), mode
         self.clock, self.post_commit = clock, post_commit
+        self.memory_factory = memory_factory
 
     def run(self, dispute_id):
         validate_dispute_id(dispute_id)
@@ -83,23 +85,24 @@ class Controller:
             if error is not None:
                 state = replace(state, phase=RunPhase.FAILED, error=error)
                 event('failed', code=error, persisted=False)
-            result = WorkflowResult(state, tuple(events), self.mode, recovery)
+            result = WorkflowResult(state, tuple(events), self.mode, recovery,
+                'verified_advisory' if self.memory_factory else 'no_memory')
             try:
                 self.journal.finish(result)
             except Exception:
                 event('trace_save_failed', committed_result_preserved=result.persisted)
                 result = replace(result, events=tuple(events))
             return result
-        def read():
+        def read(target=dispute_id):
             nonlocal state
             if state.tool_calls >= b.tool_calls:
                 raise BoundaryError('tool_budget_exhausted')
             timeout = remaining(b.read_seconds)
             state = replace(state, tool_calls=state.tool_calls + 1)
-            value = self.read_snapshot(dispute_id, timeout_seconds=timeout)
+            value = self.read_snapshot(target, timeout_seconds=timeout)
             require(type(value) is FreshSnapshot, 'Invalid read response')
             value = FreshSnapshot.from_dict(value.to_dict())
-            require(value.context.reference.dispute_id == dispute_id, 'Snapshot outside case')
+            require(value.context.reference.dispute_id == target, 'Snapshot outside case')
             if self.mode == 'live':
                 require(value.context.source_channel == 'zetaris', 'Live source required')
             remaining(b.total_seconds)
@@ -107,6 +110,7 @@ class Controller:
         try:
             snapshot = read()
             observations, previous, critique = (), None, None
+            history = None
             while True:
                 context = snapshot.context
                 state = replace(state, phase=RunPhase.RETRIEVED, reference=context.reference)
@@ -115,7 +119,19 @@ class Controller:
                     settlements=[s.to_dict() for s in context.settlements],
                     evidence_ids=[e.evidence_id for e in context.evidence], issues=list(context.data_issues),
                     prior_decisions=[d.to_dict() for d in snapshot.decisions.decisions])
-                policy = evaluate_policy(context)
+                if self.memory_factory and (history is None or history.reference != context.reference):
+                    from .memory_workflow import recall_verified
+                    from .history import VerifiedHistory
+                    try:
+                        memory = self.memory_factory(remaining(15))
+                        history = recall_verified(snapshot, memory, read, event)
+                    except BoundaryError:
+                        raise
+                    except Exception:
+                        history = VerifiedHistory(reference=context.reference,
+                                                  customer_id=snapshot.history.customer_id)
+                        event('memory_recall', status='unavailable', advisory=True)
+                policy = evaluate_policy(context, advisory_history=history)
                 state = replace(state, phase=RunPhase.EVALUATED)
                 event('policy', result=policy.to_dict())
                 if state.model_calls >= b.model_calls:
@@ -125,7 +141,8 @@ class Controller:
                 proposal_id = str(uuid4())
                 response = self.investigator.step(context, policy, run_id=state.run_id,
                     proposal_id=proposal_id, revision=state.proposal_revision, previous=previous,
-                    critique=critique, observations=observations, timeout_seconds=timeout)
+                    critique=critique, observations=observations, timeout_seconds=timeout,
+                    advisory_history=history)
                 require(type(response) is InvestigatorResult, 'Invalid investigator result')
                 response = InvestigatorResult.from_dict(response.to_dict())
                 event('investigator', result=response.to_dict())
@@ -179,6 +196,9 @@ class Controller:
                 state = replace(state, phase=RunPhase.FINISHED, commit_result=result)
                 event('commit', result=result.to_dict(), new_simulated_credit=(
                     result.status is ExecutionStatus.COMMITTED and result.simulated_credit_id is not None))
+                if self.memory_factory:
+                    from .memory_workflow import save_confirmed
+                    save_confirmed(context, result, self.memory_factory, lambda: remaining(15), event)
                 if result.status in (ExecutionStatus.COMMITTED, ExecutionStatus.REUSED) and self.post_commit:
                     try:
                         self.post_commit(result)
@@ -209,6 +229,7 @@ class Controller:
 
     def retry(self, request, recovery_path):
         """Recovery ONLY: exact saved request, no model/read/replacement identities."""
+        started = self.clock()
         request = CommitRequest.from_dict(request.to_dict())
         try:
             result = self._bound_result(request, self.commit(request,
@@ -217,8 +238,18 @@ class Controller:
             result = self._unconfirmed(request)
         state = RunState(run_id=request.run_id, phase=RunPhase.FINISHED,
                          reference=request.context.reference, commit_result=result)
-        outcome = WorkflowResult(state, ({'kind': 'recovery', 'result': result.to_dict()},),
-                                 self.mode, recovery_path)
+        events = [dict(kind='recovery', result=result.to_dict())]
+        if self.memory_factory:
+            from .memory_workflow import save_confirmed
+            def memory_timeout():
+                left = min(15, self.budgets.total_seconds - (self.clock() - started))
+                if left <= 0:
+                    raise BoundaryError('total_duration_exhausted')
+                return left
+            save_confirmed(request.context, result, self.memory_factory, memory_timeout,
+                           lambda kind, **values: events.append(dict(kind=kind, **values)))
+        outcome = WorkflowResult(state, tuple(events), self.mode, recovery_path,
+                                 'verified_advisory' if self.memory_factory else 'no_memory')
         try:
             self.journal.finish(outcome)
         except Exception:

@@ -136,8 +136,8 @@ class DisputeMemory:
     def remember_commit(self, context: DisputeContext, result: CommitResult):
         return self.save(CommittedSummary.from_commit(context, result))
 
-    def recall(self, customer_id, *, query='committed dispute decision', top_n=5):
-        result = self.client.query(query, chat_id=customer_scope(customer_id), top_n=top_n)
+    def recall(self, customer_id, *, query='committed dispute decision', top_n=5, threshold=.35):
+        result = self.client.query(query, chat_id=customer_scope(customer_id), top_n=top_n, threshold=threshold)
         candidates = []
         for record in result['memories']:
             try:

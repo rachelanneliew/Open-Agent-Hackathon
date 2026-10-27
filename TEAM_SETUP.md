@@ -261,8 +261,12 @@ example; 12 actual-reference adapter tests plus 4 compatibility tests pass.
 Customer-isolated, file-locked atomic snapshots survive new processes and safe
 concurrent writes. Committed summaries retain decision/source IDs and timestamps;
 notes remain unverified. Memory errors are independent of action success.
-The canonical workflow still runs with no memory until T10. Do not use the
-retired resolver as a probe; use the receipt-only memory check in the guide.
+T10 now source-verifies advisory recall in the canonical workflow and saves
+confirmed receipts. The owner approved advisory history for the MVP. Use
+`--no-memory` to disable it, or `--memory-dir outputs/demo-memory` to select a
+private store. `--retry-memory <run_id>.trace.json` revalidates and saves memory
+without invoking an action. See the guide for full commands and T10 evidence.
+Do not use the retired resolver as a probe.
 
 ## Working together
 
@@ -378,8 +382,9 @@ PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m app.main DP-0014 --no-memory
 
 The existing application venv has Python 3.13.7, Psycopg 3.2.10, JayDeBeApi 1.2.3
 and JPype1 1.7.1; the bundled JDBC venv was preserved. Do not recreate a working
-environment unnecessarily. The canonical CLI imports no H-MEM and never calls
-the deprecated resolver. Nightshift uses the verified JSON-object/no-native-tool
+environment unnecessarily. T08's explicit `--no-memory` mode imports no H-MEM
+and never calls the deprecated resolver. T10 enables verified advisory memory
+by default; select the pinned Node as described in section 8. Nightshift uses the verified JSON-object/no-native-tool
 request path with tier splitting off; unsupported or malformed replies fail.
 
 Live DP-0014 already has a simulated SGD 60 credit. An ordinary new run returns

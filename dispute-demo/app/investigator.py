@@ -12,6 +12,7 @@ from .policy_engine import evaluate_policy
 from .schemas import (AgentProposal, Contract, ContractError, CriticResult,
                       CriticVerdict, DisputeContext, PolicyResult, require, source_id, uuid_id)
 from .tools import CustomerHistory, DecisionHistory, DisputeState, ReadResult, TOOL_NAMES
+from .history import validate_history
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -115,7 +116,8 @@ class Investigator:
         self.client = client
 
     def step(self, context, policy, *, run_id, proposal_id, revision=0,
-             previous=None, critique=None, observations=(), timeout_seconds=180):
+             previous=None, critique=None, observations=(), timeout_seconds=180,
+             advisory_history=None):
         route = self.client.config.route
         response_model = None
         def failed(status, message):
@@ -129,6 +131,7 @@ class Investigator:
             uuid_id(proposal_id)
             require(type(revision) is int and revision in (0, 1), 'Invalid revision')
             require(policy == evaluate_policy(context), 'Policy is not current')
+            validate_history(context, advisory_history)
             require(type(timeout_seconds) in (int, float) and 0 < timeout_seconds <= 180, 'Invalid timeout')
             correction = None
             if revision == 0:
@@ -147,6 +150,7 @@ class Investigator:
                 'allowed_reads': [{'name': x, 'dispute_id': context.reference.dispute_id} for x in TOOL_NAMES],
                 'case_material_untrusted': context.to_dict(),
                 'read_observations_untrusted': _observations(context, observations),
+                'verified_advisory_history_untrusted': advisory_history.to_dict() if advisory_history else None,
                 'correction': correction}
             messages = [{'role': 'system', 'content': SYSTEM},
                         {'role': 'user', 'content': json.dumps(payload, allow_nan=False)}]
