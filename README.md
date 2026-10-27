@@ -14,6 +14,7 @@ Open Agent Hackathon project for investigating fictional card disputes and recom
 | [TEAM_SETUP.md](./TEAM_SETUP.md) | Environment setup: Docker, PostgreSQL, Zetaris/JDBC and Nightshift. |
 | [Policy v1](./dispute-demo/policies/synthetic_policy_v1.md) / [Policy v2](./dispute-demo/policies/synthetic_policy_v2.md) | Exact fictional dispute rules that the implementation must follow. |
 | [Pure critic](./dispute-demo/docs/critic.md) | T06 validation, supported rationale/citations, correction limits and retired SQLite writer. |
+| [Atomic actions](./dispute-demo/docs/actions.md) | T05 write interface, protected rereads, recovery, PostgreSQL test setup and deployment limits. |
 | [Decision storage](./dispute-demo/docs/storage.md) | T04 PostgreSQL migration, revision guard, lifecycle/duplicate scope and isolated integration tests; deployment boundary. |
 | [Policy evaluation](./dispute-demo/docs/policy.md) | T03 typed evaluator, supported synthetic evidence/ledger semantics, offline and live acceptance results. |
 | [Typed retrieval](./dispute-demo/docs/retrieval.md) | T02 read interfaces, case/customer scope, error statuses, live/offline checks and unsupported freshness/decision storage. |
@@ -27,13 +28,13 @@ For the current task and its Jira issue, start with the task board in [ROADMAP.m
 
 **Use [ROADMAP.md](./ROADMAP.md) as the source of truth for the next task.** It records each task's Jira issue, dependencies, required reading, work checklist, deliverable and acceptance gate. Its completion log records what was tested and any remaining blockers. Check the current task board and actual source before starting; older work-log entries describe historical states.
 
-**Current handover, 27 October 2026:** T00–T04 and T06 are complete against repository gates. T06 delivers the [pure critic](./dispute-demo/docs/critic.md) with exact context/policy/proposal binding, corroborated citations and bounded feedback. **92 offline tests, 4 compatibility tests and data validation pass**; 20 PostgreSQL tests are explicitly skipped in this run. All 40 authored scenarios pass. No live service or deployment check was run for T06. [KAN-15](https://luijoel24.atlassian.net/browse/KAN-15) is verified Done with completion evidence.
+**Current handover, 27 October 2026:** T00–T06 are complete against repository gates. T05 delivers the [atomic action service](./dispute-demo/docs/actions.md), with protected PostgreSQL source/policy/critic rechecks, all four persisted outcomes, exact retry reuse and duplicate prevention. **138 tests pass with zero skips**, including 45 real PostgreSQL tests; 4 compatibility tests and data validation pass. [KAN-14](https://luijoel24.atlassian.net/browse/KAN-14) is verified Done with completion evidence.
 
-[Typed retrieval](./dispute-demo/docs/retrieval.md) and the [canonical evaluator](./dispute-demo/docs/policy.md) provide the critic's inputs. The old SQLite write entry point now returns unavailable without touching local state. Rationale validation is deliberately limited to deterministic policy explanations; arbitrary prose routes to review. The [T04 migration](./dispute-demo/docs/storage.md) exists, but shared deployment/coherent reads and the T05 action service remain pending; runtime source revisions still return null.
+The service uses the [T04 storage guard](./dispute-demo/docs/storage.md) and [pure critic](./dispute-demo/docs/critic.md); the old SQLite writer remains retired. Shared deployment, runtime writer credentials and coherent fresh Zetaris reads are still pending. Current read tools return null revisions and cannot commit. T08 must resolve that deployment gate before claiming a live end-to-end flow.
 
 The target uses one Nightshift investigator, a pure deterministic critic and one PostgreSQL action service. Policy-permitted `provisional_credit`, `request_evidence` and `decline` run autonomously; `human_review` is exceptional and creates no credit. Only confirmed persistence creates a queued review item. Verified history remains advisory; no numeric history policy has been introduced. T10 still needs an explicit advisory-scope acceptance decision or an approved versioned history rule.
 
-Next: **[T05 / KAN-14 — Implement atomic simulated decision recording](https://luijoel24.atlassian.net/browse/KAN-14)**, only when assigned. Use the T04 guard/storage and real T03/T06 evaluator/critic. Recheck fresh authoritative state in one protected PostgreSQL transaction, bind the exact proposal/critic, record all four outcomes, reconcile identical retries and block duplicate credits. Follow T05's full roadmap gate, including real independent-connection tests; no T05 implementation has started.
+Next: **[T07 / KAN-16 — Implement the investigator through Nightshift](https://luijoel24.atlassian.net/browse/KAN-16)**, only when assigned. Reuse typed reads, policy and critic; validate structured proposals/tool requests, handle one correction, and keep actual responder identity/live inference distinct from mocks. No T07 work has started.
 
 ### Steps for the next teammate
 
@@ -47,22 +48,19 @@ Next: **[T05 / KAN-14 — Implement atomic simulated decision recording](https:/
 ### Copyable task handover
 
 ```text
-Work on T05 / KAN-14 only:
-https://luijoel24.atlassian.net/browse/KAN-14
+Work on T07 / KAN-16 only:
+https://luijoel24.atlassian.net/browse/KAN-16
 
 Follow AGENTS.md and read context.md, ROADMAP.md, agent.md and applicable
-sources. Verify T03/T04 prerequisites and the completed T06 critic.
-Implement one canonical PostgreSQL simulated-decision service, with
-protected current-state policy/critic rechecks, all four outcomes,
-identical-payload retry reuse and changed-payload/duplicate rejection.
-Unknown source revisions cannot commit. A failed write is not queued review.
-
-Run real PostgreSQL independent-connection, rollback and retry tests;
-preserve shared data and existing state. Record exact checks and update
-roadmap/context. Jira edits and publication require authorized scope.
-Stop after T05 and recommend the next dependency-ready task.
+sources. Verify T02/T03/T06 prerequisites. Implement the typed Nightshift
+investigator, validated allowlisted read requests and one correction.
+Keep untrusted case text separate from operational instructions; no write
+tools or fixture answers in model inputs. Record actual responding model
+identity only when evidenced. Test schema failures/timeouts/tools offline,
+and label any real inference separately. Update roadmap/context and Jira
+within the authorized scope, commit the completed task, then stop after T07.
 
 ```
 
-Next recommended task: **T05 / KAN-14: atomic simulated decision recording**.
-T09 and A01 may be assigned separately. T05, T07–T13 and A01 remain NOT_STARTED.
+Next recommended task: **T07 / KAN-16: investigator through Nightshift**.
+T09 and A01 may be assigned separately. T07–T13 and A01 remain NOT_STARTED.

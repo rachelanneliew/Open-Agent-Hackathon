@@ -1,0 +1,2 @@
+# Optional write-service dependency; pure policy/critic/read imports need none.
+psycopg[binary]==3.2.10

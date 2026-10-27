@@ -10,7 +10,7 @@ We are building one Nightshift investigator with a Python controller, determinis
 - Added reproducible generation, test fixtures, evidence documents and data-validation tests.
 - Rachel has loaded the project database and registered its tables in Zetaris.
 - Added `get_dispute_context.py`; it expects the Zetaris datasource name **`dispute`**
-- PR #4 supplied prototypes in `dispute-demo/agent/`. T02/T03 now provide typed retrieval/policy, T04 provides isolated-tested PostgreSQL storage, and T06 provides the pure critic and retires SQLite execution. Canonical action integration, a real Nightshift investigator, bounded workflow, verified portable memory setup and UI remain outstanding. See [context.md](./context.md) and [ROADMAP.md](./ROADMAP.md).
+- PR #4 supplied prototypes in `dispute-demo/agent/`. T02/T03 now provide typed retrieval/policy, T04 provides isolated-tested PostgreSQL storage, and T06 provides the pure critic and retires SQLite execution. T05 now provides the isolated-tested atomic action service. Shared deployment/coherent reads, a real Nightshift investigator, bounded workflow, verified portable memory setup and UI remain outstanding. See [context.md](./context.md) and [ROADMAP.md](./ROADMAP.md).
 
 **Evidence date:** T02 verified typed retrieval and live JDBC reads on 27 October 2026, with 50 root-suite tests and 6 offline critic tests passing. See [the retrieval reference](./dispute-demo/docs/retrieval.md) and ROADMAP for exact evidence. Nightshift discovery failure remains dated T00 evidence; Nightshift and H-MEM were NOT RUN for T02. Setup/start/load commands below are instructions for a new environment; no service startup, installation or source loading was performed in T02.
 
@@ -300,3 +300,30 @@ tests skipped and 7 external H-MEM tests collected only. No live services were
 checked or changed. The old SQLite action entry point is disabled. The next
 assigned implementation should be T05, which must provide protected fresh reads
 and the canonical PostgreSQL action service before any persisted runtime claim.
+
+## T05 action-service acceptance and setup
+
+The [action-service guide](./dispute-demo/docs/actions.md) documents the typed
+interface, restricted connection ownership, retries and failure semantics.
+138 tests pass, including 25 real PostgreSQL action tests and all 20 storage
+tests. Four compatibility tests and data validation pass. T05 uses pinned
+Psycopg 3.2.10; install `dispute-demo/requirements-actions.txt` in a dedicated
+application virtual environment, preserving the existing JDBC environment.
+
+The default connector reads private process setting `DISPUTE_ACTION_DSN` and
+requires an unprivileged login granted only `dispute_action_writer`. Do not use
+the loader/admin login. No shared migration, login grant or Zetaris registration
+was performed. Current null-revision reads cannot commit; deployment and verified
+coherent fresh Zetaris reads remain an explicit T08 prerequisite.
+
+From `dispute-demo/` with the dependency installed, Docker running and the
+existing PostgreSQL image:
+
+```sh
+DISPUTE_ACTION_TESTS=1 DISPUTE_STORAGE_TESTS=1 PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -v
+```
+
+This creates/cleans only disposable test containers and volumes. T05 publishes an
+ephemeral loopback-only test port; T04 uses its existing unnetworked fixture.
+Without opt-in, 45 PostgreSQL checks are explicitly skipped. Nightshift, live
+Zetaris and H-MEM were NOT RUN for T05. Next implementation task: T07 / KAN-16.

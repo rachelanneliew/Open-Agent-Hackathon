@@ -1,8 +1,8 @@
 # Task Roadmap — Synthetic Card-Dispute Resolution Agent
 
 > **Canonical work queue.** Read [`context.md`](./context.md) first, then [`agent.md`](./agent.md).
-> **Revision:** T06 pure critic accepted, 27 October 2026, on `main`: 92 offline tests and 4 compatibility regressions pass; data validation passes. SQLite execution is retired. T04 shared deployment and coherent reads remain pending. Evidence is recorded below.
-> **Next roadmap task:** T05 / KAN-14, only when assigned. T00–T04 and T06 are DONE; T05, T07–T13 and A01 remain NOT_STARTED. The user authorized T06 Jira updates, commit and push directly to `origin/main`.
+> **Revision:** T05 atomic PostgreSQL action service accepted, 27 October 2026, on `main`: 138 tests pass, including 45 real PostgreSQL tests; 4 compatibility regressions and data validation pass. Shared deployment and coherent Zetaris reads remain pending. Evidence is recorded below.
+> **Next roadmap task:** T07 / KAN-16, only when assigned. T00–T06 are DONE; T07–T13 and A01 remain NOT_STARTED. The user authorized T05 Jira updates and a completion commit directly to `main`.
 > **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
 
 ## 1. What changed from the earlier plan
@@ -23,7 +23,7 @@ Use statuses `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED`, `DONE`. DONE requires reco
 
 Every task includes its own tests. T12 is cross-component testing, not the first time testing begins.
 
-**Post-merge integration order:** T03/T04/T06 are complete; assign T05 next using the actual pure critic, then T07/T08. T09 and A01 can progress separately when assigned. After T09, complete T10, then T11, T12 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
+**Post-merge integration order:** T03–T06 are complete; assign T07 next, then T08. T08 must resolve shared deployment and coherent fresh Zetaris reads before live commits. T09 and A01 can progress separately when assigned. After T09, complete T10, then T11, T12 and T13. Existing formal dependencies below remain unchanged. T02 can represent unavailable revision/storage support and must not wait for all T04 features; T05 cannot pass without T04 synchronization and fresh typed inputs. This sequence authorizes no work beyond the assigned task.
 
 ## Jira tracking (supplied kit dated 2026-10-26)
 
@@ -70,7 +70,7 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 | T02 | Expose narrow case and history retrieval tools | T01 | DONE |
 | T03 | Implement deterministic policy evaluation | T01, T02 | DONE |
 | T04 | Create sandbox decision, action and audit storage | T01 | DONE |
-| T05 | Implement atomic simulated decision recording | T03, T04 | NOT_STARTED |
+| T05 | Implement atomic simulated decision recording | T03, T04 | DONE |
 | T06 | Build the mandatory critic and validator | T02, T03 | DONE |
 | T07 | Implement the investigator through Nightshift | T02, T03, T06 | NOT_STARTED |
 | T08 | Wire the bounded workflow and command-line runner | T02, T03, T05, T06, T07 | NOT_STARTED |
@@ -273,7 +273,7 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 ### T05 — Implement atomic simulated decision recording
 
 **Phase:** Controls  
-**Status:** NOT_STARTED  
+**Status:** DONE
 **Depends on:** T03, T04  
 **Deliverable:** One backend write service that validates and commits allowed sandbox decisions safely.
 
@@ -281,23 +281,25 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **PR #4 integration requirements:**
 
-- [ ] Make the PostgreSQL action service the sole normal-runtime decision/effect writer; replace the SQLite critic path. Validate exact proposal/critic/reference binding and refuse unknown as well as stale revisions inside the protected transaction.
-- [ ] Same key + identical payload returns the original result as `reused`; same key + changed payload is rejected; a new key cannot create a second effective credit. Commit decision, optional effect, audit and idempotency together.
-- [ ] Test all four persisted outcomes, required-review exclusion of credit, request/decline without effects, rollback, lost-acknowledgement recovery with the original key and independent-connection PostgreSQL concurrency. SQLite tests do not satisfy this gate.
+- [x] Make the PostgreSQL action service the sole normal-runtime decision/effect writer; replace the SQLite critic path. Validate exact proposal/critic/reference binding and refuse unknown as well as stale revisions inside the protected transaction.
+- [x] Same key + identical payload returns the original result as `reused`; same key + changed payload is rejected; a new key cannot create a second effective credit. Commit decision, optional effect, audit and idempotency together.
+- [x] Test all four persisted outcomes, required-review exclusion of credit, request/decline without effects, rollback, lost-acknowledgement recovery with the original key and independent-connection PostgreSQL concurrency. SQLite tests do not satisfy this gate.
 
 **Work:**
 
-- [ ] Implement a narrow commit_simulated_decision interface callable by the orchestrator, not by model tools.
-- [ ] In one database transaction, validate the request, lock/reload relevant authoritative state, select the applicable policy using its documented date anchor and reevaluate binding checks before writing.
-- [ ] Reject stale source versions, changed settlements, invalid status transitions and disallowed amounts. A lock on a dispute row alone is not sufficient unless relevant source writers follow the same synchronization protocol; implement and test the documented protocol.
-- [ ] Commit decision, optional simulated effect and required audit event atomically. Only report committed after commit succeeds. On a lost acknowledgement, retry the same idempotency key and return the existing result.
-- [ ] Keep provisional credit, evidence request, decline and human-review outcomes distinct. If the database is unavailable, return not committed; do not pretend a human-review queue entry was saved.
+- [x] Implement a narrow commit_simulated_decision interface callable by the orchestrator, not by model tools.
+- [x] In one database transaction, validate the request, lock/reload relevant authoritative state, select the applicable policy using its documented date anchor and reevaluate binding checks before writing.
+- [x] Reject stale source versions, changed settlements, invalid status transitions and disallowed amounts. A lock on a dispute row alone is not sufficient unless relevant source writers follow the same synchronization protocol; implement and test the documented protocol.
+- [x] Commit decision, optional simulated effect and required audit event atomically. Only report committed after commit succeeds. On a lost acknowledgement, retry the same idempotency key and return the existing result.
+- [x] Keep provisional credit, evidence request, decline and human-review outcomes distinct. If the database is unavailable, return not committed; do not pretend a human-review queue entry was saved.
 
 **Acceptance gate:** Real PostgreSQL integration tests use independent transactions/connections. A valid case commits once; retries reuse it; two simultaneous attempts produce at most one credit; rollback and state/settlement changes cause no partial or stale effect.
 
 **Not in this task:** No real payment, model write tool, memory write inside the decision transaction or mocked-only claim of concurrency safety.
 
-**Suggested paths/artifacts:** Proposed: dispute-demo/app/action_service.py, dispute-demo/tests/test_action_service.py. Reuse existing equivalents; these paths are not verified as present.
+**Implemented artifacts:** [action service](./dispute-demo/app/action_service.py), [action tests](./dispute-demo/tests/test_action_service.py), [pinned dependency](./dispute-demo/requirements-actions.txt), and [action-service reference](./dispute-demo/docs/actions.md).
+
+**Acceptance, 27 October 2026:** 138 tests pass with zero skips, including 25 real PostgreSQL action tests and all 20 T04 storage tests. Four compatibility tests and data validation pass. Verified all outcomes, exact binding, full protected source rereads, identical retry reuse, changed-payload rejection, duplicate reservations, concurrent requests/source writers, rollback and lost-ack recovery. Only isolated databases were migrated/written. Shared deployment, runtime login and coherent fresh Zetaris reads remain pending; null revisions still cannot commit.
 
 **Stop:** report evidence, update this task's status and the work log, then stop. Do not automatically start the next task.
 
@@ -1078,6 +1080,36 @@ Exact verification from `dispute-demo/`, Python 3.13.7, unless stated otherwise:
 - `context.md` updated for verified T06 capability and rationale/legacy-path limits. Recommended next task: **T05 / KAN-14**, not started. Stop after T06 publication.
 - Jira closure: live KAN-15 matched the assigned acceptance criteria, moved through In Progress, received completion comment `10006`, then transition `31` moved it to **Done**. Read-back verified Done, exactly one comment and unchanged summary, description, assignee, parent, labels and issue links. No other Jira issue was changed.
 - Publication: user-authorized direct `main` commit with the 12 explicit T06 implementation/test/documentation paths, followed by normal `git push origin main`. Final commit/remote identity and clean-tree results are reported after execution; no force push or next task.
+
+
+### 2026-10-27 — T05 / KAN-14: atomic PostgreSQL simulated decisions
+
+- Status: **DONE** against the T05 repository acceptance gate. Owner: Codex, executing the user's roadmap goal with Jira updates and a direct completion commit to `main`. Selected the next dependency-ready task only. Initial clean `main` at `1b7a3cb`; `git fetch origin` and `git rev-list --left-right --count origin/main...HEAD` verified `0 0`. T03/T04/T06 prerequisites were inspected in source and exercised by the final full suite. No subagents or next task were started.
+- Added `dispute-demo/app/action_service.py`, `tests/test_action_service.py`, `requirements-actions.txt` and `docs/actions.md`. Updated root README, TEAM_SETUP, agent reading map, context, roadmap and contract/retrieval/storage handoffs. Existing schemas, critic, policy evaluator, retrieval, migration, source policies/data/fixtures, generator, private configuration, prototype state and nested repositories remain unchanged.
+- Delivered one application-only `CommitRequest` / `commit_simulated_decision` interface using the existing `CommitResult`. New idle restricted Psycopg connections use READ COMMITTED, bounded SQL/lock waits, synchronous commit and the T04 all-writer guard. Identical full-payload retry is reconciled before stale-input checks; changed payload is rejected. Unknown/stale references, mismatched run/proposal/critic, future snapshots, non-open source status and post-cutoff facts cannot commit.
+- Under the same protected transaction, rereads current source records and left-joined evidence text, selects policy at dispute opening, compares typed source facts, reruns canonical policy and critic, then inserts investigation/decision and automatic effect/review/audit sidecars. All four outcomes persist; non-credit has no effect. Existing lifecycle/reservations prevent second credit and swapped duplicate-pair awards while allowing later validated non-credit/new-evidence review. No source status changes or invented policy/history rules.
+- Recovery: report committed only after acknowledgement; lost acknowledgement returns unconfirmed failure without persisted IDs and an exact original-key retry recovers the original result. Cleanup errors cannot hide confirmed persistence. Database errors never become fabricated queued reviews, and exception text/DSNs are not exposed. No SQLite fallback, model write tool, memory transaction or runtime fixture lookup.
+- Runtime dependency: pinned `psycopg[binary]==3.2.10`. Installed only in a new disposable `/private/tmp/dispute-t05-venv` using Python 3.12.5; existing Python 3.13.7 JDBC environment unchanged. Initial sandbox pip networking failed; approved retry of `/private/tmp/dispute-t05-venv/bin/python -m pip install --no-cache-dir -r dispute-demo/requirements-actions.txt` succeeded. Initial read-only Docker inspection was sandbox-denied; approved inspection confirmed existing services healthy. No shared services were started/restarted/reconfigured.
+
+Exact verification from `dispute-demo/`, unless noted:
+
+| Command | Actual result |
+| --- | --- |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -v` | Baseline: 112 collected, 92 passed, 20 PG opt-in skips. Final: **138 collected, 93 passed, 45 PG opt-in skips**, zero failures/errors; Python 3.13.7. |
+| `DISPUTE_ACTION_TESTS=1 PYTHONDONTWRITEBYTECODE=1 /private/tmp/dispute-t05-venv/bin/python -m unittest discover -s tests -p test_action_service.py -v` | Initial action gate: **22 passed** (21 PostgreSQL plus one transport check), zero skips/failures/errors; 13.547s. Subsequent durability and duplicate/late-evidence coverage is included in the full run below. |
+| `DISPUTE_ACTION_TESTS=1 DISPUTE_STORAGE_TESTS=1 PYTHONDONTWRITEBYTECODE=1 /private/tmp/dispute-t05-venv/bin/python -m unittest discover -s tests -v > /private/tmp/t05-full-tests.log 2>&1` | **138 passed, zero skips/failures/errors**, 37.864s: 25 real PostgreSQL action tests, all 20 real storage tests, 93 offline tests. Python 3.12.5 / Psycopg 3.2.10 / existing PostgreSQL 16 image. |
+| `PYTHONDONTWRITEBYTECODE=1 /private/tmp/dispute-t05-venv/bin/python -m unittest discover -s agent/tests -p test_critic.py -v` | **4 passed**, zero skips/failures/errors. Retired SQLite writer remains inert and existing/absent state is preserved. |
+| `PYTHONDONTWRITEBYTECODE=1 /private/tmp/dispute-t05-venv/bin/python scripts/validate_synthetic_data.py` | **PASS**, unchanged 42 transactions / 54 settlements / 40 disputes / 81 evidence / 16 rules; document/manifest hashes and fixtures validate. |
+| `PYTHONDONTWRITEBYTECODE=1 /private/tmp/dispute-t05-venv/bin/python -` with `sys.path` snapshot, imports of `app.action_service`, `app.critic`, `agent.critic`, absence of psycopg/SQLite/JDBC/H-MEM imports, then `unittest.TestLoader().discover('agent/tests')` | **PASS**, no import-time connection/path mutation; 11 prototype tests collect without errors. Seven external H-MEM tests collected only, **NOT RUN**. |
+
+- Real PostgreSQL evidence: independent backend PIDs for concurrent identical requests; one committed/one reused with the same decision. Competing distinct requests produce one commit/one stale rejection. A source writer holding the guard makes the action wait then reject its now-stale revision. During validation, an independent source writer times out on the guard. A real audit-trigger fault rolls back every record and the revision. A wrapper loses acknowledgement only after real COMMIT; retry returns the durable original with one credit. Tests cover four outcomes, forged current revisions/source facts/critic flags/amounts, future cutoffs, later refunds/evidence, unusable text, fresh duplicate requests, swapped linked charges, duplicate run IDs, restricted login/autocommit rejection, synchronous durability, new-evidence review and queue supersession. T04's real restart/permissions/constraints tests also pass.
+- Isolation: only unique test containers/databases and their anonymous volumes were created/migrated/written. T05 uses an ephemeral loopback-only port; T04 remains unnetworked. `docker ps -a --filter label=dispute-purpose=t05-isolated-test --format '{{.Names}}'` and the corresponding T04 command returned no containers after cleanup. `docker ps --format '{{.Names}}\t{{.Status}}'` confirmed the original five services healthy. No source/shared reset or migration occurred.
+- **NOT RUN:** live Zetaris/JDBC, Nightshift, H-MEM reference execution, HackOS, shared migration/registration/runtime grants or complete agent workflow. Current T02 revisions remain null and cannot commit. Test-only snapshots came from protected isolated PostgreSQL reads and are labelled `offline_test`; they are not live Zetaris evidence. T08 must resolve shared deployment and verified uncached fresh Zetaris reads before live end-to-end persistence. These deployment limits do not replace or weaken T05's real PostgreSQL acceptance gate.
+- Shared-source read-only check: `docker exec dispute-data-dispute-postgres-1 psql -X -U dispute_loader -d dispute_demo -At -c "SELECT count(*) FROM pg_namespace WHERE nspname IN ('dispute_control','dispute_actions'); SELECT count(*) FROM transactions; SELECT count(*) FROM settlements; SELECT count(*) FROM disputes; SELECT count(*) FROM evidence; SELECT count(*) FROM evidence_documents; SELECT count(*) FROM policy_rules;"` returned **0** action/control schemas and source counts **42/54/40/81/81/16**. This is source inventory only, not live agent/retrieval acceptance.
+- Final repository checks: `PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/validate_t05_docs.py` passed (nine documents, 178 local links, Python syntax, only T05 task status changed, historical log preserved). `git diff --check` passed. `git diff --exit-code 1b7a3cb -- dispute-demo/app/schemas.py dispute-demo/app/critic.py dispute-demo/app/policy_engine.py dispute-demo/app/tools.py dispute-demo/agent dispute-demo/data dispute-demo/policies dispute-demo/scripts dispute-demo/integration dispute-demo/db dispute-demo/tests/fixtures dispute-demo/tests/test_generation.py getting-started zetaris-platform AGENTS.md CLAUDE.md` passed, confirming protected source/state paths unchanged.
+- Jira closure: KAN-14 moved through In Progress, received completion comment **10007**, then transition 31 moved it to **Done**. Read-back verified Done, one comment and unchanged summary, description, assignee, parent, labels and issue links. No other issue changed.
+- Publication scope: user-authorized completion commit directly to local `main`, containing exactly the 12 implementation/test/dependency/documentation paths above. Commit identity and clean-tree verification are reported after execution. No remote push was requested or performed.
+- Context updated for the verified writer and its deployment limit. Recommended next task: **T07 / KAN-16**, not started. Stop after the authorized T05 commit.
 
 ## 11. Deferred scope
 

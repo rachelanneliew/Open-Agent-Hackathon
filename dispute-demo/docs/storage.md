@@ -171,3 +171,16 @@ The six source tables and `dispute_reader` role must already exist. Inspect
 `SELECT version FROM dispute_control.schema_migrations` after application.
 Do not apply to the Zetaris metastore. T04 does not migrate the existing demo
 source database, alter its credentials, register views, or grant a runtime login.
+
+## T05 implementation follow-up — 27 October 2026
+
+The [atomic action service](./actions.md) now implements protected authoritative
+rereads, exact request/policy/critic binding, all-outcome persistence and recovery
+using the existing T04 migration and unchanged T01 contracts. Twenty-five real
+PostgreSQL action tests and all 20 storage tests pass; the full suite has 138
+passing tests with no skips. SQLite execution remains retired.
+
+This supersedes earlier notes that the action service is absent. Shared
+migration, runtime credentials and coherent fresh Zetaris reads remain pending;
+T02 still returns null revisions and unsupported decision reads. The service
+refuses unknown revisions. No live deployment or model/memory result is claimed.
