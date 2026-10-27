@@ -263,3 +263,20 @@ classified by evidence rules; unresolved issues still require review. Unknown
 policy versions/semantics and unsupported ledger patterns fail closed. Eight actual
 live JDBC contexts now pass after authorized existing-stack startup; T03 is DONE.
 No source revision, action persistence or commit freshness is established by T03.
+
+## T04 implementation follow-up — 27 October 2026
+
+The [storage reference](./storage.md) supersedes the historical T01 lifecycle and
+missing-migration entries above. Migration 001 implements all-writer revision
+triggers, restricted roles, append-only decisions and automatic credit/review/audit
+sidecars, proven by 20 isolated PostgreSQL tests. T01 types remain unchanged.
+Non-credit decisions may be followed by a new evaluation; source status is not
+mutated. Credits are unique by dispute/primary transaction, with both linked
+charges reserved against swapped duplicate-pair awards. A current revision cannot
+bypass post-cutoff authoritative refunds/evidence. T05 still owns protected
+current-state policy/critic revalidation and identical-key/payload reuse.
+
+The shared database is not migrated and Zetaris registration/cache coherence is
+not verified by T04. Existing T02 tools retain null revisions and unsupported
+decision reads. Read-only public views and the exact T02/T05 handoff are documented
+in the storage reference; no successful runtime commit is enabled here.

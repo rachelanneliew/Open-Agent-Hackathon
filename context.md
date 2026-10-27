@@ -3,7 +3,7 @@
 > **Canonical project brief for all coding agents and collaborators.**
 > Read this file **at the start of every task**, then consult [`ROADMAP.md`](./ROADMAP.md) for the active priorities. Read the actual code, policies, schemas, tests, and HackOS instructions before making implementation claims.
 >
-> **Context last reviewed:** 2026-10-27, T03 deterministic policy implementation from `3106cd5` on `codex/t03-policy-evaluation`. T00–T03 are complete against repository gates. **Evidence:** 70 main tests, 6 offline critic regressions, data validation and eight live JDBC policy evaluations pass. User-authorized startup resolved the initial service blocker. No action/model/memory integration is claimed; source revisions remain null.
+> **Context last reviewed:** 2026-10-27, T04 storage from merged T03 baseline `b64c21d`, on `codex/t04-decision-storage`. T00–T04 are complete against repository gates. **Evidence:** 20 isolated PostgreSQL tests, 70 offline tests, 6 prototype regressions and data validation pass. The existing source database remains unmigrated; T02 revisions remain null and runtime action/model/memory integration is still pending.
 
 ## 1. Project identity
 
@@ -128,7 +128,7 @@ Implemented T01 types: `DisputeContext`, `PolicyResult`, `AgentProposal`, `Criti
 
 `recommend_refund` maps explicitly to a new simulated `provisional_credit`; existing merchant refund/reversal movements are preserved. Non-credit outcomes (`decline`, `request_evidence`, `human_review`) have no amount/effect. Missing evidence uses categories rather than invented document IDs. Business outcomes, critic verdicts and persistence statuses are separate.
 
-All stages carry the same dispute/snapshot/cutoff/policy/source-revision reference. A snapshot UUID is identity only; `source_revision=None` means freshness is unavailable and cannot support a successful commit result. The documented future protocol uses a global source-revision guard shared by **all** relevant writers, including settlement inserts, evidence/policy changes and actions. No guard, migration or concurrency protection is implemented yet. Source policies define no business lifecycle beyond generated `open` disputes; later action tasks must resolve that explicitly.
+All stages carry the same dispute/snapshot/cutoff/policy/source-revision reference. A snapshot UUID is identity only; `source_revision=None` means freshness is unavailable and cannot support a successful commit result. The documented future protocol uses a global source-revision guard shared by **all** relevant writers, including settlement inserts, evidence/policy changes and actions. T04 now implements the guarded PostgreSQL migration and tests it in isolated databases. Source policies define no lifecycle beyond generated `open` disputes; [T04 storage](./dispute-demo/docs/storage.md) defines append-only re-review and conservative duplicate scope without changing source status. Shared deployment, verified coherent reads and T05 action validation remain pending.
 
 Keep **business outcome** (credit, evidence request, decline, human review) separate from **execution status** (committed, reused, rejected, unavailable, failed). The critic can approve a proposal for commit, but only the database service can confirm persistence. A failed database call is not a saved review item.
 
@@ -204,9 +204,18 @@ Keep **business outcome** (credit, evidence request, decline, human review) sepa
 
 The 40 expected-result fixtures remain test-only authored answers. Shared contracts are implemented under `app/`; module locations under `agent/` are real prototypes, not absent components. Adapt/move each under its assigned task, preserve strict schemas and leave one canonical evaluator and one normal-runtime PostgreSQL action writer. No alternate SQLite bypass should survive that integration; do not delete or migrate local state implicitly.
 
-No canonical PostgreSQL decision/action/audit/review migrations or action service, source-revision guard, structured Nightshift investigator, bounded controller, analyst UI or complete end-to-end/reset runner is implemented in this checkout. Live database contents were NOT RUN/reinspected here; the seven-table inventory remains dated T00 evidence. Lifecycle/re-review, cross-dispute duplicate scope and historical replay versus current-state commit semantics remain T04/T05 decisions. T02 may honestly return `source_revision=None` and unsupported decision reads before T04; successful commits may not use unknown revisions.
+T04 now supplies canonical PostgreSQL storage and a source-revision guard, tested only in isolated databases; its verified details follow below. The existing demo database was reinspected read-only and still has its original seven public tables, no storage migration. A canonical action service, structured Nightshift investigator, bounded controller, analyst UI and complete end-to-end/reset runner remain unimplemented. T04 resolves minimum re-review, conservative duplicate scope and fresh-write cutoff handling; full commit-time policy/source validation remains T05. T02 continues returning `source_revision=None` and unsupported decision reads until deployment, registration and read coherence are verified; successful commits may not use unknown revisions.
 
 `registration.sql` and `verify.sql` use historical datasource `dispute_pg`; current setup/retrieval use `dispute`. The root has gitlinks without `.gitmodules`, so a fresh clone needs the onboarding/platform setup steps in `TEAM_SETUP.md`.
+
+### Verified in T04 — PostgreSQL storage, 27 October 2026
+
+- [Migration 001](./dispute-demo/db/migrations/001_decision_storage.sql) stores investigations, all four outcomes, exact request/proposal/source references, idempotency, automatic credit/review/audit sidecars and a durable review queue. Merchant settlement rows remain separate. Non-credit amounts are NULL; no credit effect is permitted.
+- Global revision triggers and restricted unprivileged writer roles cover source and action mutations, including COPY/TRUNCATE and evidence text/policy changes. The initial loader refuses migrated databases. Administrative superusers remain trusted for DDL, not normal runtime credentials. No runtime login is granted writer membership by T04.
+- [Lifecycle reference](./dispute-demo/docs/storage.md): preserve source status; append later non-credit/new-evidence evaluations with fresh identities/revision and a nonforking predecessor chain. Enforce one credit per dispute/primary transaction and reserve both linked charges against swapped duplicate-pair awards. No top-up/reversal/reissue. Later reviews remain possible; superseded queues remain in audit history.
+- The storage cutoff guard rejects later authoritative transactions/settlements/evidence and future/pre-opening cutoffs. A latest revision cannot rescue a frozen cutoff that hides a refund. Historical evaluation stays read-only; T05 must validate an explicitly fresh context, policy and critic under the shared lock and reconcile identical request retries.
+- **20 real PostgreSQL tests pass**, including migration preservation, permissions, rollback, source-writer blocking, all outcomes, duplicate scopes, new-evidence review, late refunds and review persistence after actual isolated-server restart. Root discovery: 90 tests, 70 passed/20 opt-in skips; the 20 ran separately with no skips. Six offline critic regressions and data validation pass.
+- Shared source data/services were preserved: same seven tables and 42/54/40/81/81/16 counts; no control/action schemas in the demo DB. Test containers/volumes were removed. Source policies, data/fixtures, canonical schemas/evaluator and current retrieval are unchanged. No new live Zetaris/model/memory capability, action-service acceptance, Jira update or publication. Next recommended T06, not started.
 
 ### Located H-MEM reference and current adapter limits
 
@@ -286,7 +295,7 @@ Choose actual dispute IDs only after inspecting fixture and policy files; do not
 - What are the exact policy predicates, precedence, effective-date rules, allowed transitions, and amount semantics in the repo files?
 - How should the located official H-MEM specification/reference be adapted to this Python project, and can the actual adapter prove save/restart/recall in T09? Competition approval remains unverified.
 - Which fixture IDs best demonstrate supported credit, duplicate prevention, critic correction, and version boundaries?
-- T10: confirm advisory history acceptance scope or approve an exact versioned binding rule; T04/T05: settle lifecycle, cross-dispute duplicate scope and historical replay/fresh commits. No such new policy or lifecycle is approved by this documentation pass.
+- T10: confirm advisory history acceptance scope or approve an exact versioned binding rule. T04 has documented/tested minimum lifecycle, duplicate scope and the fresh-cutoff storage backstop; T05 must complete protected policy/critic validation, retries and live read freshness. No new history policy is approved.
 - PR #4 source is inspected at `76db772`; recheck source and live services when later tasks begin. The integration checklist is in `ROADMAP.md`.
 
 ## 9. Source-of-truth and maintenance rules
@@ -304,6 +313,7 @@ Choose actual dispute IDs only after inspecting fixture and policy files; do not
 
 | Date | Change and verification status | Evidence / file reference |
 |---|---|---|
+| 2026-10-27 | T04 storage accepted in isolated PostgreSQL: 20 integration tests, 70 offline/6 prototype regressions and data validation; shared source unmigrated | `db/migrations/001_decision_storage.sql`, `tests/test_decision_storage.py`, `docs/storage.md`, guarded loader; T04 work log |
 | 2026-10-27 | T03 typed policy evaluator accepted: 70 main tests, 6 critic regressions, data validation and 8 live JDBC cases; authorized existing-stack startup resolved initial blocker | `app/policy_engine.py`, `agent/policy_engine.py`, `tests/test_policy_engine.py`, `docs/policy.md`; T03 work log |
 | 2026-10-27 | T02 typed case/history/state reads accepted with 50 root tests, 6 offline critic tests and separate live JDBC checks; source revision/decision support remain unavailable | `app/tools.py`, `integration/get_dispute_context.py`, `docs/retrieval.md` under `dispute-demo/`; T02 work log in `ROADMAP.md` |
 | 2026-10-27 | Section 7 documentation alignment: recorded selective review/advisory history, mapped PR #4 prototypes and outstanding acceptance; no runtime tests or live application checks | PR #4 / local `76db772`; `ROADMAP.md` alignment log and new `docs/planning/JIRA_POST_MERGE_CHANGESET.md` preview |

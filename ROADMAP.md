@@ -1,8 +1,8 @@
 # Task Roadmap — Synthetic Card-Dispute Resolution Agent
 
 > **Canonical work queue.** Read [`context.md`](./context.md) first, then [`agent.md`](./agent.md).
-> **Revision:** T03 deterministic policy evaluation completed locally on `codex/t03-policy-evaluation` from `3106cd5`, 27 October 2026. Offline and live JDBC acceptance pass; evidence is recorded below.
-> **Next roadmap task:** T06 / KAN-15, only when assigned, following the post-merge integration order. T00–T03 are DONE; T04–T13 and A01 remain NOT_STARTED. No Jira change is included in T03.
+> **Revision:** T04 PostgreSQL storage completed locally on `codex/t04-decision-storage` from `b64c21d`, 27 October 2026. Twenty isolated PostgreSQL tests pass; the shared source database is preserved and unmigrated. Evidence is recorded below.
+> **Next roadmap task:** T06 / KAN-15, only when assigned, following the post-merge integration order. T00–T04 are DONE; T05–T13 and A01 remain NOT_STARTED. No Jira change is included in T04.
 > **Agent entry point:** complete the reading in [`AGENTS.md`](./AGENTS.md) before execution. A specific user request takes precedence; a documentation update does not authorize starting another task.
 
 ## 1. What changed from the earlier plan
@@ -69,7 +69,7 @@ The supplied kit reports that the Jira issues below were created in project `KAN
 | T01 | Define shared contracts and exact policy semantics | T00 | DONE |
 | T02 | Expose narrow case and history retrieval tools | T01 | DONE |
 | T03 | Implement deterministic policy evaluation | T01, T02 | DONE |
-| T04 | Create sandbox decision, action and audit storage | T01 | NOT_STARTED |
+| T04 | Create sandbox decision, action and audit storage | T01 | DONE |
 | T05 | Implement atomic simulated decision recording | T03, T04 | NOT_STARTED |
 | T06 | Build the mandatory critic and validator | T02, T03 | NOT_STARTED |
 | T07 | Implement the investigator through Nightshift | T02, T03, T06 | NOT_STARTED |
@@ -240,7 +240,7 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 ### T04 — Create sandbox decision, action and audit storage
 
 **Phase:** Controls  
-**Status:** NOT_STARTED  
+**Status:** DONE
 **Depends on:** T01  
 **Deliverable:** A tracked PostgreSQL migration with enforceable uniqueness and traceable non-credit decisions.
 
@@ -248,23 +248,25 @@ Do not silently remove a chosen feature when shortening scope. Record any scope 
 
 **PR #4 integration requirements:**
 
-- [ ] Persist all four outcomes, review queue, idempotency and audit in PostgreSQL; only credit has an amount/effect. Test review persistence across restart. The prototype's SQLite transaction uniqueness does not define canonical cross-dispute policy.
-- [ ] Implement the T01 global source-revision guard with enforced participation by all relevant writers, including settlement/evidence/policy/decision changes and loaders/resets. Coordinate coherent T02 reads without creating a circular prerequisite.
-- [ ] Resolve minimum non-credit/new-evidence lifecycle, cross-dispute duplicate scope and historical replay versus fresh commit semantics before enabling writes. A frozen evaluation cutoff cannot hide a later authoritative refund; isolate replay or explicitly document/test fresh-write behavior.
+- [x] Persist all four outcomes, review queue, idempotency and audit in PostgreSQL; only credit has an amount/effect. Test review persistence across restart. The prototype's SQLite transaction uniqueness does not define canonical cross-dispute policy.
+- [x] Implement the T01 global source-revision guard with enforced participation by all relevant writers, including settlement/evidence/policy/decision changes and loaders/resets. Coordinate coherent T02 reads without creating a circular prerequisite.
+- [x] Resolve minimum non-credit/new-evidence lifecycle, cross-dispute duplicate scope and historical replay versus fresh commit semantics before enabling writes. A frozen evaluation cutoff cannot hide a later authoritative refund; isolate replay or explicitly document/test fresh-write behavior.
 
 **Work:**
 
-- [ ] Create or reuse storage for investigation/decision records, simulated credit effects, audit events and review-queue status. Keep these separate from source settlement refunds.
-- [ ] Define a stable request idempotency key and a separate business constraint that permits at most one effective simulated provisional credit per dispute in the MVP sandbox.
-- [ ] Allow a later legitimate review after a request-for-evidence outcome when new evidence arrives, without permitting another credit. Do not treat every previous non-credit decision as permanent closure.
-- [ ] Persist policy/source references, proposal identity and committed execution state. Non-credit outcomes must not create a money-effect row.
-- [ ] Apply migration tests to an isolated test database. Preserve the source dataset and keep any live/sample state explicitly separated.
+- [x] Create or reuse storage for investigation/decision records, simulated credit effects, audit events and review-queue status. Keep these separate from source settlement refunds.
+- [x] Define a stable request idempotency key and a separate business constraint that permits at most one effective simulated provisional credit per dispute in the MVP sandbox.
+- [x] Allow a later legitimate review after a request-for-evidence outcome when new evidence arrives, without permitting another credit. Do not treat every previous non-credit decision as permanent closure.
+- [x] Persist policy/source references, proposal identity and committed execution state. Non-credit outcomes must not create a money-effect row.
+- [x] Apply migration tests to an isolated test database. Preserve the source dataset and keep any live/sample state explicitly separated.
 
 **Acceptance gate:** Migration is reproducible in a test database. Constraint tests block a second effective credit and permit valid non-credit lifecycle records. No production or shared source data is reset.
 
 **Not in this task:** No LLM workflow or claim that uniqueness alone proves all commit-time safety.
 
-**Suggested paths/artifacts:** Proposed: dispute-demo/db/migrations/, dispute-demo/tests/test_decision_storage.py. Reuse existing equivalents; these paths are not verified as present.
+**Implemented artifacts:** [migration 001](./dispute-demo/db/migrations/001_decision_storage.sql), [PostgreSQL tests](./dispute-demo/tests/test_decision_storage.py), guarded [initial loader](./dispute-demo/integration/load_data.py), and [storage/lifecycle reference](./dispute-demo/docs/storage.md).
+
+**Acceptance, 27 October 2026:** 20 real PostgreSQL tests pass in a disposable, unnetworked container: all outcomes/sidecars, duplicate and swapped-pair constraints, non-credit re-review, permissions, revision/rollback, writer blocking, late refunds and actual server restart. The 70 offline tests and 6 prototype critic tests pass; data validates unchanged. Applied only to isolated test databases. Deployment, Zetaris registration/read coherence and T05 action validation remain separate; T02 still returns null revisions and unsupported decisions.
 
 **Stop:** report evidence, update this task's status and the work log, then stop. Do not automatically start the next task.
 
@@ -998,6 +1000,42 @@ PYCODE
 - Repository checks: `git diff --check`, the protected-source check recorded above, and `PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/validate_t03_docs.py` passed (six documents, 91 local links, task mappings/dependencies and historical logs preserved). Only the nine T03 implementation/test/documentation paths are included.
 - Runtime sources are unchanged from the eight successful live JDBC evaluations above. Live application checks were NOT RUN again for publication; no new integration capability is claimed.
 - Publication uses an explicit nine-file commit, `git push --set-upstream origin codex/t03-policy-evaluation`, then a GitHub PR and normal merge with an expected-head check after reviewing CI/mergeability. Commit/PR/merge identifiers and remote verification are reported after execution rather than asserted in advance. T03 remains DONE; T06 / KAN-15 is recommended and not started.
+
+### 2026-10-27 — T04 / KAN-13: PostgreSQL decision, action and audit storage
+
+- Status: **DONE** against the T04 repository gate. User explicitly assigned T04; no other roadmap task was started. Baseline clean `main` at `b64c21d18df1ccd8cc93e507eeb937ea5fb7e7c1` (merged T03 PR #5); local branch `codex/t04-decision-storage`. T01 source/contracts inspected and its 21 tests passed before edits. No Jira edits, commits, pushes or PRs in this task.
+- Added `dispute-demo/db/migrations/001_decision_storage.sql`, `tests/test_decision_storage.py`, `docs/storage.md`; modified `integration/load_data.py` to refuse initial loading into a guarded database. Updated README, TEAM_SETUP, context, roadmap and contract/retrieval handoffs. No changes to source data, policies, fixtures, canonical schemas/evaluator/retrieval, prototype runtime/state, private configs or nested checkouts.
+- Delivered: append-only investigations and decisions with run/proposal/snapshot/cutoff/policy/revision references, full request JSONB and unique idempotency key; automatic transactional credit/reservations or review sidecars and audit events; non-credit NULL amounts, durable pending-review view, read-only public registration views. Composite FKs bind case/primary transaction and prevent credit/review sidecars on the wrong outcome. Identical-payload retry response logic remains T05, not a claimed storage feature.
+- Lifecycle decisions under T04's assignment: source `open` status is preserved; new evaluations can append after evidence requests, declines or reviews, with a new snapshot, later revision, nondecreasing cutoff and a nonforking predecessor chain. Old reviews remain in history and leave the pending view when superseded. At most one credit per dispute/primary transaction; both linked charge IDs are reserved to block swapped duplicate-pair claims. No top-up/reversal/reissue; later non-credit review remains allowed. These are conservative storage safeguards, not changes to v1/v2 eligibility or an invented history threshold.
+- Global guard: ALWAYS statement triggers lock/increment one revision before every covered source/action INSERT/UPDATE/DELETE/COPY/TRUNCATE, with atomic rollback. Dedicated unprivileged NOLOGIN owner/writer roles, fixed-search-path definer functions and restricted table/DDL/guard permissions enforce normal writer participation. The Compose bootstrap superuser remains a trusted migration administrator, never a permitted runtime credential; its initial loader refuses migrated databases. Tests use actual separate unprivileged logins.
+- Freshness boundary: inserting a decision rejects future/pre-opening cutoffs and any currently authoritative scoped transaction, settlement or evidence after the cutoff. A test adds a later refund and supplies the latest revision with the old cutoff: zero decisions/effects. Backdated corrections, full policy/critic/source binding, stale-revision comparison and identical retry recovery remain T05 checks under the shared lock. No replay bypass or normal runtime write login is enabled. T02 remains null/unsupported until deployment, registration and uncached coherent reads are verified; read views plus the explicit handoff coordinate that work without claiming live JDBC freshness.
+
+Exact verification from `dispute-demo/`, existing Python 3.13.7:
+
+| Command | Actual result |
+|---|---|
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -p test_schemas.py -v` | Baseline PASS: 21 tests, zero failures/errors/skips. |
+| `DISPUTE_STORAGE_TESTS=1 PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -p test_decision_storage.py -v` | Final PASS: **20 real PostgreSQL tests**, zero failures/errors/skips, 30.130s. Existing `postgres:16-alpine` image, `--pull never`, unique container, no network/ports, own anonymous volume, fresh DB per test. |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s tests -v` | PASS: 90 collected, **70 passed, 20 explicitly skipped** without the PostgreSQL opt-in; zero failures/errors. The separate preceding run executes all 20, so skips are not substituted for PG acceptance. |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -m unittest discover -s agent/tests -p test_critic.py -v` | PASS: **6** prototype regressions, zero failures/errors/skips. Mock policy/temporary SQLite, not canonical action-service evidence. |
+| `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python scripts/validate_synthetic_data.py` | PASS: 42 transactions, 54 settlements, 40 disputes, 81 evidence rows/documents, 16 policy rules; manifest/fixture validation unchanged. |
+
+- PostgreSQL evidence: migration reproduces on every test database and preserves all six source tables byte-for-byte by sorted row hashes against the pristine test template. Reapplication fails atomically. Tests prove all four outcome sidecars, unique request/proposal/credit scopes, swapped-pair protection, no chain forks, non-credit/new-evidence re-review, queue supersession, immutable history, role/DDL/guard restrictions, COPY/TRUNCATE participation, rollback and old-cutoff rejection. Independent backend tests hold the guard and show settlement/text/policy writers timing out until release. A real restart of **only the disposable test container** retains the queued review, audit and revision. No claim of T05 full action concurrency/validation acceptance.
+- Initial harness corrections retained as evidence: the first run collected zero tests and errored because readiness saw PostgreSQL's temporary socket-only bootstrap server before DB creation; switched to TCP readiness. The next 18-test run had three failed role-escalation subcases because a superuser session retains SET ROLE capability; replaced role-only impersonation with separate unprivileged logins. Final 20-test run above passed. Test containers/anonymous volumes were cleaned after each run.
+- Live shared-source inventory command before/after (repository root): `bash dispute-demo/integration/db.sh exec -T dispute-postgres psql -X -U dispute_loader -d dispute_demo -At -c "SELECT tablename FROM pg_tables WHERE schemaname='public' ORDER BY tablename; SELECT count(*) FROM transactions; SELECT count(*) FROM settlements; SELECT count(*) FROM disputes; SELECT count(*) FROM evidence; SELECT count(*) FROM evidence_documents; SELECT count(*) FROM policy_rules;"` — unchanged seven public tables and counts 42/54/40/81/81/16. Post-test schema check `SELECT count(*) FROM pg_namespace WHERE nspname IN ('dispute_control','dispute_actions')` returned **0**. These are read-only observations; no shared migration/load/reset/start/restart.
+- `docker ps -a --filter label=dispute-purpose=t04-isolated-test --format '{{.Names}}'` returned no containers after cleanup. `docker ps --format '{{.Names}}\t{{.Status}}'` confirmed the five original persistent services still healthy. No images pulled or dependencies installed.
+- NOT RUN: shared/demo migration, Zetaris registration/cache-coherence/read integration, Nightshift, H-MEM execution, T05 action-service/proposal validation and full concurrent-credit workflow. Those capabilities remain unavailable or outside T04; source revisions returned by current T02 remain null.
+- Acceptance evidence and limits are documented in `docs/storage.md`; context updated for implemented storage and explicit deployment boundary. Recommended next task: **T06 / KAN-15**, not started. T05 will use this schema plus verified fresh reads and the pure critic.
+- Final checks from repository root: `PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/validate_t04_docs.py` — PASS, seven documents, 103 local links, balanced fences/newlines, Python syntax, only T04 status advanced and all prior work-log text retained. `git diff --check` — PASS. `git diff --no-index --check -- /dev/null` for each new migration/test/storage-reference file — no diagnostics (expected exit 1 for new files). `git diff --exit-code b64c21d -- dispute-demo/app dispute-demo/agent dispute-demo/data dispute-demo/policies dispute-demo/scripts dispute-demo/integration/get_dispute_context.py dispute-demo/integration/compose.yml dispute-demo/integration/registration.sql dispute-demo/integration/verify.sql dispute-demo/tests/fixtures dispute-demo/tests/test_generation.py getting-started zetaris-platform AGENTS.md CLAUDE.md` — PASS, protected source/state/config paths unchanged. Ten T04 paths changed; temporary validation helpers stay outside Git.
+- Import/collection check from `dispute-demo/`: `PYTHONDONTWRITEBYTECODE=1 ../getting-started/.venv/bin/python -` with assertions that importing `app.schemas`, `app.tools`, `app.policy_engine` preserves `sys.path` and does not initialize `jaydebeapi`, then `unittest.TestLoader().discover('agent/tests')` — PASS, 13 prototype tests collected without import errors. Six critic tests ran separately above; seven external H-MEM tests were collected only, NOT RUN.
+
+### 2026-10-27 — Publish T04 for review against main
+
+- Scope: the user's request to commit completed T04 on `codex/t04-decision-storage`, push the branch and create a PR targeting `main` on the existing origin. No new implementation task, database deployment or Jira edit.
+- Remote baseline: `git fetch origin` passed; `git rev-list --left-right --count origin/main...HEAD` returned `0 0` at `b64c21d18df1ccd8cc93e507eeb937ea5fb7e7c1`. GitHub search found no open PR for this head/base pair.
+- The ten T04 paths are the publication scope. The detailed commit/PR describes all-outcome storage, revision guards, conservative duplicate/re-review rules, isolated PostgreSQL tests and pending T05/T06/deployment boundaries. Existing source/policy/data/configuration and prototype runtime/state are preserved.
+- Checks: `PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/validate_t04_docs.py` passed (seven documents, 103 local links, syntax and preserved task/history checks); `git diff --check` and the protected-source comparison recorded above passed. The preceding 20 PostgreSQL, 70 offline and 6 prototype passing tests plus data validation apply to the unchanged implementation. Application/live tests were NOT RUN again for this publication-only follow-up; only this work-log entry is added.
+- Publication uses an explicit ten-file commit and `git push --set-upstream origin codex/t04-decision-storage`, then a PR targeting `main`. Commit/PR identifiers and remote state are verified and reported after execution. T04 remains DONE; T06 is recommended and not started.
 
 ## 11. Deferred scope
 
